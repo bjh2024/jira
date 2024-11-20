@@ -44,4 +44,24 @@ public class MainController {
 	public String checkAuthcode() {
 		return "/login/check_authcode";
 	}
+	
+	@GetMapping("/")
+	public String filter() {
+		return "every_filter.html";
+	}
+
+	@GetMapping("/filter_issue")
+	public String filterIssue() {
+		return "filter_issue.html";
+	}
+
+	@GetMapping("/filter_issue_table")
+	public String filterIssueTable() {
+		return "filter_issue_table.html";
+	}
+	
+	@GetMapping("/profile")
+	public String profile() {
+		return "profile.html";
+	}
 }

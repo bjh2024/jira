@@ -123,5 +123,21 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
 	private List<IssueObserverMembers> issueObserverList;
-
+	
+	// filter FK 추가
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<Filter> filterList;
+	
+	// filterAuth FK 추가
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterAuth> filterAuthList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterManager> FilterManagerList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterLikeMembers> FilterLikeMembersList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterReporter> FilterReporterList;
 }

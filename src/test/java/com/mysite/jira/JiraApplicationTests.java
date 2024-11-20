@@ -134,5 +134,4 @@ class JiraApplicationTests {
 		
 		// insertChatUnreadList();
 	}
-
 }

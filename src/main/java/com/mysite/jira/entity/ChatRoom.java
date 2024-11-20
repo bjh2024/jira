@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class ChatRoom {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_seq")

@@ -2,7 +2,6 @@ package com.mysite.jira.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,12 +11,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +22,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
@@ -112,4 +108,9 @@ public class Project {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<ProjectLikeMembers> ProjectLikeMembersList;
 
+	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+	private List<FilterAuth> filterAuthList;
+	
+	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+	private List<FilterProject> FilterProjectList;
 }

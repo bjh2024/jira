@@ -40,7 +40,5 @@ public class IssueFile {
 	
 	@ManyToOne
 	private Account account;
-	
-	
-	
+
 }

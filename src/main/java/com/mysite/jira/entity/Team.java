@@ -12,14 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Team {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
@@ -42,4 +40,6 @@ public class Team {
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<TeamMembers> teamMembersList;
 	
+	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+	private List<FilterAuth> filterAuthList;
 }
