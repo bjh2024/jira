@@ -73,8 +73,25 @@ document.querySelectorAll(".role_project_input").forEach(function(input, idx){
 document.querySelectorAll(".role_input_lnb_item").forEach(function(item){
 	item.addEventListener("mousedown", function(){
 		const imgSrc = this.children[0].getAttribute("src");
-		const span = this.children[1].innerText;
-		console.log(imgSrc, span);
+		const spanText = this.querySelector("span").innerText;
+		
+		let img = "";
+		let input = "";
+		
+		if(this.closest(".role_input_box .item").className === "role_projct_item item"){
+			img = this.closest(".role_input_box .item > div")?.children[0];
+			input = this.closest(".role_input_box .item > div")?.children[2];
+		}else{
+			img = this.closest(".role_input_box .item")?.children[0];
+			input = this.closest(".role_input_box .item")?.children[2];
+		}
+		
+		console.log(this);
+		input.placeholder = spanText;
+		img.setAttribute("src", imgSrc);
+		img.classList.add("show");
+		input.classList.add("active");
+		
 	})
 })
 

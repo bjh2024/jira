@@ -122,9 +122,17 @@ span.red {
 	border-bottom: 2px solid #ddd;
 }
 
+.role_input_box .item > div:focus-within .change_icon{
+	display: none;
+}
+
 .role_input_box>div {
 	display: flex;
 	width: 500px;
+}
+
+.role_input_box input.active{
+	padding-left: 38px;
 }
 
 .role_input_box input {
@@ -213,15 +221,17 @@ span.red {
 	align-items: center;
 }
 
-.role_projct_item .project_icon {
+.role_projct_item .change_icon.show{
+	display: block;
+}
+
+.role_projct_item .change_icon {
 	display: none;
 	
 	position: absolute;
 	top: calc(32px / 2 - 24px / 2);
 	left: 8px;
 }
-
-
 
 .role_projct_item>div {
 	position: relative;
