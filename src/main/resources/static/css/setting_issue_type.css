@@ -170,6 +170,36 @@ body{
 	gap: 8px;
 }
 
+.myfield-editbox-priority{
+	width: 100%;
+}
+
+.myfield-editbar-manager{
+	width: 998px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	padding: 8px;
+	margin-bottom: 2px;
+	background-color: white;
+	box-shadow: rgba(23, 43, 77, 0.13) 0.1px 0.55px 0.1px 0.9px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.editbar-manager-delete{
+	width: 52px;
+	height: 32px;
+	color: #172B4D;
+	background-color: #091E420F;
+	border-radius: 3px;
+}
+
+.editbar-manager-delete:hover{
+	background-color: #091E4224;
+}
+
 .myfield-menubar{
 	display: flex;
 	align-items: center;
@@ -227,6 +257,7 @@ body{
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 	z-index: 1;
 	padding: 6px 0px;
+	margin-bottom: 16px;
 	display: none;
 }
 

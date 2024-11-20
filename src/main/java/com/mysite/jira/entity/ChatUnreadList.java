@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class ChatUnreadList {
 	
 	@ManyToOne
 	private ChatMessage chatMessage;
+
+	@Builder
+	public ChatUnreadList(Account account, ChatMessage chatMessage) {
+		this.account = account;
+		this.chatMessage = chatMessage;
+	}
 }

@@ -10,10 +10,12 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.ChatMembers;
 import com.mysite.jira.entity.ChatMessage;
 import com.mysite.jira.entity.ChatRoom;
+import com.mysite.jira.entity.ChatUnreadList;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.ChatMembersRepository;
 import com.mysite.jira.repository.ChatMessageRepository;
 import com.mysite.jira.repository.ChatRoomRepository;
+import com.mysite.jira.repository.ChatUnreadListRepository;
 
 @SpringBootTest
 class JiraApplicationTests {
@@ -28,9 +30,12 @@ class JiraApplicationTests {
 	
 	@Autowired
 	private ChatMembersRepository chatMembersRepository;
+	
+	@Autowired
+	private ChatUnreadListRepository chatUnreadListRepository;
 
 	// Account 값 INSERT
-	public void createAccount() {
+	public void insertAccount() {
 		Account account = Account.builder()
 				.email("ksgkdw78@gmail.com")
 				.pw("1234")
@@ -42,14 +47,16 @@ class JiraApplicationTests {
 		this.accountRepository.save(account);
 	}
 	
-	public void createChatRoom() {
+	// ChatRoom 값 INSERT
+	public void insertChatRoom() {
 		ChatRoom chatRoom = ChatRoom.builder()
 				.name("chat1")
 				.build();
 		this.chatRoomRepository.save(chatRoom);
 	}
 	
-	public void createChatMessage() {
+	// ChatMessage 값 INSERT
+	public void insertChatMessage() {
 		Optional<Account> oa = this.accountRepository.findById(1);
 		Account accountIdx = null;
 		if(oa.isPresent()) {
@@ -71,7 +78,8 @@ class JiraApplicationTests {
 		this.chatMessageRepository.save(chatMessage);
 	}
 	
-	public void createChatMembers() {
+	// ChatMembers 값 INSERT
+	public void insertChatMembers() {
 		Optional<Account> oa = this.accountRepository.findById(1);
 		Account accountIdx = null;
 		if(oa.isPresent()) {
@@ -92,17 +100,39 @@ class JiraApplicationTests {
 		this.chatMembersRepository.save(chatMembers);		
 	}
 	
+	// ChatUnreadList 값 INSERT
+	public void insertChatUnreadList() {
+		Optional<Account> oa = this.accountRepository.findById(1);
+		Account accountIdx = null;
+		if(oa.isPresent()) {
+			accountIdx = oa.get();
+		}
+		
+		Optional<ChatMessage> oc = this.chatMessageRepository.findById(2);
+		ChatMessage massageIdx = null;
+		if(oc.isPresent()) {
+			massageIdx = oc.get();
+		}
+		
+		ChatUnreadList chatUnreadList = ChatUnreadList.builder()
+				.account(accountIdx)
+				.chatMessage(massageIdx)
+				.build();
+		this.chatUnreadListRepository.save(chatUnreadList);
+	}
+	
 	@Test
 	void test() {
 		
-		// createAccount();
+		// insertAccount();
 		
-		// ChatRoom 값 INSERT
-		// createChatRoom();
+		// insertChatRoom();
 		
-		// createChatMessage();
+		// insertChatMessage();
 		
-		createChatMembers();
+		// insertChatMembers();
+		
+		// insertChatUnreadList();
 	}
 
 }
