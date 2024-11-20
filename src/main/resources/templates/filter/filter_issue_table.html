@@ -1,12 +1,11 @@
 <html layout:decorate="~{layout}">
-
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue_table.css}">
 </head>
 <div layout:fragment="content" style="display: flex; margin:0">
-	<div th:replace="~{filter_aside  :: filterasideFragment}"></div>
+	<div th:replace="~{/filter/filter_aside  :: filterasideFragment}"></div>
 	<div style="border-left: 3px solid #eee; position: relative; margin-left: -1px;"></div>
 	<div class="filter_issue_container">
 		<div class="inside_main_div">
