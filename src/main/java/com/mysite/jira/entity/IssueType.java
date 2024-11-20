@@ -14,6 +14,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,6 +49,17 @@ public class IssueType {
 	
 	@ManyToOne
 	private Project project;
+	
+	@Builder
+	public IssueType(String name, String content, String content2, String iconFilename, Integer grade,
+			Project project) {
+		this.name = name;
+		this.content = content;
+		this.content2 = content2;
+		this.iconFilename = iconFilename;
+		this.grade = grade;
+		this.project = project;
+	}
 	
 	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 

@@ -10,6 +10,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +34,11 @@ public class ProjectMembers {
 	@Min(value = 1)
 	@Max(value = 3)
 	private Integer auth_type;
+
+	@Builder
+	public ProjectMembers(Project project, Account account, Integer auth_type) {
+		this.project = project;
+		this.account = account;
+		this.auth_type = auth_type;
+	}
 }

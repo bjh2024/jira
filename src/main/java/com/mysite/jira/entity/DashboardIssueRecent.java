@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +35,11 @@ public class DashboardIssueRecent {
 	@ManyToOne
 	private Project project;
 	
-	
+	@Builder
+	public DashboardIssueRecent(Integer viewDate, String divOrder, Dashboard dashboard, Project project) {
+		this.viewDate = viewDate;
+		this.divOrder = divOrder;
+		this.dashboard = dashboard;
+		this.project = project;
+	}
 }

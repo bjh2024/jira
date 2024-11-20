@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,4 +41,15 @@ public class IssueRecord {
 	
 	@ManyToOne
 	private Account account;
+	
+	@Builder
+	public IssueRecord(String prevValue, String afterValue, String content, LocalDateTime createDate, Issue issue,
+			Account account) {
+		this.prevValue = prevValue;
+		this.afterValue = afterValue;
+		this.content = content;
+		this.createDate = createDate;
+		this.issue = issue;
+		this.account = account;
+	}
 }

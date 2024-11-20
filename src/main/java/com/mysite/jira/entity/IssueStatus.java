@@ -14,6 +14,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +44,14 @@ public class IssueStatus {
 	@ManyToOne
 	private Project project;
 	
+	@Builder
+	public IssueStatus(Integer status, String name, Integer divOrder, Project project) {
+		this.status = status;
+		this.name = name;
+		this.divOrder = divOrder;
+		this.project = project;
+	}
+	
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
 
@@ -51,4 +60,5 @@ public class IssueStatus {
 	
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 
 	private List<FilterStatusDefault> FilterStatusDefaultList; 
+
 }

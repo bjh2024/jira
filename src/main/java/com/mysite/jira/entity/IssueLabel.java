@@ -11,14 +11,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class IssueLabel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_label_seq")
@@ -30,6 +29,12 @@ public class IssueLabel {
 	@NotNull
 	private String name;
 
+	@Builder
+	public IssueLabel(String name) {
+		this.name = name;
+	}
+	
 	@OneToMany(mappedBy = "issueLabel", cascade = CascadeType.REMOVE) 
 	private List<IssueLabelData> issueLabelDataList;
+	
 }

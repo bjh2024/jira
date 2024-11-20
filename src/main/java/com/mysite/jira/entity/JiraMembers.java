@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,9 @@ public class JiraMembers {
 	@ManyToOne
 	private Account account;
 	
+	@Builder
+	public JiraMembers(Jira jira, Account account) {
+		this.jira = jira;
+		this.account = account;
+	}
 }

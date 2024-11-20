@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,11 @@ public class DashboardCol {
 	@NotNull
 	private String content;
 	
+	@Builder
+	public DashboardCol(String content) {
+		this.content = content;
+	}
+	
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
 	private List<DashboardPieChart> pieChartList;
 	
@@ -40,3 +46,4 @@ public class DashboardCol {
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 }
+	

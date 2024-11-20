@@ -10,12 +10,15 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class DashboardAuth {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dashboard_auth_seq")
@@ -42,5 +45,13 @@ public class DashboardAuth {
 	@ManyToOne
 	private Account account;
 	
-	
+	@Builder
+	public DashboardAuth(Integer type, Integer projectRole, Project project,
+			Team team, Account account) {
+		this.type = type;
+		this.projectRole = projectRole;
+		this.project = project;
+		this.team = team;
+		this.account = account;
+	}
 }

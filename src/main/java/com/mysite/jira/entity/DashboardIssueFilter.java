@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,10 +36,18 @@ public class DashboardIssueFilter {
 	@ManyToOne
 	private Dashboard dashboard;
 	
-	//@ManyToOne
-	//private Filter filter;
+	@ManyToOne
+	private Filter filter;
 	
 	@OneToMany(mappedBy = "dashboardIssueFilter", cascade = CascadeType.REMOVE)
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
-
+	
+	@Builder
+	public DashboardIssueFilter(Integer viewNum, String divOrder, Dashboard dashboard, Filter filter) {
+		super();
+		this.viewNum = viewNum;
+		this.divOrder = divOrder;
+		this.dashboard = dashboard;
+		this.filter = filter;
+	}
 }

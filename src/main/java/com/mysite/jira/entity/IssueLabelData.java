@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,9 @@ public class IssueLabelData {
 	@ManyToOne
 	private Issue issue; 
 
+	@Builder
+	public IssueLabelData(IssueLabel issueLabel, Issue issue) {
+		this.issueLabel = issueLabel;
+		this.issue = issue;
+	} 
 }

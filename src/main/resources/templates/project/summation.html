@@ -1,7 +1,8 @@
 <html layout:decorate="~{layout}">
-	<head>
-		<link rel="stylesheet" type="text/css" th:href="@{/css/summation.css}">
-	</head>
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/summation.css}">
+</head>
 <div layout:fragment="content">
 	<main>
 		<aside th:replace="~{aside :: asideFragment}"></aside>
@@ -381,7 +382,7 @@
 								</p>
 							</a>
 						</div>
-						<a th:href="@{#}" class="go_project_create_btn">모든 프로젝트 보기</a>
+						<a th:href="@{/project/list}" class="go_project_create_btn">모든 프로젝트 보기</a>
 					</div>
 				</section>
 			</div>

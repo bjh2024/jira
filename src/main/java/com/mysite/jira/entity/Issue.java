@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -78,6 +79,28 @@ public class Issue {
 	
 	@ManyToOne
 	private IssuePriority issuePriority;
+	
+	@Builder
+	public Issue(String key, String name, String conetent, LocalDateTime createDate, LocalDateTime editDate,
+			LocalDateTime finishDate, LocalDateTime deadlineDate, LocalDateTime clickedDate, Integer divOrder,
+			Project project, IssueType issueType, IssueStatus issueStatus, Account manager, Account reporter,
+			IssuePriority issuePriority) {
+		this.key = key;
+		this.name = name;
+		this.conetent = conetent;
+		this.createDate = createDate;
+		this.editDate = editDate;
+		this.finishDate = finishDate;
+		this.deadlineDate = deadlineDate;
+		this.clickedDate = clickedDate;
+		this.divOrder = divOrder;
+		this.project = project;
+		this.issueType = issueType;
+		this.issueStatus = issueStatus;
+		this.manager = manager;
+		this.reporter = reporter;
+		this.issuePriority = issuePriority;
+	}
 	
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE) 
 	private List<IssueExtends> parentList;

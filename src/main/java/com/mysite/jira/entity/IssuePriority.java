@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,9 +31,16 @@ public class IssuePriority {
 	@NotNull
 	private String iconFilename;
 	
+	@Builder
+	public IssuePriority(String name, String iconFilename) {
+		this.name = name;
+		this.iconFilename = iconFilename;
+	}
+	
 	@OneToMany(mappedBy = "issuePriority", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
 	
 	@OneToMany(mappedBy = "issuePriority", cascade = CascadeType.REMOVE) 
-	private List<FilterIssuePriority> FilterIssuePriorityList; 
+	private List<FilterIssuePriority> FilterIssuePriorityList;
+	
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,6 +35,13 @@ public class Team {
 	@ManyToOne
 	private Account account;
 	
+	@Builder
+	public Team(String name, Jira jira, Account account) {
+		this.name = name;
+		this.jira = jira;
+		this.account = account;
+	}
+	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<DashboardAuth> dashboardAuthList;
 	
@@ -42,4 +50,5 @@ public class Team {
 	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<FilterAuth> filterAuthList;
+
 }

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/project_create.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+	<title>Document</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="project_create_header">
+			<img th:src="@{/images/arrow_tail_left_icon.svg}" alt="" />
+			<a th:href="@{/project/summation}">Jira 페이지로 돌아가기</a>
+		</div>
+		<div class="project_create_main">
+			<div class="project_create_main_container">
+				<div>
+					<div class="project_create_main_box1">
+						<div class="main_header">
+							<h1>프로젝트 만들기</h1>
+							<p>
+								팀과 공동 작업하면 어떤 일이 가능한지 알아보세요. 프로젝트
+								설정에서 언제든지 프로젝트 세부 정보를 편집하세요.
+							</p>
+							<p>
+								필수 필드는 별표로 표시되어 있습니다
+								<span class="not_null_check">*</span>
+							</p>
+						</div>
+						<div class="project_name_input_box">
+							<label for="">이름<span class="not_null_check">*</span></label>
+							<input type="text" placeholder="팀 이름, 프로젝트 목표, 마일스톤 등을 사용해보기기" />
+						</div>
+						<div class="template_choice_box">
+							<div class="template_choice_list">
+								<span>템플릿</span>
+								<a href="#">더 많은 템플릿</a>
+							</div>
+							<div class="template_choice_main">
+								<div class="img_box">
+									<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
+										alt="" width="75" height="50" />
+								</div>
+								<div class="content">
+									<h2>빈 프로텍트</h2>
+									<img th:src="@{/images/logo.svg}" alt="" width="38" height="16" />
+									<p>비어있는 비즈니스 프로젝트 템플릿으로 새로 시작하세요.</p>
+								</div>
+								<div class="next_btn">
+									<img th:src="@{/images/arrow_right_icon.svg}" alt="" width="32" height="32" />
+								</div>
+							</div>
+							<div class="more_btn_box">
+								<div class="more_btn">
+									<img th:src="@{/images/arrow_right_icon.svg}" alt="" />
+									<button>더 보기</button>
+								</div>
+							</div>
+							<div class="more_box">
+								<div>
+									<label for="key">
+										<span>키</span><img th:src="@{/images/exclamation_mark_icon_purple.svg}" alt=""
+											width="16" height="16" /><span class="not_null_check">*</span></label>
+									<input type="text" id="key" />
+								</div>
+								<div>
+									<h3>프로젝트에 사용자 초대</h3>
+									<label for="username">이름, 이메일 또는 그룹</label>
+									<div class="input_box">
+										<input type="text" placeholder="예: Maria, maria@company.com" id="username" />
+										<label for="username" class="img_box">
+											<img th:src="@{/images/search_icon.svg}" />
+										</label>
+
+									</div>
+								</div>
+								<div>
+									<label for="role">다음 역할로 초대</label>
+									<div class="input_box">
+										<input type="text" id="role" />
+										<label for="role" class="img_box">
+											<img th:src="@{/images/list_down_icon.svg}" alt="" />
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="project_create_btn_box">
+							<button class="cancle">취소</button>
+							<button class="create">프로젝트 만들기</button>
+						</div>
+					</div>
+				</div>
+				<div class="project_create_main_box2">
+					<image th:src="@{/images/project_create_main_img.svg}"
+						href="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" />
+					<div class="table_containter">
+						<div class="table_box1">
+							<div>
+								<div class="header">
+									<div></div>
+									<div class="project_name_example">제목 없는 프로젝트</div>
+								</div>
+								<div class="list">
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+									<div class="list_item">
+										<div></div>
+										<div></div>
+									</div>
+								</div>
+							</div>
+							<div class="footer">팀에서 관리하는 프로젝트</div>
+						</div>
+						<div class="table_box2">
+							<div class="header">
+								<div></div>
+								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+									alt="" style="border-radius: 50%" width="24" height="24" />
+							</div>
+							<table>
+								<colgroup>
+									<col width="10%" />
+									<col width="20%" />
+									<col width="38%" />
+									<col width="20%" />
+									<col width="12%" />
+								</colgroup>
+								<thead>
+									<tr>
+										<th>
+											<div></div>
+										</th>
+										<th>
+											<div></div>
+										</th>
+										<th>
+											<div></div>
+										</th>
+										<th>
+											<div></div>
+										</th>
+										<th>
+											<div></div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-1</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-2</div>
+										</td>
+										<td>
+											<div>
+												<div></div>
+											</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-3</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-4</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-5</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-6</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div>KEY-7</div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+										<td>
+											<div></div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:src="@{/js/project_create.js}"></script>
+
+</html>

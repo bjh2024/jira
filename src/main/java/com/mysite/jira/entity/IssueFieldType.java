@@ -13,6 +13,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +36,12 @@ public class IssueFieldType {
 	@NotNull
 	private Integer type;
 
+	@Builder
+	public IssueFieldType(String name, Integer type) {
+		this.name = name;
+		this.type = type;
+	}
+	
 	@OneToMany(mappedBy = "issueFieldType", cascade = CascadeType.REMOVE) 
-	private List<IssueField> issueFieldList; 
+	private List<IssueField> issueFieldList;
 }

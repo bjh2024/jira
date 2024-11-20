@@ -5,63 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-	@GetMapping("/test")
-	public String test() {
-		return "test";
-	}
-	
-	@GetMapping("/project/board_main")
-	public String root() {
-		return "/project/board_main";
-	}
-	
-	@GetMapping("/project/summation")
-	public String summation() {
-		return "/project/summation";
-	}
-	
-	@GetMapping("/project/setting_issue_type")
-	public String settingIssueType() {
-		return "/project/setting_issue_type";
-	}
-	
-	@GetMapping("/project/attached_files")
-	public String attachedFiles() {
-		return "/project/attached_files";
-	}
-	
-	@GetMapping("/login/login")
-	public String login() {
-		return "/login/login";
-	}
-	
-	@GetMapping("/login/signup")
-	public String signin() {
-		return "/login/signup";
-	}
-	
-	@GetMapping("/login/check_authcode")
-	public String checkAuthcode() {
-		return "/login/check_authcode";
-	}
 	
 	@GetMapping("/")
 	public String filter() {
-		return "every_filter.html";
-	}
-
-	@GetMapping("/filter_issue")
-	public String filterIssue() {
-		return "filter_issue.html";
-	}
-
-	@GetMapping("/filter_issue_table")
-	public String filterIssueTable() {
-		return "filter_issue_table.html";
+		return "my_work";
 	}
 	
-	@GetMapping("/profile")
-	public String profile() {
-		return "profile.html";
-	}
 }
+

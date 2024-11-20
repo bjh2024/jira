@@ -30,5 +30,4 @@ public class ChatMembers {
 		this.account = account;
 		this.chatRoom = chatRoom;
 	}
-	
 }

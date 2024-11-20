@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,6 +45,15 @@ public class IssueReply {
 	
 	@ManyToOne
 	private Account account;
+	
+	@Builder
+	public IssueReply(String content, LocalDateTime createDate, LocalDateTime editDate, Issue issue, Account account) {
+		this.content = content;
+		this.createDate = createDate;
+		this.editDate = editDate;
+		this.issue = issue;
+		this.account = account;
+	}
 	
 	// emojiList FK 생성
 	@OneToMany(mappedBy = "issueReply", cascade = CascadeType.REMOVE) 

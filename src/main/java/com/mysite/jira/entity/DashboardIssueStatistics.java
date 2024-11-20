@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,15 @@ public class DashboardIssueStatistics {
 	
 	@ManyToOne
 	private DashboardCol dashboardCol;
+	
+	@Builder
+	public DashboardIssueStatistics(Integer viewNum,String divOrder,
+			Dashboard dashboard, Project project, DashboardCol dashboardCol) {
+		this.viewNum = viewNum;
+		this.divOrder = divOrder;
+		this.dashboard = dashboard;
+		this.project = project;
+		this.dashboardCol = dashboardCol;
+	}
 	
 }

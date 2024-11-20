@@ -1,0 +1,42 @@
+<div th:fragment="teamCreateFragment" class="team_create_modal">
+
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/team_create.css}">
+	</head>
+	<div class="team_create_container">
+		<div class="header">팀 만들기</div>
+		<div class="team_create_content_box">
+			<div class="img_box">
+				<img th:src="@{/images/team_create_img.svg}" />
+			</div>
+			<div class="main">
+				<p>@멘션하고 필터링하고 업무를 할당할 수 있는 하나의 팀으로 모두를 모으세요. <a th:href="@{#}">팀이란?</a></p>
+				<div class="input_box">
+					<label for="teamName">팀 이름<span class="not_null_check">*</span></label>
+					<input type="text" id="teamName" placeholder="예: HR 팀, 프로젝트 재설계, 팀 망고" />
+					<p>
+						팀 이름을 볼 수 있는 사용자<img th:src="@{/images/exclamation_mark_icon.svg}" width="12" height="12" />
+					</p>
+				</div>
+				<div class="input_box">
+					<label for="teamMemberName">이 팀에는 누가 있어야 합니까?<span class="not_null_check">*</span></label>
+					<input type="text" id="teamMemberName" placeholder="사용자 선택" />
+					<p>한 번에 최대 50명을 초대할 수 있습니다.</p>
+				</div>
+				<div class="input_check_box">
+					<span>멤버십 제어</span>
+					<div class="check_box">
+						<input type="checkbox" id="approval" placeholder="예: HR 팀, 프로젝트 재설계, 팀 망고" />
+						<label for="approval">누구나 승인 없이 이 팀에 참여할 수 있음</label>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="btn_box">
+			<button class="cancle_btn">취소</button>
+			<button>팀 만들기</button>
+		</div>
+	</div>
+	<script th:src="@{/js/team_create.js}"></script>
+</div>

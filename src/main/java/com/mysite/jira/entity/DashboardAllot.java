@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +34,13 @@ public class DashboardAllot {
 	
 	@ManyToOne
 	private Dashboard dashboard;
+	
+	@Builder
+	public DashboardAllot(Integer pageNum, String divOrder, Dashboard dashboard) {
+		this.pageNum = pageNum;
+		this.divOrder = divOrder;
+		this.dashboard = dashboard;
+	}
 	
 	@OneToMany(mappedBy = "dashboardAllot", cascade = CascadeType.REMOVE)
 	private List<DashboardAllotCol> dashboardAllotColList;

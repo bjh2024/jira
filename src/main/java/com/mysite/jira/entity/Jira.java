@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,12 @@ public class Jira {
 	@ManyToOne
 	private Account account;
 	
+	@Builder
+	public Jira(String name, Account account) {
+		this.name = name;
+		this.account = account;
+	}
+	
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
 	private List<Project> projectList; 
 	
@@ -48,4 +55,5 @@ public class Jira {
 	// Filter FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<Filter> filterList;
+
 }

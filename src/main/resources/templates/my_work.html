@@ -1,0 +1,150 @@
+<html layout:decorate="~{layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/my_work.css}">
+</head>
+<div layout:fragment="content" class="my_work_container">
+	<h1>내 작업</h1>
+	<div class="work_section1">
+		<div class="section1_title">
+			<h2>최근 프로젝트</h2>
+			<a th:href="@{/project/list}">모든 프로젝트 보기</a>
+		</div>
+		<div class="section1_content">
+			<div class="project_recent_box">
+				<a th:href="@{/project/summation}" class="recent_header">
+					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
+						width="24px" height="24px" alt="" draggable="false">
+					<div>
+						<h3>하이</h3>
+						<p>팀에서 관리하는 비즈니스</p>
+					</div>
+				</a>
+				<div class="recent_content">
+					<div><b>빠른 연결</b></div>
+					<a href="#" class="unresolved_issue">
+						<div>나의 미해결 이슈</div>
+						<div class="num">2</div>
+					</a>
+					<a href="#">완료된 이슈</a>
+				</div>
+				<div class="recent_foot">
+					<div>
+						<div>1개 보드</div>
+						<img src="images/list_down_icon.svg" width="16" height="16" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="my_work_gnb">
+		<div class="active">작업</div>
+		<div>확인</div>
+		<div class="my_issue">
+			<span>나에게 할당</span>
+			<span>3</span>
+		</div>
+		<div>별표 표시됨</div>
+	</div>
+	<!-- 작업 -->
+	<div class="my_work_content task show">
+		<h3>지난달</h3>
+		<div class="content_list">
+			<a href="#" class="list_item">
+				<div class="item_header">
+					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+						alt="comment" width="24" height="24">
+					<div>
+						<h4>해야 할일임</h4>
+						<p>TSYR-56 · 하이</p>
+					</div>
+				</div>
+				<div class="item_foot">
+					<span>업데이트</span>
+					<div class="img_list">
+						<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
+							style="border-radius: 50%;" width="32" height="32">
+						<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
+							style="border-radius: 50%;" width="32" height="32">
+						<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
+							style="border-radius: 50%;" width="32" height="32">
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- 확인 -->
+	<div class="my_work_content check">
+		<h3>오늘</h3>
+		<div class="content_list">
+			<a href="#" class="list_item">
+				<div class="item_header">
+					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
+						alt="projects" width="24" height="24">
+					<div>
+						<h4>해야 할일임</h4>
+						<p>TSYR-56 · 하이</p>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- 나에게 할당 -->
+	<div class="my_work_content my_issue">
+		<h3>할일이 많다</h3>
+		<div class="content_list">
+			<a href="#" class="list_item">
+				<div class="item_header">
+					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"
+						alt="issue" width="24" height="24">
+					<div>
+						<h4>해야 할일임</h4>
+						<p>TSYR-56 · 하이</p>
+					</div>
+				</div>
+				<div class="item_foot">
+					<span>할일이 많다</span>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- 별표 표시됨 -->
+	<div class="my_work_content like">
+		<a href="#" class="list_item">
+			<div class="item_header">
+				<div class="like_star_box">
+					<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
+					<div class="star_img_box">
+						<img th:src="@{/images/star_icon_yellow.svg}" width="16" height="16" />
+					</div>
+				</div>
+				<img src="images/filter_icon.svg" />
+				<div class="like_header">
+					<h4>필터 더미</h4>
+					<p>필터</p>
+				</div>
+			</div>
+		</a>
+		<a href="#" class="list_item">
+			<div class="item_header">
+				<div class="like_star_box">
+					<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
+					<div class="star_img_box">
+						<img th:src="@{/images/star_icon_yellow.svg}" width="16" height="16" />
+					</div>
+				</div>
+				<img src="images/dashboard_icon.svg" />
+				<div>
+					<h4>하이 대시보드</h4>
+					<p>대시보드</p>
+				</div>
+			</div>
+		</a>
+	</div>
+	<script th:src="@{js/my_work.js}"></script>
+</div>
+
+</html>

@@ -116,8 +116,6 @@ public class Account {
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<DashboardLikeMembers> likeMembersList;
 	
-	//
-	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueLikeMembers> issueLikeMembersList;
 	
@@ -140,4 +138,13 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<FilterReporter> FilterReporterList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
+	private List<JiraMembers> JiraMembersList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
+	private List<ProjectLikeMembers> ProjectLikeMembersList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
+	private List<TeamMembers> TeamMembersList;
 }
