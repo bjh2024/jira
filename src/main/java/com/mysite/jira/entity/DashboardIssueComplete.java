@@ -36,4 +36,12 @@ public class DashboardIssueComplete {
 	@ManyToOne
 	private Project project;
 	
+	public DashboardIssueComplete(Integer viewDate, String divOrder, Dashboard dashboard,
+			Project project) {
+		this.viewDate = viewDate;
+		this.divOrder = divOrder;
+		this.dashboard = dashboard;
+		this.project = project;
+	}
+	
 }

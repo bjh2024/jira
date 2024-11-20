@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,20 +25,25 @@ public class DashboardCol {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dashboard_col_seq")
 	@SequenceGenerator(name = "dashboard_col_seq", sequenceName = "dashboard_col_seq", allocationSize = 1)
 	private Integer idx;
-	
+
 	@Column(columnDefinition = "VARCHAR2(300)")
 	@NotNull
 	private String content;
-	
+
+	@Builder
+	public DashboardCol(String content) {
+		this.content = content;
+	}
+
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
 	private List<DashboardPieChart> pieChartList;
-	
+
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
-	private List<DashboardIssueStatistics> dashboardIssueStatistics;
-	
+	private List<DashboardIssueStatistics> issueStatisticsList;
+
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
-	private List<DashboardAllotCol> dashboardAllotColList;
-	
+	private List<DashboardAllotCol> allotColList;
+
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,11 @@ public class IssueLikeMembers {
 	private Account account;
 	
 	@ManyToOne
-	private Issue issue; 
+	private Issue issue;
+
+	@Builder
+	public IssueLikeMembers(Account account, Issue issue) {
+		this.account = account;
+		this.issue = issue;
+	}
 }

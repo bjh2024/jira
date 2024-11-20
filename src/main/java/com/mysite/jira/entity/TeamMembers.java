@@ -4,9 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +25,10 @@ public class TeamMembers {
 	
 	@ManyToOne
 	private Account account;
+
+	@Builder
+	public TeamMembers(Team team, Account account) {
+		this.team = team;
+		this.account = account;
+	}
 }

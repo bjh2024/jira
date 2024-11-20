@@ -47,6 +47,15 @@ public class Dashboard {
 	@ManyToOne
 	private Account account;
 	
+	@Builder
+	public Dashboard(String name, String explain, LocalDateTime clickedDate, Jira jira, Account account) {
+		this.name = name;
+		this.explain = explain;
+		this.clickedDate = clickedDate;
+		this.jira = jira;
+		this.account = account;
+	}
+
 	@OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
 	private List<DashboardPieChart> pieChartList;
 	

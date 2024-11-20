@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,7 +41,13 @@ public class IssueFile {
 	
 	@ManyToOne
 	private Account account;
-	
-	
+
+	@Builder
+	public IssueFile(String name, LocalDateTime uploadDate, Issue issue, Account account) {
+		this.name = name;
+		this.uploadDate = uploadDate;
+		this.issue = issue;
+		this.account = account;
+	}
 	
 }

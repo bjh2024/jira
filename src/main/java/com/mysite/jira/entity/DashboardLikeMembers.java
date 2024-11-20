@@ -22,5 +22,10 @@ public class DashboardLikeMembers {
 	private Account account;
 	
 	@ManyToOne
-	private Dashboard dashboard; 
+	private Dashboard dashboard;
+
+	public DashboardLikeMembers(Account account, Dashboard dashboard) {
+		this.account = account;
+		this.dashboard = dashboard;
+	} 
 }

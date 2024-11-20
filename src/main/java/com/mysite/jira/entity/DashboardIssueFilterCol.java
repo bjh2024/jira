@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +21,13 @@ public class DashboardIssueFilterCol {
 	
 	@ManyToOne
 	private DashboardIssueFilter dashboardIssueFilter;
-	
+
 	@ManyToOne 
-	private  DashboardCol dashboardCol; 
+	private  DashboardCol dashboardCol;
+	
+	@Builder
+	public DashboardIssueFilterCol(DashboardIssueFilter dashboardIssueFilter, DashboardCol dashboardCol) {
+		this.dashboardIssueFilter = dashboardIssueFilter;
+		this.dashboardCol = dashboardCol;
+	}
 }

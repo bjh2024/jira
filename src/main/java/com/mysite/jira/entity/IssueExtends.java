@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,12 @@ public class IssueExtends {
 	@ManyToOne
 	@JoinColumn(name = "child")
 	private Issue child;
+
+	@Builder
+	public IssueExtends(Project project, Issue parent, Issue child) {
+		this.project = project;
+		this.parent = parent;
+		this.child = child;
+	}
+	
 }

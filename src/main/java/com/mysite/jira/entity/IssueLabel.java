@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,12 +25,17 @@ public class IssueLabel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_lable_seq")
 	@SequenceGenerator(name = "issue_label_seq", sequenceName = "issue_label_seq", allocationSize = 1)
 	private Integer idx; 
-	
 
 	@Column(columnDefinition = "VARCHAR2(100)")
 	@NotNull
 	private String name;
 
+	@Builder
+	public IssueLabel(String name) {
+		this.name = name;
+	}
+	
 	@OneToMany(mappedBy = "issueLabel", cascade = CascadeType.REMOVE) 
 	private List<IssueLabelData> issueLabelDataList;
+	
 }

@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +40,10 @@ public class IssueFieldType {
 
 	@OneToMany(mappedBy = "issueFieldType", cascade = CascadeType.REMOVE) 
 	private List<IssueField> issueFieldList; 
+	
+	@Builder
+	public IssueFieldType(String name, Integer type) {
+		this.name = name;
+		this.type = type;
+	}
 }

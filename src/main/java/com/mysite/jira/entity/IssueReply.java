@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,27 +29,36 @@ public class IssueReply {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_reply_seq")
 	@SequenceGenerator(name = "issue_reply_seq", sequenceName = "issue_reply_seq", allocationSize = 1)
 	private Integer idx;
-	
+
 	@Column(columnDefinition = "VARCHAR2(4000)")
 	@NotNull
 	private String content;
-	
+
 	@Column
 	@ColumnDefault("sysdate")
 	private LocalDateTime createDate;
-	
+
 	@Column
 	@ColumnDefault("sysdate")
 	private LocalDateTime editDate;
-	
+
 	@ManyToOne
 	private Issue issue;
-	
+
 	@ManyToOne
 	private Account account;
-	
+
+	@Builder
+	public IssueReply(String content, LocalDateTime createDate, LocalDateTime editDate, Issue issue, Account account) {
+		this.content = content;
+		this.createDate = createDate;
+		this.editDate = editDate;
+		this.issue = issue;
+		this.account = account;
+	}
+
 	// emojiList FK 생성
-	@OneToMany(mappedBy = "issueReply", cascade = CascadeType.REMOVE) 
+	@OneToMany(mappedBy = "issueReply", cascade = CascadeType.REMOVE)
 	private List<ReplyEmojiRecord> replyEmojiList;
-	
+
 }

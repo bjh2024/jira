@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,11 @@ public class ReplyEmojiRecord {
 	
 	@ManyToOne
 	private IssueReply issueReply;
+
+	@Builder
+	public ReplyEmojiRecord(String charcode, Issue issue, IssueReply issueReply) {
+		this.charcode = charcode;
+		this.issue = issue;
+		this.issueReply = issueReply;
+	}
 }
