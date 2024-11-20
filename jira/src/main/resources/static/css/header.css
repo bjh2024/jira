@@ -1,0 +1,109 @@
+nav {
+	color: #626F86;
+	height: 56px;
+	padding: 0 12px;
+	border-bottom: 1px solid #e3e3e3;
+
+	font-size: 13px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+nav li{
+	cursor: pointer;
+}
+.gnb1 {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+}
+
+.gnb1 ul {
+	display: flex;
+	align-items: center;
+}
+
+.gnb1 ul li {
+	display: flex;
+	align-items: center;
+}
+
+.gnb1 ul:nth-of-type(1) {
+	gap: 8px;
+}
+
+.gnb1 ul:nth-of-type(1) li:nth-of-type(1) {
+	width: 22px;
+	height: 22px;
+}
+
+.gnb1 ul:nth-of-type(1) li:nth-of-type(2) {
+	width: 54px;
+	height: 20px;
+}
+
+.gnb1 ul:nth-of-type(2) {
+	gap: 3px;
+}
+
+.gnb1 ul:nth-of-type(2) li svg {
+	position: relative;
+	right: 4px;
+}
+
+.gnb1 ul:nth-of-type(2) .project_create_btn button {
+	width: 62px;
+	height: 30px;
+
+	background-color: #0C66E4;
+	border: none;
+	border-radius: 3px;
+	color: white;
+
+}
+
+.gnb2 {
+	height: 32px;
+	display: flex;
+	align-items: center
+}
+
+.gnb2 .search_box {
+	position: relative;
+}
+
+.gnb2 .search_box svg {
+	width: 16px;
+	height: 16px;
+
+	position: absolute;
+	top: calc(28px/2 - 16px/2);
+	left: calc(28px/2 - 16px/2);
+}
+
+.gnb2 .search_box input {
+	width: 180px;
+	height: 28px;
+	padding-left: 30px;
+	padding-right: 12px;
+	margin-right: 12px;
+
+	border: 1px solid #626F86;
+	border-radius: 4px;
+
+	font-size: 12px;
+
+	outline: none;
+}
+
+.gnb2 ul {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+
+.gnb2 img {
+	width: 24px;
+	height: 24px;
+}

@@ -1,0 +1,175 @@
+.filtertop {
+	height: 396px;
+	margin: 0px 40px;	
+	margin-top: 22px;
+	
+}
+.filtertop_div{
+	height: 56px;	
+	margin-bottom: 2px;
+	display: flex;
+	justify-content: space-between;
+}
+
+
+.filtertop_div a {
+	background-color: #0C66E4;
+	padding: 0px 10px;
+	width: 97.86px;
+	height: 32px;
+	border-radius: 3px;
+}
+.filtertop_div a:hover{
+	background-color: #0052CC;
+}
+.select_top {
+	height: 32px;
+	width: 200px;
+	display: flex;
+	margin-right: 16px;
+	align-items:center;
+	border : 1px solid #8590A2;
+	border-radius: 3px;
+}
+.select_top_1 {
+	height: 32px;
+	width: 184px;
+	display: flex;
+	border-radius: 3px;
+	align-items:center;
+	border : 1px solid #8590A2;
+	margin-right: 16px;
+}
+
+.select_top:hover{
+	background-color: #F4F5F7;
+}
+.select_top_menu {
+	position: absolute; 
+	border-radius: 3px;
+	background-color: white;
+	font-size: 14px;
+	box-shadow: 0 4px 8px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	top: 40px;
+	min-height: 40px;
+	display: none;
+}
+.select_top_menu.show{
+	display: flex;
+	align-items: center;
+}
+.select_top_menue_list {
+	background-color: #F4F5F7;
+ 	width: 200px;
+	align-items: center;
+	padding: 0px 10px;
+	display: flex;
+	height: 24px;
+	border-left: 2px solid #0C66E4;
+}
+
+.filtertop span{
+	font-size: 14px;
+	display: block;
+	width: 100%;
+	line-height: 32px;
+	text-align: center;
+	color : white;
+}
+.everyfilter_category input{
+	border-radius: 3px;
+	background-color: transparent;
+}
+.filtertop h1{
+	font-weight: normal;
+	font-size: 24px;
+}
+
+.everyfilter_category{
+	height: 32px;
+	display: flex;
+	margin-bottom: 15px;
+	position: relative;
+}
+
+.table_th{
+	width: 100%;
+	border-bottom: 2px solid #ddd;
+	border-collapse: collapse;
+}
+.table_th th{
+	text-align: left;
+	font-size: 12px;
+}
+.table_th th:nth-of-type(1){
+	display: flex;
+}
+.table_th th:nth-of-type(2){
+	width: 325.64px;
+}
+.table_tr{
+	border-top: 1px solid #8590A2;;
+	display: flex;
+}
+.table_tr td{
+	margin-right: 50px;
+}
+.first_tr{
+	border-bottom: 2px solid #ddd;
+}
+.first_tr th{
+	color: #44546f;
+	padding: 4px 8px;
+}
+
+
+.first_tr th:nth-of-type(1){
+	justify-content: center;
+	padding: 4px 8px 4px 0px;
+}
+
+.first_tr th a:nth-of-type(1){
+	width: 6px;
+	height: 6px;
+}
+.first_tr th a:nth-of-type(2){
+	width: 6px;
+	height: 6px;
+}
+.triangle {
+	display: flex;
+	text-align: right;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.triangle button{
+	width: 6px;
+	height: 6px;
+}
+.second_tr{
+	
+	height: 44px;
+}
+.second_tr td{
+	
+	padding : 0px 8px;
+	
+}
+.second_tr div:nth-of-type(1){
+	
+	font-size: 14px;
+	height: 44px;
+}
+
+.second_tr td:nth-of-type(1){
+	padding: 0px 8px 0px 0px;
+	text-align: center;
+}
+
+.second_tr td:nth-of-type(7){
+	padding: 0px 0px 0px 8px;
+	text-align: center;
+}
+table{
+    border-spacing: 1px;
+}

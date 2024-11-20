@@ -1,0 +1,90 @@
+.filter_table {
+	width: 100%;
+	border: 1px solid #DFE1E6;
+	border-radius: 8px;
+	border-style: hidden;
+	box-shadow: 0 0 0 1px #DFE1E6;
+	border-collapse: collapse;
+}
+
+.filter_column {
+	width: 100%;
+}
+
+.filter_column th {
+	color: #44546F;
+	background-color: #F7F8F9;
+	text-align: left;
+	height: 40px;
+	border: 1px solid #DFE1E6;
+	padding: 0px 8px;
+	font-size: 14px;
+	font-family: unset;
+}
+
+.filter_row {
+	font-size: 14px;
+	height: 48px;
+	border: 1px solid #DFE1E6;
+}
+
+.filter_row td {
+	padding: 0px 8px;
+	align-items: center;
+	border-right: 1px solid #DFE1E6;
+}
+
+.td_div {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	align-items: center;
+	margin-left: 6px;
+}
+
+.filter_row_last {
+	height: 41px;
+}
+
+.button_color {
+	display: flex;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	align-items: center;
+	border-radius: 3px;
+	background-color: #E9F2FF;
+	color: #0C66E4;
+	font-family: bold;
+	font-size: 12px;
+}
+
+.filter_last_div {
+	width: 100%;
+	font-size: 14px;
+	justify-content: space-between;
+	display: flex;
+}
+
+.filter_right_last {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+}
+
+.filter_category_choice {
+	font-size: 14px;
+}
+
+.filter_category_div {
+	border-radius: 3px;
+	line-height: 32px;
+	background-color: #091E420F;
+	font-size: 14px;
+	padding: 0px 0px 0px 12px;
+	display: flex;
+	align-items: center;
+}
