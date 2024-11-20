@@ -1,0 +1,118 @@
+<html layout:decorate="~{layout}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/attached_files.css}">
+</head>
+<div layout:fragment="content" style="display: flex;" class="main-container">
+	<aside th:replace="~{aside :: asideFragment}"></aside>
+	<div class="attached-files-container">
+		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+		<div class="attached-files-headerbar">
+			<div class="attached-searchbar">
+				<div class="attached-searchbox">
+					<input placeholder="첨부 파일 검색" class="attached-searchkey" value="">
+					<span class="attached-searchbtn">
+						<img src="/images/search_icon.svg" class="attached-searchbtn-img">
+					</span>
+				</div>
+				<button class="attached-headerbtn">
+					<div class="attached-headerwindow-user">
+						<div class="attached-user-searchbox">
+	                       <input placeholder="사용자 검색" class="attached-user-searchkey" value="">
+						   
+	                       <div class="attached-user-searchline"></div>
+	                       <span class="attached-user-searchbtn">
+	                          <svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
+	                       </span>
+	                    </div>
+						<div class="attached-user-body">
+							<div class="attached-user-bar">
+								<span class="attached-user-checkbox"></span>
+								<span class="attached-user-icon" style="height: 24px;">
+									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png">
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">다현</span>
+							</div>
+							<div class="attached-user-bar">
+								<span class="attached-user-checkbox"></span>
+								<span class="attached-user-icon" style="height: 24px;">
+									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png">
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">김대완</span>
+							</div>
+							<div class="attached-user-bar">
+								<span class="attached-user-checkbox"></span>
+								<span class="attached-user-icon" style="height: 24px;">
+									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png">
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">방준혁</span>
+							</div>
+						</div>
+						<div class="attached-user-resetbox">
+							<div class="attached-user-resetbtn">
+								<span>선택 항목 지우기</span>
+							</div>
+						</div>
+					</div>
+					<span style="height: 16px;"><img src="/images/user_icon.svg"></span>
+					<span class="attached-headerbtn-value">추가한 사용자</span>
+				</button>
+				<button class="attached-headerbtn">
+					<span style="height: 16px;"><img src="/images/file_icon.svg"></span>
+					<span class="attached-headerbtn-value">첨부 파일 유형</span>
+				</button>
+				<button class="attached-headerbtn">
+					<span style="height: 16px;"><img src="/images/calender_icon_small.svg"></span>
+					<span class="attached-headerbtn-value">추가된 날짜</span>
+				</button>
+			</div>
+		</div>
+		<div class="attached-files-body-container">
+			<div class="attached-file-box">
+				<div class="attached-file-preview">
+					<img class="file-previewimg" src="/images/스크린샷 2024-10-02 시간_ 23.43.55.png" style="object-fit: contain; image-orientation: none; max-width: 100%;">
+				</div>
+				<div class="attached-file-options">
+					<button class="attached-file-btn">
+						<span style="height: 24px; margin: 0px auto;"><img src="/images/download_icon.svg"></span>
+					</button>
+					<button class="attached-file-btn">
+						<span style="height: 24px; margin: 0px auto;"><img src="/images/file_trash_icon.svg"></span>
+					</button>
+				</div>
+				<div class="attached-file-line"></div>
+				<div class="attached-file-detail">
+					<div class="attached-file-title">스크린샷 2024-10-02 시간_23.43.55.png</div>
+					<div class="attached-file-affiliation">
+						<span style="height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=xsmall"></span>
+						<span style="letter-spacing: -0.5px;">TSYR-26</span>
+						<span style="margin-bottom: 2px;">남다현</span>
+					</div>
+				</div>
+			</div>
+			<div class="attached-file-box">
+				<div class="attached-file-preview">
+					
+				</div>
+				<div class="attached-file-options">
+					<button class="attached-file-btn">
+						<span style="height: 24px; margin: 0px auto;"><img src="/images/download_icon.svg"></span>
+					</button>
+					<button class="attached-file-btn">
+						<span style="height: 24px; margin: 0px auto;"><img src="/images/file_trash_icon.svg"></span>
+					</button>
+				</div>
+				<div class="attached-file-line"></div>
+				<div class="attached-file-detail">
+					<div class="attached-file-title">7계층.txt</div>
+					<div class="attached-file-affiliation">
+						<span style="height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=xsmall"></span>
+						<span style="letter-spacing: -0.5px;">TSYR-26</span>
+						<span style="margin-bottom: 2px;">남다현</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script th:src="@{/js/attached_files.js}"></script>
+</div>
+</html>
