@@ -20,7 +20,7 @@
 				<div>
 					<div class="header-setbgimg">
 						<button class="header-setbgimgbtn">
-							<img src="/images/header_set_bg_image.svg"
+							<img th:src="@{/images/header_set_bg_image.svg}"
 								style="filter: invert(12%) sepia(97%) saturate(718%) hue-rotate(188deg) brightness(92%) contrast(93%);">
 						</button>
 						<div class="header-sebgbox">
@@ -94,7 +94,7 @@
 				<a th:href="@{/login/login}" class="header-prjset">
 					<div>
 						<span>
-							<img src="/images/setting_icon.svg"
+							<img th:src="@{/images/setting_icon.svg}"
 								style="filter: invert(12%) sepia(97%) saturate(718%) hue-rotate(188deg) brightness(92%) contrast(93%);">
 						</span>
 					</div>
@@ -110,7 +110,7 @@
 			<div class="menu-icon-box">
 				<a th:href="@{/project/summation}">
 					<span class="menu-icon">
-						<img src="/images/summation_icon.svg"
+						<img th:src="@{/images/summation_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">요약</span>
@@ -120,7 +120,7 @@
 				style="border-bottom: 2px solid #44546f; padding-bottom: 3px; padding-right: 4px;">
 				<a th:href="@{/project/board_main}">
 					<span class="menu-icon" style="margin-left: 1px; margin-bottom: 2px;">
-						<img src="/images/board_icon.svg"
+						<img th:src="@{/images/board_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span style="margin-bottom: 3px;">보드</span>
@@ -129,7 +129,7 @@
 			<div class="menu-icon-box">
 				<a>
 					<span class="menu-icon">
-						<img src="/images/list_icon.svg"
+						<img th:src="@{/images/list_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">목록</span>
@@ -138,7 +138,7 @@
 			<div class="menu-icon-box">
 				<a th:href="@{/project/attached_files}">
 					<span class="menu-icon">
-						<img src="/images/attachment_icon.svg"
+						<img th:src="@{/images/attachment_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">첨부 파일</span>
@@ -147,7 +147,7 @@
 			<div class="menu-icon-box">
 				<a>
 					<span class="menu-icon">
-						<img src="/images/issue_icon.svg"
+						<img th:src="@{/images/issue_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">이슈</span>

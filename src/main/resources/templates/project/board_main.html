@@ -13,7 +13,7 @@
 				<div class="board-searchbox">
 					<input placeholder="보드 검색" class="board-searchkey" value="">
 					<span class="board-searchbtn">
-						<img src="/images/search_icon.svg" class="board-searchbtn-img">
+						<img th:src="@{/images/search_icon.svg}" class="board-searchbtn-img">
 					</span>
 				</div>
 				<div class="profilebox">
@@ -33,7 +33,7 @@
 							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
 					</div>
 					<div class="invitebox">
-						<img src="/images/invite_icon.svg" style="margin: 0px auto; filter: invert(29%) sepia(6%) saturate(2629%) hue-rotate(180deg) brightness(98%) contrast(89%);">
+						<img th:src="@{/images/invite_icon.svg}" style="margin: 0px auto; filter: invert(29%) sepia(6%) saturate(2629%) hue-rotate(180deg) brightness(98%) contrast(89%);">
 					</div>
 				</div>
 			</div>
@@ -152,7 +152,7 @@
 					</div>
 					<div class="sidebariconbox">
 						<span class="sidebaricon">
-							<img src="/images/sidebaricon_filter.svg" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+							<img th:src="@{/images/sidebaricon_filter.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
 						</span>
 						<span class="sidebartitle">필터</span>
 					</div>
@@ -188,7 +188,7 @@
 					</div>
 					<div class="sidebariconbox">
 						<span class="sidebaricon">
-							<img src="/images/sidebaricon_group.svg" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+							<img th:src="@{/images/sidebaricon_group.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
 						</span>
 						<span class="sidebartitle">그룹화 기준: 상태</span>
 					</div>
@@ -220,7 +220,7 @@
 					</div>
 					<div class="sidebariconbox">
 						<span class="sidebaricon">
-							<img src="/images/sidebaricon_other.svg" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+							<img th:src="@{/images/sidebaricon_other.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
 						</span>
 						<span class="sidebartitle">더 보기</span>
 					</div>
@@ -241,7 +241,7 @@
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
 								<span>
-									<img src="/images/status_other_icon.svg" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
+									<img th:src="@{/images/status_other_icon.svg}" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -256,7 +256,7 @@
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
 										<span style="margin-bottom: 2px;">버그</span>
 										<span style="margin-top: 3px;">
-											<img src="/images/arrow_under_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
@@ -268,7 +268,7 @@
 						</div>
 						<div class="issuebox-create">
 							<span class="createissueicon">
-								<img src="/images/create_issue_icon.svg">
+								<img th:src="@{/images/create_issue_icon.svg}">
 							</span>
 							<span>만들기</span>
 						</div>
@@ -318,7 +318,7 @@
 								</div>
 							</div>
 							<div class="issuetype-set">
-								<a href="#" class="issuetype-setbtn">유형 관리</a>
+								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
 							</div>
 						</div>
 					</div>
@@ -340,7 +340,7 @@
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
 								<span style="margin-top: 3px;">
-									<img src="/images/status_other_icon.svg" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
+									<img th:src="@{/images/status_other_icon.svg}" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -393,11 +393,11 @@
 								<button class="subissuebtn">
 									<div class="subissuebtnbox">
 										<span style="width: 16px; height: 16px;">
-											<img src="/images/subissue_files_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/subissue_files_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 										<span style="font-weight: bolder;">0/1</span>
 										<span class="subissuebtnimg">
-											<img src="/images/arrow_right_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/arrow_right_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 								</button>
@@ -461,7 +461,7 @@
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
 										<span style="margin-bottom: 2px;">버그</span>
 										<span style="margin-top: 3px;">
-											<img src="/images/arrow_under_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
@@ -473,7 +473,7 @@
 						</div>
 						<div class="issuebox-create">
 							<span class="createissueicon">
-								<img src="/images/create_issue_icon.svg">
+								<img th:src="@{/images/create_issue_icon.svg}">
 							</span>
 							<span>만들기</span>
 						</div>
@@ -523,7 +523,7 @@
 								</div>
 							</div>
 							<div class="issuetype-set">
-								<a href="#" class="issuetype-setbtn">유형 관리</a>
+								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
 							</div>
 						</div>
 					</div>
@@ -543,7 +543,7 @@
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
 								<span style="margin-top: 3px;">
-									<img src="/images/status_other_icon.svg" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
+									<img th:src="@{/images/status_other_icon.svg}" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -597,7 +597,7 @@
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
 										<span style="margin-bottom: 2px;">버그</span>
 										<span style="margin-top: 3px;">
-											<img src="/images/arrow_under_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
@@ -609,7 +609,7 @@
 						</div>
 						<div class="issuebox-create">
 							<span class="createissueicon">
-								<img src="/images/create_issue_icon.svg">
+								<img th:src="@{/images/create_issue_icon.svg}">
 							</span>
 							<span>만들기</span>
 						</div>
@@ -660,7 +660,7 @@
 								</div>
 							</div>
 							<div class="issuetype-set">
-								<a href="#" class="issuetype-setbtn">유형 관리</a>
+								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
 							</div>
 						</div>
 					</div>
@@ -675,42 +675,42 @@
 				<div class="issuekeypath">
 					<span class="path-issuekeyicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium" width="16px" height="16px" alt="에픽"></span>
 					<span style="margin-bottom: 2px;">
-						<a href="#">TSYR-8</a>
+						<a th:href="@{#}">TSYR-8</a>
 					</span>
 				</div>
 				<div class="issuekeypath">
 					<span style="font-size: 16px; margin-left: -7px; margin-right: 2px;">/</span>
 					<span class="path-issuekeyicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium" width="16px" height="16px" alt="작업1"></span>
 					<span style="margin-bottom: 2px;">
-						<a href="#">TSYR-34</a>
+						<a th:href="@{#}">TSYR-34</a>
 					</span>
 				</div>
 			</div>
 			<div class="issuedetail-menubar">
 				<div class="issuedetail-option">
 					<span style="margin-left: -5px; margin-top: 2px; color: #0C66E4;">
-						<img src="/images/eye_icon.svg" style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
+						<img th:src="@{/images/eye_icon.svg}" style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
 					</span>
 					<span style="color: #0C66E4; margin-left: 4px;">2</span>
 				</div>
 				<div class="issuedetail-option" style="padding: 3px 6px;">
 					<span style="margin-top: 2px;">
-						<img src="/images/thumbsup_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						<img th:src="@{/images/thumbsup_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
 					</span>
 				</div>
 				<div class="issuedetail-option" style="padding: 3px 4px;">
 					<span style="margin-top: 2.5px;">
-						<img src="/images/share_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
+						<img th:src="@{/images/share_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
 				</div>
 				<div class="issuedetail-option" style="padding: 3px 4px;">
 					<span style="margin-top: 2.5px;">
-						<img src="/images/three_dots_row_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
+						<img th:src="@{/images/three_dots_row_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
 				</div>
 				<div class="issuedetail-option issuedetail-off" style="padding: 3px 4px;">
 					<span style="margin-top: 2.5px;">
-						<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
+						<img th:src="@{/images/cancel_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
 				</div>
 			</div>
@@ -721,7 +721,7 @@
 					<div class="issuedetail-title">버그다!</div>
 					<div class="issuedetail-insertbtn">
 						<span style="height: 16px; margin-left: -2px; margin-bottom: 1px;">	
-							<img src="/images/plus_icon_small.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+							<img th:src="@{/images/plus_icon_small.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 						</span>							
 							<span style="margin-bottom: 4px;">추가</span>
 					</div>
@@ -759,7 +759,7 @@
 							<button class="issuedetail-sortbtn">
 								<span>최신 항목</span>
 								<span style="width: 16px; height: 16px; margin-top: 2px;">
-									<img src="/images/act_sort_icon.svg" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+									<img th:src="@{/images/act_sort_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 								</span>
 							</button>
 						</div>
@@ -805,7 +805,7 @@
 							<span>삭제</span><strong>·</strong>
 							<button class="replydetail-emojibtn">
 								<span style="height: 16px;">
-									<img src="/images/reply_emoji_icon.svg" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+									<img th:src="@{/images/reply_emoji_icon.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -835,7 +835,7 @@
 							<span>삭제</span><strong>·</strong>
 							<button class="replydetail-emojibtn">
 								<span style="height: 16px;">
-									<img src="/images/reply_emoji_icon.svg" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+									<img th:src="@{/images/reply_emoji_icon.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -857,7 +857,7 @@
 							<span>삭제</span><strong>·</strong>
 							<button class="replydetail-emojibtn">
 								<span style="height: 16px;">
-									<img src="/images/reply_emoji_icon.svg" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+									<img th:src="@{/images/reply_emoji_icon.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 								</span>
 							</button>
 						</div>
@@ -869,7 +869,7 @@
 					<button class="issuedetail-statusbtn">
 						<span style="margin-bottom: 3px;">진행 중</span>
 						<span style="margin-top: 1px; margin-left: 1px;">
-							<img src="/images/arrow_under_icon.svg" style="filter: invert(100%) sepia(2%) saturate(938%) hue-rotate(244deg) brightness(118%) contrast(100%);">
+							<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(100%) sepia(2%) saturate(938%) hue-rotate(244deg) brightness(118%) contrast(100%);">
 						</span>
 					</button>
 				</div>
@@ -877,7 +877,7 @@
 					<div class="issuedetail-graphtitle">
 						<span style="margin-bottom: 3px;">세부 사항</span>
 						<span style="height: 24px; margin-right: 2px; margin-top: 2px;">
-							<img src="/images/arrow_up_icon.svg" style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
+							<img th:src="@{/images/arrow_up_icon.svg}" style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
 						</span>
 					</div>
 					<div class="issuedetail-graphbox">
@@ -899,7 +899,7 @@
 									<span style="width: 24px; height: 24px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" style="border-radius: 50%;"></span>
 									<span style="font-size: 14px; margin-bottom: 2px; color: #172B4D;">김대완</span>
 								</div>
-								<div class="issuedetail-setmanager"><a href="#">나에게 할당</a></div>
+								<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
 							</div>
 						</div>
 						<div class="issuedetail-graph">
@@ -960,7 +960,7 @@
 					</div>
 					<a class="issuedetail-typeset">
 						<span style="height: 24px;">
-							<img src="/images/setting_icon_small.svg" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+							<img th:src="@{/images/setting_icon_small.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 						</span>
 						<span style="margin-bottom: 2px;">구성</span>
 					</a>
