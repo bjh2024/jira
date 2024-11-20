@@ -221,11 +221,11 @@ span.red {
 	align-items: center;
 }
 
-.role_projct_item .change_icon.show{
+.change_icon.show{
 	display: block;
 }
 
-.role_projct_item .change_icon {
+.change_icon {
 	display: none;
 	
 	position: absolute;
