@@ -11,7 +11,7 @@
 				<div class="attached-searchbox">
 					<input placeholder="첨부 파일 검색" class="attached-searchkey" value="">
 					<span class="attached-searchbtn">
-						<img src="/images/search_icon.svg" class="attached-searchbtn-img">
+						<img th:src="@{/images/search_icon.svg}" class="attached-searchbtn-img">
 					</span>
 				</div>
 				<button class="attached-headerbtn">
@@ -53,15 +53,15 @@
 							</div>
 						</div>
 					</div>
-					<span style="height: 16px;"><img src="/images/user_icon.svg"></span>
+					<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}"></span>
 					<span class="attached-headerbtn-value">추가한 사용자</span>
 				</button>
 				<button class="attached-headerbtn">
-					<span style="height: 16px;"><img src="/images/file_icon.svg"></span>
+					<span style="height: 16px;"><img th:src="@{/images/file_icon.svg}"></span>
 					<span class="attached-headerbtn-value">첨부 파일 유형</span>
 				</button>
 				<button class="attached-headerbtn">
-					<span style="height: 16px;"><img src="/images/calender_icon_small.svg"></span>
+					<span style="height: 16px;"><img th:src="@{/images/calender_icon_small.svg}"></span>
 					<span class="attached-headerbtn-value">추가된 날짜</span>
 				</button>
 			</div>
@@ -69,14 +69,14 @@
 		<div class="attached-files-body-container">
 			<div class="attached-file-box">
 				<div class="attached-file-preview">
-					<img class="file-previewimg" src="/images/스크린샷 2024-10-02 시간_ 23.43.55.png" style="object-fit: contain; image-orientation: none; max-width: 100%;">
+					<img class="file-previewimg" th:src="@{/images/스크린샷 2024-10-02 시간_ 23.43.55.png}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
 				</div>
 				<div class="attached-file-options">
 					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img src="/images/download_icon.svg"></span>
+						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/download_icon.svg}"></span>
 					</button>
 					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img src="/images/file_trash_icon.svg"></span>
+						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/file_trash_icon.svg}"></span>
 					</button>
 				</div>
 				<div class="attached-file-line"></div>
@@ -95,10 +95,10 @@
 				</div>
 				<div class="attached-file-options">
 					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img src="/images/download_icon.svg"></span>
+						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/download_icon.svg}"></span>
 					</button>
 					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img src="/images/file_trash_icon.svg"></span>
+						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/file_trash_icon.svg}"></span>
 					</button>
 				</div>
 				<div class="attached-file-line"></div>
