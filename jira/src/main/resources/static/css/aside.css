@@ -1,0 +1,73 @@
+aside{
+	width: 240px;
+	height: calc(100vh - 60px);
+	padding: 16px;
+  	border-right: 2px solid #091E4224;	
+	position: sticky;
+	top: 56px;
+	z-index: 998;
+}
+.close_aside{
+	width: 24px;
+	height: 24px;
+	border: 1px solid #eee;
+	border-radius: 24px;
+	background-color: white;
+	
+	display: flex;
+	align-items: center;
+	
+	position: absolute;
+	top: 38px;
+	right: -10px;
+	transform: rotate(90deg);
+}
+.close_aside svg{
+	cursor: pointer;
+}
+.aside_title_box{
+	padding-top: 16px;
+	padding-bottom: 6px;
+	
+	font-size: 14px;
+	font-weight: bold;
+	
+	display: flex;
+	justify-content: space-between;
+}
+.aside_title_box div:nth-of-type(2){
+	width: 24px;
+	height: 24px;
+	background-color: #091E420F;
+	border-radius: 24px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	cursor: pointer;
+}
+.aside_title_box div:nth-of-type(2) svg{
+	width: 16px;
+	height: 16px;
+}
+.aside_title{
+	height: 24px;
+	display: flex;
+	align-items: center;
+	
+	cursor: pointer;
+}
+.aside_title svg{
+	color: #626F86;
+	transform: rotate(-90deg);
+}
+.aside_title .comment{
+	font-size: 11px;
+	color: #626F86;
+	font-weight: bold;
+}
+
+.aside_box.box2 .aside_title{
+	margin-top: 14px;
+}
