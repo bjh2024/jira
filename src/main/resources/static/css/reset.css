@@ -19,6 +19,7 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
+  background-color: white;
 }
 textarea {
   outline: none;

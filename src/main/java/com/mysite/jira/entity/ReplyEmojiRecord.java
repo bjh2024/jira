@@ -8,14 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReplyEmojiRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reply_emoji_seq")

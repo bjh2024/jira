@@ -11,14 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor	
 public class DashboardCol {
 
 	@Id
@@ -35,4 +33,10 @@ public class DashboardCol {
 	
 	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
 	private List<DashboardIssueStatistics> dashboardIssueStatistics;
+	
+	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
+	private List<DashboardAllotCol> dashboardAllotColList;
+	
+	@OneToMany(mappedBy = "dashboardCol", cascade = CascadeType.REMOVE)
+	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 }

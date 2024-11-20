@@ -1,7 +1,6 @@
 package com.mysite.jira.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -9,19 +8,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Team {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
@@ -39,12 +35,11 @@ public class Team {
 	private Account account;
 	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
-	private List<DashboardAuth> DashboardAuthList;
+	private List<DashboardAuth> dashboardAuthList;
+	
+	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+	private List<TeamMembers> teamMembersList;
 	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<FilterAuth> filterAuthList;
-	
-	@ManyToMany
-	Set<Account> members;
-	
 }

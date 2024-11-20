@@ -12,13 +12,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class ChatRoom {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_seq")
@@ -28,6 +28,14 @@ public class ChatRoom {
 	@Column(columnDefinition = "VARCHAR2(100)")
 	@NotNull
 	private String name;
+	
+	@Builder
+	public ChatRoom(String name) {
+		this.name = name;
+	}
+	
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE) 
+	private List<ChatMembers> chatMembersList;
 	
 	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE) 
 	private List<ChatMessage> chatMessageList;

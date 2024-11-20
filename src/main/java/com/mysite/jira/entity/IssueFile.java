@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 public class IssueFile {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jira_seq")
-	@SequenceGenerator(name = "jira_seq", sequenceName = "jira_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_file_seq")
+	@SequenceGenerator(name = "issue_file_seq", sequenceName = "issue_file_seq", allocationSize = 1)
 	private Integer idx;
 	
 	@Column(columnDefinition = "VARCHAR2(300)")
@@ -40,7 +40,5 @@ public class IssueFile {
 	
 	@ManyToOne
 	private Account account;
-	
-	
-	
+
 }

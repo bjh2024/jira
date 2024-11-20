@@ -2,7 +2,6 @@ package com.mysite.jira.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,20 +9,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
@@ -54,6 +50,18 @@ public class Account {
 
 	@Column
 	private LocalDateTime codeExpDate;
+	
+	@Builder
+	public Account(String email, String pw, String name, String iconFileName, 
+			String authCode) {
+		this.email = email;
+		this.pw = pw;
+		this.name = name;
+		this.iconFileName = iconFileName;
+		this.createDate = LocalDateTime.now();
+		this.authCode = authCode;
+		this.codeExpDate = LocalDateTime.now().plusMinutes(3);
+	}
 
 	// 지라 생성자 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
@@ -79,29 +87,42 @@ public class Account {
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueRecord> issueRecordList;
 
-	// 이슈 답변 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueReply> issueReplyList;
 
-	// 이슈 파일 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueFile> issueFileList;
 
-	// 팀 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<Team> teamList;
 
 	// 대시보드 FK 추가
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<Dashboard> dashbaordList;
-
-	// chatMessage FK 추가
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<ChatMessage> chatMessageList;
-
-	// DashboardAuth FK 추가
+	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<DashboardAuth> dashboardAuthList;
+
+	// Chat FK 추가
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<ChatMessage> chatMessageList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<ChatMembers> chatMembersList;
+
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<ChatUnreadList> chatUnreadList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<DashboardLikeMembers> likeMembersList;
+	
+	//
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<IssueLikeMembers> issueLikeMembersList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
+	private List<IssueObserverMembers> issueObserverList;
 	
 	// filter FK 추가
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
@@ -119,5 +140,4 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<FilterReporter> FilterReporterList;
-	
 }

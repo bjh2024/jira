@@ -14,14 +14,12 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class IssueStatus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_status_seq")
@@ -47,11 +45,10 @@ public class IssueStatus {
 	
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
-	
+
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 
 	private List<FilterIssueStatus> FilterIssueStatusList; 
 	
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 
 	private List<FilterStatusDefault> FilterStatusDefaultList; 
-	
 }
