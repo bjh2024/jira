@@ -126,4 +126,7 @@ public class Issue {
 	// emojiList FK 생성
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<ReplyEmojiRecord> replyEmojiList;
+	
+	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
+	private List<ProjectLogData> projectLogDataList;
 }

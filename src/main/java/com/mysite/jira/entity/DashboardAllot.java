@@ -32,14 +32,19 @@ public class DashboardAllot {
 	@Column(columnDefinition = "VARCHAR2(20)")
 	private String divOrder;
 	
+	@Column
+	@NotNull
+	private Integer isSave;
+	
 	@ManyToOne
 	private Dashboard dashboard;
 	
 	@Builder
-	public DashboardAllot(Integer pageNum, String divOrder, Dashboard dashboard) {
+	public DashboardAllot(Integer pageNum, String divOrder, Dashboard dashboard, Integer isSave) {
 		this.pageNum = pageNum;
 		this.divOrder = divOrder;
 		this.dashboard = dashboard;
+		this.isSave = isSave;
 	}
 	
 	@OneToMany(mappedBy = "dashboardAllot", cascade = CascadeType.REMOVE)

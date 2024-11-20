@@ -1,4 +1,4 @@
-package com.mysite.jira.entity;
+	package com.mysite.jira.entity;
 
 import groovy.transform.builder.Builder;
 import jakarta.persistence.Entity;

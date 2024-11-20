@@ -29,6 +29,10 @@ public class DashboardIssueStatistics {
 	@NotNull
 	private String divOrder;
 	
+	@Column
+	@NotNull
+	private Integer isSave;
+	
 	@ManyToOne
 	private Dashboard dashboard;
 	
@@ -40,12 +44,13 @@ public class DashboardIssueStatistics {
 	
 	@Builder
 	public DashboardIssueStatistics(Integer viewNum,String divOrder,
-			Dashboard dashboard, Project project, DashboardCol dashboardCol) {
+			Dashboard dashboard, Project project, DashboardCol dashboardCol, Integer isSave) {
 		this.viewNum = viewNum;
 		this.divOrder = divOrder;
 		this.dashboard = dashboard;
 		this.project = project;
 		this.dashboardCol = dashboardCol;
+		this.isSave = isSave;
 	}
 	
 }
