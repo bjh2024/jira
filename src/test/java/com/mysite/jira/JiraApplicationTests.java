@@ -1,5 +1,7 @@
 package com.mysite.jira;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -120,6 +122,8 @@ class JiraApplicationTests {
 				.build();
 		this.chatUnreadListRepository.save(chatUnreadList);
 	}
+
+	
 	
 	@Test
 	void test() {
@@ -133,6 +137,10 @@ class JiraApplicationTests {
 		// insertChatMembers();
 		
 		// insertChatUnreadList();
+		
+		Optional<Account> oa = this.accountRepository.findById(2);
+		
+		assertEquals("김대완", oa.get().getName());
 	}
 }
 
