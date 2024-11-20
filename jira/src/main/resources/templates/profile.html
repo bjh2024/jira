@@ -1,0 +1,80 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+	</head>
+	<div layout:fragment="content">
+		<div class="profile_all">
+			<div class="profile_top_banner"></div>
+			<div class="profile_center">
+				<div class="profile_left">
+					<div class="profile_image">
+						<img width="132" height="132" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true" class="css-1gr7gcv" style="border-radius: 50%; border : 2px solid white">
+						<div class="name_font">방준혁</div>
+					</div>
+					<div class="account_modify">
+						계정 관리
+					</div>
+					<div class="modal">
+						<div class="modal_content">
+							<h4 style="margin-bottom:16px;">프로필 사진 및 헤더 이미지</h4>
+							<div class="profile_full_box">
+								<div class="profile_background"></div>
+								<div class="profile_box">
+									<div class="profile_circle">
+										<img width="132" height="132" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true" class="css-1gr7gcv" style="border-radius: 50%; border : 2px solid white">
+									</div>
+								</div>
+							</div>
+							<h4 style="margin-bottom: 20px;">본인 정보</h4>
+							<div class="profile_full_box" style="padding: 20px 20px;">
+								<h5>전체 이름</h5>
+								<div style="font-size: 14px; margin: 10px 4px;">방준혁</div>
+								<h5>공개 이름</h5>
+								<div style="font-size: 14px; margin: 10px 4px;">방준혁</div>
+								<h5>아이디</h5>
+								<div style="font-size: 14px; margin: 10px 4px;">kiontattoo@gmail.com</div>
+								<h5>비밀번호 </h5>
+								<input type="text" style="height: 32px; border:none; padding-left: 4px; " placeholder="새로운 비밀번호">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="profile_right">
+					<div class="right_div_1">
+						<div style="font-weight: bold; font-size: 16px;">작업</div>
+						<div style="font-size: 14px; color:#0C66E4">모두 보기</div>
+					</div>
+					<div style="font-size: 12px; color: #626F86;">다른 사용자는 엑세스할 수 있는 항목만 볼 수 있습니다.</div>
+					<div class="right_div_2">
+						<div style="align-items: center; display: flex;">
+							<div style="height: 24px;"><img width="24" height="24" class="sc-1brh7h6-2 jQFEED" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=xsmall" alt="">
+							</div>
+						</div>
+						<div style="margin-left: 16px;">
+							남다현 <br>
+							<span style="font-size: 11px; color: #626F86;">하이 . 귀하와 다현 님 및 김대완 님 모두 이 작업을 수행했습니다</span>
+						</div>
+					</div>
+					<div class="right_div_3">
+						<div style="margin: 28px 0px 16px; font-weight: bold;">작업위치</div>
+						<div class="right_div_3_box">
+							<div class="right_div_3_boxlist">
+								<div style="display: flex;">
+									<svg fill="none" height="16" viewBox="0 0 32 32" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+									      <path fill="#1868DB" d="M11.034 21.99h-2.22c-3.346 0-5.747-2.05-5.747-5.052h11.932c.619 0 1.019.44 1.019 1.062v12.007c-2.983 0-4.984-2.416-4.984-5.784zm5.893-5.967h-2.219c-3.347 0-5.748-2.013-5.748-5.015h11.933c.618 0 1.055.402 1.055 1.025V24.04c-2.983 0-5.02-2.416-5.02-5.784zm5.93-5.93h-2.219c-3.347 0-5.748-2.05-5.748-5.052h11.933c.618 0 1.018.439 1.018 1.025v12.007c-2.983 0-4.984-2.416-4.984-5.784z"></path>
+									    </svg>
+										<div style="font-size: 12px; margin-left: 4px;">jira</div>
+								</div>
+								<div style="margin-top: 6px; height: 24px; display: flex;">
+									<img width="24" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true" class="css-1gr7gcv" style="border-radius: 2px;">
+									<div style="margin-left: 8px; font-weight: bold;">하이</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script th:src="@{/js/profile.js}"></script>
+	</div>
+</html>
