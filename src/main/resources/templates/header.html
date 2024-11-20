@@ -1,0 +1,737 @@
+<header class="jira_header" th:fragment="headerFragment">
+	<nav class="jira-navbar">
+		<div class="gnb1">
+			<div class="gnb1_box1">
+				<div>
+					<div class="my_app item">
+						<img th:src="@{/images/header_first_icon.svg}" />
+					</div>
+					<div class="my_app_content item_lnb">
+						<div class="account_jira_list">
+							<div class="active">
+								<div>da</div>
+							</div>
+						</div>
+						<div class="my_app_content_detail">
+							<div class="detail_header">
+								<h1>dahyun0521</h1>
+								<p>ksgkdw78@gmail.com</p>
+							</div>
+							<div class="detail_content1">
+								<h2>내 앱</h2>
+								<div>
+									<div class="detail_content1_img">
+										<img th:src="@{/images/my_app_AtlassianHome_icon.svg}" width="24" height="24" />
+									</div>
+									<span>Atlassian Home</span>
+								</div>
+								<div>
+									<div class="detail_content1_img">
+										<img src="https://flight-deck-assets-bifrost.prod-east.frontend.public.atl-paas.net/assets/image/logos/contrib/jira/icons/white.svg"
+											width="24" height="24">
+									</div>
+									<span>Jira</span>
+								</div>
+								<div>
+									<div class="detail_content1_img setting">
+										<img th:src="@{/images/my_app_setting_icon.svg}" width="24" height="24" />
+									</div>
+									<span>관리</span>
+								</div>
+							</div>
+							<div class="detail_content2">
+								<h2>RECOMMENDED FOR YOUR TEAM</h2>
+								<div>
+									<div>
+										<div class="detail_content2_img">
+											<img src="https://fd-assets.prod.atl-paas.net/image/logos/contrib/jira-service-management/icons/blue.svg"
+												alt="" width="24" height="24">
+										</div>
+										<div>
+											<span>Opsgenie</span>
+											<p>Modern incident management</p>
+										</div>
+									</div>
+									<div>
+										<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="detail_content2_img">
+											<img src="https://fd-assets.prod.atl-paas.net/image/logos/contrib/confluence/icons/blue.svg"
+												alt="" width="24" height="24">
+										</div>
+										<div>
+											<span>Confluence</span>
+											<p>Document collaboration</p>
+										</div>
+									</div>
+									<div>
+										<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="detail_content2_img">
+											<img src="https://fd-assets.prod.atl-paas.net/image/logos/contrib/jira-product-discovery/icons/blue.svg"
+												alt="" width="24" height="24">
+										</div>
+										<div>
+											<span>Jira Service Management</span>
+											<p>Collaborative IT service management</p>
+										</div>
+									</div>
+									<div>
+										<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="detail_content2_img last">
+											<img th:src="@{/images/my_app2_more_products_icon.svg}" width="24"
+												height="24" />
+										</div>
+										<div>
+											<span>More Atlassian products</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="detail_footer">
+								<h2>더 보기</h2>
+								<div>
+									<div class="detail_footer_img">
+										<img th:src="@{/images/my_app3_jira_icon.svg}"/>
+									</div>
+									<span>Jira</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="logo_title">
+					<a th:href="@{/}">
+						<img th:src="@{/images/logo.svg}">
+					</a>
+				</div>
+			</div>
+			<div class="gnb1_box2">
+				<div class="active">
+					<div class="item">
+						<span>내 작업</span>
+						<img th:src="@{/images/list_down_icon.svg}" />
+					</div>
+					<div class="item_lnb box1">
+						<div class="item_lnb_header">
+							<div class="active">나에게 할당</div>
+							<div>최근</div>
+							<div>보드</div>
+						</div>
+						<div class="my_assignment_main show">
+							<div class="item_lnb_main">
+								<div>해야 할 일</div>
+								<div class="lnb_main_item">
+									<a href="#">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"
+											alt="" width="24" height="24">
+										<div>
+											<h4>버그다!</h4>
+											<p>TSYR-34 · 하이</p>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="item_lnb_foot">
+								<a href="#">내 작업 페이지로 이동</a>
+							</div>
+						</div>
+						<div class="recent_main">
+							<div class="item_lnb_main">
+								<div>작업</div>
+								<div class="lnb_main_item">
+									<a href="#">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="" width="24" height="24">
+										<div>
+											<h4>JIRA 요약 페이지(디자인)</h4>
+											<p>HIH-4 · hihihihi</p>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="item_lnb_main">
+								<div>확인</div>
+								<div class="lnb_main_item">
+									<a href="#">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
+											alt="" width="24" height="24">
+										<div>
+											<h4>하이</h4>
+											<p>팀에서 관리하는 비즈니스</p>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="item_lnb_foot">
+								<a href="#">내 작업 페이지로 이동</a>
+							</div>
+						</div>
+						<div class="board_main">
+							<div class="item_lnb_main">
+								<div>최근</div>
+								<div class="lnb_main_item">
+									<div>
+										<a href="#">
+											<img th:src="@{/images/dashboard_icon.svg}" alt="" width="24" height="24">
+											<div>
+												<h4>칸반</h4>
+												<p>김대완</p>
+											</div>
+											<img th:src="@{/images/empty_star_icon.svg}" width="16" height="16" />
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="item_lnb_foot">
+								<a href="#">모든 보드 보기</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="item">
+						<span>프로젝트</span>
+						<img th:src="@{/images/list_down_icon.svg}" />
+					</div>
+					<div class="item_lnb box2">
+						<div class="item_lnb_main">
+							<div>별표 표시됨</div>
+							<div class="lnb_main_item">
+								<div>
+									<a href="#">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
+											width="24" height="24" alt="" style="border-radius: 2px;">
+										<div>
+											<h4>하이(TSYR)</h4>
+											<p>비즈니스 프로젝트</p>
+										</div>
+										<img th:src="@{/images/star_icon.svg}" width="16" height="16" />
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="item_lnb_main">
+							<div>최근</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10406?size=medium"
+										alt="" style="border-radius: 2px;" width="24" height="24">
+									<div>
+										<h4>개인 템플릿(EZBY)</h4>
+										<p>비즈니스 프로젝트</p>
+									</div>
+									<img th:src="@{/images/empty_Star_icon.svg}" width="16" height="16" />
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_foot">
+							<a href="#">모든 프로젝트 보기</a>
+							<a href="#">프로젝트 만들기</a>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="item">
+						<span>필터</span>
+						<img th:src="@{/images/list_down_icon.svg}" />
+					</div>
+					<div class="item_lnb box3">
+						<div class="item_lnb_main">
+							<div>별표 표시됨</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img th:src="@{/images/filter_icon.svg}" />
+									<div>
+										<h4>필터 실험</h4>
+									</div>
+									<img th:src="@{/images/star_icon.svg}" width="16" height="16" />
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_main">
+							<div>최근</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img th:src="@{/images/filter_icon.svg}" />
+									<div>
+										<h4>최근에 만듦</h4>
+									</div>
+									<img th:src="@{/images/empty_star_icon.svg}" width="16" height="16" />
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_foot">
+							<a href="#">모든 필터 보기</a>
+							<a href="#">모든 이슈 보기</a>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="item">
+						<span>대시보드</span>
+						<img th:src="@{/images/list_down_icon.svg}" />
+					</div>
+					<div class="item_lnb box4">
+						<div class="item_lnb_main">
+							<div>별표 표시됨</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img th:src="@{/images/dashboard_icon.svg}" />
+									<div>
+										<h4>대시보드2</h4>
+									</div>
+									<img th:src="@{/images/star_icon.svg}" width="16" height="16" />
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_main">
+							<div>최근</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img th:src="@{/images/dashboard_icon.svg}" />
+									<div>
+										<h4>대시</h4>
+									</div>
+									<img th:src="@{/images/empty_star_icon.svg}" width="16" height="16" />
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_foot">
+							<a th:href="@{/dashboard/list}">모든 대시보드 보기</a>
+							<a href="#">대시보드 만들기</a>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="item">
+						<span>팀</span>
+						<img th:src="@{/images/list_down_icon.svg}" />
+					</div>
+					<div class="item_lnb box5">
+						<div class="item_lnb_main">
+							<div>내 공동 작업자</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+										alt="" height="32" width="32" style="border-radius: 16px;">
+									<div>
+										<h4>방준혁</h4>
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_main">
+							<div>내 팀</div>
+							<div class="lnb_main_item">
+								<a href="#">
+									<img src="https://ptc-directory-sited-static.us-east-1.prod.public.atl-paas.net/teams/avatars/0.svg"
+										alt="정처산기 4조" height="32" width="32" style="border-radius: 16px;">
+									<div>
+										<h4>정처산기 4조</h4>
+										<p>3명 구성원</p>
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="item_lnb_foot">
+							<a href="#">
+								<img th:src="@{/images/plus_icon.svg}" width="24" height="24" />
+								<span>jira에 사용자 초대</span>
+							</a>
+							<a href="#">
+								<img th:src="@{/images/team_add_icon.svg}" width="24" height="24" />
+								<span>팀 만들기</span>
+							</a>
+						</div>
+						<div class="item_lnb_foot">
+							<a href="#">사용자 및 팀 검색</a>
+						</div>
+					</div>
+				</div>
+				<button class="project_create_btn">
+					<div>만들기</div>
+				</button>
+			</div>
+		</div>
+		<div class="gnb2">
+			<div class="search_box">
+				<img th:src="@{/images/search_icon.svg}" />
+				<input placeholder="검색" />
+				<img th:src="@{/images/search_cancle_icon.svg}" />
+				<div class="search_lnb_box">
+					<div class="search_lnb_box_header">
+						<div class="active">Jira</div>
+						<div>Compass</div>
+					</div>
+					<div class="search_lnb_content_container">
+						<div class="search_lnb_content1">
+							<div class="input_recent_box1">
+								<h5>최근에 조회</h5>
+								<div>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+									<a th:href="@{#}" class="input_recent_content"><img
+											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+											alt="comment" width="16" height="16">
+										<div>EZBY-3 스토리 보드</div>
+									</a>
+								</div>
+
+							</div>
+							<div class="input_recent_box2">
+								<h5>최근 보드, 프로젝트, 필터 및 계획</h5>
+								<div>
+									<a th:href="@{#}" class="input_recent_content">
+										<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+											alt="" style="border-radius: 50%;" width="16" height="16">
+										<div>칸반</div>
+										<span>김대완</span>
+									</a>
+								</div>
+							</div>
+							<div class="input_lnb_footer1">
+								<span>모든 항목으로 이동: </span>
+								<ul>
+									<li>보드</li>
+									<li>프로젝트</li>
+									<li>필터</li>
+									<li>계획</li>
+									<li>사용자</li>
+								</ul>
+							</div>
+						</div>
+						<div class="search_lnb_content2">
+							<div class="last_update_box">
+								<h5>마지막 업데이트</h5>
+								<ul>
+									<li class="active">Any Time</li>
+									<li>Today</li>
+									<li>Yesterday</li>
+									<li>Past 7 days</li>
+									<li>Past 30 days</li>
+									<li>Past Year</li>
+								</ul>
+							</div>
+							<div class="filtering_box">
+								<h5>프로젝트 필터링</h5>
+								<form>
+									<div>
+										<div>
+											<input type="checkbox" th:id="'하이'">
+										</div>
+										<label th:for="'하이'">
+											<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
+												width="24px" height="24px" alt="" draggable="false">
+											<span>하이</span>
+										</label>
+									</div>
+									<div>
+										<div>
+											<input type="checkbox" th:id="'hihihihi'" />
+										</div>
+										<label th:for="'hihihihi'">
+											<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424?size=medium"
+												width="24px" height="24px" alt="" draggable="false">
+											<span>hihihihi</span>
+										</label>
+									</div>
+									<div class="view_more_btn">
+										<button>더 보기</button>
+									</div>
+								</form>
+							</div>
+							<div class="filtering_box">
+								<h5>담당자로 필터링</h5>
+								<form>
+									<div>
+										<div>
+											<input type="checkbox" th:id="'다현'" />
+										</div>
+										<label th:for="'다현'">
+											<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+												alt="" style="border-radius: 50%;" width="24" height="24">
+											<span>다현</span>
+										</label>
+									</div>
+									<div>
+										<div>
+											<input type="checkbox" th:id="'방준혁'" />
+										</div>
+										<label th:for="'방준혁'">
+											<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+												alt="" style="border-radius: 50%;" width="24" height="24">
+											<span>방준혁</span>
+										</label>
+									</div>
+									<div>
+										<div>
+											<input type="checkbox" th:id="'김대완'" />
+										</div>
+										<label th:for="'김대완'">
+											<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+												alt="" style="border-radius: 50%;" width="24" height="24">
+											<span>김대완</span>
+										</label>
+									</div>
+									<div class="view_more_btn">
+										<button>더 보기</button>
+									</div>
+								</form>
+							</div>
+							<div class="filtering_box">
+								<h5>보고자로 필터링</h5>
+								<form>
+									<div>
+										<div>
+											<input type="checkbox" id="my_reporter" />
+										</div>
+										<label for="my_reporter">
+											<div>내가 보고</div>
+										</label>
+									</div>
+								</form>
+							</div>
+							<div class="filtering_box status">
+								<h5>상태로 필터링</h5>
+								<form>
+									<div>
+										<div>
+											<input type="checkbox" id="OPEN" />
+										</div>
+										<label for="OPEN">
+											<div>OPEN</div>
+										</label>
+									</div>
+									<div>
+										<div>
+											<input type="checkbox" id="DONE" />
+										</div>
+										<label for="DONE">
+											<div>DONE</div>
+										</label>
+									</div>
+								</form>
+							</div>
+							<div class="rable_filtering">
+								<h5>레이블로 필터링</h5>
+								<div>
+									<input placeholder="레이블 선택" />
+									<img th:src="@{/images/list_down_icon.svg}" />
+									<div class="rable_content_box">
+										<h6>모든 레이블</h6>
+										<div>
+											<div>레이블1</div>
+											<div>레이블3</div>
+											<div>JIRA개발</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feedback_box">
+								<button>피드백 보내기</button>
+							</div>
+						</div>
+					</div>
+					<div class="search_lnb_footer">
+						<div>
+							<img th:src="@{/images/search_icon.svg}" width="16" height="16" />
+							<a th:href="@{#}">모든 이슈 보기</a>
+						</div>
+						<img th:src="@{/images/back_icon.svg}" width="24" height="24" />
+					</div>
+				</div>
+			</div>
+			<div class="gnb2_box">
+				<div class="gnb2_box_btn">
+					<div class="gnb2_box_icon">
+						<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+							<path fill="currentcolor" fill-rule="evenodd"
+								d="M6.49 17.67a2 2 0 0 0 2.83 0l-2.83-2.83a2 2 0 0 0 0 2.83m4.89-12.19-.72.73c-.78.78-2.21 1.81-3.21 2.31l-3.02 1.51c-.49.25-.58.77-.19 1.17l8.56 8.56c.4.4.92.31 1.17-.19l1.51-3.02c.49-.99 1.53-2.42 2.31-3.21l.73-.73a5.05 5.05 0 0 0 .64-6.36 1.01 1.01 0 1 0-1.35-1.49q-.04.04-.07.08A5.04 5.04 0 0 0 14.95 4a5.04 5.04 0 0 0-3.57 1.48">
+							</path>
+						</svg>
+					</div>
+					<div class="alarm_lnb_box gnb2_box_content">
+						<div class="alarm_lnb_header">
+							<h6>알림</h6>
+							<div>
+								<span>읽지 않은 항목만 표시</span>
+								<div class="switch">
+									<img th:src="@{/images/switch_on_icon.svg}" width="16" height="16" />
+									<div class="switch_btn"></div>
+									<img th:src="@{/images/switch_off_icon.svg}" width="16" height="16" />
+								</div>
+								<a th:src="@{#}">
+									<img th:src="@{/images/new_tab_icon.svg}" />
+								</a>
+								<a th:src="@{#}">
+									<img th:src="@{/images/three_dots_icon.svg}" />
+								</a>
+							</div>
+						</div>
+						<div class="alarm_gnb_box">
+							<div class="active">직접</div>
+							<div>관찰 중</div>
+						</div>
+						<div class="alarm_content_box">
+							<h6>최신</h6>
+							<a th:href="@{#}" class="alarm_content_item_box">
+								<div class="alarm_content_item1">
+									<div class="item1_box">
+										<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+											alt="" style="border-radius: 50%;" width="40" height="40">
+										<div>
+											<div>다현이(가) 이슈를 업데이트<span class="alarm_date_comment">3주 전</span></div>
+											<div class="item1_box_center">
+												<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"
+													width="12" height="12">
+												<div>해야 할일임</div>
+											</div>
+											<span>TSYR-56 • 해야 할 일</span>
+											<div class="item1_box_sub">
+												<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+													alt="" style="border-radius: 50%;" width="26" height="26">
+												<span>+다현 님의 업데이트 2\</span>
+											</div>
+										</div>
+									</div>
+									<img th:src="@{/images/check_unread_icon.svg}" width="24" height="24" />
+									<!--<img th:src="@{/images/check_read_icon.svg}" width="24" height="24"/>-->
+								</div>
+
+							</a>
+							<div class="end_flag_comment">
+								<img th:src="@{/images/flag_img.svg}" width="48" height="41" />
+								<p>지난 30일 동안 받은 모든 알림은 여<br />기까지입니다</p>
+							</div>
+						</div>
+						<div class="alarm_footer">
+							<div class="alarm_footer_box1">
+								<div class="img_box">
+									<img th:src="@{/images/arrow_under_icon.svg}" width="16" height="16" />
+									<img th:src="@{/images/arrow_above_icon.svg}" width="16" height="16" />
+								</div>
+								<p>
+									을(를) 눌러 알림 간에 이동합니다
+								</p>
+							</div>
+							<div>
+								<button>모든 단축키 보기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="gnb2_box_btn">
+					<div class="gnb2_box_icon">
+						<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+							<g fill-rule="evenodd">
+								<circle cx="12" cy="12" r="10" fill="currentcolor"></circle>
+								<circle cx="12" cy="18" r="1" fill="white"></circle>
+								<path fill="white"
+									d="M15.89 9.05a3.98 3.98 0 0 0-2.957-2.942C10.321 5.514 8.017 7.446 8 9.95l.005.147a.99.99 0 0 0 .982.904c.552 0 1-.447 1.002-.998a2.004 2.004 0 0 1 4.007-.002c0 1.102-.898 2-2.003 2H12a1 1 0 0 0-1 .987v2.014a1.001 1.001 0 0 0 2.004 0v-.782c0-.217.145-.399.35-.472A3.99 3.99 0 0 0 15.89 9.05">
+								</path>
+							</g>
+						</svg>
+					</div>
+				</div>
+				<div class="gnb2_box_btn">
+					<div class="gnb2_box_icon">
+						<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+							<path fill="currentcolor" fill-rule="evenodd"
+								d="M11.701 16.7a5.002 5.002 0 1 1 0-10.003 5.002 5.002 0 0 1 0 10.004m8.368-3.117a1.995 1.995 0 0 1-1.346-1.885c0-.876.563-1.613 1.345-1.885a.48.48 0 0 0 .315-.574 9 9 0 0 0-.836-1.993.48.48 0 0 0-.598-.195 2.04 2.04 0 0 1-1.29.08 1.99 1.99 0 0 1-1.404-1.395 2.04 2.04 0 0 1 .076-1.297.48.48 0 0 0-.196-.597 9 9 0 0 0-1.975-.826.48.48 0 0 0-.574.314 1.995 1.995 0 0 1-1.885 1.346 1.99 1.99 0 0 1-1.884-1.345.48.48 0 0 0-.575-.315c-.708.2-1.379.485-2.004.842a.47.47 0 0 0-.198.582A2.002 2.002 0 0 1 4.445 7.06a.48.48 0 0 0-.595.196 9 9 0 0 0-.833 1.994.48.48 0 0 0 .308.572 1.995 1.995 0 0 1 1.323 1.877c0 .867-.552 1.599-1.324 1.877a.48.48 0 0 0-.308.57 9 9 0 0 0 .723 1.79.477.477 0 0 0 .624.194c.595-.273 1.343-.264 2.104.238.117.077.225.185.302.3.527.8.512 1.58.198 2.188a.473.473 0 0 0 .168.628 9 9 0 0 0 2.11.897.474.474 0 0 0 .57-.313 1.995 1.995 0 0 1 1.886-1.353c.878 0 1.618.567 1.887 1.353a.475.475 0 0 0 .57.313 9 9 0 0 0 2.084-.883.473.473 0 0 0 .167-.631c-.318-.608-.337-1.393.191-2.195.077-.116.185-.225.302-.302.772-.511 1.527-.513 2.125-.23a.477.477 0 0 0 .628-.19 9 9 0 0 0 .728-1.793.48.48 0 0 0-.314-.573">
+							</path>
+						</svg>
+					</div>
+				</div>
+				<div class="gnb2_box_btn">
+					<div class="gnb2_box_icon">
+						<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+							alt="" style="border-radius: 50%;" width="24" height="24">
+					</div>
+					<div class="user_lnb_box gnb2_box_content">
+						<div class="user_lnb_box_content1">
+							<h6>계정</h6>
+							<div class="item1">
+								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+									alt="" style="border-radius: 50%;" width="32" height="32">
+								<div>
+									<span>김대완</span>
+									<p>ksgkdw78@gmail.com</p>
+								</div>
+							</div>
+							<div class="item2">
+								<div>계정관리</div>
+								<img th:src="@{/images/new_tab_icon.svg}" width="16" height="16" />
+							</div>
+						</div>
+						<div class="user_lnb_box_content2">
+							<h6>Jira</h6>
+							<div>프로필</div>
+							<div>나의 보드</div>
+							<div>개인 설정</div>
+							<div>알림</div>
+							<div>테마<img th:src="@{/images/arrow_right_icon.svg}" /></div>
+						</div>
+						<div class="logout_btn_box">
+							<a th:href="@{#}">로그아웃</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<script th:src="@{/js/header.js}"></script>
+</header>

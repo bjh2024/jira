@@ -1,0 +1,256 @@
+<html layout:decorate="~{layout}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/setting_issue_type.css}">
+</head>
+<div layout:fragment="content" style="display: flex;" class="setting-full-container">
+	<aside th:replace="~{aside :: asideFragment}"></aside>
+	<div class="setting-issuetype-container">
+		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+		<div style="padding: 24px;">
+			<div class="issuetypesetbox">
+				<div class="issuetype-detailbox">
+					<nav class="issuetype-path">
+						<a>프로젝트</a>
+						<span style="font-size: 16px;  height: 16px;">/</span>
+						<a>하이</a>
+						<span style="font-size: 16px;  height: 16px;">/</span>
+						<a>프로젝트 설정</a>
+						<span style="font-size: 16px;  height: 16px;">/</span>
+						<a>이슈 유형</span>
+					</nav>
+					<div class="issuetype-titlebar">
+						<div class="issuetype-title">
+							<span style="height: 24px; display: block;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium" alt="이슈 유형 아이콘" style="border-radius: 2px; width: 24px; height: 24px;"></span>
+							<span class="issuetype-settitle">버그</span>
+						</div>
+						<button class="titlebtn-other"><svg style="margin: 0px auto;" width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg></button>
+					</div>
+					<div class="issuetype-content">
+						<span>버그 추적 문제 또는 오류가 발생했습니다.</span>
+					</div>
+					<div class="issuetype-field-container">
+						<div class="issuetype-fieldtype">
+							<span>설명 필드</span>
+							<button class="fieldtype-infobtn">
+								<div class="infobtn-popup">
+									<span>이 필드는 완료해야 하는 작업에 대해 설명합니다. 대부분의 보기에서 눈에 잘 띄게 표시됩니다.</span>
+								</div>
+								<img class="infobtnimg" src="/images/info_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+							</button>
+						</div>
+						<div class="issuetype-myfieldbox">
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/priority_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>우선 순위</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션 내에서 순서 변경</div>
+											<div class="fieldoption-popup-content">맨 아래로 이동</div>
+											<div class="fieldoption-popup-content">아래로 이동</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-title">섹션으로 이동</div>
+											<div class="fieldoption-popup-content">컨텍스트 필드</div>
+											<div class="fieldoption-popup-content">필드가 비어 있을 때 숨기기</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-content">필드 제거</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/content_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>설명</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션 내에서 순서 변경</div>
+											<div class="fieldoption-popup-content">맨 위로 이동</div>
+											<div class="fieldoption-popup-content">위로 이동</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+						</div>
+						<div class="issuetype-fieldtype" style="margin-top: 25px;">
+							<span>컨텍스트 필드</span>
+							<button class="fieldtype-infobtn">
+								<div class="infobtn-popup">
+									<span>이 필드는 작업에 컨텍스트를 제공하고, 비슷한 이슈를 그룹화하고 필터링하고 보고하는데 도움이 됩니다.</span>
+								</div>
+								<img class="infobtnimg" src="/images/info_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+							</button>
+						</div>
+						<div class="issuetype-status">
+							<span style="height: 24px;"><img src="/images/arrow_tail_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+							<span>상태</span>
+						</div>
+						<div class="issuetype-myfieldbox">
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/manager_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>담당자</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션 내에서 순서 변경</div>
+											<div class="fieldoption-popup-content">맨 아래로 이동</div>
+											<div class="fieldoption-popup-content">아래로 이동</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-title">섹션으로 이동</div>
+											<div class="fieldoption-popup-content">컨텍스트 필드</div>
+											<div class="fieldoption-popup-content">필드가 비어 있을 때 숨기기</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-content">필드 제거</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/label_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>레이블</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션 내에서 순서 변경</div>
+											<div class="fieldoption-popup-content">맨 위로 이동</div>
+											<div class="fieldoption-popup-content">맨 아래로 이동</div>
+											<div class="fieldoption-popup-content">위로 이동</div>
+											<div class="fieldoption-popup-content">아래로 이동</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-title">섹션으로 이동</div>
+											<div class="fieldoption-popup-content">컨텍스트 필드</div>
+											<div class="fieldoption-popup-content">필드가 비어 있을 때 숨기기</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-content">필드 제거</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/date_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>기한</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션 내에서 순서 변경</div>
+											<div class="fieldoption-popup-content">맨 위로 이동</div>
+											<div class="fieldoption-popup-content">위로 이동</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-title">섹션으로 이동</div>
+											<div class="fieldoption-popup-content">컨텍스트 필드</div>
+											<div class="fieldoption-popup-content">필드가 비어 있을 때 숨기기</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-content">필드 제거</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+							<div class="field-hide-line">
+								<div class="hideline"></div>
+								<div style="font-size: 12px; font-weight: bold; color: #626F86; padding: 8px 12px;">비어 있으면 숨기기</div>
+								<div class="hideline"></div>
+							</div>
+							<div class="myfield-content">
+								<div class="myfield-title">
+									<span style="height: 24px;"><img src="/images/manager_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>보고자</span>
+								</div>
+								<div class="myfield-menubar">
+									<button class="myfield-optionbtn">
+										<div class="fieldoption-popup">
+											<div class="fieldoption-popup-title">섹션으로 이동</div>
+											<div class="fieldoption-popup-content">설명 필드</div>
+											<div class="fieldoption-popup-content">컨텍스트 필드</div>
+											<div class="fieldoption-popup-line"></div>
+											<div class="fieldoption-popup-content">필드 제거</div>
+										</div>
+										<img class="fieldoptionbtnimg" src="/images/sidebaricon_other.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+									</button>
+									<span class="myfield-expendbtn"><img src="/images/arrow_right_icon_big.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="detail-footer-container">
+						<div class="detail-feedbackbar">
+							<span style="height: 24px; display: block; margin-left: 8px;"><img src="/images/feedback_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+							<span>피드백 보내기</span>
+						</div>
+						<div class="detail-savebar">
+							<button class="detailsave-cancelbtn">버리기</button>
+							<button class="detailsave-savebtn">변경 사항 저장</button>
+						</div>
+					</div>
+				</div>
+				<div class="issuetype-fieldbox">
+					<div class="issuetype-fieldtitle">
+						<span style="height: 32px; display: flex; align-items: center;">필드</span>
+						<button class="fieldtitle-infobtn">
+							<div class="titleinfobtn-popup">
+								<span>필드는 프로젝트 작업을 수행하는 데 필요한 정보를 캡처하여 표시합니다.</span>
+							</div>
+							<img class="titleinfobtnimg" src="/images/info_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+						</button>
+					</div>
+					<div class="issuetype-fieldsearchbox">
+						<div style="height: 478px;">
+							<div style="font-weight: bold; padding: 2px 0px;">모든 필드 검색</div>
+							<div class="field-searchbox">
+								<input placeholder="모든 필드를 검색하려면 입력하세요" class="field-searchkey" value="">
+								<span class="field-searchbtn">
+									<svg viewBox="0 0 24 24" role="presentation">
+										<path fill="currentcolor" fill-rule="evenodd"
+											d="m16.436 15.085 3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406M10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11">
+										</path>
+									</svg>
+								</span>
+							</div>
+							<div style="margin-top: 4px;">기타 이슈 유형 및 프로젝트의 필드 29개 다시 사용</div>
+							<div class="issuetype-suggesttitle">
+								<span style="height: 32px; display: flex; align-items: center;">추천 필드</span>
+								<button class="fieldtitle-infobtn">
+									<div class="titleinfobtn-popup">
+										<span>이 필드는 최근에 만들었거나 이 프로젝트의 다른 이슈 유형에서 사용했습니다.</span>
+									</div>
+									<img class="titleinfobtnimg" src="/images/info_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+								</button>
+							</div>
+							<div class="suggestissuebox">
+								<div class="suggestissuebtn">
+									<span style="height: 24px;"><img src="/images/date_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>Start date</span>
+								</div>
+								<div class="suggestissuebtn">
+									<span style="height: 24px;"><img src="/images/team_icon.svg" style="margin: 0px auto; filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);"></span>
+									<span>Team</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script th:src="@{/js/setting_issue_type.js}"></script>
+</div>
+</html>

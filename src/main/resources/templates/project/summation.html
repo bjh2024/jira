@@ -1,0 +1,400 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/summation.css}">
+	</head>
+<div layout:fragment="content">
+	<main>
+		<aside th:replace="~{aside :: asideFragment}"></aside>
+		<div class="summation_container">
+			<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+			<div class="summation_box">
+				<div class="summation_header">
+					<div class="summation_header_title_box">
+						<div class="summation_header_title">
+							<div></div>
+							<h1>김대완 님, 안녕하세요 🌔</h1>
+							<div class="image_box">
+								<img src="/images/share_icon.svg" alt="" width="16" height="16" />
+								<span>공유</span>
+							</div>
+						</div>
+						<p>
+							여기에서는 하이의 상태, 우선 순위, 작업량 등의 요약을 볼 수
+							있습니다.
+						</p>
+					</div>
+					<div class="project_detail_btn_box">
+						<button>
+							프로젝트 세부 정보
+							<img src="/images/list_down_icon.svg" alt="" />
+						</button>
+						<div class="project_detail_info_box">
+							<div>
+								<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+									alt="" style="border-radius: 50%;" width="40" height="40">
+								<div class="project_detail_info">
+									<a th:href="@{#}">다현</a>
+									<p>프로젝트 리더</p>
+								</div>
+							</div>
+							<div>
+								<div class="project_detail_info key">
+									<p>프로젝트 키</p>
+									<span>TSYR</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<section class="summation_content_box1">
+					<a th:href="@{#}" class="item">
+						<div>
+							<img src="/images/green_check_icon.svg" alt="" />
+						</div>
+						<p>
+							<span>최근 7일 이내에</span>
+							<span class="complete_number">1개 완료</span>
+						</p>
+					</a>
+					<a th:href="@{#}" class="item">
+						<div>
+							<img src="/images/blue_pencil_icon.svg" alt="" />
+						</div>
+						<p>
+							<span>최근 7일 이내에</span>
+							<span class="update_number">5개 업데이트</span>
+						</p>
+					</a>
+					<a th:href="@{#}" class="item">
+						<div>
+							<img src="/images/plus_icon.svg" alt="" />
+						</div>
+						<p>
+							<span>최근 7일 이내에</span>
+							<span class="create_number">0개 만듦</span>
+						</p>
+					</a>
+					<a th:href="@{#}" class="item">
+						<div>
+							<img src="/images/calender_icon.svg" alt="" />
+						</div>
+						<p>
+							<span>다음 7일</span>
+							<span class="deadline_number">0개 기한 초과</span>
+						</p>
+					</a>
+				</section>
+				<section class="summation_content_box2">
+					<div class="item">
+						<h2>상태 개요</h2>
+						<p>
+							항목의 상태 스냅샷을 확인하세요.&nbsp;
+							<a href="#">모든 항목 보기</a>
+						</p>
+						<div class="doughnut_chart_box">
+							<div class="issue_status_doughnut_chart_box">
+								<div class="doughnut_chart_ratio"></div>
+								<canvas class="issue_status_doughnut_chart"></canvas>
+							</div>
+							<div class="doughnut_chart_list">
+								<a th:href="@{#}">
+									<div class="doughnut_chart_header">
+										<div class="doughnut_chart_color_box" style="background-color: #DFE1E6;"></div>
+										<span>할일이 많다</span>
+									</div>
+									<span class="doughnut_chart_number">3</span>
+								</a>
+								<a th:href="@{#}">
+									<div class="doughnut_chart_header">
+										<div class="doughnut_chart_color_box" style="background-color: #FF7452;"></div>
+										<span>해야 할 일</span>
+									</div>
+									<span class="doughnut_chart_number">1</span>
+								</a>
+								<a th:href="@{#}">
+									<div class="doughnut_chart_header">
+										<div class="doughnut_chart_color_box" style="background-color: #2684FF;"></div>
+										<span>진행중</span>
+									</div>
+									<span class="doughnut_chart_number">2</span>
+								</a>
+								<a th:href="@{#}">
+									<div class="doughnut_chart_header">
+										<div class="doughnut_chart_color_box" style="background-color: #57D9A3;"></div>
+										<span>완료</span>
+									</div>
+									<span class="doughnut_chart_number">1</span>
+								</a>
+								<div class="doughnut_chart_sum">
+									<div class="doughnut_chart_header sum">합계</div>
+									<span>7</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<h2>최근 활동</h2>
+						<p>프로젝트 전반에서 일어나는 최신 정보를 파악하세요.</p>
+						<div class="recent_work_box">
+							<div>
+								<div class="recent_work_list">
+									<h3>오늘</h3>
+									<div class="item">
+										<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png&amp;s=48"
+											alt="" style="border-radius: 50%;" width="32" height="32">
+										<div>
+											<p>
+												<a th:href="@{#}">다현</a>진행 중으로 상태 변경 :<a th:href="@{#}"
+													class="issue_box"><img
+														src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium&amp;streamsSourceProduct=jira"
+														alt="">TSYR-34
+													-
+													버그다!</a>
+											</p>
+											<span>10분 전</span>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<h2>우선 순위 분석</h2>
+						<p>
+							작업의 우선 순위가 어떻게 지정되는지 전체적으로 봅니다.&nbsp;
+							<a href="#">팀이 무엇에 집중하고 있는지 확인하세요</a>
+						</p>
+						<div class="priority_chart_box">
+							<canvas class="priority_chart"></canvas>
+							<div class="priority_list">
+								<div>
+									<img alt=""
+										src="https://dahyun0521.atlassian.net/images/icons/priorities/highest.svg"
+										width="24" height="24">
+									<a th:href="@{#}">Highest</a>
+								</div>
+								<div>
+									<img alt="" src="https://dahyun0521.atlassian.net/images/icons/priorities/high.svg"
+										width="24" height="24">
+									<a th:href="@{#}">High</a>
+								</div>
+								<div>
+									<img alt=""
+										src="https://dahyun0521.atlassian.net/images/icons/priorities/medium.svg"
+										width="24" height="24">
+									<a th:href="@{#}">Medium</a>
+								</div>
+								<div>
+									<img alt="" src="https://dahyun0521.atlassian.net/images/icons/priorities/low.svg"
+										width="24" height="24">
+									<a th:href="@{#}">Low</a>
+								</div>
+								<div>
+									<img alt=""
+										src="https://dahyun0521.atlassian.net/images/icons/priorities/lowest.svg"
+										width="24" height="24">
+									<a th:href="@{#}">Lowest</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="item">
+						<h2>작업 유형</h2>
+						<p>
+							유형별로 항목의 분석 결과를 확인하세요.&nbsp;
+							<a href="#">모든 항목 보기</a>
+						</p>
+						<div class="work_type_box">
+							<table>
+								<colgroup>
+									<col width="35%">
+									<col width="45%">
+									<col width="20%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>유형</th>
+										<th>분포</th>
+										<th>개수</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"
+													alt="" width="24" height="24">
+												<span>체크리스트</span>
+											</div>
+										</td>
+										<td>
+											<div class="distribution_box">
+												<div class="total_distribution_bar">
+													<div class="item_distribution_bar"></div>
+												</div>
+												<span>33%</span>
+											</div>
+										</td>
+										<td>
+											3
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<a th:href="@{#}" class="status_page_go_btn">
+							<div>
+								<img th:src="@{/images/setting_icon.svg}" width="16" height="16" />
+							</div>
+							<span>유형 관리</span>
+						</a>
+					</div>
+					<div class="item">
+						<h2>팀 워크로드</h2>
+						<p>
+							팀의 작업 수용량을 관리하세요.&nbsp;
+							<a href="#">팀 전반에서 작업 할당을 변경</a>
+						</p>
+						<div class="work_type_box workload">
+							<table>
+								<colgroup>
+									<col width="35%">
+									<col width="45%">
+									<col width="20%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>담당자</th>
+										<th>업무 배분</th>
+										<th>개수</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+													alt="" style="border-radius: 50%;" width="32" height="32">
+												<span>다현</span>
+											</div>
+										</td>
+										<td>
+											<div class="distribution_box">
+												<div class="total_distribution_bar">
+													<div class="item_distribution_bar"
+														style="width: calc(100% / 100 * 50); background-color:#36B37E;">
+													</div>
+												</div>
+												<span>50%</span>
+											</div>
+										</td>
+										<td>
+											3
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div>
+												<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+													alt="" style="border-radius: 50%;" width="32" height="32">
+												<span>김대완</span>
+											</div>
+										</td>
+										<td>
+											<div class="distribution_box">
+												<div class="total_distribution_bar">
+													<div class="item_distribution_bar"
+														style="background-color: #FFAB00;"></div>
+												</div>
+												<span>33%</span>
+											</div>
+										</td>
+										<td>
+											2
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div>
+												<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+													alt="" style="border-radius: 50%;" width="32" height="32">
+												<span>방준혁</span>
+											</div>
+										</td>
+										<td>
+											<div class="distribution_box">
+												<div class="total_distribution_bar">
+													<div class="item_distribution_bar"
+														style="width: calc(100% / 100 * 17); background-color: #FF5630">
+													</div>
+												</div>
+												<span>17%</span>
+											</div>
+										</td>
+										<td>
+											1
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<button class="invite_team_member_btn">
+								<div>
+									<img th:src="@{/images/invite_team_member_icon.svg}" width="16" height="16" />
+								</div>
+								<span>팀원 초대</span>
+							</button>
+						</div>
+					</div>
+					<div class="item">
+						<h2>관련 프로젝트</h2>
+						<p>
+							팀이 자주 참여하는 다른 프로젝트와 연결하고 다른 프로젝트
+							종속성에 정렬하세요.
+						</p>
+						<div class="relation_project_box">
+							<a th:href="@{#}">
+								<div class="create_project_box">
+									<img th:src="@{/images/plus_icon2.svg}" width="24" height="24" />
+								</div>
+								<span>프로젝트 만들기</span>
+							</a>
+							<a th:href="@{#}">
+								<div class="img_box">
+									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10406?size=xxlarge"
+										alt="" width="48" height="48">
+								</div>
+								<p>
+									개인 템플릿
+									<span>EZBY</span>
+								</p>
+							</a>
+							<a th:href="@{#}">
+								<div class="img_box">
+									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424?size=xxlarge"
+										alt="" width="48" height="48">
+								</div>
+								<p>
+									hihihihi
+									<span>HIH</span>
+								</p>
+							</a>
+						</div>
+						<a th:href="@{#}" class="go_project_create_btn">모든 프로젝트 보기</a>
+					</div>
+				</section>
+			</div>
+			<div class="summation_footer">
+				<img th:src="@{/images/exclamation_mark_icon.svg}" width="24" height="24" />
+				<span>이 페이지에 표시된 정보가 유용했습니까?</span>
+				<a th:href="@{#}">피드백 보내기</a>
+			</div>
+		</div>
+
+	</main>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script th:src="@{/js/summation.js}"></script>
+</div>
+
+</html>
