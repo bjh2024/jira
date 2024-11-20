@@ -13,11 +13,16 @@ public class FilterController {
 
 	@GetMapping("/filter_issue")
 	public String filterIssue() {
-		return "filter_issue.html";
+		return "/filter/filter_issue.html";
+	}
+	
+	@GetMapping("/every_filter")
+	public String everyfilter() {
+		return "/filter/every_filter.html";
 	}
 
 	@GetMapping("/filter_issue_table")
 	public String filterIssueTable() {
-		return "filter_issue_table.html";
+		return "/filter/filter_issue_table.html";
 	}
 }
