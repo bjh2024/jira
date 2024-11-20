@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+li {
+  list-style: none;
+}
+
+label{
+	cursor: pointer;
+}
+
+input {
+  outline: none;
+  cursor: pointer;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  
+  background-color: white;  
+}
+
+textarea {
+  outline: none;
+  resize: none;
+}
+
+textarea:hover {
+  border: 1px solid rgba(68, 84, 111, 0.645);
+}
+.switch_draw_btn{
+	cursor: grab;
+}
+.not_null_check{
+	color: red;
+}

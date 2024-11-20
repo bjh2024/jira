@@ -1,0 +1,91 @@
+<html layout:decorate="~{layout}">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/team_list.css}">
+</head>>
+<div layout:fragment="content" class="team_list_container">
+	<div class="team_list_header">
+		<h1>사용자 및 팀</h1>
+		<div class="btn_box">
+			<button class="team_create_btn">팀 만들기</button>
+			<button class="jira_user_invite_btn">사용자 추가</button>
+		</div>
+	</div>
+	<div class="input_box">
+		<label for="teamSearch">
+			<img th:src="@{/images/search_icon.svg}" />
+		</label>
+		<input type="text" id="teamSearch" placeholder="사용자 및 팀 검색" />
+	</div>
+	<div class="main">
+		<div class="team_member_list_box">
+			<div>
+				<h2>내가 공동 작업</h2>
+			</div>
+			<ul>
+				<li>
+					<a th:src="@{#}">
+						<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+							alt="" style="border-radius: 50%;" width="70" height="70">
+						<span>방준혁</span>
+					</a>
+				</li>
+				<li>
+					<a th:src="@{#}">
+						<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+							alt="" style="border-radius: 50%;" width="70" height="70">
+						<span>다현</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="team_list_box">
+			<div class="header">
+				<h2>내 팀</h2>
+				<a th:href="@{#	}" class="img_container">
+					모든 팀 찾아보기
+					<div class="img_box">
+						<img th:src="@{/images/arrow_tail_right_icon.svg}" width="16" height="16"/>
+					</div>
+				</a>
+			</div>
+			<ul>
+				<li>
+					<div>
+						<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+							alt="" style="border-radius: 50%;" width="44" height="44">
+						<img width="44" height="44"
+							src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/Angie_ptc.e7287308.svg">
+						<img width="44" height="44"
+							src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/Myra_ptc.8eac8e59.svg">
+					</div>
+					<div>
+						<span>귀하의 새로운 팀입니다!</span>
+						<button class="team_create_btn">팀 만들기</button>
+					</div>
+				</li>
+				<li>
+					<div>
+						
+					</div>
+					<div>
+						<span>정처산기 4조</span>
+						<div>
+							<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+								alt=""style="border-radius: 50%;"
+								width="24" height="24">
+							<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+								alt=""style="border-radius: 50%; "width="24" height="24">
+							<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+								alt=""style="border-radius: 50%;" width="24" height="24">
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="all_team_list_btn_box">
+		<button>모든 팀 표시</button>
+	</div>
+<script th:src="@{/js/team_list.js}"></script>
+</div>
+</html>

@@ -1,0 +1,247 @@
+<div class="dashboard_craete_modal" th:fragment="dashboardCreateFragment">
+
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_create.css}">
+	</head>
+	<div class="dashboard_create">
+		<h3>대시보드 만들기</h3>
+		<div class="dashboard_create_input_box">
+			<p>
+				필수 필드는 별표로 표시되어 있습니다<span class="red">&nbsp;*</span>
+			</p>
+			<div class="dashboard_create_content name">
+				<label for="dashboard_name">이름<span class="red">*</span></label>
+				<input type="text" name="dashboard_name" id="dashboard_name" />
+			</div>
+			<div class="dashboard_create_content explain">
+				<label for="dashboard_explain">설명</label>
+				<textarea type="text" name="dashboard_explain" id="dashboard_explain"></textarea>
+			</div>
+			<div class="dashboard_create_content">
+				<div>
+					<label for="dashboard_view_role">조회자</label>
+				</div>
+				<div class="role_input_box">
+					<div>
+						<div class="role_input_item">
+							<img src="/images/create_user_icon.svg" alt="" class="prev_icon" />
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" name="dashboard_view_role" id="dashboard_view_role" placeholder="비공개" />
+							<!-- 비공개, 프로젝트, 사용자, 그룹 -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="/images/create_project_icon.svg" alt="프로젝트 아이콘" class="main_filter" />
+									<span>프로젝트</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="/images/create_group_icon.svg" alt="" class="main_filter" />
+									<span>그룹</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="/images/create_user_icon.svg" alt="" class="main_filter" />
+									<span>사용자</span>
+								</div>
+								<div class="role_input_lnb_item active">
+									<img src="/images/create_user_icon.svg" alt="" class="main_filter" />
+									<span>비공개</span>
+								</div>
+							</div>
+						</div>
+						<!-- 프로젝트를 선택했을 경우-->
+						<div class="role_projct_item">
+							<div>
+								<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+								<img class="project_icon" />
+								<input type="text" class="role_project_input" placeholder="프로젝트 선택" />
+								<!-- 프로젝트 lnb1 -->
+								<div class="role_input_lnb_container">
+									<div class="role_input_lnb_item active">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+											alt="" style="border-radius: 2px;">
+										<span>hihihihi</span>
+									</div>
+									<div class="role_input_lnb_item">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+											alt="" style="border-radius: 2px">
+										<span>하이</span>
+									</div>
+								</div>
+							</div>
+							<div>
+								<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+								<input type="text" placeholder="모든 역할" />
+								<!-- 프로젝트 lnb2 -->
+								<div class="role_input_lnb_container">
+									<div class="role_input_lnb_item active">
+										<span>Administrator</span>
+									</div>
+									<div class="role_input_lnb_item ">
+										<span>Member</span>
+									</div>
+									<div class="role_input_lnb_item">
+										<span>Viewer</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 그룹을 선택했을 경우 -->
+						<div class="role_group_item">
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" placeholder="그룹 선택" />
+							<!-- 그룹 lnb -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="/images/create_group_icon.svg" alt="" />
+									<span>정처산기 4조</span>
+								</div>
+							</div>
+						</div>
+						<!-- 사용자를 선택했을 경우 -->
+						<div class="role_user_item">
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" placeholder="사용자 선택" />
+							<!-- 사용자 lnb -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+										alt="" style="border-radius: 50%;" width="24" height="24">
+									<span>방준혁</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+										alt="" style="border-radius: 50%;" width="24" height="24">
+									<span>다현</span>
+								</div>
+							</div>
+						</div>
+						<!-- 비공개를 선택했을 경우 -->
+						<div class="role_private_item show">나만</div>
+					</div>
+					<button type="button">추가</button>
+				</div>
+			</div>
+			<div class="dashboard_create_content list view">
+				<div class="dashboard_create_list_container default">
+					<div class="dashboard_create_list_item">
+						<img src="/images/create_user_icon.svg" alt="" />비공개
+					</div>
+				</div>
+			</div>
+			<div class="dashboard_create_content">
+				<div>
+					<label for="dashboard_view_role">조회자</label>
+				</div>
+				<div class="role_input_box">
+					<div>
+						<div class="role_input_item">
+							<img src="/images/create_user_icon.svg" alt="" class="prev_icon" />
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" name="dashboard_view_role" id="dashboard_view_role" placeholder="비공개" />
+							<!-- 비공개, 프로젝트, 사용자, 그룹 -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="/images/create_project_icon.svg" alt="프로젝트 아이콘" class="main_filter" />
+									<span>프로젝트</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="/images/create_group_icon.svg" alt="" class="main_filter" />
+									<span>그룹</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="/images/create_user_icon.svg" alt="" class="main_filter" />
+									<span>사용자</span>
+								</div>
+								<div class="role_input_lnb_item active">
+									<img src="/images/create_user_icon.svg" alt="" class="main_filter" />
+									<span>비공개</span>
+								</div>
+							</div>
+						</div>
+						<!-- 프로젝트를 선택했을 경우-->
+						<div class="role_projct_item">
+							<div>
+								<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+								<img class="project_icon" />
+								<input type="text" class="role_project_input" placeholder="프로젝트 선택" />
+								<!-- 프로젝트 lnb1 -->
+								<div class="role_input_lnb_container">
+									<div class="role_input_lnb_item active">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+											alt="" style="border-radius: 2px;">
+										<span>hihihihi</span>
+									</div>
+									<div class="role_input_lnb_item">
+										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+											alt="" style="border-radius: 2px">
+										<span>하이</span>
+									</div>
+								</div>
+							</div>
+							<div>
+								<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+								<input type="text" placeholder="모든 역할" />
+								<!-- 프로젝트 lnb2 -->
+								<div class="role_input_lnb_container">
+									<div class="role_input_lnb_item active">
+										<span>Administrator</span>
+									</div>
+									<div class="role_input_lnb_item ">
+										<span>Member</span>
+									</div>
+									<div class="role_input_lnb_item">
+										<span>Viewer</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 그룹을 선택했을 경우 -->
+						<div class="role_group_item">
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" placeholder="그룹 선택" />
+							<!-- 그룹 lnb -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="/images/create_group_icon.svg" alt="" />
+									<span>정처산기 4조</span>
+								</div>
+							</div>
+						</div>
+						<!-- 사용자를 선택했을 경우 -->
+						<div class="role_user_item">
+							<img src="/images/list_down_icon.svg" alt="" class="next_icon" />
+							<input type="text" placeholder="사용자 선택" />
+							<!-- 사용자 lnb -->
+							<div class="role_input_lnb_container">
+								<div class="role_input_lnb_item">
+									<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+										alt="" style="border-radius: 50%;" width="24" height="24">
+									<span>방준혁</span>
+								</div>
+								<div class="role_input_lnb_item">
+									<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+										alt="" style="border-radius: 50%;" width="24" height="24">
+									<span>다현</span>
+								</div>
+							</div>
+						</div>
+						<!-- 비공개를 선택했을 경우 -->
+						<div class="role_private_item show">나만</div>
+					</div>
+					<button type="button">추가</button>
+				</div>
+			</div>
+			<div class="dashboard_create_content list view">
+				<div class="dashboard_create_list_container default">
+					<div class="dashboard_create_list_item">
+						<img src="/images/create_user_icon.svg" alt="" />비공개
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dashboard_create_btn_box">
+			<button class="create_btn">저장</button>
+			<button class="cancel_btn">취소</button>
+		</div>
+	</div>
+	<script th:src="@{/js/dashboard_create.js}"></script>
+</div>

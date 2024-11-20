@@ -1,0 +1,316 @@
+.dashboard_craete_modal.show {
+	display: block;
+}
+
+.dashboard_craete_modal {
+	display: none;
+	width: 100%;
+	height: 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	background-color: #091e427d;
+}
+
+span.red {
+	color: #ae2e24;
+	padding-left: 2px;
+}
+
+.dashboard_create {
+	width: 600px;
+	margin: 0 auto;
+	margin-top: 60px;
+	background-color: white;
+
+	border-radius: 4px;
+
+	color: #626f86;
+}
+
+.dashboard_create .prev_icon {
+	color: #44546f;
+	position: absolute;
+	top: calc(32px / 2 - 24px / 2);
+	left: 8px;
+}
+
+.dashboard_create .next_icon {
+	position: absolute;
+	top: calc(32px / 2 - 24px / 2);
+	right: 16px;
+}
+
+.dashboard_create h3 {
+	padding: 24px;
+	padding-bottom: 22px;
+
+	font-weight: normal;
+	font-size: 20px;
+	color: #626f86;
+}
+
+.dashboard_create p {
+	font-size: 14px;
+	padding-bottom: 4px;
+}
+
+.dashboard_create label {
+	margin-bottom: 4px;
+
+	color: #44546f;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.dashboard_create_input_box {
+	padding: 0 24px;
+}
+
+.dashboard_create_input_box img {
+	width: 24px;
+	height: 24px;
+}
+
+.dashboard_create_input_box>div {
+	margin-top: 10px;
+}
+
+.dashboard_create_content {
+	display: flex;
+	flex-direction: column;
+}
+
+.dashboard_create_content input,
+.dashboard_create_content textarea {
+	padding: 8px 6px;
+	font-size: 14px;
+}
+
+.dashboard_create_content.name input {
+	height: 40px;
+	border: 1px solid rgba(68, 84, 111, 0.645);
+	border-radius: 4px;
+}
+
+.dashboard_create_content.explain textarea {
+	height: 56px;
+	border-radius: 4px;
+}
+
+.dashboard_create_content button {
+	width: 52px;
+	height: 32px;
+	background-color: #091e420f;
+
+	font-size: 14px;
+	color: #44546f;
+
+	border-radius: 3px;
+}
+
+.dashboard_create_content button:hover {
+	background-color: #ddd;
+}
+
+.role_input_box {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 0;
+	border-bottom: 2px solid #ddd;
+}
+
+.role_input_box>div {
+	display: flex;
+	width: 500px;
+}
+
+.role_input_box input {
+	height: 32px;
+	margin-right: 8px;
+	border: 1px solid rgba(68, 84, 111, 0.645);
+	border-radius: 4px;
+}
+
+/* project일 경우 */
+.role_input_box input {
+	width: 160px;
+}
+
+.role_input_item {
+	position: relative;
+}
+
+.role_input_item:nth-of-type(1) input {
+	background-color: transparent;
+	position: relative;
+	padding-left: 38px;
+}
+
+.role_input_item:focus-within > .role_input_lnb_container{
+	display: block;
+}
+.role_input_item:nth-of-type(1) input:focus {
+	padding-left: 4px;
+}
+
+.role_input_item:nth-of-type(1):focus-within .prev_icon {
+	display: none;
+}
+
+.role_input_lnb_container {
+	display: none;
+	width: calc(100% - 8px);
+	padding: 2px 0;
+	background-color: white;
+
+	border-radius: 4px;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+	color: #44546f;
+	font-size: 14px;
+
+	position: absolute;
+	top: calc(32px + 8px);
+	z-index: 999;
+}
+
+.role_input_lnb_item {
+	height: 32px;
+	margin: 4px 0;
+	padding: 0 14px;
+
+	/* 움직이는거 막기 */
+	border-left: 2px solid transparent;
+
+	display: flex;
+	gap: 8px;
+	align-items: center;
+
+	cursor: pointer;
+}
+
+.role_input_lnb_item:hover {
+	box-sizing: content-box;
+	border-left: 2px solid #0c66e4;
+	background-color: #f4f4f4;
+}
+
+.role_input_lnb_item.active {
+	color: #0c66e4;
+	border-left: 2px solid #0c66e4;
+	background-color: #0c66e417;
+}
+
+.role_input_lnb_item.active img.main_filter {
+	filter: invert(29%) sepia(72%) saturate(2910%) hue-rotate(206deg) brightness(91%) contrast(97%);
+}
+
+.role_projct_item {
+	display: flex;
+	align-items: center;
+}
+
+.role_projct_item .project_icon {
+	display: none;
+	
+	position: absolute;
+	top: calc(32px / 2 - 24px / 2);
+	left: 8px;
+}
+
+
+
+.role_projct_item>div {
+	position: relative;
+}
+
+.role_projct_item > div.show,
+.role_group_item.show,
+.role_user_item.show,
+.role_private_item.show {
+	display: flex;
+}
+
+.role_projct_item > div,
+.role_group_item,
+.role_user_item {
+	display: none;
+	position: relative;
+}
+
+.role_projct_item>div:focus-within .role_input_lnb_container,
+.role_group_item:focus-within .role_input_lnb_container,
+.role_user_item:focus-within .role_input_lnb_container{
+	display: block;
+}
+
+.role_group_item input,
+.role_user_item input {
+	width: 320px;
+}
+
+.role_private_item {
+	display: none;
+	font-size: 12px;
+	line-height: 32px;
+}
+
+.dashboard_create_list_container {
+	line-height: 28px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.dashboard_create_list_item {
+	font-size: 14px;
+
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+
+.dashboard_create_content.list button {
+	background-color: white;
+}
+
+.dashboard_create_btn_box {
+	padding: 24px;
+	padding-top: 16px;
+
+	display: flex;
+	justify-content: flex-end;
+	gap: 4px;
+}
+
+.dashboard_create_btn_box button {
+	width: 52px;
+	height: 32px;
+
+	border-radius: 4px;
+}
+
+.dashboard_create_btn_box .create_btn {
+	background-color: #0c66e4;
+	color: white;
+}
+
+.dashboard_create_btn_box .cancel_btn {
+	background-color: white;
+}
+
+.dashboard_create_btn_box .cancel_btn:hover {
+	text-decoration: underline;
+}
+
+.dashboard_create_content.name input:focus,
+.dashboard_create_content.explain textarea:focus,
+.role_input_box input:focus {
+	border: 2px solid #0c66e4;
+	padding-left: calc(6px - 1px);
+}

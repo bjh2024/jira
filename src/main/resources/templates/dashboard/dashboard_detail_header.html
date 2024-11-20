@@ -1,0 +1,38 @@
+<div th:fragment="dashboardDetailHeader" class="dashboard_detail_header">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_header.css}">
+	</head>
+	<h2>html 연습용</h2>
+	<div class="gnb">
+		<button class="gnb_btn1">
+			<img th:src="@{/images/star_icon_empty.svg}" />
+		</button>
+		<th:block th:if="${url} == '/dashboard/detail'">
+			<button class="gnb_btn1">
+				<img th:src="@{/images/link_copy_icon.svg}" />
+			</button>
+			<button class="gnb_btn2">
+				<span class="bold">Refresh</span>
+				<img th:src="@{/images/refresh_icon.svg}" width="16" height="16" />
+			</button>
+			<a th:href="@{/dashboard/detail/edit}" class="gnb_btn2">
+				<span>편집</span>
+				<img th:src="@{/images/pencil_icon.svg}" width="16" height="16" />
+			</a>
+		</th:block>
+		<th:block th:unless="${url} == '/dashboard/detail'">
+			<button class="gnb_btn2">
+				가젯 추가
+			</button>
+			<button class="gnb_btn2">
+				레이아웃 변경
+			</button>
+			<a th:href="@{/dashboard/detail}" class="gnb_btn2 complete">
+				<span>완료</span>
+			</a>
+		</th:block>
+		<button class="gnb_btn1 more">
+			<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
+		</button>
+	</div>
+</div>

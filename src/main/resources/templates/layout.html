@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<!-- Required meta tags-->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/aside.css}">
+	<title>Document</title>
+</head>
+
+<body>
+	<header th:replace="~{header :: headerFragment}"></header>
+	<th:block layout:fragment="content"></th:block>
+	
+	<!-- dashboard_create_modal -->
+	<div th:replace="~{/dashboard/dashboard_create :: dashboardCreateFragment}"></div>
+	
+	<!-- team create modal-->
+	<div th:replace="~{team/team_create :: teamCreateFragment}"></div>
+	<div th:replace="~{team/jira_user_add :: jiraUserAddFragment}"></div>
+	
+</body>
+</html>

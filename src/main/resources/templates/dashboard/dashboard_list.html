@@ -1,0 +1,245 @@
+<html layout:decorate="~{layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_list.css}">
+</head>
+<div layout:fragment="content">
+	<div class="dashboard_list_container">
+		<div class="dashboard_list_title">
+			<h2>대시보드</h2>
+			<button>대시보드 만들기</button>
+		</div>
+		<div class="dashboard_list_filter">
+			<div class="dashboard_list_search">
+				<input type="text" placeholder="대시보드 검색" /><svg width="24" height="24" viewBox="0 0 24 24"
+					role="presentation">
+					<path fill="currentcolor" fill-rule="evenodd"
+						d="m16.436 15.085 3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406M10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11">
+					</path>
+				</svg>
+			</div>
+			<div class="dashboard_list_filter_item">
+				<label class="label_comment" for="accountList">소유자</label>
+				<label for="accountList">
+					<img th:src="@{/images/list_down_icon.svg}" />
+				</label>
+				<input id="accountList" placeholder="소유자 선택" />
+				<div class="select_top_menue">
+					<div class="select_top_menue_list">
+						<div class="item active">
+							<div class="img_box"><img
+									src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+									alt="" style="border-radius: 50%" width="16" height="16">
+							</div>
+							김대완
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard_list_filter_item">
+				<label class="label_comment" for="projectList">프로젝트</label>
+				<label for="projectList">
+					<img th:src="@{/images/list_down_icon.svg}" />
+				</label>
+				<input id="projectList" placeholder="프로젝트 선택" />
+				<div class="select_top_menue">
+					<div class="select_top_menue_list">
+						<div class="item active">
+							<div class="img_box"><img
+									src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+									alt="" style="border-radius: 2px" width="16" height="16">
+							</div>
+							hihihihi
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard_list_filter_item">
+				<label class="label_comment" for="groupList">그룹</label>
+				<label for="groupList">
+					<img th:src="@{/images/list_down_icon.svg}" />
+				</label>
+				<input id="groupList" placeholder="그룹 선택" />
+				<div class="select_top_menue">
+					<div class="select_top_menue_list">
+						<div class="item active">
+							<div class="img_box">
+								<img th:src="@{/images/create_group_icon.svg}" width="16" height="16" />
+							</div>
+							정처산기 4조
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="dashboard_list_table">
+			<colgroup>
+				<col width="3%" />
+				<col width="25%" />
+				<col width="19%" />
+				<col width="19.5%" />
+				<col width="19%" />
+				<col width="9%" />
+				<col width="6%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="sort_item">
+						<button>
+							<div class="star_th">
+								<img th:src="@{/images/star_icon_black.svg}" width="16" height="16" />
+							</div>
+						</button>
+					</th>
+					<th class="sort_item">
+						<button>이름</button>
+					</th>
+					<th class="sort_item">
+						<button>소유자</button>
+					</th>
+					<th>조회자</th>
+					<th>편집기</th>
+					<th class="sort_item">
+						<button>별표 표시</button>
+					</th>
+					<th>추가 작업</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 백엔드에서 가져올 데이터 -->
+				<tr>
+					<td>
+						<div class="dashboard_list_item_box">
+							<div class="star_box">
+								<img th:src="@{/images/star_icon_empty.svg}">
+							</div>
+						</div>
+					</td>
+
+					<td>
+						<a href="#">
+							<div class="dashboard_list_item_box">대시보드</div>
+						</a>
+					</td>
+					<td>
+						<a href="#">
+							<div class="dashboard_list_item_box">
+								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+									alt="" style="border-radius: 50%" />
+								<span>김대완</span>
+							</div>
+						</a>
+					</td>
+					<td>
+						<div>
+							<div class="dashboard_list_item_box">
+								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									alt="" style="border-radius: 2px" />
+								<span>하이, Member</span>
+							</div>
+							<div class="dashboard_list_item_box">
+								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									alt="" style="border-radius: 2px" />
+								<span>하이, Administrator</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="dashboard_list_item_box">
+							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+								alt="" style="border-radius: 2px" />
+							<span>hihihihi, Administrator</span>
+						</div>
+					</td>
+					<td>
+						<div class="dashboard_list_item_box">2명</div>
+					</td>
+					<td>
+						<div class="img_box">
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<circle cx="5" cy="12" r="2"></circle>
+									<circle cx="12" cy="12" r="2"></circle>
+									<circle cx="19" cy="12" r="2"></circle>
+								</g>
+							</svg>
+						</div>
+						<div class="more_box">
+							<button>대시보드 복사</button>
+							<button>대시보드 이름 변경 또는 공유</button>
+							<button>소유자 변경</button>
+							<button>휴지통으로 이동</button>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="dashboard_list_item_box">
+							<div class="star_box">
+								<img th:src="@{/images/star_icon_empty.svg}">
+							</div>
+						</div>
+					</td>
+					<td>
+						<a href="#">
+							<div class="dashboard_list_item_box">대시보드</div>
+						</a>
+					</td>
+					<td>
+						<a href="#">
+							<div class="dashboard_list_item_box">
+								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+									alt="" style="border-radius: 50%" />
+								<span>김대완</span>
+							</div>
+						</a>
+					</td>
+					<td>
+						<div>
+							<div class="dashboard_list_item_box">
+								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									alt="" style="border-radius: 2px" />
+								<span>하이, Member</span>
+							</div>
+							<div class="dashboard_list_item_box">
+								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									alt="" style="border-radius: 2px" />
+								<span>하이, Administrator</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="dashboard_list_item_box">
+							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+								alt="" style="border-radius: 2px" />
+							<span>hihihihi, Administrator</span>
+						</div>
+					</td>
+					<td>
+						<div class="dashboard_list_item_box">2명</div>
+					</td>
+					<td>
+						<div class="img_box">
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<circle cx="5" cy="12" r="2"></circle>
+									<circle cx="12" cy="12" r="2"></circle>
+									<circle cx="19" cy="12" r="2"></circle>
+								</g>
+							</svg>
+						</div>
+						<div class="more_box">
+							<button>대시보드 복사</button>
+							<button>대시보드 이름 변경 또는 공유</button>
+							<button>소유자 변경</button>
+							<button>휴지통으로 이동</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script th:src="@{/js/dashboard_list.js}"></script>
+</div>
+
+</html>

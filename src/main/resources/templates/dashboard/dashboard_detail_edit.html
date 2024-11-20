@@ -1,0 +1,312 @@
+<html layout:decorate="~{layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_edit.css}">
+</head>
+<div layout:fragment="content" class="dashboard_container">
+	<div class="dashboard_box">
+		<div th:replace="~{/dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
+		<div class="edit_alaram_comment">
+			<img th:src="@{/images/purple_question_mark_icon.svg}" style="color: aliceblue;" />
+			<p>현재 대시보드를 편집하고 있습니다. 변경 사항은 자동으로 저장됩니다.</p>
+		</div>
+		<div class="dashboard_content_container">
+			<div class="box1">
+				<div class="add_dashboard_content">
+					<div class="add_dashboard_content_header">
+						<h2>
+							<img src="/images/switch_position_icon.svg" />
+							<span>파이 차트: 하이</span>
+						</h2>
+						<div>
+							<div class="img_box">
+								<img src="/images/minimize_icon.svg" />
+							</div>
+							<div class="img_box">
+								<img src="/images/maximize_icon.svg" />
+							</div>
+							<div class="img_box">
+								<img src="/images/refresh_icon.svg" />
+							</div>
+							<div class="img_box more">
+								<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+								<div class="more_gadget_option">
+									<div class="color_box">
+										<p>강조 색상</p>
+										<div class="color_content">
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+										</div>
+									</div>
+									<div class="btn_box">
+										<button>
+											<span>구성</span>
+										</button>
+										<button>
+											<span>복제</span>
+										</button>
+										<button>
+											<span>삭제</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dashboard_pie_chart_container">
+						<div class=".doughnut_chart_ratio"></div>
+						<div class="dashboard_pie_chart_box">
+							<div>
+								<div class="doughnut_chart_ratio"></div>
+								<canvas id="TSYR1"></canvas>
+							</div>
+						</div>
+						<div class="dashboard_pie_chart_content">
+							<div class="header">
+								<h3>담당자</h3>
+								<a th:href="@{#}">모든 이슈: <b>8</b></a>
+							</div>
+							<div class="main">
+								<a th:href="@{#}">
+									<div>
+										<div class="color_box" style="background-color: #388BFF"></div>
+										<p>다현</p>
+									</div>
+									<span>4</span>
+								</a>
+								<a th:href="@{#}">
+									<div>
+										<div class="color_box" style="background-color: #F15B50"></div>
+										<p>김대완</p>
+									</div>
+									<span>2</span>
+								</a>
+								<a th:href="@{#}">
+									<div>
+										<div class="color_box" style="background-color: #B38600"></div>
+										<p>방준혁</p>
+									</div>
+									<span>2</span>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="add_dashboard_content_footer">
+						<img src="/images/refresh_icon.svg" width="16" height="16" />
+						<span>14분 전</span>
+					</div>
+				</div>
+				<!--<div class="empty_box show">
+					<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
+						width="112" height="100">
+					<p>가젯을 이 열로 끌어오거나 <a th:href="@{#}">새 가젯 추가</a></p>
+				</div> -->
+			</div>
+			<div class="box2">
+				<div class="empty_box show">
+					<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
+						width="112" height="100">
+					<p>가젯을 이 열로 끌어오거나 <a th:href="@{#}">새 가젯 추가</a></p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="dashboard_add_gadget">
+		<div class="gadget_header">
+			<div class="title">
+				<h2>가젯 추가</h2>
+				<div class="img_box">
+					<img th:src="@{/images/cancel_icon.svg}" />
+				</div>
+			</div>
+			<div class="input_box">
+				<div class="img_box">
+					<img th:src="@{/images/search_icon.svg}" width="16" height="16" />
+				</div>
+				<input type="text" placeholder="가젯 검색" />
+			</div>
+			<div class="dashboard_filter_btn_box">
+				<button>
+					전체
+					<span>6</span>
+				</button>
+				<button>
+					Jira
+					<span>6</span>
+				</button>
+				<button>
+					Charts
+					<span>5</span>
+				</button>
+				<button>
+					Wallboard
+					<span>0</span>
+				</button>
+			</div>
+		</div>
+		<div class="gadget_list_content">
+			<div class="gadget_item pie_chart">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:pie-chart-gadget/piechart-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>파이 차트</h3>
+					<span>작성자: Atlassian</span>
+					<p>프로젝트 또는 필터와 일치하는 이슈를 파이 차트로 표시합니다.</p>
+					<ul>
+						<li>Jira</li>
+						<li>Charts</li>
+					</ul>
+				</div>
+			</div>
+			<div class="gadget_item">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:assigned-to-me-gadget/filterResults-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>나에게 할당됨</h3>
+					<span>작성자: Atlassian</span>
+					<p>나에게 할당되고 해결되지 않은 모든 이슈 표시</p>
+					<ul>
+						<li>Jira</li>
+					</ul>
+				</div>
+			</div>
+			<div class="gadget_item">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:created-vs-resolved-issues-chart-gadget/createdVsResolved-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>만듦 대비 해결됨 차트</h3>
+					<span>작성자: Atlassian</span>
+					<p>프로젝트 또는 저장된 필터의 생성 대비 해결 이슈를 표시합니다.</p>
+					<ul>
+						<li>Jira</li>
+						<li>Charts</li>
+					</ul>
+				</div>
+			</div>
+			<div class="gadget_item">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:recently-created-chart-gadget/recentlyCreated-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>최근에 만듦 차트</h3>
+					<span>작성자: Atlassian</span>
+					<p>특정 프로젝트에 대해 생성된 최근 이슈를 막대 그래프로 나타내기</p>
+					<ul>
+						<li>Jira</li>
+						<li>Charts</li>
+					</ul>
+				</div>
+			</div>
+			<div class="gadget_item">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:stats-gadget/stats-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>이슈 통계</h3>
+					<span>작성자: Atlassian</span>
+					<p>이슈 통계</p>
+					<ul>
+						<li>Jira</li>
+						<li>Charts</li>
+					</ul>
+				</div>
+			</div>
+			<div class="gadget_item">
+				<div class="gadget_item_header">
+					<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:filter-results-gadget/filterResults-thumb.png"
+						width="77" height="40" />
+					<button>추가</button>
+				</div>
+				<div class="gadget_item_main">
+					<h3>결과 필터</h3>
+					<span>작성자: Atlassian</span>
+					<p>저장된 필터의 이슈나 결과를 나타냅니다.</p>
+					<ul>
+						<li>Jira</li>
+						<li>Charts</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/dashboard_detail_edit.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		// jiraID + projectKey
+		const doughnutChartTag = document.querySelector("#TSYR1");
+		const statusNumArr = [4, 2, 2];
+		const statusColor = ["#388BFF", "#F15B50", "#B38600"];
+		const labels = ["다현", "방준혁", "김대완"];
+
+		const doughnutChart = new Chart(doughnutChartTag, {
+			type: "doughnut",
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						data: statusNumArr,
+						borderWidth: 1,
+						backgroundColor: statusColor,
+					},
+				],
+			},
+			options: {
+				cutout: '35%',
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					tooltip: {
+						enabled: false, // 툴팁 활성화
+					},
+					legend: {
+						display: false,
+					},
+				},
+				onHover: function (event, chartElement) {
+					if (chartElement && chartElement.length) {
+						const index = chartElement[0].index; // hover된 요소의 데이터 인덱스
+						const label = this.data.labels[index]; // 해당 인덱스의 label
+						const value = this.data.datasets[0].data[index];
+						let color = this.data.datasets[0].backgroundColor[index];
+						if (color === '#DFE1E6') {
+							color = '#172b4d';
+						}
+						updateChartRatio(statusNumArr, value, label, color, this.canvas);
+					}
+				},
+				onMouseOut: function (event, chartElement) {
+					console.log('Mouse left the chart area');
+				}
+			},
+		});
+		function updateChartRatio(data, num, comment, color, canvas) {
+			const total = data.reduce((prev, cur) => prev + cur, 0);
+
+			const ratio = Math.round((num / total) * 100);
+			canvas.previousElementSibling.innerHTML = `<p style="color:${color}">${ratio}%</p><span>${comment}</span>`;
+		}
+
+	</script>
+</div>
+
+</html>
