@@ -1,0 +1,142 @@
+<header class="board-header" th:fragment="prjHeaderFragment">
+	<div class="myprj-container">
+		<div style="display: flex; align-items: center; justify-content: space-between;">
+			<div style="display: flex; align-items: center;">
+				<div style="display: flex; align-items: center;">
+					<div>
+						<span class="header-titleimg">
+							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=xlarge"
+								alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
+						</span>
+					</div>
+					<div>
+						<h1 class="header-title">하이</h1>
+					</div>
+				</div>
+				<div>
+					<div class="header-setbgimg">
+						<button class="header-setbgimgbtn">
+							<img src="/images/header_set_bg_image.svg" style="filter: invert(12%) sepia(97%) saturate(718%) hue-rotate(188deg) brightness(92%) contrast(93%);">
+						</button>
+						<div class="header-sebgbox">
+							<div class="setbg-headbar">
+								<span>프로젝트 배경</span>
+								<span class="header-setbgbtn" style="height: 24px;"><svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414z"></path></svg></span>
+							</div>
+							<div class="setbg-title">색상</div>
+							<div class="setbg-colorpalette">
+								<span style="background-color: #F1F2F4;" class="colorpalette-currentcolor colorpallette-colorbtn"></span>
+								<span style="background-color: #F3F0FF;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #E9F2FF;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #E7F9FF;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #DCFFF1;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #EFFFD6;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FFF7D6;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FFF3EB;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FFECEB;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FFECF8;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #DCDFE4;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #DFD8FD;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #CCE0FF;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #C6EDFB;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #BAF3DB;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #D3F1A7;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #F8E6A0;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FEDEC8;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FFD5D2;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #FDD0EC;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #44546F;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #5E4DB2;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #0055CC;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #206A83;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #216E4E;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #4C6B1F;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #7F5F01;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #A54800;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #AE2E24;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #943D73;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #172B4D;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #352C63;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #09326C;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #164555;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #164B35;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #37471F;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #533F04;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #702E00;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #5D1F1A;" class="colorpallette-colorbtn"></span>
+								<span style="background-color: #50253F;" class="colorpallette-colorbtn"></span>
+								<span style="width: 90px; display: flex; align-items: center; gap: 8px;">
+									<span class="colorpallette-colorbtn"></span>
+									<span style="font-size: 11px; ">배경 없음</span>
+								</span>
+							</div>
+							<div class="setbg-title">사용자 지정 이미지</div>
+							<div class="setbg-uploadbox">
+								<button class="uploadimgbtn">업로드할 이미지를 선택</button> <br>
+								<span>하거나 여기에 끌어다 놓으세요</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="prjsetbtn">
+				<a th:href="@{/login/login}" class="header-prjset">
+					<div>
+						<span>
+							<img src="/images/setting_icon.svg" style="filter: invert(12%) sepia(97%) saturate(718%) hue-rotate(188deg) brightness(92%) contrast(93%);">
+						</span>
+					</div>
+					<div style="font-size: 14px; margin-left: 4px; margin-top: -2px; margin-right: 3px;">
+						<span>
+							프로젝트 설정
+						</span>
+					</div>
+				</a>
+			</div>
+		</div>
+		<nav class="header-menubar">
+			<div class="menu-icon-box">
+				<a th:href="@{/project/summation}">
+					<span class="menu-icon">
+						<img src="/images/summation_icon.svg" style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
+					</span>
+					<span class="menu-text">요약</span>
+				</a>
+			</div>
+			<div class="menu-icon-box"
+				style="border-bottom: 2px solid #44546f; padding-bottom: 3px; padding-right: 4px;">
+				<a th:href="@{/project/board_main}">
+					<span class="menu-icon" style="margin-left: 1px; margin-bottom: 2px;">
+						<img src="/images/board_icon.svg" style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
+					</span>
+					<span style="margin-bottom: 3px;">보드</span>
+				</a>
+			</div>
+			<div class="menu-icon-box">
+				<a>
+					<span class="menu-icon">
+						<img src="/images/list_icon.svg" style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
+					</span>
+					<span class="menu-text">목록</span>
+				</a>
+			</div>
+			<div class="menu-icon-box">
+				<a th:href="@{/project/attached_files}">
+					<span class="menu-icon">
+						<img src="/images/attachment_icon.svg" style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
+					</span>
+					<span class="menu-text">첨부 파일</span>
+				</a>
+			</div>
+			<div class="menu-icon-box">
+				<a>
+					<span class="menu-icon">
+						<img src="/images/issue_icon.svg" style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
+					</span>
+					<span class="menu-text">이슈</span>
+				</a>
+			</div>
+		</nav>
+	</div>
+<script th:src="@{/js/project_header.js}"></script>
+</header>
