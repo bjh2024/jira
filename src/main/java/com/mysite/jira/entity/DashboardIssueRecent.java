@@ -29,6 +29,14 @@ public class DashboardIssueRecent {
 	@NotNull
 	private String divOrder;
 	
+	@Column
+	@NotNull
+	private Integer isSave;
+	
+	@Column(columnDefinition = "VARCHAR2(100)")
+	@NotNull
+	private String unitPeriod;
+	
 	@ManyToOne
 	private Dashboard dashboard;
 	
@@ -36,10 +44,13 @@ public class DashboardIssueRecent {
 	private Project project;
 	
 	@Builder
-	public DashboardIssueRecent(Integer viewDate, String divOrder, Dashboard dashboard, Project project) {
+	public DashboardIssueRecent(Integer viewDate, String divOrder, Dashboard dashboard, 
+			Integer isSave, String unitPeriod, Project project) {
 		this.viewDate = viewDate;
 		this.divOrder = divOrder;
 		this.dashboard = dashboard;
 		this.project = project;
+		this.isSave = isSave;
+		this.unitPeriod = unitPeriod;
 	}
 }

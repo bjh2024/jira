@@ -147,4 +147,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
 	private List<TeamMembers> TeamMembersList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
+	private List<ProjectLogData> projectLogDataList;
 }

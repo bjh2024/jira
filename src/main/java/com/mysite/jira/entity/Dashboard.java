@@ -75,4 +75,6 @@ public class Dashboard {
 	@OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
 	private List<DashboardLikeMembers> likeMembersList;
 	
+	@OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
+	private List<DashboardAuth> dashboardAuthList;
 }

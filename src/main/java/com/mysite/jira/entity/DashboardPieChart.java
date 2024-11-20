@@ -25,6 +25,10 @@ public class DashboardPieChart {
 	@NotNull
 	private String divOrder;
 	
+	@Column
+	@NotNull
+	private Integer isSave;
+	
 	@ManyToOne
 	private Dashboard dashboard;
 	
@@ -36,10 +40,11 @@ public class DashboardPieChart {
 	
 	@Builder
 	public DashboardPieChart(String divOrder, Dashboard dashboard, Project project,
-			DashboardCol dashboardCol) {
+			DashboardCol dashboardCol, Integer isSave) {
 		this.divOrder = divOrder;
 		this.dashboard = dashboard;
 		this.project = project;
+		this.isSave = isSave;
 		this.dashboardCol = dashboardCol;
 	}
 }

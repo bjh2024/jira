@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FilterIssueUpdate {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FilterIssueUpdate_seq")
-	@SequenceGenerator(name = "FilterIssueUpdate_seq", sequenceName = "FilterIssueUpdate_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_issue_update_seq")
+	@SequenceGenerator(name = "filter_issue_update_seq", sequenceName = "filter_issue_update_seq", allocationSize = 1)
 	private Integer idx; 
 	
 	@ManyToOne

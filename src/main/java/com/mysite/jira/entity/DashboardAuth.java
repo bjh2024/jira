@@ -43,15 +43,19 @@ public class DashboardAuth {
 	private Team team;
 	
 	@ManyToOne
+	private Dashboard dashboard;
+	
+	@ManyToOne
 	private Account account;
 	
 	@Builder
 	public DashboardAuth(Integer type, Integer projectRole, Project project,
-			Team team, Account account) {
+			Team team, Account account, Dashboard dashboard) {
 		this.type = type;
 		this.projectRole = projectRole;
 		this.project = project;
 		this.team = team;
 		this.account = account;
+		this.dashboard = dashboard;
 	}
 }
