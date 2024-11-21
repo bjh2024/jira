@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DashboardIssueFilterCol {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_col_seq")
-	@SequenceGenerator(name = "filter_col_seq", sequenceName = "filter_col_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dash_filter_col_seq")
+	@SequenceGenerator(name = "dash_filter_col_seq", sequenceName = "dash_filter_col_seq", allocationSize = 1)
 	private Integer idx;
 	
 	@Column
@@ -38,7 +38,5 @@ public class DashboardIssueFilterCol {
 		this.dashboardIssueFilter = dashboardIssueFilter;
 		this.dashboardCol = dashboardCol;
 	} 
-	
-	
 	
 }
