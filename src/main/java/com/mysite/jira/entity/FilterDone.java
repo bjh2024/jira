@@ -1,7 +1,5 @@
 package com.mysite.jira.entity;
 
-import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,14 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class FilterDone {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_done_seq")
@@ -34,11 +30,11 @@ public class FilterDone {
 	@ColumnDefault("0")
 	@Min(0)
 	@Max(1)
-	private Integer	isConpleted;
+	private Integer	isCompleted;
 
 	@Builder
-	public FilterDone(Filter filter,Integer isConpleted) {
+	public FilterDone(Filter filter,Integer isCompleted) {
 		this.filter = filter;
-		this.isConpleted = isConpleted;
+		this.isCompleted = isCompleted;
 	}
 }
