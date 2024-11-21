@@ -1,7 +1,7 @@
 package com.mysite.jira;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -13,11 +13,14 @@ import com.mysite.jira.entity.ChatMembers;
 import com.mysite.jira.entity.ChatMessage;
 import com.mysite.jira.entity.ChatRoom;
 import com.mysite.jira.entity.ChatUnreadList;
+import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.ChatMembersRepository;
 import com.mysite.jira.repository.ChatMessageRepository;
 import com.mysite.jira.repository.ChatRoomRepository;
 import com.mysite.jira.repository.ChatUnreadListRepository;
+import com.mysite.jira.service.IssueService;
 
 @SpringBootTest
 class JiraApplicationTests {
@@ -122,25 +125,18 @@ class JiraApplicationTests {
 				.build();
 		this.chatUnreadListRepository.save(chatUnreadList);
 	}
-
 	
+	@Autowired
+	private IssueService issueService;
 	
 	@Test
 	void test() {
+		List<Issue> issueList = this.issueService.getIssuesByProjectIdx(1);
+		for(int i = 0; i < issueList.size(); i++) {
+			String issueType = this.issueService.getIssueTypeById(issueList.get(i).getIssueType().getIdx()).getName();
+			System.out.println(issueList.get(i).getName() + " " + issueType);
+		}
 		
-		// insertAccount();
-		
-		// insertChatRoom();
-		
-		// insertChatMessage();
-		
-		// insertChatMembers();
-		
-		// insertChatUnreadList();
-		
-		Optional<Account> oa = this.accountRepository.findById(2);
-		
-		assertEquals("김대완", oa.get().getName());
 	}
 }
 

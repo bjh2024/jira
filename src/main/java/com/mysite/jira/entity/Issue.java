@@ -79,6 +79,9 @@ public class Issue {
 	@ManyToOne
 	private IssuePriority issuePriority;
 	
+	@ManyToOne
+	private Jira jira;
+	
 	@Builder
 	public Issue(String key, String name, String content, LocalDateTime createDate, LocalDateTime editDate,
 			LocalDateTime finishDate, LocalDateTime deadlineDate, LocalDateTime clickedDate, Integer divOrder,
