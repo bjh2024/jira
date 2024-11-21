@@ -352,6 +352,10 @@
 	padding-top: 10px;
 }
 
+.item_lnb_main> div:nth-of-type(1){
+	padding-left: 16px;
+}
+
 .lnb_main_item > div:nth-of-type(1){
 	padding-left: 16px;
 }
@@ -433,10 +437,6 @@
 	display: flex;
 	gap: 12px;
 	align-items: center;
-}
-
-.recent_main .item_lnb_main:nth-of-type(1) {
-	border: none;
 }
 
 .my_assignment_main,

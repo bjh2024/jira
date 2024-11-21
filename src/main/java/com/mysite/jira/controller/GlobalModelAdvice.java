@@ -30,6 +30,16 @@ public class GlobalModelAdvice {
 		if (!uri.contains("/project/create")) {
 			model.addAttribute("leaders", leaders);
 		}
+		
 	}
-
+	
+	@ModelAttribute
+	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		
+		if(uri.contains("/project")) {
+		}
+		
+	}
+	
 }
