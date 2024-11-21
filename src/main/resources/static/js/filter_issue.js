@@ -9,16 +9,13 @@ document.querySelector("body").addEventListener("click", function(e) {
 	// 열린 메뉴가 있다면 그 메뉴의 show 클래스를 제거하고 스타일 초기화
 	if (menuWithShow) {
 		menuWithShow.classList.remove("show");  // 열린 메뉴 숨기기
-		console.log("작동 1")
 		if (menuBoxWithActive) {
-			console.log("작동 2")
 			menuBoxWithActive.classList.remove("active");  // 활성화된 메뉴 스타일 초기화
 		}
 		return;
 	}
 	// 이미 열린 .filter_issue_box를 클릭한 경우 아무 작업도 하지 않음
 	if (menuWithShow && menuWithShow.contains(e.target)) {
-	    console.log("작동")
 		return;
 	}
 
