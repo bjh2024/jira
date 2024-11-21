@@ -17,13 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DashboardIssueFilterCol {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_col_seq")
-	@SequenceGenerator(name = "filter_col_seq", sequenceName = "filter_col_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dashboad_filter_col_seq")
+	@SequenceGenerator(name = "dashboad_filter_col_seq", sequenceName = "dashboad_filter_col_seq", allocationSize = 1)
 	private Integer idx;
-	
-	@Column
-	@NotNull
-	private Integer isSave;
 	
 	@ManyToOne
 	private DashboardIssueFilter dashboardIssueFilter;
@@ -32,9 +28,8 @@ public class DashboardIssueFilterCol {
 	private  DashboardCol dashboardCol;
 
 	@Builder
-	public DashboardIssueFilterCol(Integer isSave, DashboardIssueFilter dashboardIssueFilter,
+	public DashboardIssueFilterCol(DashboardIssueFilter dashboardIssueFilter,
 			DashboardCol dashboardCol) {
-		this.isSave = isSave;
 		this.dashboardIssueFilter = dashboardIssueFilter;
 		this.dashboardCol = dashboardCol;
 	} 
