@@ -21,7 +21,7 @@ public class BoardMainService {
 	private final IssueTypeRepository issueTypeRepository;
 	private final ProjectRepository projectRepository; 
 	
-	
+	// board_main 
 	public List<Issue> getIssuesByProjectIdx(Integer idx){
 		return this.issueRepository.findIssuesByProjectIdx(idx);
 	}
@@ -35,6 +35,7 @@ public class BoardMainService {
 		}
 	}
 	
+	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
 		Optional<Project> projectName = this.projectRepository.findById(idx);
 		if(projectName.isPresent()) {
