@@ -27,7 +27,7 @@ public class IssuePriority {
 	@NotNull
 	private String name;
 	
-	@Column(columnDefinition = "VARCHAR2(300)")
+	@Column(columnDefinition = "VARCHAR2(4000)")
 	@NotNull
 	private String iconFileName;
 	

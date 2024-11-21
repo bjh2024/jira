@@ -26,42 +26,130 @@
 	                    </div>
 						<div class="attached-user-body">
 							<div class="attached-user-bar">
-								<span class="attached-user-checkbox"></span>
+								<span class="attached-headerwindow-checkbox"></span>
 								<span class="attached-user-icon" style="height: 24px;">
 									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png">
 								</span>
 								<span style="margin-bottom: 2px; margin-left: -1px;">다현</span>
 							</div>
 							<div class="attached-user-bar">
-								<span class="attached-user-checkbox"></span>
+								<span class="attached-headerwindow-checkbox"></span>
 								<span class="attached-user-icon" style="height: 24px;">
 									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png">
 								</span>
 								<span style="margin-bottom: 2px; margin-left: -1px;">김대완</span>
 							</div>
 							<div class="attached-user-bar">
-								<span class="attached-user-checkbox"></span>
+								<span class="attached-headerwindow-checkbox"></span>
 								<span class="attached-user-icon" style="height: 24px;">
 									<img class="attached-user-iconimg" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png">
 								</span>
 								<span style="margin-bottom: 2px; margin-left: -1px;">방준혁</span>
 							</div>
 						</div>
-						<div class="attached-user-resetbox">
-							<div class="attached-user-resetbtn">
+						<div class="attached-headerwindow-resetbox">
+							<div class="attached-headerwindow-resetbtn">
 								<span>선택 항목 지우기</span>
 							</div>
 						</div>
 					</div>
-					<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}"></span>
+					<span style="height: 16px;"><img class="attached-headerbtn-icon" th:src="@{/images/user_icon.svg}"></span>
 					<span class="attached-headerbtn-value">추가한 사용자</span>
 				</button>
 				<button class="attached-headerbtn">
-					<span style="height: 16px;"><img th:src="@{/images/file_icon.svg}"></span>
+					<div class="attached-headerwindow">
+						<div class="attached-headerwindow-body">
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span>
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #CD519D;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><circle cx="8.667" cy="8.667" r="2" fill="inherit"></circle><path fill="inherit" d="m6.667 17.333 2.666-2.666L12 17.333z"></path><path fill="inherit" d="m14.667 12 2.666 2.933v2.4h-8z"></path></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">이미지</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span> 
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #1D7AFC;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><rect width="10" height="2" x="7" y="8" fill="inherit" rx="1"></rect><rect width="10" height="2" x="7" y="11" fill="inherit" rx="1"></rect><rect width="5" height="2" x="7" y="14" fill="inherit" rx="1"></rect></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">문서</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span> 
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #C9372C;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><rect width="10" height="2" x="7" y="8" fill="inherit" rx="1"></rect><path fill="inherit" d="M16.187 16h-3.373c-.45 0-.814-.222-.814-.497v-4.006c0-.275.364-.497.814-.497h3.373c.45 0 .813.222.813.497v4.006c0 .275-.364.497-.813.497"></path><rect width="4" height="2" x="7" y="11" fill="inherit" rx="1"></rect><rect width="4" height="2" x="7" y="14" fill="inherit" rx="1"></rect></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">PDF</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span>
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #E56910;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><rect width="2" height="3" x="8" y="12" fill="inherit" rx="1"></rect><rect width="2" height="5" x="11" y="10" fill="inherit" rx="1"></rect><rect width="2" height="7" x="14" y="8" fill="inherit" rx="1"></rect></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">프레젠테이션</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span>
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #22A06B;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><rect width="4" height="2" x="7" y="8" fill="inherit" rx="1"></rect><rect width="4" height="2" x="7" y="11" fill="inherit" rx="1"></rect><rect width="4" height="2" x="13" y="11" fill="inherit" rx="1"></rect><rect width="4" height="2" x="7" y="14" fill="inherit" rx="1"></rect><rect width="4" height="2" x="13" y="14" fill="inherit" rx="1"></rect><rect width="4" height="2" x="13" y="8" fill="inherit" rx="1"></rect></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">스프레드시트</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span>
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #2898BD;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill-rule="evenodd"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><path fill="inherit" d="M16.37 14.954 14 13.807v-3.613l2.37-1.148c.285-.138.63.05.63.343v5.222c0 .293-.345.481-.63.343"></path><rect width="6" height="6" x="7" y="9" fill="inherit" rx="1"></rect></g></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">동영상</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span class="attached-headerwindow-checkbox"></span>
+								<span class="attached-headerwindow-icon" style="height: 24px; color: #8270DB;">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><rect width="16" height="16" x="4" y="4" fill="currentcolor" rx="2"></rect><path fill="inherit" d="M16 9.283V13.6h-.003A1.5 1.5 0 1 1 14.5 12q.264.001.5.085v-2.08l-4 .431V14.6h-.003A1.5 1.5 0 0 1 8 14.5a1.5 1.5 0 0 1 2-1.415V9.034c0-.238.186-.451.432-.478l5.136-.553a.38.38 0 0 1 .432.384z"></path></svg>
+								</span>
+								<span style="margin-bottom: 2px; margin-left: -1px;">오디오</span>
+							</div>
+						</div>
+						<div class="attached-headerwindow-resetbox">
+							<div class="attached-headerwindow-resetbtn">
+								<span>선택 항목 지우기</span>
+							</div>
+						</div>
+					</div>
+					<span style="height: 16px;"><img class="attached-headerbtn-icon" th:src="@{/images/file_icon.svg}"></span>
 					<span class="attached-headerbtn-value">첨부 파일 유형</span>
 				</button>
 				<button class="attached-headerbtn">
-					<span style="height: 16px;"><img th:src="@{/images/calender_icon_small.svg}"></span>
+					<div class="attached-headerwindow">
+						<div class="attached-headerwindow-body">
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">오늘</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">어제</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">지난 7일</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">지난 30일</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">이번 달</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">올해(2024)</span>
+							</div>
+							<div class="attached-headerwindow-bar">
+								<span style="margin-bottom: 2px; margin-left: -4px;">지난해(2023)</span>
+							</div>
+						</div>
+						<div class="attached-headerwindow-resetbox">
+							<div class="attached-headerwindow-resetbtn">
+								<span>선택 항목 지우기</span>
+							</div>
+						</div>
+					</div>
+					<span style="height: 16px;"><img class="attached-headerbtn-icon" th:src="@{/images/calender_icon_small.svg}"></span>
 					<span class="attached-headerbtn-value">추가된 날짜</span>
 				</button>
 			</div>

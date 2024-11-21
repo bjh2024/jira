@@ -1,13 +1,11 @@
 package com.mysite.jira.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DashboardIssueFilterCol {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dashboad_filter_col_seq")
-	@SequenceGenerator(name = "dashboad_filter_col_seq", sequenceName = "dashboad_filter_col_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dash_filter_col_seq")
+	@SequenceGenerator(name = "dash_filter_col_seq", sequenceName = "dash_filter_col_seq", allocationSize = 1)
+
 	private Integer idx;
 	
 	@ManyToOne
@@ -33,7 +32,5 @@ public class DashboardIssueFilterCol {
 		this.dashboardIssueFilter = dashboardIssueFilter;
 		this.dashboardCol = dashboardCol;
 	} 
-	
-	
 	
 }
