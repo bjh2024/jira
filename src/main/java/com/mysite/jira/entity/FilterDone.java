@@ -1,7 +1,5 @@
 package com.mysite.jira.entity;
 
-import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

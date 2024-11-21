@@ -12,9 +12,10 @@
 					</div>
 					<div class="my_app_content item_lnb">
 						<div class="account_jira_list">
-							<div class="active">
-								<div>da</div>
+							<div th:each="leader: ${leaders}">
+								<div th:text="${leader}"></div>
 							</div>
+
 						</div>
 						<div class="my_app_content_detail">
 							<div class="detail_header">
@@ -134,16 +135,18 @@
 						</div>
 						<div class="my_assignment_main show">
 							<div class="item_lnb_main">
-								<div>해야 할 일</div>
 								<div class="lnb_main_item">
-									<a href="#">
-										<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"
-											alt="" width="24" height="24">
-										<div>
-											<h4>버그다!</h4>
-											<p>TSYR-34 · 하이</p>
-										</div>
-									</a>
+									<div>해야 할 일</div>
+									<div class="lnb_main_item">
+										<a href="#">
+											<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"
+												alt="" width="24" height="24">
+											<div>
+												<h4>버그다!</h4>
+												<p>TSYR-34 · 하이</p>
+											</div>
+										</a>
+									</div>
 								</div>
 							</div>
 							<div class="item_lnb_foot">

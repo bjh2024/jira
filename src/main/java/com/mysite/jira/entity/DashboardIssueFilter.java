@@ -51,6 +51,7 @@ public class DashboardIssueFilter {
 		this.isSave = isSave;
 		this.viewNum = viewNum;
 		this.divOrder = divOrder;
+		this.isSave = isSave;
 		this.dashboard = dashboard;
 		this.filter = filter;
 	}
