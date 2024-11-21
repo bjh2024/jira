@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -35,7 +36,7 @@ public class IssueType {
 	private String content;
 	
 	@Column(columnDefinition = "VARCHAR2(2000)")
-	private String content2;
+	private String subContent;
 	
 	@Column(columnDefinition = "VARCHAR2(300)")
 	@NotNull
@@ -55,11 +56,14 @@ public class IssueType {
 			Project project) {
 		this.name = name;
 		this.content = content;
-		this.content2 = content2;
+		this.subContent = content2;
 		this.iconFilename = iconFilename;
 		this.grade = grade;
 		this.project = project;
 	}
+	
+	@OneToOne(mappedBy = "issueType")
+	private IssueTypeExist issTypeExist;
 	
 	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
