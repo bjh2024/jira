@@ -20,7 +20,7 @@ import com.mysite.jira.repository.ChatMembersRepository;
 import com.mysite.jira.repository.ChatMessageRepository;
 import com.mysite.jira.repository.ChatRoomRepository;
 import com.mysite.jira.repository.ChatUnreadListRepository;
-import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.BoardMainService;
 
 @SpringBootTest
 class JiraApplicationTests {
@@ -127,13 +127,13 @@ class JiraApplicationTests {
 	}
 	
 	@Autowired
-	private IssueService issueService;
+	private BoardMainService boardMainService;
 	
 	@Test
 	void test() {
-		List<Issue> issueList = this.issueService.getIssuesByProjectIdx(1);
+		List<Issue> issueList = this.boardMainService.getIssuesByProjectIdx(1);
 		for(int i = 0; i < issueList.size(); i++) {
-			String issueType = this.issueService.getIssueTypeById(issueList.get(i).getIssueType().getIdx()).getName();
+			String issueType = this.boardMainService.getIssueTypeById(issueList.get(i).getIssueType().getIdx()).getName();
 			System.out.println(issueList.get(i).getName() + " " + issueType);
 		}
 		
