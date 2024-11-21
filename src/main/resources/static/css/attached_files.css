@@ -91,6 +91,11 @@ body{
 	z-index: 1;
 	border-radius: 3px;
 	box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.13), 0 4px 11px rgba(9, 30, 66, 0.13);
+	display: none;
+}
+
+.attached-headerwindow-user.show{
+	display: block;
 }
 
 .attached-user-searchbox{
@@ -154,7 +159,7 @@ body{
 	padding-left: 14px;
 }
 
-.attached-user-checkbox{
+.attached-headerwindow-checkbox{
 	width: 14px;
 	height: 14px;
 	background-color: #091E420F;
@@ -169,23 +174,74 @@ body{
 	border-radius: 50%;
 }
 
-.attached-user-resetbox{
-	width: 322px;
+.attached-headerwindow-resetbox{
 	height: 49px;
 	padding: 8px;
+	
 }
 
-.attached-user-resetbtn{
-	width: 129px;
+.attached-headerwindow-resetbtn{
+	width: 130px;
 	height: 32px;
-	padding: 0px 10px;
+	padding: 0px 12px;
 	display: flex;
 	align-items: center;
 	border-radius: 3px;
 }
 
-.attached-user-resetbtn:hover{
+.attached-headerwindow-resetbtn:hover{
 	background-color: #091E420F;
+}
+
+.attached-headerwindow{
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	width: 220px;
+	height: 289px;
+	background-color: white;
+	z-index: 1;
+	border-radius: 3px;
+	box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.13), 0 4px 11px rgba(9, 30, 66, 0.13);
+	display: none;
+}
+
+.attached-headerwindow.show{
+	display: block;
+}
+
+.attached-headerwindow-body{
+	width: 220px;
+	height: 240px;
+	padding: 8px 0px;
+	border-bottom: 1px solid #091E422F;
+}
+
+.attached-headerwindow-bar{
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	padding: 4px 12px 4px 16px;
+}
+
+.attached-headerwindow-bar:hover{
+	background-color: #091E420F;
+	border-left: 2px solid #0C66E4;
+	padding-left: 14px;
+}
+
+.attached-headerwindow-checkbox{
+	width: 14px;
+	height: 14px;
+	background-color: #091E420F;
+	border: 2px solid #091E422F;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+
+.attached-headerwindow-icon{
+	fill: white;
 }
 
 .attached-headerbtn-value{
