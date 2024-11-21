@@ -37,8 +37,7 @@ public class Issue {
 	private String name;
 	
 	@Column(columnDefinition = "VARCHAR2(4000)")
-	@NotNull
-	private String conetent;
+	private String content;
 	
 	@ColumnDefault("sysdate")
 	@Column
@@ -81,13 +80,13 @@ public class Issue {
 	private IssuePriority issuePriority;
 	
 	@Builder
-	public Issue(String key, String name, String conetent, LocalDateTime createDate, LocalDateTime editDate,
+	public Issue(String key, String name, String content, LocalDateTime createDate, LocalDateTime editDate,
 			LocalDateTime finishDate, LocalDateTime deadlineDate, LocalDateTime clickedDate, Integer divOrder,
 			Project project, IssueType issueType, IssueStatus issueStatus, Account manager, Account reporter,
 			IssuePriority issuePriority) {
 		this.key = key;
 		this.name = name;
-		this.conetent = conetent;
+		this.content = content;
 		this.createDate = createDate;
 		this.editDate = editDate;
 		this.finishDate = finishDate;
