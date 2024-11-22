@@ -19,3 +19,30 @@ document.querySelectorAll(".attached-file-box").forEach(function(box, index){
 		}
 	})
 });
+
+document.querySelector("body").addEventListener("click", function(e) {
+	
+	document.querySelector(".attached-headerwindow.show")?.classList.remove("show");
+	document.querySelector(".attached-headerwindow-user.show")?.classList.remove("show");
+	
+	const removeBg = document.querySelectorAll(".attached-headerbtn");
+	const removeColor = document.querySelectorAll(".attached-headerbtn-icon");
+	
+	for(let i = 0; i < removeBg.length; i++){
+		const bgItem = removeBg.item(i);
+		const colorItem = removeColor.item(i);
+		colorItem.style.filter = "none";
+		bgItem.style.backgroundColor = "#091E420F";
+		bgItem.style.color = "#172B4D";
+	}
+	
+	const headerBtnItem = e.target.closest(".attached-headerbtn");
+	
+	if(headerBtnItem !== null){
+		headerBtnItem.children[1].style.filter = "invert(100%) sepia(0%) saturate(14%) hue-rotate(193deg) brightness(103%) contrast(103%)";
+		headerBtnItem.style.backgroundColor = "#2C3E5D";
+		headerBtnItem.style.color = "white";
+		headerBtnItem.children[0].classList.add("show");
+	}
+
+});

@@ -1,6 +1,11 @@
-<html layout:decorate="~{layout}">
+<!doctype html>
+<html lang="ko">
+	
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+	<title>jira_project</title>
 </head>
 <div layout:fragment="content" style="display: flex;">
 	<div class="login-container">
@@ -59,9 +64,9 @@
 				</button>
 
 				<div class="signin">
-					<a href="check_authcode">로그인할 수 없습니까?</a>
+					<a th:href="@{/account/check_authcode}">로그인할 수 없습니까?</a>
 					<a style="color: black; margin: 0 4px;">•</a>
-					<a href="signup">계정 만들기</a>
+					<a th:href="@{/account/signup}">계정 만들기</a>
 				</div>
 
 				<hr class="line">

@@ -55,5 +55,8 @@ public class Jira {
 	// Filter FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<Filter> filterList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<Issue> issueList; 
 
 }

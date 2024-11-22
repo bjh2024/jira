@@ -27,14 +27,14 @@ public class IssuePriority {
 	@NotNull
 	private String name;
 	
-	@Column(columnDefinition = "VARCHAR2(300)")
+	@Column(columnDefinition = "VARCHAR2(4000)")
 	@NotNull
-	private String iconFilename;
+	private String iconFileName;
 	
 	@Builder
-	public IssuePriority(String name, String iconFilename) {
+	public IssuePriority(String name, String iconFileName) {
 		this.name = name;
-		this.iconFilename = iconFilename;
+		this.iconFileName = iconFileName;
 	}
 	
 	@OneToMany(mappedBy = "issuePriority", cascade = CascadeType.REMOVE) 

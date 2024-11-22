@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatEmojiRecord {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chatEmojiRecord_seq")
-	@SequenceGenerator(name = "chatEmojiRecord_seq", sequenceName = "chatEmojiRecord_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_emoji_seq")
+	@SequenceGenerator(name = "chat_emoji_seq", sequenceName = "chat_emoji_seq", allocationSize = 1)
+
 	private Integer idx; 
 	
 	@Column(columnDefinition = "VARCHAR2(40)")

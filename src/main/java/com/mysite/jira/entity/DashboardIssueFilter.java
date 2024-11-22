@@ -33,6 +33,10 @@ public class DashboardIssueFilter {
 	@NotNull
 	private String divOrder;
 	
+	@Column
+	@NotNull
+	private Integer isSave;
+	
 	@ManyToOne
 	private Dashboard dashboard;
 	
@@ -43,10 +47,11 @@ public class DashboardIssueFilter {
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 	
 	@Builder
-	public DashboardIssueFilter(Integer viewNum, String divOrder, Dashboard dashboard, Filter filter) {
-		super();
+	public DashboardIssueFilter(Integer viewNum, String divOrder, Dashboard dashboard, Filter filter, Integer isSave) {
+		this.isSave = isSave;
 		this.viewNum = viewNum;
 		this.divOrder = divOrder;
+		this.isSave = isSave;
 		this.dashboard = dashboard;
 		this.filter = filter;
 	}

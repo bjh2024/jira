@@ -5,7 +5,7 @@
 }
 
 .jira-navbar {
-	height: 56px;
+	height: 48px;
 	background-color: white;
 
 	font-size: 14px;
@@ -70,7 +70,7 @@
 }
 
 .account_jira_list>div {
-	padding: 0 12px;
+	padding: 4px 12px;
 	border-left: 2px solid transparent;
 	border-right: 2px solid transparent;
 
@@ -348,14 +348,20 @@
 	z-index: 999;
 }
 
-.item_lnb_main {
-	padding-top: 20px;
-	padding-bottom: 6px;
+.item_lnb_main{
+	padding-top: 10px;
 }
 
-.item_lnb_main>div:nth-of-type(1) {
-	padding-bottom: 6px;
+.item_lnb_main> div:nth-of-type(1){
 	padding-left: 16px;
+}
+
+.lnb_main_item > div:nth-of-type(1){
+	padding-left: 16px;
+}
+
+.item_lnb_main>.lnb_main_item >div:nth-of-type(1) {
+	padding-bottom: 6px;
 	font-size: 12px;
 	font-weight: bold;
 }
@@ -433,10 +439,6 @@
 	align-items: center;
 }
 
-.recent_main .item_lnb_main:nth-of-type(1) {
-	border: none;
-}
-
 .my_assignment_main,
 .recent_main,
 .board_main {
@@ -447,10 +449,6 @@
 .recent_main.show,
 .board_main.show {
 	display: block;
-}
-
-.item_lnb_main:nth-of-type(1) {
-	border: none;
 }
 
 .item_lnb_main:nth-of-type(2) {

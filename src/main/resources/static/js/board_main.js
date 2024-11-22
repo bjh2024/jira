@@ -4,13 +4,32 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 	
 	document.querySelector(".sidebarbtn.active")?.classList.remove("active");
+	document.querySelector(".sidebarbtn-filter.active")?.classList.remove("active");
+	document.querySelector(".sidebarbtn-other.active")?.classList.remove("active");
 	document.querySelector(".btnwindow.show")?.classList.remove("show");
 	document.querySelector(".btnwindow-filter.show")?.classList.remove("show");
 
-	const sidebarItem = e.target.closest(".sidebarbtn");
-	if(sidebarItem !== null){
-		sidebarItem.classList.add("active");
-		sidebarItem.children[0].classList.add("show");
+	document.querySelector(".sidebarbtnicon-filter").style.filter = "none";
+	document.querySelector(".sidebarbtnicon-other").style.filter = "none";
+	
+	const sidebarGroupItem = e.target.closest(".sidebarbtn-group");
+	const sidebarFilterItem = e.target.closest(".sidebarbtn-filter");
+	const sidebarOtherItem = e.target.closest(".sidebarbtn-other");
+	
+	if(sidebarGroupItem !== null){
+		sidebarGroupItem.children[0].classList.add("show");
+	}
+	
+	if(sidebarFilterItem !== null){
+		sidebarFilterItem.classList.add("active");
+		sidebarFilterItem.children[0].classList.add("show");
+		document.querySelector(".sidebarbtnicon-filter").style.filter = "invert(100%) sepia(1%) saturate(7498%) hue-rotate(57deg) brightness(102%) contrast(102%)";
+	}
+	
+	if(sidebarOtherItem !== null){
+		sidebarOtherItem.classList.add("active");
+		sidebarOtherItem.children[0].classList.add("show");
+		document.querySelector(".sidebarbtnicon-other").style.filter = "invert(100%) sepia(1%) saturate(7498%) hue-rotate(57deg) brightness(102%) contrast(102%)";
 	}
 });
 

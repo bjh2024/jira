@@ -52,11 +52,11 @@ public class IssueType {
 	private Project project;
 	
 	@Builder
-	public IssueType(String name, String content, String content2, String iconFilename, Integer grade,
+	public IssueType(String name, String content, String subContent, String iconFilename, Integer grade,
 			Project project) {
 		this.name = name;
 		this.content = content;
-		this.subContent = content2;
+		this.subContent = subContent;
 		this.iconFilename = iconFilename;
 		this.grade = grade;
 		this.project = project;
