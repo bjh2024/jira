@@ -4,17 +4,19 @@ body{
 
 .attached-files-container{
 	width: calc(100% - 240px);
-	background-color: #F1F2F4;
-	margin-left: -1px;
+	background-color: white;
+	position: relative;
+	border: 1px solid #091E420F;
 }
 
 .attached-files-headerbar{
 	display: flex;
-	height:40px;
-	margin-top: 11px;
-	margin-left: 25px;
-	margin-bottom: 16px;
-	margin-right: 26px;
+	height:80px;
+	padding-top: 14px;
+	padding-left: 23px;
+	padding-bottom: 16px;
+	padding-right: 26px;
+	background-color: #F1F2F4;
 	justify-content: space-between;
 }
 
@@ -28,11 +30,11 @@ body{
 	display: flex;
 	align-items: center;
 	box-sizing: border-box;
-	border: 1px solid #7A869A;
+	border: 1px solid rgba(9, 30, 66, 0.13);
 	border-radius: 3px;
 	background-color: white;
 	color: #626f86;
-	width: 197px;
+	width: 184px;
 	height: 32px;
 }
 
@@ -43,8 +45,8 @@ body{
 .attached-searchkey{
 	outline: 0;
 	border: 0;
-	width: 159px;
-	height: 20px;
+	width: 160px;
+	height: 28px;
 	padding: 6px 4px 6px 6px;
 	color: #626f86;
 	font-size: 14px;
@@ -55,30 +57,36 @@ body{
 	color: #626F86;
 	width: 16px;
 	height: 16px;
-	margin-left:12px;
+	margin-left: 6px;
 }
 
 .attached-searchbtn-img{
-	filter: invert(41%) sepia(29%) saturate(328%) hue-rotate(179deg) brightness(96%) contrast(89%);
+	filter: invert(14%) sepia(5%) saturate(861%) hue-rotate(191deg) brightness(95%) contrast(91%);
 	width: 16px;
 	height: 16px;
 }
 
 .attached-headerbtn{
 	height: 32px;
-	padding: 0px 10px;
+	padding-left: 10px;
+	padding-right: 9px;
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	gap: 6px;
 	font-size: 14px;
 	color: #172B4D;
-	background-color: #091E420F;
+	background-color: #F1F2F4;
+	border: 1px solid #091E4224;
 	border-radius: 3px;
 	position: relative;
 }
 
-.attached-headerbtn > span > img{
-	margin-left: -2px;
+.attached-headerbtn:hover{
+	background-color: #091E0E24;
+}
+
+.attached-headerbtn-icon{
+	margin-left: 1px;
 	filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);
 }
 
@@ -151,6 +159,7 @@ body{
 	align-items: center;
 	gap: 11px;
 	padding: 4px 12px 4px 16px;
+	color: #292A2E;
 }
 
 .attached-user-bar:hover{
@@ -223,6 +232,7 @@ body{
 	align-items: center;
 	gap: 9px;
 	padding: 4px 12px 4px 16px;
+	color: #292A2E;
 }
 
 .attached-headerwindow-bar:hover{
@@ -250,10 +260,11 @@ body{
 }
 
 .attached-files-body-container{
-	padding: 16px 26px;
+	padding: 18px 24px;
 	display: flex;
-	align-items: center;
 	gap: 16px;
+	background-color: #F1F2F4;
+	height: 100%;
 }
 
 .attached-file-box{

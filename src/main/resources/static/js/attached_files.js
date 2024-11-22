@@ -32,6 +32,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 		const bgItem = removeBg.item(i);
 		const colorItem = removeColor.item(i);
 		colorItem.style.filter = "none";
+		colorItem.style.filter = "invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%)";
 		bgItem.style.backgroundColor = "#091E420F";
 		bgItem.style.color = "#172B4D";
 	}

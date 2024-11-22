@@ -16,7 +16,6 @@ body{
 	padding-left: 23px;
 	padding-bottom: 16px;
 	padding-right: 26px;
-	justify-content: space-between;
 	background-color: #F1F2F4;
 }
 
@@ -1270,10 +1269,56 @@ body{
 	border: 1px solid #091E422F;
 	font-size: 14px;
 	cursor: pointer;
+	position: relative;
 }
 
 .issuedetail-insertbtn:hover{
 	background-color: #0B120E24;
+}
+
+.issuedetail-insertbtn.active{
+	background-color: #E9F2FE;
+	color: #1868DB;
+	border-color: #1868DB;
+}
+
+.insertbtn-icon{
+	filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);
+}
+
+.issuedetail-insertbtn.active .insertbtn-icon{
+	filter: invert(24%) sepia(49%) saturate(4745%) hue-rotate(210deg) brightness(95%) contrast(81%);
+}
+
+.issuedetail-insertwindow{
+	position: absolute;
+	top: 40px;
+	left: -1px;
+	width: 272px;
+	background-color: white;
+	padding: 6px 0px;
+	border-radius: 3px;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	display: none;
+}
+
+.issuedetail-insertwindow.show{
+	display: block;
+}
+
+.insertwindow-btn{
+	width: 272px;
+	height: 40px;
+	padding: 8px 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 14px;
+	color: #292A2E;
+}
+
+.insertwindow-btn:hover{
+	background-color: #0515240F;
 }
 
 .issuedetail-exarea{
@@ -1288,7 +1333,6 @@ body{
 }
 
 .issuedetail-exvalue{
-	display: none;
 	width: 738px;
 	padding: 6px 8px;
 	margin-top: -6px;
@@ -1351,6 +1395,10 @@ body{
 
 .issuedetail-sortbtn:hover{
 	background-color: #091E420F;
+}
+
+.issuedetail-sortbtn.active{
+	transform: scaleY(-1);
 }
 
 .issuedetail-replybox{
@@ -1482,6 +1530,55 @@ body{
 	align-items: center;
 	gap: 5px;
 	padding: 1px 12px 0px 12px;
+	position: relative;
+}
+
+.issuedetail-statuswindow{
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	width: 220px;
+	background-color: white;
+	border-radius: 3px;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	display: none;
+}
+
+.issuedetail-statuswindow.show{
+	display: block;	
+}
+
+.statuswindow-menubox{
+	width: 220px;
+	padding: 8px 0px;
+}
+
+.statuswindow-status{
+	width: 220px;
+	height: 28px;
+	color: #292A2E;
+	background-color: white;
+	display: flex;
+	align-items: center;
+}
+
+.statuswindow-status:hover{
+	background-color: #0515240F;
+	border-left: 2px solid #0C66E4;
+}
+
+.statuswindow-status:hover .statuswindow-title{
+	margin-left: 10px;
+}
+
+.statuswindow-title{
+	height: 16px;
+	font-size: 11px;
+	font-weight: bold;
+	border-radius: 3px;
+	padding: 0px 4px;
+	color: #292A2E;
+	margin-left: 12px;
 }
 
 .issuedetail-graphcontainer{

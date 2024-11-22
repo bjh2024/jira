@@ -708,8 +708,26 @@
 				<div style="padding-left: 24px;">
 					<h1 class="issuedetail-title">버그다!</h1>
 					<div class="issuedetail-insertbtn">
+						<div class="issuedetail-insertwindow">
+							<button class="insertwindow-btn">
+								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/attachment_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px; margin-left: 4px;">첨부 파일</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 24px; margin-bottom: 2px;"><img th:src="@{/images/sub_issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px;">하위 이슈</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px; margin-left: 4px;">연결한 이슈</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 24px; margin-bottom: 2px;"><img th:src="@{/images/web_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px;">웹 링크</span>
+							</button>
+						</div>
 						<span style="height: 16px;">	
-							<img th:src="@{/images/plus_icon_small.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+							<img class="insertbtn-icon" th:src="@{/images/plus_icon_small.svg}">
 						</span>							
 						<span style="margin-bottom: 2px;">추가</span>
 					</div>
@@ -726,7 +744,7 @@
 							<button class="editarea-cancel">취소</button>
 						</div>
 					</div>
-					<span class="issuedetail-exvalue show">버그버그</span>
+					<span class="issuedetail-exvalue">버그버그</span>
 				</div>
 				<div class="issuedetail-activebox">
 					<div style="font-weight: bold; color: #172B4D; margin-top: 75px; margin-bottom: 7px;">활동</div>
@@ -854,6 +872,19 @@
 			<div class="issuedetailbar">
 				<div class="issuedetail-statusbar">
 					<button class="issuedetail-statusbtn">
+						<div class="issuedetail-statuswindow">
+							<div class="statuswindow-menubox">
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #DDDEE1;">해야 할 일</span>
+								</div>
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #DDDEE1;">할일이 많다</span>
+								</div>
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #B3DF72;">완료</span>
+								</div>
+							</div>
+						</div>
 						<span style="margin-bottom: 3px;">진행 중</span>
 						<span style="margin-top: 1px; margin-left: 1px;">
 							<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">

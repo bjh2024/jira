@@ -140,8 +140,6 @@ document.querySelector(".issuedetail-container").addEventListener("mouseup", fun
 
 document.querySelector(".issuedetail-exarea").addEventListener("click", function(e) {
 
-	document.querySelector(".editor-container.show")?.classList.remove("show");
-	document.querySelector(".issuedetail-exvalue")?.classList.add("show");
 	
 	const areaItem = e.target.closest(".issuedetail-exarea");
 	const editorItem = document.querySelector(".editor-container");
@@ -150,13 +148,14 @@ document.querySelector(".issuedetail-exarea").addEventListener("click", function
 
 	if(btnItem !== null && editorItem !== null){
 		document.querySelector(".editor-container").style.display = "none";
+		document.querySelector(".issuedetail-exvalue").style.display = "block";
 		areaItem.style.padding = "6px 8px";
 		return;
 	}
 	
 	if(areaItem !== null){
 		areaItem.children[0].style.display = "block";
-		areaItem.children[1].classList.remove("show");
+		areaItem.children[1].style.display = "none";
 		areaItem.style.padding = "0px";
 		areaItem.children[0].style.marginLeft = "8px";
 	}
@@ -164,8 +163,6 @@ document.querySelector(".issuedetail-exarea").addEventListener("click", function
 
 document.querySelector(".writereplybox").addEventListener("click", function(e) {
 
-	document.querySelector(".editor-container.show")?.classList.remove("show");
-	
 	const areaItem = e.target.closest(".writereplybox");
 	const editorItem = document.querySelector(".editor-container");
 	const btnItem = e.target.closest(".editarea-cancel");
@@ -173,13 +170,14 @@ document.querySelector(".writereplybox").addEventListener("click", function(e) {
 
 	if(btnItem !== null && editorItem !== null){
 		areaItem.children[1].style.display = "none";
+		areaItem.children[2].style.display = "block";
 		return;
 	}
 	
 	if(areaItem !== null){
 		areaItem.children[1].style.display = "block";
 		areaItem.children[1].style.width = `${690}px`;
-		areaItem.children[2].classList.remove("show");
+		areaItem.children[2].style.display = "none";
 	}
 });
 
@@ -210,4 +208,22 @@ document.querySelector(".issuedetail-replylist").addEventListener("click", funct
 		areaItem.children[3].style.display = "none";
 		document.querySelector(".replydetail-content").style.display = "none";
 	}
+});
+
+document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		btn.children[0].classList.toggle("show");
+	})
+});
+
+document.querySelector(".issuedetail-insertbtn").addEventListener("click", function(e){
+	const btnItem = e.target.closest(".issuedetail-insertbtn");
+	const windowItem = btnItem.children[0];
+	btnItem.classList.toggle("active");
+	windowItem.classList.toggle("show");
+});
+
+document.querySelector(".issuedetail-sortbtn").addEventListener("click", function(e){
+	const btnItem = e.target.closest(".issuedetail-sortbtn");
+	btnItem.classList.toggle("active");
 });
