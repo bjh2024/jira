@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -45,7 +46,7 @@ public class GlobalModelAdvice {
 		Project project = boardMainService.getProjectNameById(projectIdx);
 		
 		if(uri.contains("/project")) {
-			model.addAttribute("project", project);
+			// model.addAttribute("project", project);
 		}
 		
 	}

@@ -1,20 +1,39 @@
 .board-header {
 	width: 100%;
-	height: calc(96px + var(--jwm-banner-height, 0px));
-	border: 2px solid #091E4224;
-	border-width: 0 0 2px;
+	height: 146px;
+	border-top: 1px solid #091E4224;
+	border-left: 1px solid #091E4224;
+	border-bottom: 2px solid #091E4224;
 	background-color: #F1F2F4;
-	position: sticky;
-	top: 56px;
+	/* position: sticky;
+	top: 48px; */
 	z-index: 998;
+	border-top-left-radius: 8px;
+	padding-top: 21px;
+	padding-left: 22px;
+	padding-right: 24px;
 }
 
 .myprj-container {
 	margin: 0;
-	padding-top: 24px;
-	padding-left: 24px;
-	padding-right: 24px;
 	height: 71px;
+}
+
+.project-header-getprojects{
+	height: 24px;
+	color: #505258;
+	font-size: 14px;
+	margin-bottom: 7px;
+	display: flex;
+	align-items: center;
+}
+
+.project-titlebox{
+	display: flex; 
+	align-items: center; 
+	justify-content: space-between;
+	margin-left: -1px;
+	margin-bottom: 5px;
 }
 
 .header-titleimg {
@@ -43,16 +62,16 @@
 	margin-top: -1px;
 }
 
-.header-setbgimg {
+.header-setting {
 	display: flex;
 	position: relative;
 	margin-left: 12px;
 }
 
-.header-setbgimgbtn{
+.header-setbtn{
 	display: flex;
 	color: #172B4D;
-	border-radius: 50%;
+	border-radius: 3px;
 	position: relative;
 	width: 32px;
 	height: 32px;
@@ -61,16 +80,16 @@
 	padding: 4px;
 }
 
-.header-setbgimgbtn.active{
+.header-setbtn.active{
 	color: white;
 	background-color: #2C3E5D;
 }
 
-.header-setbgimgbtn:hover {
-	background-color: #091E420F;
+.header-setbtn:hover {
+	background-color: #0515240F;
 }
 
-.header-sebgbox{
+.header-setbgbox{
 	position: absolute;
 	width: 356px;
 	top: 36px;
@@ -81,7 +100,7 @@
 	display: none;
 }
 
-.header-sebgbox.show{
+.header-setbgbox.show{
 	display: block;
 }
 
@@ -183,10 +202,10 @@
 	border: none;
 	display: flex;
 	align-items: center;
-	color: #44546f;
-	height: 36px;
+	color: #505258;
+	height: 56px;
 	font-size: 14px;
-	gap: 13px;
+	gap: 14px;
 	padding: 0;
 	margin-top: 3px;
 	margin-left: 2px;
@@ -199,8 +218,9 @@
 }
 
 .menu-icon-box {
+	height: 56px;
 	display: flex;
-	padding: 8px 3px 8px 3px;
+	padding: 7px 4px 10px 5px;
 	cursor: default;
 }
 
@@ -209,14 +229,22 @@
 	padding-bottom: 5px;
 }
 
+.menu-icon-box:hover .menu-icon {
+	margin-bottom: 4px;
+}
+
 .menu-icon-box:hover .menu-text {
+	margin-bottom: 4px;
+}
+
+.menu-text{
 	margin-bottom: 2px;
 }
 
 .menu-icon {
 	width: 16px;
 	margin-top: 4px;
-	margin-right: 4px;
+	margin-right: 6px;
 }
 
 .menubar-menubtn {

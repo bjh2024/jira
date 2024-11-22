@@ -1,7 +1,11 @@
-<html layout:decorate="~{layout}">
+<!doctype html>
+<html lang="ko">
 
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/signup.css}">
+	<title>jira_project</title>
 </head>
 <div layout:fragment="content" style="display: flex;">
 	<div class="login-container">
@@ -41,10 +45,10 @@
 					<input type="text" placeholder="이메일을 입력하세요" class="borderline">
 				</div>
 				<div class="other-input" name="password">
-					<input type="text" placeholder="비밀번호를 입력하세요" class="borderline">
+					<input type="password" placeholder="비밀번호를 입력하세요" class="borderline">
 				</div>
 				<div class="other-input" name="password2">
-					<input type="text" placeholder="비밀번호가 일치한지 확인해 주세요" class="borderline">
+					<input type="password" placeholder="비밀번호가 일치한지 확인해 주세요" class="borderline">
 				</div>
 				<div>
 					<button class="next-btn" type="button" onclick="location.href='check_authcode'">계속</button>
@@ -67,7 +71,7 @@
 
 				<div class="login">
 					<a href="#">이미 가입하셨나요? </a>
-					<a href="login" style="font-weight: bold;">로그인</a>
+					<a th:href="@{/account/login}" style="font-weight: bold;">로그인</a>
 				</div>
 
 				<hr class="line">
