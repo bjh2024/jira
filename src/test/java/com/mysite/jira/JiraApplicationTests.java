@@ -1,6 +1,5 @@
 package com.mysite.jira;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import com.mysite.jira.entity.ChatMessage;
 import com.mysite.jira.entity.ChatRoom;
 import com.mysite.jira.entity.ChatUnreadList;
 import com.mysite.jira.entity.Issue;
-import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.ChatMembersRepository;
 import com.mysite.jira.repository.ChatMessageRepository;
