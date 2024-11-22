@@ -273,13 +273,6 @@
 							<span>만들기</span>
 						</div>
 						<div class="issuetypeselectbox">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -404,10 +397,11 @@
 									</div>
 								</button>
 							</div>
-								<div class="subissuebox">
+								<div class="subissuebox" style="display: block;">
 									<div class="subissues">
 										<div class="subissueline"></div>
-											<div class="subissuename">
+										<div class="testester">
+										<div class="subissuename">
 											<span>이슈 1의 하위 이슈</span>
 										</div>
 										<div class="subissue-underbox">
@@ -419,6 +413,7 @@
 												<span class="subissue-status">해야 할 일</span>
 												<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
 											</div>
+										</div>
 										</div>
 									</div>
 								</div>
@@ -486,13 +481,6 @@
 							<span>만들기</span>
 						</div>
 						<div class="issuetypeselectbox" style="top: 395px; left: 562px;">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -627,13 +615,6 @@
 						</div>
 						<!--  -->
 						<div class="issuetypeselectbox">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -680,7 +661,7 @@
 			</div>
 		</div>
 	</div>
-<div class="issuedetail-container" style="display: block;">
+<div class="issuedetail-container">
 	<div class="issuedetailbox">
 		<div class="issuedetail-headerbar">
 			<div class="issuekeypathbox">
@@ -699,28 +680,23 @@
 				</div>
 			</div>
 			<div class="issuedetail-menubar">
-				<div class="issuedetail-option">
-					<span style="margin-left: -5px; margin-top: 2px; color: #0C66E4;">
+				<div class="issuedetail-option-observ">
+					<span style="margin-top: 2px; color: #0C66E4;">
 						<img th:src="@{/images/eye_icon.svg}" style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
 					</span>
 					<span style="color: #0C66E4; margin-left: 4px;">2</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 6px;">
+				<div class="issuedetail-option">
 					<span style="margin-top: 2px;">
 						<img th:src="@{/images/thumbsup_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
 					</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 4px;">
+				<div class="issuedetail-option">
 					<span style="margin-top: 2.5px;">
-						<img th:src="@{/images/share_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
+						<img th:src="@{/images/three_dots_icon_small.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 4px;">
-					<span style="margin-top: 2.5px;">
-						<img th:src="@{/images/three_dots_row_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
-					</span>
-				</div>
-				<div class="issuedetail-option issuedetail-off" style="padding: 3px 4px;">
+				<div class="issuedetail-option issuedetail-off">
 					<span style="margin-top: 2.5px;">
 						<img th:src="@{/images/cancel_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
@@ -735,9 +711,9 @@
 						<span style="height: 16px;">	
 							<img th:src="@{/images/plus_icon_small.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 						</span>							
-							<span>추가</span>
+						<span style="margin-bottom: 2px;">추가</span>
 					</div>
-					<div style="font-weight: bold; color: #172B4D; margin-top: 22px;">설명</div>
+					<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명</div>
 					
 				</div>
 				<div class="issuedetail-exarea">
@@ -753,7 +729,7 @@
 					<span class="issuedetail-exvalue show">버그버그</span>
 				</div>
 				<div class="issuedetail-activebox">
-					<div style="font-weight: bold; color: #172B4D; margin-top: 78px; margin-bottom: 2px;">활동</div>
+					<div style="font-weight: bold; color: #172B4D; margin-top: 75px; margin-bottom: 7px;">활동</div>
 					<div class="issuedetail-activebar">
 						<div class="issuedetail-activebtns">
 							<span style="margin-right: 4px;">표시: </span>
@@ -769,7 +745,6 @@
 						</div>
 						<div>
 							<button class="issuedetail-sortbtn">
-								<span>최신 항목</span>
 								<span style="width: 16px; height: 16px; margin-top: 2px;">
 									<img th:src="@{/images/act_sort_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 								</span>
@@ -881,7 +856,7 @@
 					<button class="issuedetail-statusbtn">
 						<span style="margin-bottom: 3px;">진행 중</span>
 						<span style="margin-top: 1px; margin-left: 1px;">
-							<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(100%) sepia(2%) saturate(938%) hue-rotate(244deg) brightness(118%) contrast(100%);">
+							<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
 						</span>
 					</button>
 				</div>
@@ -902,14 +877,14 @@
 								<span style="color: #172B4D;">Lowest</span>
 							</div>
 						</div>
-						<div class="issuedetail-graph" style="align-items: flex-start;">
+						<div class="issuedetail-graph" style="align-items: flex-start; margin-bottom: 8px;">
 							<div class="issuedetail-graphtype">
 								<span>담당자</span>
 							</div>
 							<div>
 								<div class="issuedetail-graphval">
-									<span style="width: 24px; height: 24px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" style="border-radius: 50%;"></span>
-									<span style="font-size: 14px; margin-bottom: 2px; color: #172B4D;">김대완</span>
+									<span style="width: 24px; height: 24px; margin-left: 2px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" style="border-radius: 50%;"></span>
+									<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;">김대완</span>
 								</div>
 								<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
 							</div>
@@ -946,7 +921,7 @@
 								<span style="margin-bottom: 4px;">없음</span>
 							</div>
 						</div>
-						<div class="issuedetail-graph" style="align-items: flex-start;">
+						<div class="issuedetail-graph" style="align-items: flex-start; margin-bottom: 6px;">
 							<div class="issuedetail-graphtype" style="margin-top: 1px;">
 								<span>보고자</span> 	
 							</div>
@@ -971,7 +946,7 @@
 						</div>
 					</div>
 					<a class="issuedetail-typeset">
-						<span style="height: 24px;">
+						<span style="height: 16px;">
 							<img th:src="@{/images/setting_icon_small.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 						</span>
 						<span style="margin-bottom: 2px;">구성</span>

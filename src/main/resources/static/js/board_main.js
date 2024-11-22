@@ -70,7 +70,6 @@ document.querySelectorAll(".create-issuekey").forEach(function(form, index){
 	form.addEventListener("keyup", function(e){
 		
 		const issueTitleItem = e.target.closest(".create-issuekey");
-		const issueCreateItem = e.target.closest(".createissuebtn");
 		if(issueTitleItem.value != "" && issueTitleItem.value != null){
 			document.querySelectorAll(".createissuebtn")[index].style.backgroundColor = "#0C66E4";
 			document.querySelectorAll(".createissuebtn")[index].style.color = "white";
@@ -93,18 +92,11 @@ document.querySelectorAll(".createissue-typebtn").forEach(function(btn, index){
 		const issueTypeList = document.querySelectorAll(".issuetypeselectbox")[index];
 		const xyItem = issueTypeBtn.getBoundingClientRect();
 		
-		const temp1 = 500;
-		const temp2 = xyItem.top;
-		
-		console.log(xyItem.x);
  		if(issueTypeBtn !== null){
 			issueTypeList.classList.add("show");
-			if(xyItem.top >= 500){
-				console.log("fefef");
-				issueTypeList.style.bottom = xyItem.top;
-				issueTypeList.style.left = xyItem.left;
-				issueTypeList.style.marginBottom = "60px";
-				issueTypeList.style.marginLeft = "0px";
+			if(xyItem.top >= 600){
+				issueTypeList.style.marginTop = "26px";
+				issueTypeList.style.marginLeft = "-242px";
 			}else{
 				issueTypeList.style.left = xyItem.left;
 				issueTypeList.style.top = xyItem.top;
