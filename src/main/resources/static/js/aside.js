@@ -109,18 +109,17 @@ document.querySelector("body").addEventListener("click", function (e) {
   const viewMoreBox = e.target.closest(".view_more_box");
   const imgContainer = e.target.closest(".img_container");
   const imgBox = e.target.closest(".img_box");
-	
-  if(!imgBox.className.includes("more") || !imgBox.className.includes("plus")) return;
+  
   if (e.target.closest(".more_sub_box.show") !== null) return;
   if (
     e.target.closest(".img_box") === prevMoreSubBox &&
     prevMoreSubBox !== null
   ) {
     e.preventDefault();
-
-    imgContainer.classList.toggle("show");
-    imgBox.classList.toggle("active");
-    viewMoreBox.classList.toggle("active");
+	
+    imgContainer?.classList.toggle("show");
+    imgBox?.classList.toggle("active");
+    viewMoreBox?.classList.toggle("active");
     if (imgBox.className.includes("more")) {
       moreItemContainer
         .querySelector(".more_sub_box.more")

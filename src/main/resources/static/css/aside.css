@@ -53,8 +53,7 @@ aside {
 }
 
 .default_filter_btn .img_box:hover,
-.view_right_box_btn .img_box:hover,
-.view_under_box_btn .img_box:hover {
+.aside_item_box .img_box:hover {
   background-color: transparent;
 }
 
