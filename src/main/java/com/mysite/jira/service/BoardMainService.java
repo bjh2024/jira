@@ -34,7 +34,7 @@ public class BoardMainService {
 		Optional<Project> projectName = this.projectRepository.findById(idx);
 		if(projectName.isPresent()) {
 			return projectName.get();
-		}else {
+		}else { 
 			return null;
 		}
 	}
