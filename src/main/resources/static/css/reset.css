@@ -23,6 +23,7 @@ main{
 	border-top: 1px solid #ddd;
 	border-left: 1px solid #ddd;
 	border-radius: 6px;
+	overflow: hidden;
 }
 
 label{
