@@ -5,8 +5,6 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
 </head>
 <div layout:fragment="content" style="display: flex; margin:0">
-	<div th:replace="~{/filter/filter_aside  :: filterasideFragment}"></div>
-	<div style="border-left: 3px solid #eee; position: relative; margin-left: -1px;"></div>
 	<div class="filter_issue_container">
 		<div class="inside_main_div">
 			<div class="filter_issue_main">
@@ -69,18 +67,13 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										최근 프로젝트
 									</div>
-									<div class="filter_issue_project_div_3">
+									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
+										<div style="height: 16px; margin-left: 12px;">
+											<img width="16" height="16" th:src="@{|/images/${projectList.iconName}|}"
 												style="border-radius: 2px;">
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;"><span th:text="${projectList.name}"></span></div>
 									</div>
 								</div>
 							</div>
@@ -127,7 +120,7 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										표준 이슈 유형
 									</div>
-									<div class="filter_issue_project_div_3">
+									<div class="filter_issue_project_div_3" th:each="issueTypeList, loop : ${issue}">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
 										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
 												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
@@ -138,7 +131,9 @@
 												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
 												style="border-radius: 2px;">
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;">
+											<span th:text="${issueTypeList.issueType.name}"></span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -327,21 +322,20 @@
 					</div>
 					<div class="issue_box">
 <!--여기서 부터 이슈ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-						<div class="issue_box_choice">
+						<div class="issue_box_choice" href="#" th:each="issueList, loop: ${issue}">
 							<div class="issue_title">
-								프로젝트 계획
+								<span th:text="${issueList.name}"></span>
 							</div>
 							<div class="issue_category">
 								<div style="display: flex; align-items: center;">
 									<img style="margin-right: 4px;" width="16" height="16"
-										src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=small"
+										th:src="@{|/images/${issueList.issueType.iconFilename}|}"
 										alt="작업" class="_1bsb7vkz _4t3i7vkz _2hwx1b66 _2rkoyh40">
-									EZBY-5
+									<span th:text="${issueList.key}"></span>
 								</div>
 								<img width="24" height="24"
-									src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
-									class="css-1gr7gcv" style="border-radius: 50%;">
+									th:src="@{|/images/${issueList.reporter.iconFileName}|}"
+									alt="프로필이미지" style="border-radius: 50%;">
 							</div>
 						</div>
 <!--여기서 부터 이슈끝ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->

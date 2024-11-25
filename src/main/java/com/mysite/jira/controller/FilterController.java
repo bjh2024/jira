@@ -7,7 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mysite.jira.repository.IssueRepository;
+import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.Project;
+import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,10 +19,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/filter")
 public class FilterController {
 	
-	private final IssueRepository issueRepository;
+	private final IssueService issueService;
+	private final ProjectService projectService;
 
 	@GetMapping("/filter_issue")
-	public String filterIssue() {
+	public String filterIssue(Model model) {
+		Integer jiraIdx = 1;
+		
+		List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx); 
+		List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
+		
+		model.addAttribute("issue", issue);
+		model.addAttribute("project", project);
+		
 		return "/filter/filter_issue.html";
 	}
 	

@@ -10,7 +10,5 @@ import com.mysite.jira.entity.Issue;
 public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> findIssuesByProjectIdx(Integer idx); 
 	
-	List<Issue> findByJiraIdx(Integer idx);
-	
-	List<String> findNamesByJiraIdx(Integer jiraidx);
+	List<Issue> findByJiraIdx(Integer jiraIdx);
 }
