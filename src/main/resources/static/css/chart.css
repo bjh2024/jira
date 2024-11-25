@@ -32,6 +32,7 @@
 	justify-content: center;
 	border-radius: 3px;
 	display: flex;
+	position: relative;
 }
 .issue_choice_box:hover{
 	background-color: #0515240F;
@@ -43,4 +44,17 @@
 	margin-right: 4px; 
 	color:#080F214A;
 	border-radius: 3px;
+}
+.issue_type_choicebox {
+	background-color: white;
+	border-radius: 3px;
+	z-index: 999;
+	position: absolute;
+	border: 1px solid #0515240F;
+	top: 28px;
+	left: 0px;
+	display: none;
+}
+.issue_type_choicebox.show {
+	display: block;
 }
