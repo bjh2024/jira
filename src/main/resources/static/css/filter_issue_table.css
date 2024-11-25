@@ -12,13 +12,13 @@
 }
 
 .filter_column th {
-	color: #44546F;
+	color: #505258;
 	background-color: #F7F8F9;
 	text-align: left;
 	height: 40px;
 	border: 1px solid #DFE1E6;
 	padding: 0px 8px;
-	font-size: 14px;
+	font-size: 12px;
 	font-family: unset;
 }
 
@@ -26,12 +26,17 @@
 	font-size: 14px;
 	height: 48px;
 	border: 1px solid #DFE1E6;
+	background-color: white;
 }
 
 .filter_row td {
 	padding: 0px 8px;
 	align-items: center;
 	border-right: 1px solid #DFE1E6;
+}
+.filter_row:hover {
+	background-color: #F1F2F4;
+	cursor: pointer;
 }
 
 .td_div {
@@ -44,6 +49,18 @@
 
 .filter_row_last {
 	height: 41px;
+}
+.last_td {
+	background-color: white;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+.last_td:hover {
+	background-color: #F1F2F4;
+	cursor: pointer;
+}
+.last_td.active:hover {
+	background-color: white;
 }
 
 .button_color {
@@ -78,13 +95,8 @@
 .filter_category_choice {
 	font-size: 14px;
 }
-
-.filter_category_div {
-	border-radius: 3px;
-	line-height: 32px;
-	background-color: #091E420F;
-	font-size: 14px;
-	padding: 0px 0px 0px 12px;
-	display: flex;
-	align-items: center;
+.project_chart {
+	background-color: #F1F2F4;
+	padding: 20px 26px 16px 23px;
+	height: 100%;
 }

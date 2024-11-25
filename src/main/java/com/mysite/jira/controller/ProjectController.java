@@ -37,4 +37,9 @@ public class ProjectController {
 	public String attachedFiles() {
 		return "project/attached_files";
 	}
+	
+	@GetMapping("/chart")
+	public String chart() {
+		return "project/chart";
+	}
 }

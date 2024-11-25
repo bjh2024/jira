@@ -4,7 +4,10 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
 	</head>
 	<div class="myprj-container">
-		<div style="display: flex; align-items: center; justify-content: space-between;">
+		<div class="project-header-getprojects">
+			<a href="#">프로젝트</a>
+		</div>
+		<div class="project-titlebox">
 			<div style="display: flex; align-items: center;">
 				<div style="display: flex; align-items: center;">
 					<div>
@@ -18,12 +21,12 @@
 					</div>
 				</div>
 				<div>
-					<div class="header-setbgimg">
-						<button class="header-setbgimgbtn">
-							<img th:src="@{/images/header_set_bg_image.svg}"
+					<div class="header-setting">
+						<button class="header-setbtn">
+							<img th:src="@{/images/three_dots_icon_small.svg}"
 								style="filter: invert(12%) sepia(97%) saturate(718%) hue-rotate(188deg) brightness(92%) contrast(93%);">
 						</button>
-						<div class="header-sebgbox">
+						<div class="header-setbgbox">
 							<div class="setbg-headbar">
 								<span>프로젝트 배경</span>
 								<span class="header-setbgbtn" style="height: 24px;"><svg width="24" height="24"
@@ -119,15 +122,15 @@
 			<div class="menu-icon-box"
 				style="border-bottom: 2px solid #44546f; padding-bottom: 3px; padding-right: 4px;">
 				<a th:href="@{/project/board_main}">
-					<span class="menu-icon" style="margin-left: 1px; margin-bottom: 2px;">
+					<span class="menu-icon" style="margin-left: 1px; margin-bottom: 5px;">
 						<img th:src="@{/images/board_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
-					<span style="margin-bottom: 3px;">보드</span>
+					<span style="margin-bottom: 6px;">보드</span>
 				</a>
 			</div>
 			<div class="menu-icon-box">
-				<a>
+				<a th:href="@{/project/chart}">
 					<span class="menu-icon">
 						<img th:src="@{/images/list_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -147,7 +150,7 @@
 			<div class="menu-icon-box">
 				<a>
 					<span class="menu-icon">
-						<img th:src="@{/images/issue_icon.svg}"
+						<img th:src="@{/images/project_issue_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">이슈</span>

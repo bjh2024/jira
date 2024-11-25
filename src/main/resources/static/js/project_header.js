@@ -1,4 +1,4 @@
-document.querySelector(".header-setbgimg").addEventListener("click", function(e) {
+document.querySelector(".header-setbgimg")?.addEventListener("click", function(e) {
 	const setBgItem = e.target.closest(".header-setbgimgbtn");
 	const removePopupItem = e.target.closest(".header-setbgbtn");
 	

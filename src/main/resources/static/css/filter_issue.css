@@ -15,12 +15,6 @@
 	justify-content: space-between;
 }
 
-.filter_issue_main h1 {
-	font-size: 24px;
-	font-weight: unset;
-	padding-top: 2px;
-}
-
 .head_category {
 	height: 40px;
 	margin-left: 4px;
@@ -28,14 +22,15 @@
 }
 
 .filter_issue_list {
-	width: 205.92px;
+	width: 204.31px;
 	display: flex;
-	background-color: #091E420F;
+	border: 1px solid var(--ds-border, rgba(9, 30, 66, 0.13));
 	height: 32px;
 	font-weight: bold;
-	padding: 4px;
+	padding: 0 2px;
 	justify-content: space-around;
-	border-radius: 3px;
+	align-items: center;
+	border-radius: 4px;
 }
 
 .filter_issue_list span {
@@ -66,39 +61,47 @@
 }
 
 .category_1 {
-	width: 83.31px;
-	height: 24px;
-	font-size: 12px;
-	padding: 4px 6px;
-	display: flex;
+	width: 83px;
+	height: 26px;
+	font-size: 13px;
 	border-radius: 3px;
-	justify-content: space-between;
-	margin-right: 4px;
+	padding: 0 12px;
 	cursor: pointer;
+	color:#505258;
+}
+.category_1:hover {
+	background-color: #091E420F;
+	border-radius: 4px;
 }
 
 .category_2 {
-	width: 110.61px;
-	height: 24px;
-	font-size: 12px;
-	padding: 4px 6px;
-	display: flex;
+	width: 113.31px;
+	height: 26px;
+	font-size: 13px;
 	border-radius: 3px;
-	justify-content: space-between;
+	padding: 0 12px;
 	cursor: pointer;
+	color:#505258;
+}
+.category_2:hover {
+	background-color: #091E420F;
+	border-radius: 4px;
 }
 
 .category_3 {
 	width: 32px;
 	height: 32px;
-	background-color: #091E420F;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	border: 1px solid var(--ds-border, rgba(9, 30, 66, 0.13));
 	margin-left: 8px;
-	border-radius: 3px;
+	border-radius: 4px;
 	cursor: pointer;
-
+}
+.category_3:hover {
+	background-color: #091E420F;
+		border-radius: 4px;
 }
 
 .category_parent {
@@ -121,20 +124,24 @@
 .filter_category_div {
 	border-radius: 3px;
 	line-height: 32px;
-	background-color: #091E420F;
 	font-size: 14px;
+	border:1px solid #091E420F;
 	padding: 0px 0px 0px 12px;
 	display: flex;
 	align-items: center;
+}
+.filter_category_div:hover {
+	background-color: var(--ds-background-neutral-subtle-hovered, rgba(9, 30, 66, 0.13));
+	border:1px solid var(--ds-background-neutral-subtle-pressed, rgba(9, 30, 66, 0.25));
 }
 
 .filter_category_div.active {
 	background-color: #E9F2FF;
 	color: #0C66E4;
+	border: 1px solid #0C66E4;
 }
 
 .filter_issue_box {
-	background-color: white;
 	position: absolute;
 	left: 4px;
 	top: 40px;
@@ -147,6 +154,7 @@
 .filter_issue_box.show {
 	left: 0px;
 	display: block;
+	background-color: white;
 }
 
 .filter_issue_project_1 {
@@ -233,25 +241,26 @@
 .issue_list {
 	padding: 0px 0px 2px;
 	width: 256px;
-	height: 34px;
-	background-color: #091E420f;
+	height: 40px;
+	background-color: #17171708;;
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
 
 .make_button {
 	font-size: 14px;
 	padding-top: 1px;
-	background-color: #DCDFE4;
-	margin-left: 2px;
+	margin: 0 2px;
 }
 
 .all_issue {
 	width: 260px;
 	height: 757px;
 	margin: 0px 16px 8px 0px;
-	border: 2px solid #091E420f;
+	border: 2px solid #17171708;;
 	border-radius: 3px;
+	
 }
 
 .button_div {
@@ -260,7 +269,6 @@
 	height: 32px;
 	align-items: center;
 	padding: 0px 10px;
-	background-color: #DCDFE4;
 	border-radius: 3px;
 	padding-bottom: 3px;
 }
@@ -277,7 +285,15 @@
 .issue_box {
 	width: 256px;
 	height: 685px;
-	background-color: #091E420f;
+	background-color: #17171708;
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+/* 스크롤 안보이는데 기능만 남겨두는 코드*/
+	 scrollbar-width: none; /* for Firefox */
+	 overflow-y: scroll; 
+}
+
+div::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
 }
 
 .issue_title {
@@ -288,7 +304,7 @@
 }
 
 .issue_box_choice {
-	width: 256px;
+	width: 252px;
 	height: 70px;
 	background-color: white;
 	box-shadow: 0px 1px 1px #091E4240, 0px 0px 1px #091E424F;
@@ -296,6 +312,14 @@
 	border-left: 1px solid #DFE1E6;
 	border-radius: 3px;
 	padding: 8px;
+	margin:2px;
+}
+.issue_box_choice:hover {
+	background-color: #0515240C;
+	cursor: pointer;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .issue_category {
@@ -337,12 +361,12 @@
 
 .modal {
 	  position: fixed;
-	  z-index: 1; /* 가장 위에 표시되도록 */
+	  z-index: 999; /* 가장 위에 표시되도록 */
 	  left: 0;
 	  top: 0;
 	  width: 100%;
 	  height: 100%;
-	  background-color:var(--ds-blanket, rgba(9, 30, 66, 0.54));/* 반투명 배경 */
+	  background-color:#050C1F75;
 	  display: none;
 }
 .modal.active {
@@ -357,7 +381,9 @@
 }
 .content_div_1 {
 	height: 64px;
-	padding: 22px 0px 16px;
+	padding: 22px 0px 10px;
+	font-size: 20px;
+	font-weight: bold;
 	margin-bottom: -2px;
 }
 .filter_save_font {
@@ -365,12 +391,28 @@
 	margin-top:10px; 
 	font-weight: bold;
 }
+.hover_input:hover{
+	background-color: #091E4208;
+	border: 1px solid var(--ds-blanket, rgba(9, 30, 66, 0.54));
+	border-radius: 3px;
+}
+.hover_input:focus {
+	border: 2px solid #1868DB;
+}
 .textArea_1 {
 	min-height: 56px; 
 	width: 552px; 
 	margin-top:4px; 
 	padding:6px 7px;
+	border-radius: 3px;
 	overflow: hidden;
+}
+.textArea_1:hover{
+	background-color: #091E4208;
+	border-radius: 3px;
+}
+.textArea_1:focus{
+	border: 2px solid #1868DB;
 }
 .viewer_div {
 	padding: 8px 0px;
@@ -391,13 +433,18 @@
 	position: relative;
 }
 .viewer_div_2 {
-	background-color: #091E420f; 
+	border:1px solid var(--ds-border, rgba(9, 30, 66, 0.13));
 	width: 52px; 
 	height: 32px;
 	font-size: 14px;
 	text-align: center;
 	line-height: 32px;
 	border-radius: 3px;
+	cursor: pointer;
+}
+.viewer_div_2:hover {
+	background-color: var(--ds-background-neutral-subtle-hovered, rgba(9, 30, 66, 0.13));
+	border:1px solid var(--ds-background-neutral-subtle-pressed, rgba(9, 30, 66, 0.25));
 }
 .viewer_list_box {
 	align-items: center;
@@ -429,4 +476,9 @@
 	text-align: center;
 	line-height: 32px;
 	margin-left: 4px;
+	cursor: pointer;
+}
+
+.cancle_button:hover{
+text-decoration: underline; 
 }

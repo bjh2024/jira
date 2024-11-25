@@ -1,8 +1,13 @@
 package com.mysite.jira.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mysite.jira.repository.IssueRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/filter")
 public class FilterController {
+	
+	private final IssueRepository issueRepository;
 
 	@GetMapping("/filter_issue")
 	public String filterIssue() {

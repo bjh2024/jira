@@ -2,19 +2,18 @@
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/board_main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/ckeditor5/ckeditor5.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/project/ckeditor5/ckeditor5.css}">
 </head>
 <div layout:fragment="content" style="display: flex;" class="board-main-container">
-	<aside th:replace="~{aside :: asideFragment}"></aside>
 	<div class="header-container">
 		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
 		<div class="board-top-container">
 			<div class="boardbar">
 				<div class="board-searchbox">
-					<input placeholder="보드 검색" class="board-searchkey" value="">
 					<span class="board-searchbtn">
 						<img th:src="@{/images/search_icon.svg}" class="board-searchbtn-img">
 					</span>
+					<input placeholder="보드 검색" class="board-searchkey" value="">
 				</div>
 				<div class="profilebox">
 					<div class="myprofileimgbox" style="z-index: 3;">
@@ -36,19 +35,21 @@
 						<img th:src="@{/images/invite_icon.svg}" style="margin: 0px auto; filter: invert(29%) sepia(6%) saturate(2629%) hue-rotate(180deg) brightness(98%) contrast(89%);">
 					</div>
 				</div>
-			</div>
-			<div class="board-sidebar">
-				<div type="button" class="sidebarbtn">
+				<div type="button" class="sidebarbtn-filter">
 					<div class="btnwindow-filter">
 							<div class="filterwindow-title">필터</div>
 						<div class="filterwindow-body">
 							<div class="filterwindow-topbox">
-								<button class="filtervindow-topbtn">
-									<span style="height: 24px;"><svg width="24" height="24" role="presentation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3a9 9 0 014.78 16.627c-.154.19-.375.323-.628.361A8.978 8.978 0 0112 21a8.961 8.961 0 01-4.151-1.013.993.993 0 01-.628-.36A9 9 0 0112 3zm1 13h-2l-.15.006a2 2 0 00-1.844 1.837L9 18v.326c.91.432 1.927.674 3 .674a6.972 6.972 0 003-.674V18l-.005-.15a2 2 0 00-1.838-1.844L13 16zM12 5a7 7 0 00-4.88 12.02 4.004 4.004 0 013.673-3.015L11 14h2l.2.005a4.002 4.002 0 013.679 3.013A7 7 0 0012 5zm0 2a3 3 0 110 6 3 3 0 010-6zm0 2a1 1 0 100 2 1 1 0 000-2z" fill="currentColor"></path></svg></span>
+								<button class="filterwindow-topbtn">
+									<span style="height: 24px;">
+										<img class="issue-deadlineimg" src="/images/user_icon.svg">
+									</span>
 									<span>나에게 할당</span>
 								</button>
-								<button class="filtervindow-topbtn">
-									<span style="height: 24px;"><svg width="24" height="24" role="presentation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 6a1 1 0 012 0h4a1 1 0 112 0h1a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V8a2 2 0 012-2h1zm6 2a1 1 0 102 0h1v2H7V8h1a1 1 0 002 0h4zm-7 4v4h10v-4H7z" fill="currentColor"></path></svg></span>
+								<button class="filterwindow-topbtn">
+									<span style="height: 16px; width: 24px;">
+										<img class="issue-deadlineimg" src="/images/issue_calender_icon.svg">
+									</span>
 									<span>이번 주에 기한</span>
 								</button>
 							</div>
@@ -71,11 +72,11 @@
 								<div class="categoryfilterbox">
 									<div class="categoryfilterbtn">
 										<span class="category-checkbox"></span>
-										<span class="categorytitle" style="background-color: #CCE0FF;">fgsd</span>
+										<span class="categorytitle" style="border-color: #CFE1FD;">fgsd</span>
 									</div>
 									<div class="categoryfilterbtn">
 										<span class="category-checkbox"></span>
-										<span class="categorytitle" style="background-color: #EFFFD6;">asd</span>
+										<span class="categorytitle" style="border-color: #EFFFD6;">asd</span>
 									</div>
 									<div class="noncategorybtn">
 										<span class="category-checkbox"></span>
@@ -93,19 +94,19 @@
 								<div class="statusfilterbox">
 									<div class="statusfilterbtn">
 										<span class="status-checkbox"></span>
-										<span class="statustitle" style="background-color: #DCFFF1; color: #216E4E;">완료</span>
+										<span class="statustitle" style="background-color: #B3DF72;">완료</span>
 									</div>
 									<div class="statusfilterbtn">
 										<span class="status-checkbox"></span>
-										<span class="statustitle" style="background-color: #E9F2FF; color: #0052CC;">진행 중</span>
+										<span class="statustitle" style="background-color: #8FB8F6;">진행 중</span>
 									</div>
 									<div class="statusfilterbtn">
 										<span class="status-checkbox"></span>
-										<span class="statustitle" style="background-color: #091E420F; color: #44546F;">해야 할 일</span>
+										<span class="statustitle" style="background-color: #DDDEE1;">해야 할 일</span>
 									</div>
 									<div class="statusfilterbtn">
 										<span class="status-checkbox"></span>
-										<span class="statustitle" style="background-color: #091E420F; color: #44546F;">할일이많다</span>
+										<span class="statustitle" style="background-color: #DDDEE1;">할일이 많다</span>
 									</div>
 								</div>
 								<div class="filterwindow-title">우선 순위</div>
@@ -150,14 +151,16 @@
 							</div>
 						</div>
 					</div>
-					<div class="sidebariconbox">
-						<span class="sidebaricon">
-							<img th:src="@{/images/sidebaricon_filter.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+					<div class="sidebariconbox-filter">
+						<span style="margin-bottom: 2px; margin-left: 1px;">필터</span>
+						<span style="margin-top: 2px;">
+							<img th:src="@{/images/arrow_under_icon.svg}" class="sidebarbtnicon-filter">
 						</span>
-						<span class="sidebartitle">필터</span>
 					</div>
 				</div>
-				<div type="button" class="sidebarbtn">
+			</div>
+			<div class="board-sidebar">
+				<div type="button" class="sidebarbtn-group">
 					<div class="btnwindow" style="width: 182px; height: 208px;">
 						<div class="btnwindow-title">그룹화 기준</div>
 						<button class="btnwindow-optbtn">
@@ -186,14 +189,11 @@
 							</div>
 						</button>
 					</div>
-					<div class="sidebariconbox">
-						<span class="sidebaricon">
-							<img th:src="@{/images/sidebaricon_group.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
-						</span>
-						<span class="sidebartitle">그룹화 기준: 상태</span>
+					<div class="sidebariconbox-group">
+						<span class="sidebartitle-group">그룹: 상태</span>
 					</div>
 				</div>
-				<div type="button" class="sidebarbtn">
+				<div type="button" class="sidebarbtn-other">
 					<div class="btnwindow">
 						<div class="btnwindow-title">옵션 보기</div>
 						<button class="btnwindow-optbtn">
@@ -218,11 +218,10 @@
 							<span style="margin-top: 3px;"></span>
 						</button>
 					</div>
-					<div class="sidebariconbox">
-						<span class="sidebaricon">
-							<img th:src="@{/images/sidebaricon_other.svg}" style="filter: invert(13%) sepia(37%) saturate(1705%) hue-rotate(189deg) brightness(94%) contrast(93%);">
+					<div class="sidebariconbox-other">
+						<span>
+							<img th:src="@{/images/status_other_icon.svg}" class="sidebarbtnicon-other">
 						</span>
-						<span class="sidebartitle">더 보기</span>
 					</div>
 				</div>
 			</div>
@@ -233,10 +232,12 @@
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
-							<div class="status-titlebox" style="background-color: #091E420F;">
-								<div class="status-title" style="color: #44546f;">해야 할 일</div>
+							<div class="status-titlebox">
+								<div class="status-title">해야 할 일</div>
+								<div class="status-count">
+									<span>0</span>
+								</div>
 							</div>
-							<div class="status-count">0</div>
 						</div>
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
@@ -254,14 +255,12 @@
 								<div class="createissue-btnbox">
 									<div class="createissue-typebtn">
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-										<span style="margin-bottom: 2px;">버그</span>
-										<span style="margin-top: 3px;">
+										<span style="margin-top: 1px;">
 											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
-										<span style="margin-left: 4px; margin-bottom: 2px;">만들기</span>
-										<span style="margin-top: 2px;"><svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg"><path d="M3 0C1.34315 0 0 1.34315 0 3V13C0 14.6569 1.34315 16 3 16H21C22.6569 16 24 14.6569 24 13V3C24 1.34315 22.6569 0 21 0H3Z" fill="#00000029"></path><path d="M15.5 5.75V6.75C15.5 8.26878 14.2688 9.5 12.75 9.5H8.75C8.33579 9.5 8 9.16421 8 8.75C8 8.33579 8.33579 8 8.75 8H12.75C13.4404 8 14 7.44036 14 6.75V5.75C14 5.33579 14.3358 5 14.75 5C15.1642 5 15.5 5.33579 15.5 5.75Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 9.28033L11.0303 7.53033C11.3232 7.23744 11.3232 6.76256 11.0303 6.46967C10.7374 6.17678 10.2626 6.17678 9.96967 6.46967L8.21967 8.21967C7.92678 8.51256 7.92678 8.98744 8.21967 9.28033C8.51256 9.57322 8.98744 9.57322 9.28033 9.28033Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 8.21967L11.0303 9.96967C11.3232 10.2626 11.3232 10.7374 11.0303 11.0303C10.7374 11.3232 10.2626 11.3232 9.96967 11.0303L8.21967 9.28033C7.92678 8.98744 7.92678 8.51256 8.21967 8.21967C8.51256 7.92678 8.98744 7.92678 9.28033 8.21967Z" fill="var(--ds-text-inverse, #FFFFFF)"></path></svg></span>
+										<span style="margin-bottom: 2px;">⏎</span>
 									</div>
 								</div>
 							</form>
@@ -273,13 +272,6 @@
 							<span>만들기</span>
 						</div>
 						<div class="issuetypeselectbox">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -332,10 +324,12 @@
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
-							<div class="status-titlebox" style="background-color: #DEEBFF;">
-								<div class="status-title" style="color: #0052CC;">진행 중</div>
+							<div class="status-titlebox">
+								<div class="status-title">진행 중</div>
+								<div class="status-count">
+									<span>2</span>
+								</div>
 							</div>
-							<div class="status-count">2</div>
 						</div>
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
@@ -389,7 +383,7 @@
 									<span><img width="24" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"></span>
 								</div>
 							</div>
-							<div style="padding-left: 12px; padding-bottom: 12px; margin-top: -3px;">
+							<div style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
 								<button class="subissuebtn">
 									<div class="subissuebtnbox">
 										<span style="width: 16px; height: 16px;">
@@ -405,7 +399,8 @@
 								<div class="subissuebox">
 									<div class="subissues">
 										<div class="subissueline"></div>
-											<div class="subissuename">
+										<div class="testester">
+										<div class="subissuename">
 											<span>이슈 1의 하위 이슈</span>
 										</div>
 										<div class="subissue-underbox">
@@ -417,6 +412,7 @@
 												<span class="subissue-status">해야 할 일</span>
 												<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
 											</div>
+										</div>
 										</div>
 									</div>
 								</div>
@@ -436,6 +432,14 @@
 											</svg>
 										</span>
 									</button>
+								</div>
+							</div>
+							<div class="issue-deadline">
+								<div class="issue-deadlinebox" style="color: #AE2E24; border-color: #E2483D;">
+									<span style="margin-left: -2px; margin-top: 2px;">
+										<img class="issue-deadlineimg" th:src="@{/images/issue_calender_icon.svg}" style="filter: invert(28%) sepia(86%) saturate(1898%) hue-rotate(344deg) brightness(69%) contrast(94%);">
+									</span>
+									<span>08 Nov 2024</span>
 								</div>
 							</div>
 							<div class="issue-underbox">
@@ -459,14 +463,12 @@
 								<div class="createissue-btnbox">
 									<div class="createissue-typebtn">
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-										<span style="margin-bottom: 2px;">버그</span>
-										<span style="margin-top: 3px;">
+										<span style="margin-top: 1px;">
 											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
-										<span style="margin-left: 4px; margin-bottom: 2px;">만들기</span>
-										<span style="margin-top: 2px;"><svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg"><path d="M3 0C1.34315 0 0 1.34315 0 3V13C0 14.6569 1.34315 16 3 16H21C22.6569 16 24 14.6569 24 13V3C24 1.34315 22.6569 0 21 0H3Z" fill="#00000029"></path><path d="M15.5 5.75V6.75C15.5 8.26878 14.2688 9.5 12.75 9.5H8.75C8.33579 9.5 8 9.16421 8 8.75C8 8.33579 8.33579 8 8.75 8H12.75C13.4404 8 14 7.44036 14 6.75V5.75C14 5.33579 14.3358 5 14.75 5C15.1642 5 15.5 5.33579 15.5 5.75Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 9.28033L11.0303 7.53033C11.3232 7.23744 11.3232 6.76256 11.0303 6.46967C10.7374 6.17678 10.2626 6.17678 9.96967 6.46967L8.21967 8.21967C7.92678 8.51256 7.92678 8.98744 8.21967 9.28033C8.51256 9.57322 8.98744 9.57322 9.28033 9.28033Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 8.21967L11.0303 9.96967C11.3232 10.2626 11.3232 10.7374 11.0303 11.0303C10.7374 11.3232 10.2626 11.3232 9.96967 11.0303L8.21967 9.28033C7.92678 8.98744 7.92678 8.51256 8.21967 8.21967C8.51256 7.92678 8.98744 7.92678 9.28033 8.21967Z" fill="var(--ds-text-inverse, #FFFFFF)"></path></svg></span>
+										<span style="margin-bottom: 2px;">⏎</span>
 									</div>
 								</div>
 							</form>
@@ -478,13 +480,6 @@
 							<span>만들기</span>
 						</div>
 						<div class="issuetypeselectbox" style="top: 395px; left: 562px;">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -535,10 +530,15 @@
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
-							<div class="status-titlebox" style="background-color: #DCFFF1;">
-								<div class="status-title" style="color: #216E4E;">완료</div>
+							<div class="status-titlebox">
+								<div class="status-title">완료</div>
+								<div class="status-complete">
+									<img th:src="@{/images/status_complete_icon.svg}" style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
+								</div>
+								<div class="status-count">
+									<span>1</span>
+								</div>
 							</div>
-							<div class="status-count">1</div>
 						</div>
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
@@ -569,11 +569,12 @@
 							</div>
 							<div class="issue-label"><span>레이블1</span></div>
 							<div class="issue-deadline">
-								<span class="issue-deadlinebox">
-									<span style="margin-left: 1px; margin-top: 2px;"><svg width="16" height="16" viewBox="0 0 24 24" role="presentation"><path d="M4.995 5h14.01C20.107 5 21 5.895 21 6.994v12.012A1.994 1.994 0 0119.005 21H4.995A1.995 1.995 0 013 19.006V6.994C3 5.893 3.892 5 4.995 5zM5 9v9a1 1 0 001 1h12a1 1 0 001-1V9H5zm1-5a1 1 0 012 0v1H6V4zm10 0a1 1 0 012 0v1h-2V4zm-9 9v-2.001h2V13H7zm8 0v-2.001h2V13h-2zm-4 0v-2.001h2.001V13H11zm-4 4v-2h2v2H7zm4 0v-2h2.001v2H11zm4 0v-2h2v2h-2z" fill="currentColor" fill-rule="evenodd"></path></svg></span>
-									<span>26 OCT</span>
-								</span>
-								
+								<div class="issue-deadlinebox">
+									<span style="margin-left: -2px; margin-top: 2px;">
+										<img class="issue-deadlineimg" th:src="@{/images/issue_calender_icon.svg}">
+									</span>
+									<span>26 Oct 2024</span>
+								</div>
 							</div>
 							<div class="issue-underbox">
 								<div class="issue-typebox">
@@ -595,14 +596,12 @@
 								<div class="createissue-btnbox">
 									<div class="createissue-typebtn">
 										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-										<span style="margin-bottom: 2px;">버그</span>
-										<span style="margin-top: 3px;">
+										<span style="margin-top: 1px;">
 											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
-										<span style="margin-left: 4px; margin-bottom: 2px;">만들기</span>
-										<span style="margin-top: 2px;"><svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg"><path d="M3 0C1.34315 0 0 1.34315 0 3V13C0 14.6569 1.34315 16 3 16H21C22.6569 16 24 14.6569 24 13V3C24 1.34315 22.6569 0 21 0H3Z" fill="#00000029"></path><path d="M15.5 5.75V6.75C15.5 8.26878 14.2688 9.5 12.75 9.5H8.75C8.33579 9.5 8 9.16421 8 8.75C8 8.33579 8.33579 8 8.75 8H12.75C13.4404 8 14 7.44036 14 6.75V5.75C14 5.33579 14.3358 5 14.75 5C15.1642 5 15.5 5.33579 15.5 5.75Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 9.28033L11.0303 7.53033C11.3232 7.23744 11.3232 6.76256 11.0303 6.46967C10.7374 6.17678 10.2626 6.17678 9.96967 6.46967L8.21967 8.21967C7.92678 8.51256 7.92678 8.98744 8.21967 9.28033C8.51256 9.57322 8.98744 9.57322 9.28033 9.28033Z" fill="var(--ds-text-inverse, #FFFFFF)"></path><path d="M9.28033 8.21967L11.0303 9.96967C11.3232 10.2626 11.3232 10.7374 11.0303 11.0303C10.7374 11.3232 10.2626 11.3232 9.96967 11.0303L8.21967 9.28033C7.92678 8.98744 7.92678 8.51256 8.21967 8.21967C8.51256 7.92678 8.98744 7.92678 9.28033 8.21967Z" fill="var(--ds-text-inverse, #FFFFFF)"></path></svg></span>
+										<span style="margin-bottom: 2px;">⏎</span>
 									</div>
 								</div>
 							</form>
@@ -615,13 +614,6 @@
 						</div>
 						<!--  -->
 						<div class="issuetypeselectbox">
-							<!-- <div class="issuetype-searchbox">
-								<input placeholder="Select..." class="issuetype-searchkey" value="">
-								<div class="issuetype-searchline"></div>
-								<span class="issuetype-searchbtn">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" d="M14.823 15.883a5.5 5.5 0 1 1 1.06-1.06l2.647 2.647c.293.293.53.59 0 1.06s-.767.293-1.06 0zM11.5 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8"></path></svg>
-								</span>
-							</div> -->
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
@@ -687,28 +679,23 @@
 				</div>
 			</div>
 			<div class="issuedetail-menubar">
-				<div class="issuedetail-option">
-					<span style="margin-left: -5px; margin-top: 2px; color: #0C66E4;">
+				<div class="issuedetail-option-observ">
+					<span style="margin-top: 2px; color: #0C66E4;">
 						<img th:src="@{/images/eye_icon.svg}" style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
 					</span>
 					<span style="color: #0C66E4; margin-left: 4px;">2</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 6px;">
+				<div class="issuedetail-option">
 					<span style="margin-top: 2px;">
 						<img th:src="@{/images/thumbsup_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
 					</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 4px;">
+				<div class="issuedetail-option">
 					<span style="margin-top: 2.5px;">
-						<img th:src="@{/images/share_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
+						<img th:src="@{/images/three_dots_icon_small.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
 				</div>
-				<div class="issuedetail-option" style="padding: 3px 4px;">
-					<span style="margin-top: 2.5px;">
-						<img th:src="@{/images/three_dots_row_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
-					</span>
-				</div>
-				<div class="issuedetail-option issuedetail-off" style="padding: 3px 4px;">
+				<div class="issuedetail-option issuedetail-off">
 					<span style="margin-top: 2.5px;">
 						<img th:src="@{/images/cancel_icon.svg}" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">			
 					</span>
@@ -718,14 +705,32 @@
 		<div class="issuedetailbody-container">
 			<div class="issuedetailviewbox">
 				<div style="padding-left: 24px;">
-					<div class="issuedetail-title">버그다!</div>
+					<h1 class="issuedetail-title">버그다!</h1>
 					<div class="issuedetail-insertbtn">
-						<span style="height: 16px; margin-left: -2px; margin-bottom: 1px;">	
-							<img th:src="@{/images/plus_icon_small.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+						<div class="issuedetail-insertwindow">
+							<button class="insertwindow-btn">
+								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/attachment_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px; margin-left: 4px;">첨부 파일</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 24px; margin-bottom: 2px;"><img th:src="@{/images/sub_issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px;">하위 이슈</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/project_issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px; margin-left: 4px;">연결한 이슈</span>
+							</button>
+							<button class="insertwindow-btn">
+								<span style="height: 24px; margin-bottom: 2px;"><img th:src="@{/images/web_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="margin-bottom: 4px;">웹 링크</span>
+							</button>
+						</div>
+						<span style="height: 16px;">	
+							<img class="insertbtn-icon" th:src="@{/images/plus_icon_small.svg}">
 						</span>							
-							<span style="margin-bottom: 4px;">추가</span>
+						<span style="margin-bottom: 2px;">추가</span>
 					</div>
-					<div style="font-weight: bold; color: #172B4D; margin-top: 22px;">설명</div>
+					<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명</div>
 					
 				</div>
 				<div class="issuedetail-exarea">
@@ -738,10 +743,10 @@
 							<button class="editarea-cancel">취소</button>
 						</div>
 					</div>
-					<span class="issuedetail-exvalue show">버그버그</span>
+					<span class="issuedetail-exvalue">버그버그</span>
 				</div>
 				<div class="issuedetail-activebox">
-					<div style="font-weight: bold; color: #172B4D; margin-top: 78px; margin-bottom: 2px;">활동</div>
+					<div style="font-weight: bold; color: #172B4D; margin-top: 75px; margin-bottom: 7px;">활동</div>
 					<div class="issuedetail-activebar">
 						<div class="issuedetail-activebtns">
 							<span style="margin-right: 4px;">표시: </span>
@@ -757,7 +762,6 @@
 						</div>
 						<div>
 							<button class="issuedetail-sortbtn">
-								<span>최신 항목</span>
 								<span style="width: 16px; height: 16px; margin-top: 2px;">
 									<img th:src="@{/images/act_sort_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 								</span>
@@ -767,7 +771,7 @@
 				</div>
 				<div class="issuedetail-replybox">
 					<div class="writereplybox">
-						<span style="margin-top: 4px;"><img width="32" height="32" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png" style="border-radius: 50%;"></span>
+						<span style="margin-top: 4px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png" style="border-radius: 50%;"></span>
 						<div class="editor-container">
 							<div id="editor2" style="width: 690px;">
 				                <p></p>
@@ -867,9 +871,22 @@
 			<div class="issuedetailbar">
 				<div class="issuedetail-statusbar">
 					<button class="issuedetail-statusbtn">
+						<div class="issuedetail-statuswindow">
+							<div class="statuswindow-menubox">
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #DDDEE1;">해야 할 일</span>
+								</div>
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #DDDEE1;">할일이 많다</span>
+								</div>
+								<div class="statuswindow-status">
+									<span class="statuswindow-title" style="background-color: #B3DF72;">완료</span>
+								</div>
+							</div>
+						</div>
 						<span style="margin-bottom: 3px;">진행 중</span>
 						<span style="margin-top: 1px; margin-left: 1px;">
-							<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(100%) sepia(2%) saturate(938%) hue-rotate(244deg) brightness(118%) contrast(100%);">
+							<img th:src="@{/images/arrow_under_icon.svg}" style=" width: 16px; height: 16px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
 						</span>
 					</button>
 				</div>
@@ -890,14 +907,14 @@
 								<span style="color: #172B4D;">Lowest</span>
 							</div>
 						</div>
-						<div class="issuedetail-graph" style="align-items: flex-start;">
+						<div class="issuedetail-graph" style="align-items: flex-start; margin-bottom: 8px;">
 							<div class="issuedetail-graphtype">
 								<span>담당자</span>
 							</div>
 							<div>
 								<div class="issuedetail-graphval">
-									<span style="width: 24px; height: 24px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" style="border-radius: 50%;"></span>
-									<span style="font-size: 14px; margin-bottom: 2px; color: #172B4D;">김대완</span>
+									<span style="width: 24px; height: 24px; margin-left: 2px;"><img width="24" height="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" style="border-radius: 50%;"></span>
+									<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;">김대완</span>
 								</div>
 								<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
 							</div>
@@ -934,7 +951,7 @@
 								<span style="margin-bottom: 4px;">없음</span>
 							</div>
 						</div>
-						<div class="issuedetail-graph" style="align-items: flex-start;">
+						<div class="issuedetail-graph" style="align-items: flex-start; margin-bottom: 6px;">
 							<div class="issuedetail-graphtype" style="margin-top: 1px;">
 								<span>보고자</span> 	
 							</div>
@@ -959,7 +976,7 @@
 						</div>
 					</div>
 					<a class="issuedetail-typeset">
-						<span style="height: 24px;">
+						<span style="height: 16px;">
 							<img th:src="@{/images/setting_icon_small.svg}" style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
 						</span>
 						<span style="margin-bottom: 2px;">구성</span>
