@@ -38,15 +38,17 @@ document.querySelector(".subissuebtn").addEventListener("click", function(e) {
 		return;
 	}
 	document.querySelector(".subissuebox.show")?.classList.remove("show");
-	document.querySelector(".subissuebtnimg").classList.remove("rotate");
+	document.querySelector(".subissuebtnimg.rotate")?.classList.remove("rotate");
 
 	const subissueBtn = e.target.closest(".subissuebtn");
 	const subissueBtnIcon = document.querySelector(".subissuebtnimg");
 	const subissueItem = document.querySelector(".subissuebox");
+	// subissueItem.classList.toggle("show");
+	// subissueBtnIcon.classList.toggle("rotate");
+	
 	if(subissueBtn !== null){
 		subissueItem.classList.add("show");
 		subissueBtnIcon.classList.add("rotate");
-		
 	}
 
 });
@@ -111,12 +113,15 @@ document.querySelectorAll(".createissue-typebtn").forEach(function(btn, index){
 
 document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null){
+			return;
+		}
+		
 		document.querySelector(".issuedetail-container.show")?.classList.remove("show");
 		
 		const issueItem = document.querySelectorAll(".issues")[index];
 		const issueDetailItem = document.querySelector(".issuedetail-container");
-
-		const createIssueItem = e.target.closest(".issuebox-create");
+		
 		if(issueItem !== null){
 			issueDetailItem.classList.add("show");
 		}

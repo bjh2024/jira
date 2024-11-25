@@ -355,3 +355,111 @@ body{
 .attached-file-affiliation > span > img{
 	margin-left: -3px;
 }
+
+.file-detail-container{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color:  #22272B;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	display: none;
+}
+
+.file-detail-container.show{
+	display: block;
+}
+
+.file-detail-header{
+	height: 98px;
+	padding:  4px 20px 24px 28px;
+	color: #C7D1DB;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.file-detail-title{
+	display: flex;
+	align-items: center;
+	height: 40px;
+	font-size: 14px;
+}
+
+.file-detail-img{
+	padding-top: 12px;
+	padding-right: 16px;
+}
+
+.file-detail-text{
+	padding-top: 7px;
+}
+
+.file-detail-btnbar{
+	height: 40px;
+	display: flex;
+	align-items: center;
+	padding-top: 2px;
+	gap: 12px;
+	padding-left: 12px;
+}
+
+.file-detail-btnbar > button {
+	background-color: #22272B;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.file-detail-btnbar > button:hover, .footer-risize-btns > button:hover{
+	border-radius: 3px;
+	background-color: #A1BDD914;
+}
+
+.file-detail{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.file-detail-footer{
+	width: 100%;
+	height: 98px;
+	padding: 8px 24px;
+	position: absolute;
+	bottom: 0px;
+	display: flex;
+	align-items: end;
+}
+
+.footer-risize-btns{
+	height: 32px;
+	display: flex;
+	gap: 8px;
+	position: absolute;
+	bottom: 8px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	
+}
+
+.footer-risize-btns > button{
+	background-color: #22272B;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.footer-percent{
+	color: #C7D1DB;
+	font-size: 14px;
+	position: absolute;
+	bottom: 16px;
+	right: 22px;
+}
