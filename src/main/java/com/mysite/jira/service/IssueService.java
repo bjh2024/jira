@@ -19,4 +19,5 @@ public class IssueService {
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
 	
+	
 }
