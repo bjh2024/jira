@@ -88,6 +88,7 @@ body{
 .attached-headerbtn-icon{
 	margin-left: 1px;
 	filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);
+	width: 16px;
 }
 
 .attached-headerwindow-user{

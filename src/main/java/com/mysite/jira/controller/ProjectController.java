@@ -1,12 +1,21 @@
 package com.mysite.jira.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mysite.jira.entity.Issue;
+import com.mysite.jira.service.BoardMainService;
 
 @Controller
 @RequestMapping("/project")
 public class ProjectController {
+	@Autowired
+	private BoardMainService boardMainService;
 	
 	@GetMapping("/summation")
 	public String summationPage() {
@@ -24,7 +33,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/board_main")
-	public String root() {
+	public String boardMain(Model model) {
+		List<Object[]> statusList = boardMainService.getIssueStatusByProjectIdx(1);
+		model.addAttribute("statusList", statusList);
+		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(1);
+		model.addAttribute("issueList", issueList);
 		return "project/board_main";
 	}
 	

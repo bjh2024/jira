@@ -416,7 +416,7 @@ body{
 	margin-right: 14px;
 }
 
-.input_recent_content>div {
+.input_recent_content>div>span {
 	font-size: 14px;
 }
 

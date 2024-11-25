@@ -77,4 +77,7 @@ public class Dashboard {
 	
 	@OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
 	private List<DashboardAuth> dashboardAuthList;
+	
+	@OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
+	private List<DashboardRecentClicked> dashClickedList;
 }

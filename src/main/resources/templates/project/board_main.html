@@ -124,7 +124,7 @@
 										<span>버그</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/epik_issue.svg}"></span>
 										<span>에픽</span>
 									</div>
 									<div class="typefilterbtn">
@@ -132,15 +132,15 @@
 										<span>이게뭐야</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/task_issue.svg}"></span>
 										<span>작업</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/bug_issue.svg}"></span>
 										<span>작업1</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/work_issue.svg}"></span>
 										<span>체크리스트</span>
 									</div>
 									<div class="typefilterbtn">
@@ -227,15 +227,18 @@
 			</div>
 		</div>
 		<div class="board-body-container">
-			<div class="issue-container">
+			<div class="issue-container" th:each="statusList : ${statusList}">
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
 							<div class="status-titlebox">
-								<div class="status-title">해야 할 일</div>
+								<div class="status-title" th:text="${statusList[0]}"></div>
+								<div class="status-complete" th:if="${statusList[2] == 3}">
+									<img th:src="@{/images/status_complete_icon.svg}" style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
+								</div>
 								<div class="status-count">
-									<span>0</span>
+									<span th:text="${statusList[1]}"></span>
 								</div>
 							</div>
 						</div>
@@ -247,16 +250,39 @@
 							</button>
 						</div>
 					</div>
-					<div class="issuebox-issues"></div>
+					<div class="issuebox-issues">
+						<div class="issues" th:each="issueList : ${issueList}" th:if="${issueList.issueStatus.idx == statusList[2]}">
+							<div class="issuename">
+								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
+								<div class="issue-menubtnbox">
+									<button class="issue-menubtn">
+										<span style="margin-top: 3px;">
+											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
+										</span>
+									</button>
+								</div>
+							</div>
+							<div class="issue-underbox">
+								<div class="issue-typebox">
+									<span style="height: 16px;"><img th:src="@{|/images/${issueList.issueType.iconFilename}|}"></span>
+									<span class="issuekey" th:text="${issueList.key}"></span>
+								</div>
+								<div class="issue-managerbox">
+									<span style="margin-top: 2px;"><img width="16" alt="Lowest 우선 순위" src="https://dahyun0521.atlassian.net/images/icons/priorities/lowest.svg" class="_1bsb7vkz _4t3i7vkz _s7n41ndm" aria-describedby="61val-tooltip"></span>
+									<span><img width="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"></span>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="createissue-container">
 						<div class="createissuebox">
 							<form class="createissueform">
 								<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
 								<div class="createissue-btnbox">
 									<div class="createissue-typebtn">
-										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+										<span style="width: 16px; height: 16px;"><img th:src="@{/images/bug_issue.svg}"></span>
 										<span style="margin-top: 1px;">
-											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+											<img th:src="@{/images/arrow_under_icon.svg}" style="width: 12px; filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</span>
 									</div>
 									<div class="createissuebtn">
@@ -275,22 +301,22 @@
 							<div class="issuetype-listbox">
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium"></span>
+									<span class="issuetypeimg"><img th:src="@{/images/epik_issue.svg}"></span>
 									<span style="margin-bottom: 2px;">에픽</span>
 								</div>
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+									<span class="issuetypeimg"><img th:src="@{/images/bug_issue.svg}"></span>
 									<span style="margin-bottom: 2px;">작업1</span>
 								</div>
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
+									<span class="issuetypeimg"><img th:src="@{/images/task_issue.svg}"></span>
 									<span style="margin-bottom: 2px;">작업</span>
 								</div>
 								<div class="issuetype">
 									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"></span>
+									<span class="issuetypeimg"><img th:src="@{/images/work_issue.svg}"></span>
 									<span style="margin-bottom: 2px;">체크리스트</span>
 								</div>
 								<div class="issuetype">
@@ -319,345 +345,6 @@
 					<div class="issuebox"></div>
 				</div>
 			</div>
-			<div class="issue-container">
-				<div class="issue-menubox">
-					<div class="issue-menubar">
-						<div class="issuebox-moveicon">⠿</div>
-						<div class="issue-status">
-							<div class="status-titlebox">
-								<div class="status-title">진행 중</div>
-								<div class="status-count">
-									<span>2</span>
-								</div>
-							</div>
-						</div>
-						<div class="status-menubtnbox">
-							<button class="status-menubtn">
-								<span style="margin-top: 3px;">
-									<img th:src="@{/images/status_other_icon.svg}" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
-								</span>
-							</button>
-						</div>
-					</div>
-					<div class="issuebox-issues">
-						<div class="issues">
-							<div class="issuename">
-								<span style="margin-top: 1px;">버그다!</span>
-								<div class="issue-menubtnbox">
-									<button class="issue-menubtn">
-										<span style="margin-top: 3px;">
-											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
-										</span>
-									</button>
-								</div>
-							</div>
-							<div class="issue-underbox">
-								<div class="issue-typebox">
-									<span style="height: 16px;"><img alt="작업1" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium" class="_1e0c1txw _1bsb7vkz _4t3i7vkz" aria-describedby="59val-tooltip"></span>
-									<span class="issuekey">TSYR-34</span>
-								</div>
-								<div class="issue-managerbox">
-									<span style="margin-top: 2px;"><img width="16" alt="Lowest 우선 순위" src="https://dahyun0521.atlassian.net/images/icons/priorities/lowest.svg" class="_1bsb7vkz _4t3i7vkz _s7n41ndm" aria-describedby="61val-tooltip"></span>
-									<span><img width="24" src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"></span>
-								</div>
-							</div>
-						</div>
-						<div class="issues">
-							<div class="issuename">
-								<span style="margin-top: 1px;">이슈 1</span>
-								<div class="issue-menubtnbox">
-									<button class="issue-menubtn">
-										<span style="margin-top: 3px;">
-											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
-										</span>
-									</button>
-								</div>
-							</div>
-							<div class="issue-underbox">
-								<div class="issue-typebox">
-									<span style="height: 16px;"><img alt="체크리스트" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium" class="_1e0c1txw _1bsb7vkz _4t3i7vkz" aria-describedby="64val-tooltip"></span>
-									<span class="issuekey">TSYR-24</span>
-								</div>
-								<div class="issue-managerbox">
-									<span style="margin-top: 2px;"><img width="16" alt="High 우선 순위" src="https://dahyun0521.atlassian.net/images/icons/priorities/high.svg"></span>
-									<span><img width="24" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"></span>
-								</div>
-							</div>
-							<div style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
-								<button class="subissuebtn">
-									<div class="subissuebtnbox">
-										<span style="width: 16px; height: 16px;">
-											<img th:src="@{/images/subissue_files_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-										</span>
-										<span style="font-weight: bolder;">0/1</span>
-										<span class="subissuebtnimg">
-											<img th:src="@{/images/arrow_right_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-										</span>
-									</div>
-								</button>
-							</div>
-								<div class="subissuebox">
-									<div class="subissues">
-										<div class="subissueline"></div>
-										<div class="testester">
-										<div class="subissuename">
-											<span>이슈 1의 하위 이슈</span>
-										</div>
-										<div class="subissue-underbox">
-											<div class="issue-typebox">
-												<span style="height: 16px; margin-top: 2px;"><img alt="하위 작업" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10316?size=medium" class="_1bsb7vkz _4t3i7vkz _s7n41ndm"></span>
-												<span class="issuekey">TSYR-55</span>
-											</div>
-											<div class="issue-managerbox">
-												<span class="subissue-status">해야 할 일</span>
-												<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
-											</div>
-										</div>
-										</div>
-									</div>
-								</div>
-						</div>
-						<div class="issues">
-							<div class="issuename">
-								<span style="margin-top: 1px;">체크리스트</span>
-								<div class="issue-menubtnbox">
-									<button class="issue-menubtn">
-										<span style="margin-top: 3px;">
-											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-												<g fill="currentcolor" fill-rule="evenodd">
-													<circle cx="5" cy="12" r="2"></circle>
-													<circle cx="12" cy="12" r="2"></circle>
-													<circle cx="19" cy="12" r="2"></circle>
-												</g>
-											</svg>
-										</span>
-									</button>
-								</div>
-							</div>
-							<div class="issue-deadline">
-								<div class="issue-deadlinebox" style="color: #AE2E24; border-color: #E2483D;">
-									<span style="margin-left: -2px; margin-top: 2px;">
-										<img class="issue-deadlineimg" th:src="@{/images/issue_calender_icon.svg}" style="filter: invert(28%) sepia(86%) saturate(1898%) hue-rotate(344deg) brightness(69%) contrast(94%);">
-									</span>
-									<span>08 Nov 2024</span>
-								</div>
-							</div>
-							<div class="issue-underbox">
-								<div class="issue-typebox">
-									<span style="height: 16px;"><img alt="체크리스트"
-											src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"
-											class="_1e0c1txw _1bsb7vkz _4t3i7vkz" aria-describedby="64val-tooltip"></span>
-									<span class="issuekey">TSYR-54</span>
-								</div>
-								<div class="issue-managerbox">
-									<span><img width="16" alt="Medium 우선 순위" src="https://dahyun0521.atlassian.net/images/icons/priorities/medium.svg"></span>
-									<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="createissue-container">
-						<div class="createissuebox">
-							<form class="createissueform">
-								<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-								<div class="createissue-btnbox">
-									<div class="createissue-typebtn">
-										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-										<span style="margin-top: 1px;">
-											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-										</span>
-									</div>
-									<div class="createissuebtn">
-										<span style="margin-bottom: 2px;">⏎</span>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="issuebox-create">
-							<span class="createissueicon">
-								<img th:src="@{/images/create_issue_icon.svg}">
-							</span>
-							<span>만들기</span>
-						</div>
-						<div class="issuetypeselectbox" style="top: 395px; left: 562px;">
-							<div class="issuetype-listbox">
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium"></span>
-									<span style="margin-bottom: 2px;">에픽</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-									<span style="margin-bottom: 2px;">작업1</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
-									<span style="margin-bottom: 2px;">작업</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"></span>
-									<span style="margin-bottom: 2px;">체크리스트</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium"></span>
-									<span style="margin-bottom: 2px;">테스트</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10304?size=medium"></span>
-									<span style="margin-bottom: 2px;">이게뭐야</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-									<span style="margin-bottom: 2px;">버그</span>
-								</div>
-							</div>
-							<div class="issuetype-set">
-								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-			</div>
-			<div class="issue-container">
-				<div class="issue-menubox">
-					<div class="issue-menubar">
-						<div class="issuebox-moveicon">⠿</div>
-						<div class="issue-status">
-							<div class="status-titlebox">
-								<div class="status-title">완료</div>
-								<div class="status-complete">
-									<img th:src="@{/images/status_complete_icon.svg}" style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
-								</div>
-								<div class="status-count">
-									<span>1</span>
-								</div>
-							</div>
-						</div>
-						<div class="status-menubtnbox">
-							<button class="status-menubtn">
-								<span style="margin-top: 3px;">
-									<img th:src="@{/images/status_other_icon.svg}" style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
-								</span>
-							</button>
-						</div>
-					</div>
-					<div class="issuebox-issues">
-						<div class="issues">
-							<div class="issuename">
-								<span style="margin-top: 1px;">남다현</span>
-								<div class="issue-menubtnbox">
-									<button class="issue-menubtn">
-										<span style="margin-top: 3px;">
-											<svg width="24" height="24" viewBox="0 0 24 24"
-												role="presentation">
-												<g fill="currentcolor" fill-rule="evenodd">
-													<circle cx="5" cy="12" r="2"></circle>
-													<circle cx="12" cy="12" r="2"></circle>
-													<circle cx="19" cy="12" r="2"></circle>
-												</g>
-											</svg>
-										</span>
-									</button>
-								</div>
-							</div>
-							<div class="issue-label"><span>레이블1</span></div>
-							<div class="issue-deadline">
-								<div class="issue-deadlinebox">
-									<span style="margin-left: -2px; margin-top: 2px;">
-										<img class="issue-deadlineimg" th:src="@{/images/issue_calender_icon.svg}">
-									</span>
-									<span>26 Oct 2024</span>
-								</div>
-							</div>
-							<div class="issue-underbox">
-								<div class="issue-typebox">
-									<span style="height: 16px;"><img alt="작업" src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
-									<span class="issuekey">TSYR-26</span>
-								</div>
-								<div class="issue-managerbox">
-									<span><svg height="16" width="16" style="color: #00875A; margin-right: -2px;" viewBox="0 0 24 24" role="presentation"><path d="M6.735 12.322a1 1 0 00-1.47 1.356l3.612 3.919c.537.526 1.337.526 1.834.03l.364-.359a2335.638 2335.638 0 003.939-3.883l.04-.04a492.598 492.598 0 003.658-3.643 1 1 0 00-1.424-1.404 518.42 518.42 0 01-3.64 3.625l-.04.04a2049.114 2049.114 0 01-3.775 3.722l-3.098-3.363z" fill="currentColor"></path></svg></span>
-									<span><img width="16" style="margin-top: 2px;" alt="Highest 우선 순위" src="https://dahyun0521.atlassian.net/images/icons/priorities/highest.svg"></span>
-									<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="createissue-container">
-						<div class="createissuebox">
-							<form class="createissueform">
-								<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-								<div class="createissue-btnbox">
-									<div class="createissue-typebtn">
-										<span style="width: 16px; height: 16px;"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-										<span style="margin-top: 1px;">
-											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-										</span>
-									</div>
-									<div class="createissuebtn">
-										<span style="margin-bottom: 2px;">⏎</span>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="issuebox-create">
-							<span class="createissueicon">
-								<img th:src="@{/images/create_issue_icon.svg}">
-							</span>
-							<span>만들기</span>
-						</div>
-						<!--  -->
-						<div class="issuetypeselectbox">
-							<div class="issuetype-listbox">
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium"></span>
-									<span style="margin-bottom: 2px;">에픽</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-									<span style="margin-bottom: 2px;">작업1</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
-									<span style="margin-bottom: 2px;">작업</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"></span>
-									<span style="margin-bottom: 2px;">체크리스트</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium"></span>
-									<span style="margin-bottom: 2px;">테스트</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10304?size=medium"></span>
-									<span style="margin-bottom: 2px;">이게뭐야</span>
-								</div>
-								<div class="issuetype">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
-									<span style="margin-bottom: 2px;">버그</span>
-								</div>
-							</div>
-							<div class="issuetype-set">
-								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 <div class="issuedetail-container">
@@ -665,14 +352,14 @@
 		<div class="issuedetail-headerbar">
 			<div class="issuekeypathbox">
 				<div class="issuekeypath">
-					<span class="path-issuekeyicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium" width="16px" height="16px" alt="에픽"></span>
+					<span class="path-issuekeyicon"><img th:src="@{/images/epik_issue.svg}" width="16px" height="16px" alt="에픽"></span>
 					<span style="margin-bottom: 2px;">
 						<a th:href="@{#}">TSYR-8</a>
 					</span>
 				</div>
 				<div class="issuekeypath">
 					<span style="font-size: 16px; margin-left: -7px; margin-right: 2px;">/</span>
-					<span class="path-issuekeyicon"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium" width="16px" height="16px" alt="작업1"></span>
+					<span class="path-issuekeyicon"><img th:src="@{/images/bug_issue.svg}" width="16px" height="16px"></span>
 					<span style="margin-bottom: 2px;">
 						<a th:href="@{#}">TSYR-34</a>
 					</span>

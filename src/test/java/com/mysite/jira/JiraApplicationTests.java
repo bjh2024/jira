@@ -8,8 +8,6 @@ class JiraApplicationTests {
 	
 	@Test
 	void test() {
-		
-		
 	}
 }
 
