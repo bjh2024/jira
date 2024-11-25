@@ -3,7 +3,6 @@ main {
 }
 
 .summation_container {
-	width: calc(100% - 240px);
 	background-color: #f1f2f4;
 }
 

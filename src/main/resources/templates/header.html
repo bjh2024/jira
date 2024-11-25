@@ -133,61 +133,22 @@
                         <div class="input_recent_box1">
                             <h5>최근에 조회</h5>
                             <div>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
+                                <a th:href="@{#}" class="input_recent_content"
+								   th:each="issue, loop: ${issueList}" th:if="${loop.index < 10}">
+									<img
+                                        th:src="@{|/images/${issue.iconFilename}|}"
                                         alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
+                                    <div>
+										<span th:text="${issue.key}"></span>&nbsp;
+										<span th:text="${issue.name}"></span>
+									</div>
                                 </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
-                                <a th:href="@{#}" class="input_recent_content"><img
-                                        src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=xsmall"
-                                        alt="comment" width="16" height="16">
-                                    <div>EZBY-3 스토리 보드</div>
-                                </a>
+                                
                             </div>
 
                         </div>
                         <div class="input_recent_box2">
-                            <h5>최근 보드, 프로젝트, 필터 및 계획</h5>
+                            <h5>최근 보드, 프로젝트 및 계획</h5>
                             <div>
                                 <a th:href="@{#}" class="input_recent_content">
                                     <img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
