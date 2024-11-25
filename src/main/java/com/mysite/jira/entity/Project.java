@@ -113,5 +113,8 @@ public class Project {
 	
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<FilterProject> FilterProjectList;
+	
+	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+	private List<ProjectRecentClicked> projectClickedList;
 
 }

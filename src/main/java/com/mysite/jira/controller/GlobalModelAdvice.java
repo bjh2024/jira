@@ -46,7 +46,7 @@ public class GlobalModelAdvice {
 		Project project = boardMainService.getProjectNameById(projectIdx);
 		
 		if(uri.contains("/project")) {
-			// model.addAttribute("project", project);
+			model.addAttribute("project", project);
 		}
 		
 	}

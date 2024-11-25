@@ -6,8 +6,8 @@
 	/* position: sticky;
 	top: 48px; */
 	z-index: 998;
-	padding-top: 21px;
-	padding-left: 22px;
+	padding-top: 22px;
+	padding-left: 23px;
 	padding-right: 24px;
 }
 
@@ -67,7 +67,6 @@
 
 .header-setbtn{
 	display: flex;
-	color: #172B4D;
 	border-radius: 3px;
 	position: relative;
 	width: 32px;
@@ -78,21 +77,89 @@
 }
 
 .header-setbtn.active{
-	color: white;
-	background-color: #2C3E5D;
+	background-color: #3B3D42;
+}
+
+.header-setbtn-icon{
+	filter: invert(32%) sepia(9%) saturate(347%) hue-rotate(187deg) brightness(90%) contrast(87%);
+}
+
+.header-setbtn-icon.color{
+	filter: invert(94%) sepia(93%) saturate(0%) hue-rotate(238deg) brightness(107%) contrast(105%);
 }
 
 .header-setbtn:hover {
 	background-color: #0515240F;
 }
 
+.header-menuwindow{
+	position: absolute;
+	width: 250px;
+	top: 93px;
+	left: 119px;
+	background-color: white;
+	border-radius: 3px;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	padding: 6px 0px;
+	z-index: 998;
+	display: none;
+}
+
+.header-menuwindow.show{
+	display: block;
+}
+
+.menuwindow-optionbox{
+	width: 244px;
+	padding-bottom: 6px;
+	border-bottom: 1px solid #091E4224;
+}
+
+.menuwindow-optionbtn, .menuwindow-optionbtn-bg{
+	width: 250px;
+	height: 40px;
+	padding: 7px 20px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	font-size: 14px;
+}
+
+.menuwindow-optionbtn:hover, .menuwindow-optionbtn-bg:hover{
+	background-color: #0515240F;
+}
+
+.menuwindow-optionbtn-bg{
+	position: relative;
+}
+
+.menuwindow-optionbtn-bg.active{
+	background-color: #E9F2FE;
+	border-left: 2px solid #0C66E4;
+	padding-left: 18px;
+}
+
+.menuwindow-optionbtn-bg > span > img{
+	filter: invert(11%) sepia(9%) saturate(627%) hue-rotate(190deg) brightness(93%) contrast(85%);
+}
+
+.menuwindow-optionbtn-bg.active > span > img{
+	filter: invert(20%) sepia(86%) saturate(3790%) hue-rotate(209deg) brightness(100%) contrast(90%);
+}
+
+.menuwindow-deletebox{
+	width: 244px;
+	padding-top: 6px;
+}
+
 .header-setbgbox{
 	position: absolute;
 	width: 356px;
-	top: 36px;
-	left: 0px;
+	top: 0px;
+	left: 258px;
 	padding: 11px 12px;
 	background-color: white;
+	border-radius: 3px;
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 	display: none;
 }

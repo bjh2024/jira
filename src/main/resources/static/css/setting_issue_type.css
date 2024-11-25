@@ -3,7 +3,7 @@ body{
 }
 
 .setting-issuetype-container{
-	width: calc(100% - 240px);
+	width: 100%;
 	background-color: #F1F2F4;
 }
 

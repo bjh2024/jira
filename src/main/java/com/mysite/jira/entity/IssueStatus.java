@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Entity(name = "IssueStatus")
 @NoArgsConstructor
 public class IssueStatus {
 	@Id

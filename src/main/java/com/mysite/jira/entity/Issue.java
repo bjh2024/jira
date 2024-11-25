@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
@@ -20,7 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Entity(name = "Issue")
 @NoArgsConstructor
 public class Issue {
 	@Id
@@ -41,10 +42,6 @@ public class Issue {
 	
 	@ColumnDefault("sysdate")
 	@Column
-	private LocalDateTime createDate;
-	
-	@ColumnDefault("sysdate")
-	@Column
 	private LocalDateTime editDate;
 	
 	@Column
@@ -55,7 +52,7 @@ public class Issue {
 	
 	@ColumnDefault("sysdate")
 	@Column
-	private LocalDateTime clickedDate;
+	private LocalDateTime createDate;
 	
 	@Column
 	@NotNull
@@ -84,7 +81,7 @@ public class Issue {
 	
 	@Builder
 	public Issue(String key, String name, String content, LocalDateTime createDate, LocalDateTime editDate,
-			LocalDateTime finishDate, LocalDateTime deadlineDate, LocalDateTime clickedDate, Integer divOrder,
+			LocalDateTime finishDate, LocalDateTime deadlineDate, Integer divOrder,
 			Project project, IssueType issueType, IssueStatus issueStatus, Account manager, Account reporter,
 			IssuePriority issuePriority) {
 		this.key = key;
@@ -94,7 +91,6 @@ public class Issue {
 		this.editDate = editDate;
 		this.finishDate = finishDate;
 		this.deadlineDate = deadlineDate;
-		this.clickedDate = clickedDate;
 		this.divOrder = divOrder;
 		this.project = project;
 		this.issueType = issueType;
@@ -131,4 +127,7 @@ public class Issue {
 	
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<ProjectLogData> projectLogDataList;
+	
+	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
+	private List<IssueRecentClicked> issueClickedList;
 }

@@ -9,17 +9,6 @@ document.querySelectorAll(".attached-file-box").forEach(function(box, index){
 	})
 });
 
-document.querySelectorAll(".attached-file-box").forEach(function(box, index){
-	box.addEventListener("mouseout", function(e){
-		
-		const fileBoxItem = e.target.closest(".attached-file-box");
-		if(fileBoxItem !== null){
-			document.querySelectorAll(".attached-file-detail")[index].style.backgroundColor = "white";
-			document.querySelectorAll(".attached-file-options")[index].style.display = "none";
-		}
-	})
-});
-
 document.querySelector("body").addEventListener("click", function(e) {
 	
 	document.querySelector(".attached-headerwindow.show")?.classList.remove("show");

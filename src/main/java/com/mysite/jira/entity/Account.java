@@ -150,4 +150,13 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
 	private List<ProjectLogData> projectLogDataList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<ProjectRecentClicked> projectClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<IssueRecentClicked> issueClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<DashboardRecentClicked> dashClickedList;
 }
