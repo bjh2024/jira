@@ -3,7 +3,7 @@ body{
 }
 
 .header-container {
-	width: calc(100% - 240px);
+	width: 100%;
 	background-color: white;
 	position: relative;
 	border: 1px solid #091E420F;

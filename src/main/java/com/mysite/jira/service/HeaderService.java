@@ -18,12 +18,10 @@ public class HeaderService {
 	// jira리더 list
 	public List<String> getjiraLeaderList(Integer accountIdx){
 		List<String> result = jiraRepository.findJiraAndMembersByAccountIdxName(accountIdx);
-		
 		// 두글자만 나오게
 		for(int i = 0; i < result.size(); i++) {
 			result.set(i, result.get(i).substring(0, 2));
 		}
-		
 		return result;
 	}
 	

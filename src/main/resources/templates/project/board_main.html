@@ -5,7 +5,6 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/project/ckeditor5/ckeditor5.css}">
 </head>
 <div layout:fragment="content" style="display: flex;" class="board-main-container">
-	<aside th:replace="~{aside :: asideFragment}"></aside>
 	<div class="header-container">
 		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
 		<div class="board-top-container">
@@ -718,7 +717,7 @@
 								<span style="margin-bottom: 4px;">하위 이슈</span>
 							</button>
 							<button class="insertwindow-btn">
-								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								<span style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img th:src="@{/images/project_issue_icon.svg}" style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
 								<span style="margin-bottom: 4px; margin-left: 4px;">연결한 이슈</span>
 							</button>
 							<button class="insertwindow-btn">
