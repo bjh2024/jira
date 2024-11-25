@@ -1,5 +1,7 @@
 package com.mysite.jira.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +19,7 @@ public class FilterController {
 	private final IssueRepository issueRepository;
 
 	@GetMapping("/filter_issue")
-	public String filterIssue(Model model) {
-		
+	public String filterIssue() {
 		return "/filter/filter_issue.html";
 	}
 	

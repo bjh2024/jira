@@ -3,7 +3,6 @@
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/board_main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/ckeditor5/ckeditor5.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/chart.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue_table.css}">
@@ -322,6 +321,50 @@
 										<div>
 											<img th:src="@{/images/arrow_under_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
 										</div>
+										<!--이슈 유형 선택-->
+										<div class="issue_type_choicebox">
+											<div class="issuetype-listbox">
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium"></span>
+													<span style="margin-bottom: 2px;">에픽</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+													<span style="margin-bottom: 2px;">작업1</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"></span>
+													<span style="margin-bottom: 2px;">작업</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium"></span>
+													<span style="margin-bottom: 2px;">체크리스트</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium"></span>
+													<span style="margin-bottom: 2px;">테스트</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10304?size=medium"></span>
+													<span style="margin-bottom: 2px;">이게뭐야</span>
+												</div>
+												<div class="issuetype">
+													<div class="issuetypeline"></div>
+													<span class="issuetypeimg"><img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+													<span style="margin-bottom: 2px;">버그</span>
+												</div>
+											</div>
+											<div class="issuetype-set">
+												<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
+											</div>
+										</div>
+										<!--이슈 유형 선택 끝-->
 										</div>
 										</span>
 										<div style="width: 100%;">
