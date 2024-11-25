@@ -14,8 +14,13 @@
 <body>
 	<!-- 네비게이션바 -->
 	<div th:replace="~{header :: headerFragment}"></div>
-	<!-- 기본 템플릿 안에 삽입될 내용 Start -->
-	<div layout:fragment="content"></div>
+	
+	<main>
+		<div th:replace="~{aside :: asideFragment}"></div>
+		<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+		<div id="main_content" layout:fragment="content"></div>
+	</main>
+	
 	<!-- 기본 템플릿 안에 삽입될 내용 End -->
 	<!-- 자바스크립트 Start -->
 	<div layout:fragment="script"></div>
