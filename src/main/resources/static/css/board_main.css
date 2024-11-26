@@ -1711,7 +1711,7 @@ body{
 	height: 32px; 
 	padding-top: 7px; 
 	padding-right: 24px;
-	color: #44546F;
+	color: #505258;
 }
 
 .issuedetail-graphval{
@@ -1721,10 +1721,39 @@ body{
 	align-items: center;
 	flex-wrap: wrap;
 	gap: 8px;
+	color: #6B6E76;
 	font-size: 14px;
-	color: #626F86;
 	padding: 0px 8px;
 	border-radius: 3px;
+}
+
+.graphval-dead{
+	background-color: #FFECEB;
+	color: #AE2E24;
+}
+
+.graphval-date{
+	display: block;
+	margin: 4px 0px 2px 0px;
+	padding: 4px 4px 0px 4px;
+	height: 24px;
+	border-radius: 3px;
+}
+
+.graphval-label{
+	margin: 4px 0px 2px 0px;
+	padding: 0px 4px;
+	height: 20px;
+	border: 1px solid #B7B9BE;
+	border-radius: 3px;
+}
+
+.graphval-def{
+	margin-bottom: 2px;
+}
+
+.graphval-label-def.none, .graphval-dl-def.none{
+	display: none;
 }
 
 .issuedetail-graphval:hover{

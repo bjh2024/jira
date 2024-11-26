@@ -50,5 +50,8 @@ public class Team {
 	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<FilterAuth> filterAuthList;
+	
+	@OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+	private List<Issue> issueList;
 
 }

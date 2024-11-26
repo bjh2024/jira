@@ -117,6 +117,22 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			return;
 		}
 		
+		const lblCntItem = document.querySelectorAll(".issuedetail-graphval.label-def")[index]?.childElementCount;
+		
+		if(lblCntItem < 2){
+			document.querySelectorAll(".graphval-label-def")[index].classList.remove("none");
+		}else{
+			document.querySelectorAll(".graphval-label-def")[index].classList.add("none");
+		}
+		
+		const dlCntItem = document.querySelectorAll(".issuedetail-graphval.dl-def")[index]?.childElementCount;
+				
+		if(dlCntItem < 2){
+			document.querySelectorAll(".graphval-dl-def")[index].classList.remove("none");
+		}else{
+			document.querySelectorAll(".graphval-dl-def")[index].classList.add("none");
+		}
+		
 		
 		const issueItem = document.querySelectorAll(".issues")[index];
 		const issueDetailItem = document.querySelectorAll(".issuedetail-container")[index];
