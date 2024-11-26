@@ -1,18 +1,15 @@
 package com.mysite.jira.controller;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mysite.jira.dto.IssueTypeListDto;
 import com.mysite.jira.entity.Issue;
-import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
-import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.ProjectService;
@@ -33,10 +30,16 @@ public class FilterController {
 		Integer jiraIdx = 1;
 		
 		List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx); 
-		List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
-		
 		model.addAttribute("issue", issue);
+		
+		List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 		model.addAttribute("project", project);
+
+		List<IssueTypeListDto> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
+		model.addAttribute("issueType", issueType);
+		
+		List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
+		model.addAttribute("issueStatus", issueStatus);
 		
 		return "/filter/filter_issue.html";
 	}

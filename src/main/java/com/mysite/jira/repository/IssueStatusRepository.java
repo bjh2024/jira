@@ -14,4 +14,6 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 			+ "WHERE i.project.idx = :idx "
 			+ "GROUP BY s.idx, s.name, s.status, s.divOrder ORDER BY s.divOrder") 
 	List<Object[]> findGroupByIssueStatusWithJPQL(@Param("idx") Integer idx);
+	
+
 }

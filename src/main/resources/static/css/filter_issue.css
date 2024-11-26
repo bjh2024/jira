@@ -192,6 +192,25 @@
 	align-items: center;
 	display: flex;
 }
+.issuestatus {
+	font-size: 10px;
+	font-weight: 800;
+	margin-left: 8px;
+	border: 1px solid rgb(148, 199, 72);
+	padding: 0px 4px;
+	border-radius: 3px;
+}
+.issuestatus.first {
+	border: 1px solid rgb(102, 157, 241);
+}
+.issuestatus.second {
+	border: 1px solid rgb(183, 185, 190);
+}
+
+.filter_issue_project_div_3:hover{
+	background-color: #DFE1E6;
+	cursor: pointer;
+}
 
 .filter_issue_project_div_4 {
 	border-top: 1px solid #DFE1E6;

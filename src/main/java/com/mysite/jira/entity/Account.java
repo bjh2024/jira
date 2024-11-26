@@ -40,7 +40,7 @@ public class Account {
 	private String name;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
-	private String iconFileName;
+	private String iconFilename;
 
 	@Column
 	private LocalDateTime createDate;
@@ -57,7 +57,7 @@ public class Account {
 		this.email = email;
 		this.pw = pw;
 		this.name = name;
-		this.iconFileName = iconFileName;
+		this.iconFilename = iconFilename;
 		this.createDate = LocalDateTime.now();
 		this.authCode = authCode;
 		this.codeExpDate = LocalDateTime.now().plusMinutes(3);
