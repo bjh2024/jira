@@ -70,10 +70,18 @@
 	white-space: nowrap;
 	align-items: center;
 	border-radius: 3px;
-	background-color: #E9F2FF;
-	color: #0C66E4;
-	font-family: bold;
+	padding: 0px 2px;
+	background-color: rgb(179, 223, 114);
+	font-weight: bold;
 	font-size: 12px;
+}
+
+.button_color.first {
+	background-color: rgb(183, 185, 190);;
+}
+
+.button_color.second {
+	background-color: rgb(102, 157, 241);;
 }
 
 .filter_last_div {

@@ -352,30 +352,25 @@
 					<th>기한</th>
 					<th style="border-top-right-radius: 8px; text-align: right;">...</th>
 				</tr>
-				<tr class="filter_row">
+				<th:block th:each="issue : ${issue}">
+				<tr class="filter_row" >
 					<td>
 						<div style="display: flex;">
-							<img height="16" width="16"
-								src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=small"
-								alt="작업">
+							<img width="16" height="16" th:src="@{|/images/${issue.issueType.iconFilename}|}">
 						</div>
 					</td>
 					<td>
-						<a>HIH-5</a>
+						<a th:text="${issue.key}"></a>
 					</td>
 					<td>
-						<a>dfdfdf</a>
+						<a th:text="${issue.name}"></a>
 					</td>
 					<td>
 						<div style="display: flex; align-items: center;">
 							<div style="height: 24px;">
-								<img width="24;" height="24"
-									src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
-									alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
-									class="css-1gr7gcv" style="border-radius: 50%;">
+								<img width="24" height="24" th:src="@{|/images/${issue.manager != null && issue.manager != '' ? issue.manager.iconFilename : 'default_icon_file.png'}|}" alt="Manager Icon">
 							</div>
-							<div class="td_div">
-								할당되지 않음
+							<div class="td_div" th:text="${issue.manager != null && issue.manager != '' ? issue.manager.name : '할당되지 않음'}">
 							</div>
 						</div>
 					</td>
@@ -383,29 +378,26 @@
 						<div style="display: flex; align-items: center;">
 							<div style="height: 24px;">
 								<img width="24" height="24"
-									src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-									alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
-									class="css-1gr7gcv" style="border-radius: 50%;">
+									th:src="@{|/images/${issue.reporter.iconFilename}|}">
 							</div>
-							<div class="td_div">
-								남다현
+							<div class="td_div" th:text="${issue.reporter.name}">
 							</div>
 						</div>
 					</td>
 					<td>
 						<div style="display: flex;">
 							<div style="height: 16px;">
-								<img src="https://dahyun0521.atlassian.net/images/icons/priorities/medium.svg"
-									width="16px" height="16px" alt="" draggable="false"
-									class="_1reo15vq _18m915vq _16jlidpf _1o9zidpf _i0dl1wug">
+								<img th:src="@{|/images/${issue.issuePriority.iconFilename}|}"
+									width="16px" height="16px">
 							</div>
-							<div class="td_div">
-								우선순위
+							<div class="td_div" th:text="${issue.issuePriority.name}">
 							</div>
 						</div>
 					</td>
 					<td>
-						<button class="button_color">
+						<button class="button_color" th:text="${issue.issueStatus.name}" 
+						th:classappend="${issue.issueStatus.status == 1 ? 'first' : ''} 
+						                      + ${issue.issueStatus.status == 2 ? 'second' : ''}">
 							진행중
 							<svg role="presentation" width="12" height="12" viewBox="5 5 13 13">
 								<path
@@ -418,18 +410,19 @@
 
 					</td>
 					<td>
-						2024년 11월 15일
+						<div th:text="${issue.createDate != null} ? ${#temporals.format(issue.createDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
 					</td>
 					<td>
-						2024년 11월 15일
+						<div th:text="${issue.editDate != null} ? ${#temporals.format(issue.editDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
 					</td>
 					<td>
-						없음
+						<div th:text="${issue.deadlineDate != null} ? ${#temporals.format(issue.deadlineDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
 					</td>
 					<td>
 
 					</td>
 				</tr>
+				</th:block>
 				<tr class="filter_row_last">
 					<td colspan="12">
 						<div class="filter_last_div">
