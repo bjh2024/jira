@@ -990,7 +990,6 @@ body{
 	display: block;
 	height: 26px;
 	color: #292A2E;
-	background-color: white;
 	border: 1px solid #091E4221;
 	font-size: 14px;
 	padding: 2px 4px;
@@ -1003,7 +1002,6 @@ body{
 	padding: 0px 6px;
 	height: 22px; 
 	color: #292A2E;
-	background-color: white;
 	border: 1px solid #091E4221;
 	font-size: 13px;
 	border-radius: 4px;
@@ -1645,6 +1643,18 @@ body{
 	margin-left: 12px;
 }
 
+.status1{
+	background-color: #DDDEE1;
+}
+
+.status2{
+	background-color: #669DF1;
+}
+
+.status3{
+	background-color: #B3DF72;
+}
+
 .issuedetail-status-complete{
 	height: 32px;
 	padding: 0px 16px 0px 12px;
@@ -1709,6 +1719,7 @@ body{
 	height: 32px;
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 8px;
 	font-size: 14px;
 	color: #626F86;

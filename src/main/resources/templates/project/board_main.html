@@ -310,19 +310,19 @@
 			</div>
 		</div>
 		<div class="board-body-container">
-			<div class="issue-container" th:each="statusList : ${statusList}">
+			<div class="issue-container" th:each="statusList1, statusStat : ${statusList}">
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
 							<div class="status-titlebox">
-								<div class="status-title" th:text="${statusList[0]}"></div>
-								<div class="status-complete" th:if="${statusList[2] == 3}">
+								<div class="status-title" th:text="${statusList1[0]}"></div>
+								<div class="status-complete" th:if="${statusList1[3] == 3}">
 									<img th:src="@{/images/status_complete_icon.svg}"
 										style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
 								</div>
 								<div class="status-count">
-									<span th:text="${statusList[1]}"></span>
+									<span th:text="${statusList1[1]}"></span>
 								</div>
 							</div>
 						</div>
@@ -337,7 +337,7 @@
 					</div>
 					<div class="issuebox-issues">
 						<div class="issues" th:each="issueList : ${issueList}"
-							th:if="${issueList.issueStatus.idx == statusList[2]}">
+							th:if="${issueList.issueStatus.idx == statusList1[2]}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
@@ -355,8 +355,8 @@
 								</div>
 							</div>
 							<div class="issue-label">
-								<div th:each="labelDataList : ${labelDataList}">
-									<span th:if="${labelDataList.issue.idx == issueList.idx}" th:text="${labelDataList.issueLabel.name}">레입</span>
+								<div th:each="labelDataList-issue : ${labelDataList}">
+									<span th:if="${labelDataList-issue.issue.idx == issueList.idx}" th:text="${labelDataList-issue.issueLabel.name}">레입</span>
 								</div>
 							</div>
 							<div class="issue-deadline" th:if="${issueList.deadlineDate != null}">
@@ -620,17 +620,13 @@
 														+${issueList.issueStatus.status == 3 ? 'statusbtn3':''}">
 													<div class="issuedetail-statuswindow">
 														<div class="statuswindow-menubox">
-															<div class="statuswindow-status">
-																<span class="statuswindow-title"
-																	style="background-color: #DDDEE1;">해야 할 일</span>
-															</div>
-															<div class="statuswindow-status">
-																<span class="statuswindow-title"
-																	style="background-color: #DDDEE1;">할일이 많다</span>
-															</div>
-															<div class="statuswindow-status">
-																<span class="statuswindow-title"
-																	style="background-color: #B3DF72;">완료</span>
+															<div class="statuswindow-status" th:each="myStatusList : ${statusList}"
+																	th:if="${myStatusList[2] != issueList.issueStatus.idx}">
+																<span class="statuswindow-title" th:text="${myStatusList[0]}"
+																	  th:classappend="${myStatusList[3] == 1 ? 'status1':''}
+																					  +${myStatusList[3] == 2 ? 'status2':''}
+																					  +${myStatusList[3] == 3 ? 'status3':''}">
+																</span>
 															</div>
 														</div>
 													</div>

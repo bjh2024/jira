@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.IssueExtendsRepository;
