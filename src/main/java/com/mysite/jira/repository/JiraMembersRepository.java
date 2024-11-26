@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 
 public interface JiraMembersRepository extends JpaRepository<JiraMembers, Integer>{
 	
+	List<JiraMembers> findByJiraIdx(Integer idx);
 }

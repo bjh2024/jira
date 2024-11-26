@@ -6,5 +6,4 @@ import com.mysite.jira.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 	
-	
 }

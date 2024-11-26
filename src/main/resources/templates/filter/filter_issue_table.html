@@ -1,4 +1,5 @@
 <html layout:decorate="~{layout}">
+
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
@@ -13,24 +14,33 @@
 				</div>
 				<div class="category_parent">
 					<div class="filter_issue_list">
-						<button class="category_1" style="color: #0052CC; background-color: #E9F2FE; border:1px solid #0C66E4;">목록 보기</button>
+						<button class="category_1"
+							style="color: #0052CC; background-color: #E9F2FE; border:1px solid #0C66E4;">목록 보기</button>
 						<button class="category_2">세부 정보 보기</button>
-				</div>
+					</div>
 					<div class="category_3">
-						<svg fill="none" viewBox="-4 -4 24 24" role="presentation" style="width: 24px; height: 24px;" ><path fill="currentcolor" d="M2.25 8a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0"></path><path stroke="currentcolor" stroke-width="1.5" d="M2.25 8a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path></svg>
+						<svg fill="none" viewBox="-4 -4 24 24" role="presentation" style="width: 24px; height: 24px;">
+							<path fill="currentcolor"
+								d="M2.25 8a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0">
+							</path>
+							<path stroke="currentcolor" stroke-width="1.5"
+								d="M2.25 8a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm6.5 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z">
+							</path>
+						</svg>
 					</div>
 				</div>
 			</div>
 			<div class="head_category" style="display: flex;">
 				<div class="issue_search">
-					<input style="font-size: 14px; align-items: center;" placeholder="이슈 검색">
-					<div style="border: none; background-color: transparent; display: flex;">
-						<svg width="16" height="16" viewBox="0 0 24 24" role="presentation">
-							<path fill="#5E6C84" fill-rule="evenodd"
-								d="m16.436 15.085 3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406M10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11">
+					<div
+						style="border: none; background-color: transparent; display: flex; width: 16px; margin-left: 8px;">
+						<svg fill="none" viewBox="0 0 16 16" role="presentation" class="css-1rmmprl">
+							<path stroke="currentcolor" stroke-width="1.5"
+								d="m14.5 14.5-3.788-3.788m0 0a5.25 5.25 0 1 0-7.425-7.425 5.25 5.25 0 0 0 7.425 7.425Z">
 							</path>
 						</svg>
 					</div>
+					<input style="font-size: 14px; align-items: center;" placeholder="이슈 검색">
 				</div>
 				<div class="filter_category_choice" style="position: relative;">
 					<div class="filter_menu">
@@ -71,18 +81,15 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										최근 프로젝트
 									</div>
-									<div class="filter_issue_project_div_3">
+									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
+										<div style="height: 16px; margin-left: 12px;">
+											<img width="16" height="16"
+												th:src="@{|/images/${projectList.iconFilename}|}"
 												style="border-radius: 2px;">
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;"><span
+												th:text="${projectList.name}"></span></div>
 									</div>
 								</div>
 							</div>
@@ -129,18 +136,16 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										표준 이슈 유형
 									</div>
-									<div class="filter_issue_project_div_3">
+									<div class="filter_issue_project_div_3"
+										th:each="issueTypeList, loop : ${issueType}">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
 										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
+												th:src="@{|/images/${issueTypeList.iconFilename}|}"
 												style="border-radius: 2px;">
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;">
+											<span th:text="${issueTypeList.name}"></span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -181,20 +186,12 @@
 									</svg>
 								</div>
 							</div>
-							<div style="padding: 8px 0px;">
-								<div style="padding: 8px 0px">
+							<div style="padding: 10px 0px;">
+								<div style="height: 32px;" th:each="issueStatus, i : ${issueStatus}">
 									<div class="filter_issue_project_div_3">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
-										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div class="issuestatus" th:text="${issueStatus[1]}" th:classappend="${issueStatus[0] == 2 ? 'first':''}
+																+${issueStatus[0] == 1 ? 'second':''}"></div>
 									</div>
 								</div>
 							</div>
@@ -237,23 +234,23 @@
 							</div>
 							<div style="padding: 8px 0px;">
 								<div style="padding: 8px 0px">
-									<div
-										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
-										제안하는 사용자
-									</div>
-									<div class="filter_issue_project_div_3">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
+									<div style="font-size: 11px;margin-bottom:2.75px;">
+										<div
+											style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
+											제안하는 사용자
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div class="filter_issue_project_div_3" th:each="account : ${account}">
+											<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+											<div style="height: 16px; margin-left: 12px;">
+												<img width="16" height="16"
+													th:src="@{|/images/${account.account.iconFilename}|}"
+													style="border-radius: 2px;">
+											</div>
+											<div style="margin-left: 8px; font-size: 14px;"
+												th:text="${account.account.name}"></div>
+										</div>
 									</div>
+
 								</div>
 							</div>
 							<div class="filter_issue_project_div_4">
@@ -285,16 +282,31 @@
 								<div style="padding: 8px 0px">
 									<div class="filter_issue_project_div_3">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
-										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;">우선 순위</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">해결 날짜</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">해결</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">최근 업데이트</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">최근 생성</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">상태 범주</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">보고자</div>
 									</div>
 								</div>
 							</div>
@@ -307,7 +319,8 @@
 				<div class="hr_height"></div>
 				<div class="filter_category_choice_2">
 					<div class="hover_line" style="color:#6B778C; cursor: pointer;"><a>초기화</a></div>
-										<div class="hover_line" style="color: #0C66E4; cursor: pointer;"><a class="filter_save_button">필터 저장</a></div>
+					<div class="hover_line" style="color: #0C66E4; cursor: pointer;"><a class="filter_save_button">필터
+							저장</a></div>
 				</div>
 			</div>
 			<table class="filter_table">
@@ -342,9 +355,9 @@
 				<tr class="filter_row">
 					<td>
 						<div style="display: flex;">
-						<img height="16" width="16"
-						src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=small"
-						alt="작업">
+							<img height="16" width="16"
+								src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=small"
+								alt="작업">
 						</div>
 					</td>
 					<td>
@@ -357,9 +370,9 @@
 						<div style="display: flex; align-items: center;">
 							<div style="height: 24px;">
 								<img width="24;" height="24"
-								src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
-								alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
-								class="css-1gr7gcv" style="border-radius: 50%;">
+									src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
+									alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
+									class="css-1gr7gcv" style="border-radius: 50%;">
 							</div>
 							<div class="td_div">
 								할당되지 않음
@@ -370,176 +383,215 @@
 						<div style="display: flex; align-items: center;">
 							<div style="height: 24px;">
 								<img width="24" height="24"
-								src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-								alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
-								class="css-1gr7gcv" style="border-radius: 50%;">
+									src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+									alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true"
+									class="css-1gr7gcv" style="border-radius: 50%;">
 							</div>
 							<div class="td_div">
 								남다현
 							</div>
 						</div>
 					</td>
-				<td>
-					<div style="display: flex;">
-						<div style="height: 16px;">
-							<img src="https://dahyun0521.atlassian.net/images/icons/priorities/medium.svg" width="16px"
-							height="16px" alt="" draggable="false"
-							class="_1reo15vq _18m915vq _16jlidpf _1o9zidpf _i0dl1wug">
+					<td>
+						<div style="display: flex;">
+							<div style="height: 16px;">
+								<img src="https://dahyun0521.atlassian.net/images/icons/priorities/medium.svg"
+									width="16px" height="16px" alt="" draggable="false"
+									class="_1reo15vq _18m915vq _16jlidpf _1o9zidpf _i0dl1wug">
+							</div>
+							<div class="td_div">
+								우선순위
+							</div>
 						</div>
-						<div class="td_div">
-							우선순위
-						</div>
-					</div>
-				</td>
-				<td>
-					<button class="button_color">
-						진행중
-						<svg role="presentation" width="12" height="12" viewBox="5 5 13 13"><path
-							d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
-							fill="currentColor" fill-rule="evenodd"></path>
-						</svg>
-					</button>
-				</td>
-				<td>
-
-				</td>
-				<td>
-					2024년 11월 15일
-				</td>
-				<td>
-					2024년 11월 15일
-				</td>
-				<td>
-					없음
-				</td>
-				<td>
-		
-				</td>
-			</tr>
-			<tr class="filter_row_last">
-				<td colspan="12">
-					<div class="filter_last_div">
-						<div></div>
-							<div style="display: flex; align-items: center;">
-								1~15/15
-							<button style="margin-left: 6px; background-color: white; height: 16px;">
-								<svg width="16" height="16" viewBox="0 0 24 24" role="presentation">
-								<g fill="currentcolor" fill-rule="evenodd">
-									<path fill-rule="nonzero"
-										d="M8 6.003v2.995a1 1 0 1 0 2 0V5.102C10 4.494 9.507 4 8.9 4H5a1 1 0 0 0 0 2.003z">
-									</path>
-									<path fill-rule="nonzero"
-										d="M9.428 18.018C7.351 16.989 6 14.807 6 12.37c0-2.266 1.167-4.319 3.02-5.425.48-.286.646-.922.371-1.421a.98.98 0 0 0-1.364-.386C5.557 6.611 4 9.35 4 12.37c0 3.248 1.802 6.158 4.57 7.529.498.247 1.095.026 1.332-.493.237-.52.025-1.141-.474-1.388">
-									</path>
-									<path
-										d="M14 15.002v3.896c0 .608.493 1.102 1.1 1.102H19a1 1 0 0 0 0-2.003h-3v-2.995a1 1 0 1 0-2 0">
-									</path>
-									<path
-										d="M14.097 4.596c-.237.52-.025 1.14.474 1.387 2.077 1.029 3.428 3.21 3.428 5.647 0 2.266-1.167 4.32-3.021 5.425a1.063 1.063 0 0 0-.37 1.42c.274.5.885.673 1.364.387 2.47-1.473 4.027-4.212 4.027-7.232 0-3.248-1.802-6.158-4.57-7.528A.96.96 0 0 0 15.002 4a1 1 0 0 0-.905.596">
-									</path>
-								</g>
+					</td>
+					<td>
+						<button class="button_color">
+							진행중
+							<svg role="presentation" width="12" height="12" viewBox="5 5 13 13">
+								<path
+									d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+									fill="currentColor" fill-rule="evenodd"></path>
 							</svg>
 						</button>
+					</td>
+					<td>
+
+					</td>
+					<td>
+						2024년 11월 15일
+					</td>
+					<td>
+						2024년 11월 15일
+					</td>
+					<td>
+						없음
+					</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr class="filter_row_last">
+					<td colspan="12">
+						<div class="filter_last_div">
+							<div></div>
+							<div style="display: flex; align-items: center;">
+								1~15/15
+								<button style="margin-left: 6px; background-color: white; height: 16px;">
+									<svg width="16" height="16" viewBox="0 0 24 24" role="presentation">
+										<g fill="currentcolor" fill-rule="evenodd">
+											<path fill-rule="nonzero"
+												d="M8 6.003v2.995a1 1 0 1 0 2 0V5.102C10 4.494 9.507 4 8.9 4H5a1 1 0 0 0 0 2.003z">
+											</path>
+											<path fill-rule="nonzero"
+												d="M9.428 18.018C7.351 16.989 6 14.807 6 12.37c0-2.266 1.167-4.319 3.02-5.425.48-.286.646-.922.371-1.421a.98.98 0 0 0-1.364-.386C5.557 6.611 4 9.35 4 12.37c0 3.248 1.802 6.158 4.57 7.529.498.247 1.095.026 1.332-.493.237-.52.025-1.141-.474-1.388">
+											</path>
+											<path
+												d="M14 15.002v3.896c0 .608.493 1.102 1.1 1.102H19a1 1 0 0 0 0-2.003h-3v-2.995a1 1 0 1 0-2 0">
+											</path>
+											<path
+												d="M14.097 4.596c-.237.52-.025 1.14.474 1.387 2.077 1.029 3.428 3.21 3.428 5.647 0 2.266-1.167 4.32-3.021 5.425a1.063 1.063 0 0 0-.37 1.42c.274.5.885.673 1.364.387 2.47-1.473 4.027-4.212 4.027-7.232 0-3.248-1.802-6.158-4.57-7.528A.96.96 0 0 0 15.002 4a1 1 0 0 0-.905.596">
+											</path>
+										</g>
+									</svg>
+								</button>
+							</div>
+							<div style="display: flex;">
+								<div class="filter_right_last">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+										<path fill="currentcolor" fill-rule="evenodd"
+											d="m9.005 10.995 4.593-4.593a.99.99 0 1 1 1.4 1.4l-3.9 3.9 3.9 3.9a.99.99 0 0 1-1.4 1.4L9.005 12.41a1 1 0 0 1 0-1.414">
+										</path>
+									</svg>
+								</div>
+								<div style="width: 29.64px; text-align: center; align-items: center;">
+									<button
+										style="width: 100%; height: 100%; background-color: #E9F2FF; color: #0C66E4; border-radius: 3px;">
+										1
+									</button>
+								</div>
+								<div class="filter_right_last">
+									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+										<path fill="currentcolor" fill-rule="evenodd"
+											d="M14.995 10.995a1 1 0 0 1 0 1.414l-4.593 4.593a.99.99 0 0 1-1.4-1.4l3.9-3.9-3.9-3.9a.99.99 0 0 1 1.4-1.4z">
+										</path>
+									</svg>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<div class="modal">
+				<div class="modal_content">
+					<div class="content_div_1">
+						<span style="font-size: 20px;">필터 저장</span>
 					</div>
-					<div style="display: flex;">
-						<div class="filter_right_last">
-							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-								<path fill="currentcolor" fill-rule="evenodd"
-									d="m9.005 10.995 4.593-4.593a.99.99 0 1 1 1.4 1.4l-3.9 3.9 3.9 3.9a.99.99 0 0 1-1.4 1.4L9.005 12.41a1 1 0 0 1 0-1.414">
-								</path>
-							</svg>
-						</div>
-						<div style="width: 29.64px; text-align: center; align-items: center;">
-							<button
-								style="width: 100%; height: 100%; background-color: #E9F2FF; color: #0C66E4; border-radius: 3px;">
-								1
-							</button>
-						</div>
-						<div class="filter_right_last">
-							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-								<path fill="currentcolor" fill-rule="evenodd"
-									d="M14.995 10.995a1 1 0 0 1 0 1.414l-4.593 4.593a.99.99 0 0 1-1.4-1.4l3.9-3.9-3.9-3.9a.99.99 0 0 1 1.4-1.4z">
-								</path>
-							</svg>
-						</div>
-					</div>
-				</div>
-			</td>
-		</tr>
-		</table>
-	<div class="modal">
-			<div class="modal_content">
-				<div class="content_div_1">
-					<span style="font-size: 20px;">필터 저장</span>
-				</div>
 					<div style="height: 20px;">
-						<span style="font-size: 14px; color:#44546F;">필수 필드는 별표로 표시되어 있습니다<span style="color:#AE2E24; margin-left: 6px;">*</span></span>
-						</div>
-						<div class="filter_save_font">
-							이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
-							<input type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;">
-						</div>
-						<div class="filter_save_font">
-							설명
-							<textarea class="textArea_1" rows="2"></textarea>
-						</div>
-						<div class="filter_save_font" style="margin-top: 7px;">
-					     	조회자
-						</div>
-						<div class="viewer_div">
-							<div class="viewer_div_1">
-								<div style="width: 2px;"></div>
-								<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><path d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-								<div style="margin-left: 8px;">비공개</div>
-								<div style="margin-left: 46px;">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" fill-rule="evenodd" d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0"></path></svg>
-								</div>
-								<div style="position: absolute; right: -33px; bottom: 5px; font-size: 12px;">나만</div>
+						<span style="font-size: 14px; color:#44546F;">필수 필드는 별표로 표시되어 있습니다<span
+								style="color:#AE2E24; margin-left: 6px;">*</span></span>
+					</div>
+					<div class="filter_save_font">
+						이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
+						<input type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;">
+					</div>
+					<div class="filter_save_font">
+						설명
+						<textarea class="textArea_1" rows="2"></textarea>
+					</div>
+					<div class="filter_save_font" style="margin-top: 7px;">
+						조회자
+					</div>
+					<div class="viewer_div">
+						<div class="viewer_div_1">
+							<div style="width: 2px;"></div>
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<path
+										d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z">
+									</path>
+									<circle cx="12" cy="7" r="4"></circle>
+								</g>
+							</svg>
+							<div style="margin-left: 8px;">비공개</div>
+							<div style="margin-left: 46px;">
+								<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+									<path fill="currentcolor" fill-rule="evenodd"
+										d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+									</path>
+								</svg>
 							</div>
-							<div class="viewer_div_2">
-								추가
-							</div>
+							<div style="position: absolute; right: -33px; bottom: 5px; font-size: 12px;">나만</div>
 						</div>
-							<div class="viewer_list_box">
-								<div style="padding-left: 2px;">
-									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><path d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-								</div>
-								<div style="height: 20px; margin-left: 10px;">
-									비공개
-								</div>
+						<div class="viewer_div_2">
+							추가
+						</div>
+					</div>
+					<div class="viewer_list_box">
+						<div style="padding-left: 2px;">
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<path
+										d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z">
+									</path>
+									<circle cx="12" cy="7" r="4"></circle>
+								</g>
+							</svg>
+						</div>
+						<div style="height: 20px; margin-left: 10px;">
+							비공개
+						</div>
+					</div>
+					<div class="filter_save_font" style="margin-top: 12px;">
+						편집기
+					</div>
+					<div class="viewer_div">
+						<div class="viewer_div_1">
+							<div style="width: 2px;"></div>
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<path
+										d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z">
+									</path>
+									<circle cx="12" cy="7" r="4"></circle>
+								</g>
+							</svg>
+							<div style="margin-left: 8px;">비공개</div>
+							<div style="margin-left: 46px;">
+								<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+									<path fill="currentcolor" fill-rule="evenodd"
+										d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+									</path>
+								</svg>
 							</div>
-							<div class="filter_save_font" style="margin-top: 12px;">
-							     	편집기
-								</div>
-								<div class="viewer_div">
-									<div class="viewer_div_1">
-										<div style="width: 2px;"></div>
-										<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><path d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-										<div style="margin-left: 8px;">비공개</div>
-										<div style="margin-left: 46px;">
-											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="currentcolor" fill-rule="evenodd" d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0"></path></svg>
-										</div>
-										<div style="position: absolute; right: -33px; bottom: 5px; font-size: 12px;">나만</div>
-									</div>
-									<div class="viewer_div_2">
-										추가
-									</div>
-								</div>
-									<div class="viewer_list_box">
-										<div style="padding-left: 2px;">
-											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><g fill="currentcolor" fill-rule="evenodd"><path d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-										</div>
-										<div style="height: 20px; margin-left: 10px;">
-											비공개
-										</div>
-									</div>
-							<div class="viewer_last_button">
-								<div class="save_button">저장</div>
-								<div class="cancle_button">취소</div>
-							</div>
-		
+							<div style="position: absolute; right: -33px; bottom: 5px; font-size: 12px;">나만</div>
+						</div>
+						<div class="viewer_div_2">
+							추가
+						</div>
+					</div>
+					<div class="viewer_list_box">
+						<div style="padding-left: 2px;">
+							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+								<g fill="currentcolor" fill-rule="evenodd">
+									<path
+										d="M6 14c0-1.105.902-2 2.009-2h7.982c1.11 0 2.009.894 2.009 2.006v4.44c0 3.405-12 3.405-12 0z">
+									</path>
+									<circle cx="12" cy="7" r="4"></circle>
+								</g>
+							</svg>
+						</div>
+						<div style="height: 20px; margin-left: 10px;">
+							비공개
+						</div>
+					</div>
+					<div class="viewer_last_button">
+						<div class="save_button">저장</div>
+						<div class="cancle_button">취소</div>
+					</div>
+
+				</div>
 			</div>
+			<script th:src="@{/js/filter_issue.js}"></script>
 		</div>
-		<script th:src="@{/js/filter_issue.js}"></script>
-	</div>
+
 </html>

@@ -18,7 +18,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 		     + "WHERE iss.project.idx IN ( "
 		     + "    SELECT p.idx "
 		     + "    FROM Project p "
-		     + "    WHERE p.jira.idx = :jiraIdx )")
+		     + "    WHERE p.jira.idx = :jiraIdx )"
+		     + "    ORDER BY iss.status Desc" )
 		List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 
 

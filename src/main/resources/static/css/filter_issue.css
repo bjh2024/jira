@@ -259,7 +259,7 @@
 }
 
 .issue_list {
-	padding: 0px 0px 2px;
+	padding: 2px;
 	width: 256px;
 	height: 40px;
 	background-color: #17171708;;
@@ -271,7 +271,12 @@
 .make_button {
 	font-size: 14px;
 	padding-top: 1px;
-	margin: 0 2px;
+	
+}
+.button_div:hover {
+	border-radius: 3px;
+	background-color: #0515240C;
+	cursor: pointer;
 }
 
 .all_issue {
@@ -286,16 +291,36 @@
 .button_div {
 	display: flex;
 	width: 76px;
-	height: 32px;
+	height: 36px;
 	align-items: center;
 	padding: 0px 10px;
 	border-radius: 3px;
 	padding-bottom: 3px;
+	position: relative;
 }
-
+.button_div_box {
+	position: absolute;
+	background-color: white;
+	left: 0;
+	top: 46px;
+	width: 144.84px;
+	height: 320px;
+	border: 1px solid #091E420f;
+	border-radius: 3px;
+	overflow: auto;
+	display: none;
+}
+.button_div_box.show{
+	display: block;
+}
 .button_div svg {
 	position: relative;
 }
+
+.issue_list_small_filter:hover {
+	background-color: #0515240C;
+}
+
 
 .button_size_1 button {
 	width: 32px;
