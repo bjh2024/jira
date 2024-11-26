@@ -52,7 +52,7 @@ public class Account {
 	private LocalDateTime codeExpDate;
 	
 	@Builder
-	public Account(String email, String pw, String name, String iconFileName, 
+	public Account(String email, String pw, String name, String iconFilename, 
 			String authCode) {
 		this.email = email;
 		this.pw = pw;

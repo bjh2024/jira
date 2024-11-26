@@ -33,7 +33,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 });
 
-document.querySelector(".subissuebtn").addEventListener("click", function(e) {
+/* document.querySelector(".subissuebtn").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
 	}
@@ -51,7 +51,7 @@ document.querySelector(".subissuebtn").addEventListener("click", function(e) {
 		subissueBtnIcon.classList.add("rotate");
 	}
 
-});
+}); */
 
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
@@ -117,10 +117,9 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			return;
 		}
 		
-		document.querySelector(".issuedetail-container.show")?.classList.remove("show");
 		
 		const issueItem = document.querySelectorAll(".issues")[index];
-		const issueDetailItem = document.querySelector(".issuedetail-container");
+		const issueDetailItem = document.querySelectorAll(".issuedetail-container")[index];
 		
 		if(issueItem !== null){
 			issueDetailItem.classList.add("show");
@@ -128,19 +127,23 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 	})
 });
 
-document.querySelector(".issuedetail-container").addEventListener("mouseup", function(e) {
-
-	document.querySelector(".issuedetail-container.show")?.classList.remove("show");
-	
-	const bgItem = e.target.closest(".issuedetail-off");
-	const issueDetailItem = e.target.closest(".issuedetailbox");
-	
-	if(bgItem == null && issueDetailItem !== null){
-		document.querySelector(".issuedetail-container").classList.add("show");
-	}else{
-		document.querySelector(".issuedetail-container").classList.remove("show");
-	}
+document.querySelectorAll(".issuedetail-container").forEach(function(container, index){
+	container.addEventListener("mousedown", function(e) {
+		document.querySelectorAll(".issuedetail-container")[index]?.classList.remove("show");
+		
+		const bgItem = e.target.closest(".issuedetail-off");
+		const issueDetailItem = e.target.closest(".issuedetailbox");
+		
+		const containerItem = document.querySelectorAll(".issuedetail-container")[index];
+		
+		if(bgItem == null && issueDetailItem !== null){
+			containerItem.classList.add("show");
+		}else{
+			containerItem.classList.remove("show");
+		}
+	});
 });
+
 
 
 document.querySelector(".issuedetail-exarea").addEventListener("click", function(e) {

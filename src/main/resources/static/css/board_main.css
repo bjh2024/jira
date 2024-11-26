@@ -801,9 +801,9 @@ body{
 	overflow: auto;
 	overflow-x: hidden;
 	min-height: 90px;
-	display: none;
 	border-radius: 4px;
 	box-shadow: 1px 10px 12px rgba(23, 43, 77,0.13), 0 6px 12px rgba(23, 43, 77,0.01);
+	display: none;
 }
 
 .issuetypeselectbox.show{
@@ -821,8 +821,6 @@ body{
 	width: 204px;
 	height: 40px;
 	margin: 0 auto;
-	margin-top: 8px;
-	margin-bottom: 4px;
 }
 
 .issuetype-searchkey{
@@ -960,13 +958,13 @@ body{
 }
 
 .issue-label{
-	height: 26px;
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	color: #44546F;
-	margin-top: 1px;
+	margin-top: -3px;
 	margin-left: 8px;
-	margin-bottom: 8px;
+	margin-bottom: 4px;
 }
 
 .issue-deadline{
@@ -976,10 +974,22 @@ body{
 	margin-bottom: 7px;
 }
 
-.issue-label span{
+.already-dead{
+	border: 1px solid #E2483D !important;
+}
+
+.already-dead > span{
+	color: #AE2E24; 
+}
+
+.already-dead > span > img {
+	filter: invert(28%) sepia(86%) saturate(1898%) hue-rotate(344deg) brightness(69%) contrast(94%);
+}
+
+.issue-label > div > span{
+	display: block;
 	height: 26px;
 	color: #292A2E;
-	background-color: white;
 	border: 1px solid #091E4221;
 	font-size: 14px;
 	padding: 2px 4px;
@@ -992,7 +1002,6 @@ body{
 	padding: 0px 6px;
 	height: 22px; 
 	color: #292A2E;
-	background-color: white;
 	border: 1px solid #091E4221;
 	font-size: 13px;
 	border-radius: 4px;
@@ -1003,6 +1012,8 @@ body{
 
 .issue-deadlineimg{
 	filter: invert(13%) sepia(8%) saturate(653%) hue-rotate(191deg) brightness(90%) contrast(88%);
+	width: 16px;
+	height: 16px;
 }
 
 .issue-underbox{
@@ -1033,6 +1044,12 @@ body{
 	gap: 6px;
 	padding-top: 3px;
 	padding-right: 2px;
+}
+
+.issue-managerimg{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .subissuebtn{
@@ -1156,6 +1173,7 @@ body{
 	width: 1280px;
 	height: 68px;
 	padding: 24px 32px 8px 32px;
+	margin-bottom: 3px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -1235,7 +1253,7 @@ body{
 	max-height: 766px;
 	width: 791px;
 	padding: 0px 0px 32px 0px;
-	margin-top: -3px;
+	margin-top: -1px;
 	overflow: auto;
 	overflow-x:hidden;
 	overflow-y: auto;
@@ -1245,10 +1263,12 @@ body{
 	width: 738px;
 	height: 40px;
 	color: #172B4D;
+	border-radius: 3px;
 	font-size: 24px;
-	margin-top: 9px;
-	margin-bottom: 6px;
+	margin-top: 2px;
+	margin-bottom: 8px;
 	margin-left: -8px;
+	padding-top: 2px;
 	padding-left: 8px;
 }
 
@@ -1515,13 +1535,55 @@ body{
 
 .issuedetail-statusbar{
 	width: 441px;
-	height: 56px;
-	padding-top: 12px;
+	height: 53px;
+	padding-top: 9px;
+	display: flex;
 }
 
 .issuedetail-statusbtn{
 	color: #292A2E;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 1px 12px 0px 12px;
+	position: relative;
+}
+
+.statusbtn1{
+	color: #292A2E;
+	background-color: #0515240F;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 1px 12px 0px 12px;
+	position: relative;
+}
+
+.statusbtn2{
+	color: #292A2E;
 	background-color: #669DF1;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 1px 12px 0px 12px;
+	position: relative;
+}
+
+.statusbtn3{
+	color: #292A2E;
+	background-color: #94C748;
 	border-radius: 3px;
 	font-size: 14px;
 	font-weight: bold;
@@ -1581,6 +1643,30 @@ body{
 	margin-left: 12px;
 }
 
+.status1{
+	background-color: #DDDEE1;
+}
+
+.status2{
+	background-color: #669DF1;
+}
+
+.status3{
+	background-color: #B3DF72;
+}
+
+.issuedetail-status-complete{
+	height: 32px;
+	padding: 0px 16px 0px 12px;
+	margin: 0px 12px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 14px;
+	color: #505258;
+	cursor: not-allowed;
+}
+
 .issuedetail-graphcontainer{
 	width: 441px;
 	height: 397px;
@@ -1633,6 +1719,7 @@ body{
 	height: 32px;
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 8px;
 	font-size: 14px;
 	color: #626F86;
