@@ -120,15 +120,10 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										표준 이슈 유형
 									</div>
-									<div class="filter_issue_project_div_3" th:each="issueTypeList, loop : ${issue}">
+									<div class="filter_issue_project_div_3" th:each="issueTypeList, loop : ${issue}" >
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
 										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
+												th:src="@{|/images/${issueTypeList.issueType.iconFilename}|}"
 												style="border-radius: 2px;">
 										</div>
 										<div style="margin-left: 8px; font-size: 14px;">

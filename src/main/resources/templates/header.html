@@ -136,7 +136,6 @@
                                 <a th:href="@{#}" class="input_recent_content"
 								   th:each="issue, loop: ${issueList}" th:if="${loop.index < 10}">
 									<img
-                                        th:src="@{|/images/${issue.iconFilename}|}"
                                         alt="comment" width="16" height="16">
                                     <div>
 										<span th:text="${issue.key}"></span>&nbsp;

@@ -1,6 +1,8 @@
 package com.mysite.jira.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,7 @@ public class FilterController {
 	
 	private final IssueService issueService;
 	private final ProjectService projectService;
+	private final IssueTypeService issueTypeService;
 
 	@GetMapping("/filter_issue")
 	public String filterIssue(Model model) {
