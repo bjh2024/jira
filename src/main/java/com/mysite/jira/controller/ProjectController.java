@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.service.BoardMainService;
 
 @Controller
@@ -36,8 +39,17 @@ public class ProjectController {
 	public String boardMain(Model model) {
 		List<Object[]> statusList = boardMainService.getIssueStatusByProjectIdx(1);
 		model.addAttribute("statusList", statusList);
+		
 		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(1);
 		model.addAttribute("issueList", issueList);
+		
+		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGrade(1, 1);
+		model.addAttribute("issueTypeList", issueTypeList);
+		
+		LocalDateTime now = LocalDateTime.now();
+		List<IssueLabelData> labelDataList = boardMainService.getLabelData();
+		model.addAttribute("labelDataList", labelDataList);
+		model.addAttribute("currentTime", now);
 		return "project/board_main";
 	}
 	

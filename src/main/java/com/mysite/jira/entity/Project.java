@@ -37,7 +37,7 @@ public class Project {
 	private String color;
 
 	@Column(columnDefinition = "VARCHAR2(300)")
-	private String iconName;
+	private String iconFilename;
 
 	@NotNull
 	@Column(columnDefinition = "VARCHAR2(100)")
@@ -62,11 +62,11 @@ public class Project {
 	private Integer sequence;
 
 	@Builder
-	public Project(String key, String color, String iconName, String name, LocalDateTime clickedDate, Integer sequence,
+	public Project(String key, String color, String iconFilename, String name, LocalDateTime clickedDate, Integer sequence,
 			Jira jira, Account account) {
 		this.key = key;
 		this.color = color;
-		this.iconName = iconName;
+		this.iconFilename = iconFilename;
 		this.name = name;
 		this.clickedDate = clickedDate;
 		this.sequence = sequence;
