@@ -29,6 +29,9 @@ public class IssueRecentClicked {
 	@ManyToOne
 	private Issue issue;
 	
+	@ManyToOne
+	private Jira jira;
+	
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;

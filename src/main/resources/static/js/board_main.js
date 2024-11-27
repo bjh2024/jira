@@ -33,25 +33,25 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 });
 
-/* document.querySelector(".subissuebtn").addEventListener("click", function(e) {
-	if(e.target.closest(".show")?.className.includes("show")){
-		return;
-	}
-	document.querySelector(".subissuebox.show")?.classList.remove("show");
-	document.querySelector(".subissuebtnimg.rotate")?.classList.remove("rotate");
+document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
+	btn.addEventListener("click", function(e) {
+		if(e.target.closest(".show")?.className.includes("show")){
+			return;
+		}
+		document.querySelectorAll(".subissuebox.show")[index]?.classList.remove("show");
+		document.querySelectorAll(".subissuebtnimg.rotate")[index]?.classList.remove("rotate");
 
-	const subissueBtn = e.target.closest(".subissuebtn");
-	const subissueBtnIcon = document.querySelector(".subissuebtnimg");
-	const subissueItem = document.querySelector(".subissuebox");
-	// subissueItem.classList.toggle("show");
-	// subissueBtnIcon.classList.toggle("rotate");
-	
-	if(subissueBtn !== null){
-		subissueItem.classList.add("show");
-		subissueBtnIcon.classList.add("rotate");
-	}
-
-}); */
+		const subissueBtn = document.querySelectorAll(".subissuebtn")[index];
+		const subissueBtnIcon = document.querySelectorAll(".subissuebtnimg")[index];
+		const subissueItem = document.querySelectorAll(".subissuebox")[index];
+		
+		
+		if(subissueBtn !== null){
+			subissueItem.classList.toggle("show");
+			subissueBtnIcon.classList.toggle("rotate");
+		}
+	});
+});
 
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
@@ -133,14 +133,14 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			document.querySelectorAll(".graphval-dl-def")[index].classList.add("none");
 		}
 		
-		
 		const issueItem = document.querySelectorAll(".issues")[index];
 		const issueDetailItem = document.querySelectorAll(".issuedetail-container")[index];
 		
 		if(issueItem !== null){
 			issueDetailItem.classList.add("show");
+			issueItem.draggable = "false";
 		}
-	})
+	});
 });
 
 document.querySelectorAll(".issuedetail-container").forEach(function(container, index){
@@ -251,3 +251,59 @@ document.querySelector(".issuedetail-sortbtn").addEventListener("click", functio
 	const btnItem = e.target.closest(".issuedetail-sortbtn");
 	btnItem.classList.toggle("active");
 });
+
+document.querySelectorAll(".issues").forEach(function(box, index){
+	box.addEventListener("dragstart", function(e){
+		box.classList.add("dragging");
+	});
+	box.addEventListener("dragend", function(e){
+		box.classList.remove("dragging");
+	});
+});
+
+/*document.querySelectorAll(".issuebox-issues").forEach(function(box, index){
+	box.addEventListener("dragover", function(e){
+		e.preventDefault();
+	    const afterElement = getDragAfterElement(box, e.clientX);
+	    const draggable = document.querySelector(".dragging");
+	    if (afterElement === undefined) {
+	      box.appendChild(draggable);
+	    } else {
+	      box.insertBefore(draggable, afterElement);
+	    }
+	});
+	
+	box.addEventListener("drop", function(e){
+			
+	});
+});*/
+
+/*const columns = document.querySelectorAll(".issuebox-issues");
+
+columns.forEach((column) => {
+    new Sortable(column, {
+        group: "shared",
+        animation: 150,
+        ghostClass: "blue-background-class"
+    });
+});*/
+
+/*function getDragAfterElement(box, x) {
+  const draggableElements = [
+    ...box.querySelectorAll(".draggable:not(.dragging)"),
+];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = x - box.left - box.width / 2;
+      // console.log(offset);
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY },
+  ).element;
+}*/
