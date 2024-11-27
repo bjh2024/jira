@@ -159,4 +159,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<DashboardRecentClicked> dashClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterRecentClicked> filterClickedList;
 }

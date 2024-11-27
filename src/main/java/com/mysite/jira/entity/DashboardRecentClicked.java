@@ -29,6 +29,9 @@ public class DashboardRecentClicked {
 	@ManyToOne
 	private Dashboard dashboard;
 	
+	@ManyToOne
+	private Jira jira;
+	
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;

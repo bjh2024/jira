@@ -57,6 +57,18 @@ public class Jira {
 	private List<Filter> filterList;
 	
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
-	private List<Issue> issueList; 
+	private List<Issue> issueList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<ProjectRecentClicked> projectRecentClickedList; 
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<IssueRecentClicked> issueClickedList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<DashboardRecentClicked> dashboardClickedList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
+	private List<FilterRecentClicked> filterClickedList;
 
 }
