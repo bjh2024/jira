@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.jira.dto.IssueTypeListDto;
 import com.mysite.jira.entity.Issue;
@@ -33,9 +35,10 @@ public class FilterController {
 	private final BoardMainService boardMainService;
 
 	@GetMapping("/filter_issue/{issueKey}")
-	public String filterIssue(@PathVariable("issueKey") String issueKey,Model model) {
+	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issueKey,Model model) {
 		Integer jiraIdx = 1;
-		model.addAttribute("issueKey", issueKey);
+		try {
+		model.addAttribute("issueKey", issueKey != null ? issueKey : "");
 		 // issueKey에 맞는 필터링된 이슈 목록 가져오기
 
 		List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
@@ -56,7 +59,10 @@ public class FilterController {
 		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(jiraIdx);
 		model.addAttribute("issueList", issueList);
 
-		return "/filter/filter_issue.html";
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "/filter/filter_issue";
 	}
 
 	@GetMapping("/every_filter")
@@ -68,7 +74,6 @@ public class FilterController {
 	public String filterIssueTable(@RequestParam(value = "projectKey",required = false) String projectKey,Model model) {
 		Integer jiraIdx = 1;
 		try {
-			System.out.println(projectKey);
 			model.addAttribute("projectKey", projectKey);
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);

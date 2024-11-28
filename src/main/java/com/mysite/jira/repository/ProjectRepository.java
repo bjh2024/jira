@@ -22,5 +22,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 		     + "    ORDER BY iss.status Desc" )
 		List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 
+		List<Project> findByKey(String keys); 
 
 }
