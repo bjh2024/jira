@@ -62,7 +62,7 @@ public class GlobalModelAdvice {
 		// aside
 		List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
 		List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);
-		List<AllRecentDTO> thisWeekRecentList = recentService.getThisWeekAllRecentList(accountIdx, jiraIdx);
+		List<AllRecentDTO> thisWeekRecentList = recentService.getWeekAllRecentList(accountIdx, jiraIdx);
 		List<AllRecentDTO> monthRecentList = recentService.getMonthAllRecentList(accountIdx, jiraIdx);
 		List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
 		List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);

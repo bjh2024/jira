@@ -228,10 +228,13 @@ body{
 
 .my_work_content h3 {
 	padding-top: 8px;
+	
+	color: #6B6E76;
 	font-size: 14px;
 }
 
 .list_item {
+	width: 100%;
 	height: 52px;
 	padding: 8px;
 	margin: 0 -8px;
@@ -269,15 +272,17 @@ body{
 }
 
 .item_header p span {
-	padding: 0 4px;
+	padding-right:4px;
 }
 
-.item_foot {
+.item_foot .img_list {
 	display: flex;
 	align-items: center;
 }
 
 .item_foot span {
+	padding-right: 24px;
+	color: #6B6E76;
 	font-size: 14px;
 }
 
@@ -286,20 +291,6 @@ body{
 	box-shadow: 2px 2px 2px 2px white;
 }
 
-.item_foot img:nth-of-type(1) {
-	left: calc(10px * 2);
-	z-index: 3;
-}
-
-.item_foot img:nth-of-type(2) {
-	left: calc(10px * 1);
-	z-index: 2;
-}
-
-.item_foot img:nth-of-type(3) {
-	right: 6px;
-	z-index: 1;
-}
 
 .my_work_content.like .list_item {
 	padding: 8px;

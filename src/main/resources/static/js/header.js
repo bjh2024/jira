@@ -48,8 +48,6 @@ document.querySelector(".rable_filtering input").addEventListener("click", funct
 	document.querySelector(".rable_content_box").classList.toggle("show");
 })
 
-
-
 let datas = {
 	"startDate": null,
 	"endDate": null,

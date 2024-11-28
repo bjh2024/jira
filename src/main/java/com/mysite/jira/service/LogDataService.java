@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.header.HeaderAlarmDTO;
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.ProjectLogDataRepository;
 
@@ -39,7 +40,6 @@ public class LogDataService {
 										   .build();			
 			alarmDTO.add(dto);
 		}
-		return alarmDTO;
-				
+		return alarmDTO;		
 	}
 }

@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
@@ -127,6 +126,10 @@ public class Issue {
 	
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<ProjectLogData> projectLogDataList;
+	
+	public void updateProjectLogDataList(List<ProjectLogData> projectLogDataList) {
+		this.projectLogDataList = projectLogDataList;
+	}
 	
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
 	private List<IssueRecentClicked> issueClickedList;
