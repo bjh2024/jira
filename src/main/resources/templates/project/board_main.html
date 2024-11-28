@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/board_main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/project/ckeditor5/ckeditor5.css}">
+	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </head>
 <div layout:fragment="content" style="display: flex;" class="board-main-container">
 	<div class="header-container">
@@ -311,7 +312,7 @@
 		</div>
 		<div class="board-body-container">
 			<div class="issue-container" th:each="statusList1 : ${statusList}">
-				<div class="issue-menubox" draggable="true">
+				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
@@ -336,7 +337,7 @@
 						</div>
 					</div>
 					<div class="issuebox-issues">
-						<div class="issues" th:each="issueList : ${issueList}" draggable="true"
+						<div class="issues" th:each="issueList : ${issueList}"
 							th:if="${issueList.issueStatus.idx == statusList1[2]}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
@@ -381,43 +382,41 @@
 											th:src="@{|/images/${issueList.manager.iconFilename}|}"></span>
 								</div>
 							</div>
-							<div th:if="${#lists.size(issueList.parentList) > 0}" style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
+							<div th:if="${#lists.size(issueList.parentList) > 0} and ${issueList.issueStatus.status != 1}" style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
 								<button class="subissuebtn">
 									<div class="subissuebtnbox">
 										<span style="width: 16px; height: 16px;">
 											<img th:src="@{/images/subissue_files_icon.svg}">
 										</span>
-										<span style="font-weight: bolder;">0/1</span>
+										<span style="font-weight: bolder;" th:text="|0/${#lists.size(issueList.parentList)}|"></span>
 										<span class="subissuebtnimg">
 											<img th:src="@{/images/arrow_right_icon.svg}">
 										</span>
 									</div>
 								</button>
 							</div>
-							<div class="subissuebox" th:if="${#lists.size(issueList.parentList) > 0}">
+							<div class="subissuebox" th:if="${#lists.size(issueList.parentList)} > 0 and ${issueList.issueStatus.status != 1}">
 								<div class="subissueline"></div>
 								<div class="subissues" th:each="extendsList : ${extendsList}"
 									th:if="${extendsList.parent.idx == issueList.idx}">
-									<div class="testester">
-										<div class="subissuename">
-											<span th:text="${extendsList.child.name}"></span>
+									<div class="subissuename">
+										<span th:text="${extendsList.child.name}"></span>
+									</div>
+									<div class="subissue-underbox">
+										<div class="issue-typebox"> <!---->
+											<span style="height: 16px;">
+												<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}" style="width: 16px; height: 16px;">
+											</span>
+											<span class="issuekey" th:text="${extendsList.child.key}"></span>
 										</div>
-										<div class="subissue-underbox">
-											<div class="issue-typebox"> <!---->
-												<span style="height: 16px;">
-													<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}" style="width: 16px; height: 16px;">
-												</span>
-												<span class="issuekey" th:text="${extendsList.child.key}"></span>
-											</div>
-											<div class="subissue-managerbox">
-												<span class="subissue-status" th:text="${extendsList.child.issueStatus.name}"
-												th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
-																+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
-																+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"></span>
-												<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;">
-													<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" style="width: 100%; height: 100%; object-fit: cover;">
-												</span>
-											</div>
+										<div class="subissue-managerbox">
+											<span class="subissue-status" th:text="${extendsList.child.issueStatus.name}"
+											th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+															+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+															+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"></span>
+											<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;">
+												<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" style="width: 100%; height: 100%; object-fit: cover;">
+											</span>
 										</div>
 									</div>
 								</div>
@@ -426,17 +425,26 @@
 								<div class="issuedetailbox">
 									<div class="issuedetail-headerbar">
 										<div class="issuekeypathbox">
-											<div class="issuekeypath">
-												<span class="path-issuekeyicon"><img th:src="@{/images/epik_issue.svg}"
-														width="16px" height="16px" alt="에픽"></span>
-												<span style="margin-bottom: 2px;">
-													<a th:href="@{#}">TSYR-8</a>
+											<div class="issuekeypath" th:if="${#lists.size(issueList.childList) > 0}">
+												<th:block th:each="childList : ${issueList.childList}">
+												<span class="path-issuekeyicon"><img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px"></span>
+												<span style="margin-bottom: 2px; padding-right: 4px;">
+													<a th:href="@{#}" th:text="${childList.parent.key}">TSYR-8</a>
 												</span>
+												<span style="font-size: 16px; ">/</span>
+												</th:block>
+											</div>
+											<div class="issuekeypath" th:if="${#lists.size(issueList.childList) < 1} and ${issueList.issueType.grade != 3}" style="gap: 0px;">
+												<button class="addissuepathbtn">
+													<span style="height: 16px;">
+														<img th:src="@{/images/add_path_icon.svg}">
+													</span>
+													<span>에픽 추가</span>
+												</button>
+												<span style="font-size: 16px; ">/</span>
 											</div>
 											<div class="issuekeypath">
-												<span
-													style="font-size: 16px; margin-left: -7px; margin-right: 2px;">/</span>
-												<span class="path-issuekeyicon"><img
+												<span class="path-issuekeyicon" style="padding-left: 0px;"><img
 														th:src="@{|/images/${issueList.issueType.iconFilename}|}"
 														width="16px" height="16px"></span>
 												<span style="margin-bottom: 2px;">
@@ -531,9 +539,59 @@
 													th:text="${#strings.defaultString(issueList.content, '설명 편집')}"
 													value></span>
 											</div>
+											<div class="subissue-list-box" th:if="${#lists.size(issueList.parentList) > 0}">
+												<div class="subissue-list-title">
+													<span>하위 이슈</span>
+													<div class="subissue-list-btnbar">
+														<button class="subissue-list-sortbtn">
+															<span style="margin-bottom: 2px; margin-left: 4px;">을(를) 기준으로 정렬</span>
+															<span style="height: 12px;"><img th:src="@{/images/arrow_under_icon.svg}"></span>
+														</button>
+														<button class="subissue-list-addbtn">
+															<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
+														</button>
+													</div>
+												</div>
+												<div class="subissue-list" th:each="extendsList : ${extendsList}"
+												th:if="${extendsList.parent.idx == issueList.idx}">
+													<div class="subissue-list-leftdetail">
+														<span style="height: 16px;">
+															<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}">
+														</span>
+														<span th:text="${extendsList.child.key}" style="height: 13px;"></span>
+														<span th:text="${extendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"></span>
+													</div>
+													<div class="subissue-list-rightdetail">
+														<span style="height: 20px;">
+															<img th:src="@{|/images/${extendsList.child.issuePriority.iconFilename}|}" width="20px" height="20px">
+														</span>
+														<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;">
+															<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" class="issue-managerimg">
+														</span>
+														<div th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+																		+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+																		+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"
+																		class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
+															<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
+																<div class="statuswindow-menubox">
+																	<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+																			th:if="${orderedStatusList.idx != extendsList.child.issueStatus.idx}">
+																		<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+																		th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+																						+${orderedStatusList.status == 2 ? 'status2':''}
+																						+${orderedStatusList.status == 3 ? 'status3':''}">
+																		</span>
+																	</div>
+																</div>
+															</div>
+															<span th:text="${extendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
+															<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px"></div>
+													</div>
+												</div>
+											</div>
 											<div class="issuedetail-activebox">
 												<div
-													style="font-weight: bold; color: #172B4D; margin-top: 75px; margin-bottom: 7px;">
+													style="font-weight: bold; color: #172B4D; margin-top: 40px; margin-bottom: 7px;">
 													활동</div>
 												<div class="issuedetail-activebar">
 													<div class="issuedetail-activebtns">
@@ -562,7 +620,7 @@
 											<div class="issuedetail-replybox">
 												<div class="writereplybox">
 													<span style="margin-top: 4px;"><img width="24" height="24"
-															src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
+															th:src="@{|/images/${issueList.manager.iconFilename}|}"
 															style="border-radius: 50%;"></span>
 													<div class="editor-container">
 														<div class="editor" style="width: 690px;">
@@ -610,7 +668,7 @@
 														</button>
 													</div>
 													<div class="editor-container">
-														<div class="editor" style="width: 738px;">
+														<div class="editor" style="width: 676px;">
 															<p>뭐야!</p>
 														</div>
 														<div class="editareabtns">
@@ -626,7 +684,7 @@
 												<button class="issuedetail-statusbtn" th:classappend="${issueList.issueStatus.status == 1 ? 'status1':''}
 														+${issueList.issueStatus.status == 2 ? 'status2':''}
 														+${issueList.issueStatus.status == 3 ? 'status3':''}">
-													<div class="issuedetail-statuswindow">
+													<div class="issuedetail-statuswindow" style="left: 0px;">
 														<div class="statuswindow-menubox">
 															<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
 																	th:if="${orderedStatusList.idx != issueList.issueStatus.idx}">
@@ -667,6 +725,13 @@
 															<span>우선 순위</span>
 														</div>
 														<div class="issuedetail-graphval">
+															<div class="graphval-selectwindow" style="display: none;">
+																<div class="graphvalwindow-value" th:each="orderedPriority : ${orderedPriorityList}"
+																th:if="${orderedPriority.idx != issueList.issuePriority.idx}">
+																	<span style="height: 16px;"><img th:src="@{|/images/${orderedPriority.iconFilename}|}"></span>
+																	<span th:text="${orderedPriority.name}"></span>
+																</div>
+															</div>
 															<span style="margin-top: 2px;"><img
 																	th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"
 																	width="16px" height="16px"></span>
@@ -697,8 +762,15 @@
 															<span>레이블</span>
 														</div>
 														<div class="issuedetail-graphval label-def">
-															<th:block th:each="labelValList : ${labelDataList}">
-																<span class="graphval-label" th:if="${labelValList.issue.idx == issueList.idx}">
+															<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
+																<div class="graphval-selectwindow label">
+																	<span class="graphval-selectwindow-title">모든 레이블</span>
+																		<div class="graphvalwindow-value" th:each="alterLabelData : ${labelDataList}" 
+																		th:if="${alterLabelData.issue.jira.idx == issueList.jira.idx && alterLabelData.issueLabel.idx != labelValList.issueLabel.idx}">
+																			<span th:text="${alterLabelData.issueLabel.name}"></span>
+																		</div>	
+																</div>
+																<span class="graphval-label">
 																	<a th:text="${labelValList.issueLabel.name}"></a>
 																</span>
 															</th:block>
@@ -835,41 +907,7 @@
 		</div>
 	</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>
-<script type="importmap">
-{
-	"imports": {
-		"ckeditor5": "./ckeditor5/ckeditor5.js",
-		"ckeditor5/": "./ckeditor5/"
-	}
-}
-</script>
-	<script type="module">
-		import {
-			ClassicEditor,
-			Essentials,
-			Paragraph,
-			Bold,
-			Italic,
-			Font
-		} from 'ckeditor5';
-
-		ClassicEditor
-			.create(document.querySelector('.editor'), {
-				plugins: [Essentials, Paragraph, Bold, Italic, Font],
-				toolbar: [
-					'undo', 'redo', '|', 'bold', 'italic', '|',
-					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-				]
-			})
-			.then(editor => {
-				window.editor = editor;
-			})
-			.catch(error => {
-				console.error(error);
-			});
-	</script>
-
 </div>
-
 </html>

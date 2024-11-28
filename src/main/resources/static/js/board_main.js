@@ -1,3 +1,14 @@
+document.querySelectorAll(".editor").forEach(function(editor, index){
+	const contentEditor = new toastui.Editor({
+	    el: editor,
+	    height: 'auto',
+		minHeight: '74px',
+	    initialEditType: 'wysiwyg',
+	    initialValue: 'markdown',
+	    previewStyle: 'vertical',
+	  });
+});
+
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
@@ -35,20 +46,28 @@ document.querySelector("body").addEventListener("click", function(e) {
 
 document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e) {
-		if(e.target.closest(".show")?.className.includes("show")){
-			return;
-		}
-		document.querySelectorAll(".subissuebox.show")[index]?.classList.remove("show");
-		document.querySelectorAll(".subissuebtnimg.rotate")[index]?.classList.remove("rotate");
+		
+		const defBoxItem = document.querySelectorAll(".subissuebox.show");
+		const defBtnItem = document.querySelectorAll(".subissuebtnimg.rotate");
 
-		const subissueBtn = document.querySelectorAll(".subissuebtn")[index];
+		for(let i = 0; i < defBoxItem.length; i++){
+			defBoxItem.item(i).classList.remove("show");
+			defBtnItem.item(i).classList.remove("rotate");
+		}
+		
+		const subissueBtn = e.target.closest(".subissuebtn");
 		const subissueBtnIcon = document.querySelectorAll(".subissuebtnimg")[index];
 		const subissueItem = document.querySelectorAll(".subissuebox")[index];
-		
+
+		if(subissueBtn !== null && subissueBtn.children[0].children[2].className.includes("rotate")){
+			subissueItem.classList.remove("show");
+			subissueBtnIcon.classList.remove("rotate");
+			return;
+		}
 		
 		if(subissueBtn !== null){
-			subissueItem.classList.toggle("show");
-			subissueBtnIcon.classList.toggle("rotate");
+			subissueItem.classList.add("show");
+			subissueBtnIcon.classList.add("rotate");
 		}
 	});
 });
@@ -113,7 +132,8 @@ document.querySelectorAll(".createissue-typebtn").forEach(function(btn, index){
 
 document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
-		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null){
+		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
+			|| e.target.closest(".subissuebox") !== null){
 			return;
 		}
 		
@@ -138,7 +158,6 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 		
 		if(issueItem !== null){
 			issueDetailItem.classList.add("show");
-			issueItem.draggable = "false";
 		}
 	});
 });
@@ -162,76 +181,80 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 
 
 
-document.querySelector(".issuedetail-exarea").addEventListener("click", function(e) {
+document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
+	area.addEventListener("click", function(e) {
+		const areaItem = e.target.closest(".issuedetail-exarea");
+		const editorItem = areaItem.children[0];
+		const valItem = areaItem.children[1];
+		const btnItem = e.target.closest(".editarea-cancel");
+		
+	
+		if(btnItem !== null && editorItem !== null){
+			editorItem.style.display = "none";
+			valItem.style.display = "block";
+			areaItem.style.padding = "6px 8px";
+			return;
+		}
+		
+		if(areaItem !== null){
+			editorItem.style.display = "block";
+			valItem.style.display = "none";
+			areaItem.style.padding = "0px";
+			editorItem.style.marginLeft = "8px";
+		}
+	});
 
-	
-	const areaItem = e.target.closest(".issuedetail-exarea");
-	const editorItem = document.querySelector(".editor-container");
-	const btnItem = e.target.closest(".editarea-cancel");
-	
-
-	if(btnItem !== null && editorItem !== null){
-		document.querySelector(".editor-container").style.display = "none";
-		document.querySelector(".issuedetail-exvalue").style.display = "block";
-		areaItem.style.padding = "6px 8px";
-		return;
-	}
-	
-	if(areaItem !== null){
-		areaItem.children[0].style.display = "block";
-		areaItem.children[1].style.display = "none";
-		areaItem.style.padding = "0px";
-		areaItem.children[0].style.marginLeft = "8px";
-	}
 });
 
-document.querySelector(".writereplybox").addEventListener("click", function(e) {
-
-	const areaItem = e.target.closest(".writereplybox");
-	const editorItem = document.querySelector(".editor-container");
-	const btnItem = e.target.closest(".editarea-cancel");
+document.querySelectorAll(".writereplybox").forEach(function(box, index){
+	box.addEventListener("click", function(e) {
+		const areaItem = e.target.closest(".writereplybox");
+		const editorItem = areaItem.children[1];
+		const btnItem = e.target.closest(".editarea-cancel");
+		
 	
+		if(btnItem !== null && editorItem !== null){
+			editorItem.style.display = "none";
+			areaItem.style.padding = "6px 8px";
+			return;
+		}
+		
+		if(areaItem !== null){
+			editorItem.style.display = "block";
+			areaItem.style.padding = "0px";
+			editorItem.style.marginLeft = "8px";
+		}
+	});
 
-	if(btnItem !== null && editorItem !== null){
-		areaItem.children[1].style.display = "none";
-		areaItem.children[2].style.display = "block";
-		return;
-	}
-	
-	if(areaItem !== null){
-		areaItem.children[1].style.display = "block";
-		areaItem.children[1].style.width = `${690}px`;
-		areaItem.children[2].style.display = "none";
-	}
 });
 
-document.querySelector(".issuedetail-replylist").addEventListener("click", function(e) {
+document.querySelectorAll(".issuedetail-replylist").forEach(function(btn, index){
+	btn.addEventListener("click", function(e) {
+		const areaItem = e.target.closest(".issuedetail-reply");
+		const editorItem = areaItem.querySelector(".editor-container");
+		const replyBtnItem = e.target.closest(".reply-geteditbtn");
+		const btnItem = e.target.closest(".editarea-cancel");
+		
+		const barItem = areaItem.querySelector(".replydetail-managebar");
+		const contentItem = areaItem.querySelector(".replydetail-content");
+		
+		
+		if(btnItem !== null && editorItem !== null){
+			editorItem.style.display = "none";
+			barItem.style.display = "flex";
+			contentItem.style.display = "block";
+			return;
+		}
+		
+		if(replyBtnItem !== null){
+			editorItem.style.display = "block";
+			editorItem.style.marginLeft = `${-1}px`;
+			editorItem.style.marginTop = `${-16}px`;
+			barItem.style.display = "none";
+			contentItem.style.display = "none";
+		}
+	});
 
-	document.querySelector(".editor-container.show")?.classList.remove("show");
-	
-	const areaItem = e.target.closest(".issuedetail-reply");
-	const editorItem = document.querySelector(".editor-container");
-	const replyBtnItem = e.target.closest(".reply-geteditbtn");
-	const btnItem = e.target.closest(".editarea-cancel");
-	
-	const contentItem = e.target.closest(".replydetail-content");
-	const manageItem = e.target.closest(".replydetail-managebar");
-
-	if(btnItem !== null && editorItem !== null){
-		areaItem.children[4].style.display = "none";
-		areaItem.children[3].style.display = "flex";
-		document.querySelector(".replydetail-content").style.display = "block";
-		return;
-	}
-	
-	if(replyBtnItem !== null){
-		areaItem.children[4].style.display = "block";
-		areaItem.children[4].style.width = `${695}px`;
-		areaItem.children[4].style.marginLeft = `${-1}px`;
-		areaItem.children[4].style.marginTop = `${-16}px`;
-		areaItem.children[3].style.display = "none";
-		document.querySelector(".replydetail-content").style.display = "none";
-	}
 });
 
 document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
@@ -245,6 +268,16 @@ document.querySelector(".issuedetail-insertbtn").addEventListener("click", funct
 	const windowItem = btnItem.children[0];
 	btnItem.classList.toggle("active");
 	windowItem.classList.toggle("show");
+});
+
+document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		const btnItem = e.target.closest(".rightdetail-subissue-status");
+		const windowItem = btnItem.children[0];
+		
+		windowItem.classList.toggle("show");
+	});
+
 });
 
 document.querySelector(".issuedetail-sortbtn").addEventListener("click", function(e){
@@ -261,6 +294,34 @@ document.querySelectorAll(".issues").forEach(function(box, index){
 	});
 });
 
+/*document.querySelectorAll(".issue-container").forEach(function(box, index){
+	box.addEventListener("click", function(e){
+		if(e.target.closest(".issuebox-moveicon") !== null){
+			return;
+		}
+		
+		const defItem = document.querySelectorAll(".issue-container");
+		for(let i = 0; i < defItem.length; i++){
+			
+		}
+		
+		const boxItem = e.target.closest(".issue-container");
+		if(boxItem !== null){
+			boxItem.draggable = "false";
+		}
+	});
+});*/
+
+/*const columns = document.querySelectorAll(".board-body-container");
+
+columns.forEach((column) => {
+    new Sortable(column, {
+        group: "shared",
+        animation: 150,
+        ghostClass: "blue-background-class"
+    });
+});*/
+
 /*document.querySelectorAll(".issuebox-issues").forEach(function(box, index){
 	box.addEventListener("dragover", function(e){
 		e.preventDefault();
@@ -276,16 +337,6 @@ document.querySelectorAll(".issues").forEach(function(box, index){
 	box.addEventListener("drop", function(e){
 			
 	});
-});*/
-
-/*const columns = document.querySelectorAll(".issuebox-issues");
-
-columns.forEach((column) => {
-    new Sortable(column, {
-        group: "shared",
-        animation: 150,
-        ghostClass: "blue-background-class"
-    });
 });*/
 
 /*function getDragAfterElement(box, x) {

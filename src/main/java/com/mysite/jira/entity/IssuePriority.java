@@ -21,7 +21,7 @@ public class IssuePriority {
 	@Id
 	@Min(value = 1)
 	@Max(value = 5)
-	private String idx;
+	private Integer idx;
 	
 	@Column(columnDefinition = "VARCHAR2(100)")
 	@NotNull

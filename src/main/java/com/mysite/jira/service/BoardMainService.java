@@ -3,17 +3,20 @@ package com.mysite.jira.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
+import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
@@ -32,6 +35,7 @@ public class BoardMainService {
 	private final IssueTypeRepository issueTypeRepository;
 	private final IssueLabelDataRepository issueLabelDataRepository;
 	private final IssueReplyRepository issueReplyRepository;
+	private final IssuePriorityRepository issuePriorityRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -70,5 +74,9 @@ public class BoardMainService {
 	
 	public List<IssueReply> getIssueReply(){
 		return this.issueReplyRepository.findAll();
+	}
+	
+	public List<IssuePriority> getIssuePriority(){
+		return this.issuePriorityRepository.findAllByOrderByIdxDesc();
 	}
 }
