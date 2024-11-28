@@ -81,8 +81,12 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										최근 프로젝트
 									</div>
+									<form method="get" action="/filter/filter_issue_table" class="projectForm">
 									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="height: 13px; margin-left: 6px;">
+											<input type="checkbox" name="projectKey" th:value="${projectList.key}" onclick="submitForm()">
+											
+										</div>
 										<div style="height: 16px; margin-left: 12px;">
 											<img width="16" height="16"
 												th:src="@{|/images/${projectList.iconFilename}|}"
@@ -91,6 +95,7 @@
 										<div style="margin-left: 8px; font-size: 14px;"><span
 												th:text="${projectList.name}"></span></div>
 									</div>
+									</form>
 								</div>
 							</div>
 							<div class="filter_issue_project_div_4">
@@ -352,8 +357,8 @@
 					<th>기한</th>
 					<th style="border-top-right-radius: 8px; text-align: right;">...</th>
 				</tr>
-				<th:block th:each="issue : ${issue}">
-				<tr class="filter_row" >
+				<th:block th:each="issue : ${issue}" th:if="${projectKey != null ? issue.project.key == projectKey : ''}">
+				<tr class="filter_row">
 					<td>
 						<div style="display: flex;">
 							<img width="16" height="16" th:src="@{|/images/${issue.issueType.iconFilename}|}">
@@ -585,6 +590,12 @@
 				</div>
 			</div>
 			<script th:src="@{/js/filter_issue.js}"></script>
+			<script>
+			    // 체크박스 클릭 시 폼 자동 제출
+			    function submitForm() {
+			       document.querySelector('.projectForm').submit();
+			    }
+			</script>
 		</div>
 
 </html>
