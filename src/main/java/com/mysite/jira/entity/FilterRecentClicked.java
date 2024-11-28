@@ -17,17 +17,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class ProjectRecentClicked {
+public class FilterRecentClicked {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_clicked_seq")
-	@SequenceGenerator(name = "project_clicked_seq", sequenceName = "project_clicked_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_clicked_seq")
+	@SequenceGenerator(name = "filter_clicked_seq", sequenceName = "filter_clicked_seq", allocationSize = 1)
 	private Integer idx; 
 	
 	@ManyToOne
 	private Account account;
 	
 	@ManyToOne
-	private Project project;
+	private Filter filter;
 	
 	@ManyToOne
 	private Jira jira;

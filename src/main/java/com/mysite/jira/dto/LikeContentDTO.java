@@ -2,20 +2,16 @@ package com.mysite.jira.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class IssueRecentInputDTO {
-	
+public class LikeContentDTO {
 	private String name;
-	private String key;
 	private String iconFilename;
 	
 	@Builder
-	public IssueRecentInputDTO(String name, String key, String iconFilename) {
+	public LikeContentDTO(String name, String iconFilename) {
 		this.name = name;
-		this.key = key;
 		this.iconFilename = iconFilename;
 	}
+
 }

@@ -1,6 +1,7 @@
 package com.mysite.jira.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,5 @@ public class IssueService {
 	public List<Issue> getIssuesByJiraIdx(Integer jiraIdx){
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
-	
 	
 }

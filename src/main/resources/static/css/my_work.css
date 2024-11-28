@@ -6,12 +6,11 @@ body{
 }
 
 .my_work_container h1 {
-	margin-top: 26px;
+	margin-top: 12px;
 	padding-bottom: 22px;
 	border-bottom: 1px solid #ddd;
 
 	font-size: 24px;
-	font-weight: normal;
 }
 
 .my_work_container h2 {
@@ -46,12 +45,16 @@ body{
 .section1_content {
 	padding: 8px 0;
 	padding-top: 18px;
+	
+	display: flex;
+	gap: 12px;
+	
+	overflow-x: auto;
 }
 
 .project_recent_box {
 	width: 240px;
-	padding-top: 16px;
-	border-left: 20px solid #FFD5D2;
+	padding-top: 12px;
 	border-radius: 4px;
 
 	position: relative;
@@ -81,7 +84,7 @@ body{
 }
 
 .recent_header p {
-	font-size: 11px;
+	font-size: 12px;
 }
 
 .recent_content {
@@ -147,7 +150,7 @@ body{
 	height: 24px;
 	padding-left: 4px;
 	
-	font-size: 10px;
+	font-size: 11px;
 	display: flex;
 	align-items: center;
 	
