@@ -39,109 +39,78 @@
 						</div>
 					</div>
 					<div class="main_box">
-						<div class="recent_list_box">
+						<div class="recent_list_box" th:if="${#lists.size(todayRecentList) > 0}">
 							<h2>오늘</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn">
+								<a href="#" class="recent_item accent_btn"
+								   th:each="item : ${todayRecentList}">
 									<div class="accent_border"></div>
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									<img th:src="@{|/images/${item.iconFilename}|}"
 										alt="" style="border-radius: 2px" width="24" height="24" />
 									<div class="recent_item_comment">
-										<span>하이</span>
-										<span class="date">4분 전</span>
-									</div>
-								</a>
-								<a href="#" class="recent_item accent_btn">
-									<div class="accent_border"></div>
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
-										alt="" style="border-radius: 2px" width="24" height="24" />
-									<div class="recent_item_comment">
-										<span>hihihihi</span>
-										<span class="date">22분 전</span>
+										<span th:text="${item.name}"></span>
+										<span class="date" 
+										      th:text = "${item.elapsedTime}"></span>
 									</div>
 								</a>
 							</div>
 						</div>
-						<div class="recent_list_box">
+						<div class="recent_list_box" th:if="${#lists.size(yesterdayRecentList) > 0}">
 							<h2>어제</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn">
+								<a href="#" class="recent_item accent_btn"
+								   th:each="item : ${yesterdayRecentList}">
 									<div class="accent_border"></div>
-									<img src="/images/issue_icon.svg" alt="" width="24" height="24" />
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
-										<span>11</span>
-										<span class="date">13시간 전</span>
-									</div>
-								</a>
-								<a href="#" class="recent_item accent_btn">
-									<div class="accent_border"></div>
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<div class="recent_item_comment">
-										<span>필터 더미</span>
-										<span class="date">13시간 전</span>
+										<span th:text="${item.name}"></span>
+										<span class="date"
+											  th:text="${item.elapsedTime}"></span>
 									</div>
 								</a>
 							</div>
 						</div>
-						<div class="recent_list_box">
+						<div class="recent_list_box" th:if="${#lists.size(thisWeekRecentList) > 0}">
 							<h2>이번주</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn">
+								<a href="#" class="recent_item accent_btn"
+							       th:each="item : ${thisWeekRecentList}">
 									<div class="accent_border"></div>
-									<img src="/images/issue_icon.svg" alt="" width="24" height="24" />
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
-										<span>해야 할일임</span>
-										<span class="date">3일 전</span>
-									</div>
-								</a>
-								<a href="#" class="recent_item accent_btn">
-									<div class="accent_border"></div>
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<div class="recent_item_comment">
-										<span>필터 더미</span>
-										<span class="date">3일 전</span>
+										<span th:text="${item.name}"></span>
+										<span class="date"
+											  th:text="${item.elapsedTime}"></span>
 									</div>
 								</a>
 							</div>
 						</div>
-						<div class="recent_list_box">
+						<div class="recent_list_box" th:if="${#lists.size(monthRecentList) > 0}">
 							<h2>이번 달</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn">
+								<a href="#" class="recent_item accent_btn"
+								   th:each="item : ${monthRecentList}">
 									<div class="accent_border"></div>
-									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
-										<span>대시</span>
-										<span class="date">11일 전</span>
-									</div>
-								</a>
-								<a href="#" class="recent_item accent_btn">
-									<div class="accent_border"></div>
-									<img src="/images/issue_icon.svg" alt="" width="24" height="24" />
-									<div class="recent_item_comment">
-										<span>프로젝트 계획</span>
-										<span class="date">11일 전</span>
+										<span th:text="${item.name}"></span>
+										<span class="date"
+											  th:text="${item.elapsedTime}"></span>
 									</div>
 								</a>
 							</div>
 						</div>
-						<div class="recent_list_box">
+						<div class="recent_list_box" th:if="${#lists.size(monthGreaterRecentList) > 0}">
 							<h2>한 달 이상</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn">
+								<a href="#" class="recent_item accent_btn"
+								   th:each="item : ${monthGreaterRecentList}">
 									<div class="accent_border"></div>
-									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
-										<span>하이 대시보드</span>
-										<span class="date">28일 전</span>
-									</div>
-								</a>
-								<a href="#" class="recent_item accent_btn">
-									<div class="accent_border"></div>
-									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
-									<div class="recent_item_comment">
-										<span>대시보드1</span>
-										<span class="date">28일 전</span>
+										<span th:text="${item.name}"></span>
+										<span class="date"
+											  th:text="${item.elapsedTime}"></span>
 									</div>
 								</a>
 							</div>
@@ -211,38 +180,19 @@
 							</div>
 						</div>
 						<div class="like_content_list">
-							<a href="#" class="like_item_box accent_btn">
+							<a href="#" class="like_item_box accent_btn"
+							   th:each="item : ${allLikeMembers}">
 								<div class="accent_border"></div>
 								<div class="like_item">
-									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
-									<span>대시보드2</span>
-								</div>
-								<button class="img_box">
-									<img src="/images/star_icon_yellow.svg" alt="" width="16" height="16" />
-								</button>
-							</a>
-							<a href="#" class="like_item_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="like_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>필터 실험</span>
-								</div>
-								<button class="img_box">
-									<img src="/images/star_icon_yellow.svg" alt="" width="16" height="16" />
-								</button>
-							</a>
-							<a href="#" class="like_item_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="like_item">
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
-										alt="" width="24" height="24" />
-									<span>hihihihi</span>
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
+									<span th:text="${item.name}"></span>
 								</div>
 								<button class="img_box">
 									<img src="/images/star_icon_yellow.svg" alt="" width="16" height="16" />
 								</button>
 							</a>
 						</div>
+						<div class="like_content_dynamic"></div>
 						<a href="#" class="all_view_btn_box">
 							<img src="/images/all_view_btn_icon.svg" alt="" width="24" height="24" />
 							<span>별표 표시된 항목 모두 보기</span>
@@ -306,13 +256,14 @@
 				<div>
 					<h2>별표 표시됨</h2>
 					<div class="more_item_list">
-						<div class="more_item_container">
+						<div class="more_item_container"
+							 th:each="item : ${projectLikeMembers}">
 							<a href="#" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
+									<img th:src="@{|/images/${item.iconFilename}|}"
 										alt="" width="20" height="20" style="border-radius: 4px" />
-									<span>hihihihi</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -341,12 +292,13 @@
 					<h2>최근</h2>
 					<div class="more_item_list">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a href="#" class="more_item_box view_more_box accent_btn"
+							   th:each="item : ${projectRecentList}">
 								<div class="accent_border"></div>
 								<div class="more_item">
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
+									<img th:src="@{|/images/${item.iconFilename}|}"
 										alt="" width="20" height="20" style="border-radius: 4px" />
-									<span>하이</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -418,13 +370,14 @@
 				</a>
 				<div>
 					<h2>별표 표시됨</h2>
-					<div class="more_item_list">
+					<div class="more_item_list" 
+						 th:each="item : ${filterLikeMembers}">
 						<div class="more_item_container">
 							<a href="#" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>필터 실험</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -457,11 +410,12 @@
 					<h2>최근</h2>
 					<div class="more_item_list">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a href="#" class="more_item_box view_more_box accent_btn"
+							   th:each="item : ${filterRecentList}">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>필터 더미</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -758,12 +712,13 @@
 				<div>
 					<h2>별표 표시됨</h2>
 					<div class="more_item_list">
-						<div class="more_item_container">
+						<div class="more_item_container"
+							 th:each="item : ${dashboardLikeMembers}">
 							<a href="#" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
-									<span>하이 대시보드</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -784,11 +739,12 @@
 					<h2>최근</h2>
 					<div class="more_item_list">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a href="#" class="more_item_box view_more_box accent_btn"
+							   th:each="item : ${dashboardRecentList}">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/dashboard_icon.svg" alt="" width="24" height="24" />
-									<span>대시보드1</span>
+									<span th:text="${item.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box more">
@@ -857,5 +813,5 @@
 			</button>
 		</div>
 	</aside>
-	<!--<script th:src="@{/js/aside.js}"></script>-->
+	<script th:src="@{/js/aside.js}"></script>
 </div>

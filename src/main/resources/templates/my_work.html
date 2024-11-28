@@ -10,12 +10,14 @@
 			<a th:href="@{/project/list}">모든 프로젝트 보기</a>
 		</div>
 		<div class="section1_content">
-			<div class="project_recent_box">
+			<div class="project_recent_box" th:style="|border-left: 20px solid ${project.color};|"
+			     th:each=" project : ${projectList}">
 				<a th:href="@{/project/summation}" class="recent_header">
-					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=medium"
-						width="24px" height="24px" alt="" draggable="false">
+					<img th:src="@{|/images/${project.iconFilename}|}"
+						width="24px" height="24px" alt="" draggable="false"
+						style="border-radius: 4px;">
 					<div>
-						<h3>하이</h3>
+						<h3 th:text="${project.name}"></h3>
 						<p>팀에서 관리하는 비즈니스</p>
 					</div>
 				</a>
@@ -23,7 +25,7 @@
 					<div><b>빠른 연결</b></div>
 					<a href="#" class="unresolved_issue">
 						<div>나의 미해결 이슈</div>
-						<div class="num">2</div>
+						<div class="num" th:text="${project.issueCount}"></div>
 					</a>
 					<a href="#">완료된 이슈</a>
 				</div>

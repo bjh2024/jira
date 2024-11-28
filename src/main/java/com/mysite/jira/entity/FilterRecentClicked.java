@@ -35,4 +35,5 @@ public class FilterRecentClicked {
    @ColumnDefault("sysdate")
    @Column
    private LocalDateTime clickedDate;
+
 }

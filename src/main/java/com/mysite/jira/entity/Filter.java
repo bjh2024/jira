@@ -85,7 +85,7 @@ public class Filter {
 	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
 	private List<FilterReporter> FilterReporterList;
 	
-	@OneToMany(mappedBy = "filter", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
 	private List<FilterRecentClicked> filterClickedList;
 	
 }
