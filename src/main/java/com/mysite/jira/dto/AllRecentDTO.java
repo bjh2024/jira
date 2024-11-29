@@ -10,13 +10,16 @@ public class AllRecentDTO {
 	
 	private String iconFilename;
 	private String name;
-	private String elapsedTime;
-	
+	private String projectName;
+	private String key;
+	private LocalDateTime elapsedTime;
+
 	@Builder
-	public AllRecentDTO(String iconFilename, String name, String elapsedTime) {
+	public AllRecentDTO(String iconFilename, String name, String projectName, String key, LocalDateTime elapsedTime) {
 		this.iconFilename = iconFilename;
 		this.name = name;
+		this.projectName = projectName;
+		this.key = key;
 		this.elapsedTime = elapsedTime;
 	}
-	
 }

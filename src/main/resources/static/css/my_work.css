@@ -271,10 +271,6 @@ body{
 	font-weight: normal;
 }
 
-.item_header p span {
-	padding-right:4px;
-}
-
 .item_foot .img_list {
 	display: flex;
 	align-items: center;

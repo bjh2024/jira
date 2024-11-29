@@ -20,11 +20,13 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 	// kdw
 	@Query(value="""
 			SELECT  name,
-			        icon_filename
+			        icon_filename,
+			        project_key
 			FROM(SELECT  p.jira_idx, 
 				         p.name, 
 				         plm.account_idx,
-				         p.icon_filename
+				         p.icon_filename,
+				         p.key as project_key
 				 FROM    project p
 				 JOIN    project_like_members plm
 				 ON  p.idx = plm.project_idx
@@ -32,7 +34,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 				 SELECT  d.jira_idx, 
 				         d.name, 
 				         dlm.account_idx, 
-				         'dashboard_icon.svg' as icon_filename
+				         'dashboard_icon.svg' as icon_filename,
+				         '' as project_key
 				 FROM    dashboard d
 				 JOIN    dashboard_like_members dlm
 				 ON  d.idx = dlm.dashboard_idx
@@ -40,7 +43,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 				 SELECT  f.jira_idx, 
 				         f.name, 
 				         flm.account_idx,
-				         'filter_icon.svg' as icon_filename
+				         'filter_icon.svg' as icon_filename,
+				         '' as project_key
 				 FROM    filter f
 				 JOIN    filter_like_members flm
 				 ON  f.idx = flm.filter_idx)
@@ -68,6 +72,5 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
-	    List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
-	
+    List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 }

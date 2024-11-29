@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueStatus;
 
 public interface IssueStatusRepository extends JpaRepository<IssueStatus, Integer>{
@@ -14,4 +15,7 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 			+ "WHERE i.project.idx = :idx "
 			+ "GROUP BY s.idx, s.name, s.status, s.divOrder ORDER BY s.divOrder") 
 	List<Object[]> findGroupByIssueStatusWithJPQL(@Param("idx") Integer idx);
+	
+//	// kdw 보류
+//	List<IssueStatus> findByIssueList_JiraIdxAndIssueList_ManagerIdxAndStatusIn(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
 }

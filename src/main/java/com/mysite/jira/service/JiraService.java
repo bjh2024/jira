@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class JiraService {
 
 	private final JiraRepository jiraRepository;
-	
+	// kdw
 	public List<String> getjiraLeaderList(Integer accountIdx) {
 		List<String> result = new ArrayList<>();
 		try {

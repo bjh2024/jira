@@ -11,8 +11,10 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.IssueRepository;
+import com.mysite.jira.repository.IssueStatusRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class IssueService {
 
 	private final IssueRepository issueRepository;
-
+	
 	public List<Issue> getIssuesByJiraIdx(Integer jiraIdx) {
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
@@ -138,6 +140,17 @@ public class IssueService {
 			}
 		}
 		return issues;
+	}
+	// kdw 보류
+	public List<Issue> getManagerByIssue(Integer jiraIdx, Integer managerIdx){
+		// 할일 = 1, 진행중 = 2
+		Integer[] statusArr = {1, 2};
+ 		return issueRepository.findByJiraIdxAndManagerIdxAndIssueStatus_StatusInOrderByIssueStatus_NameDesc(jiraIdx, managerIdx, statusArr);
+	}
+	
+	public Integer getMangerByIssueCount(Integer jiraIdx, Integer managerIdx) {
+		Integer[] statusArr = {1, 2};
+		return issueRepository.countByJiraIdxAndManagerIdxAndIssueStatus_StatusIn(jiraIdx, managerIdx, statusArr);
 	}
 
 }

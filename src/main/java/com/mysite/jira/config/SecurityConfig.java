@@ -1,4 +1,4 @@
-//package com.mysite.jira.Config;
+//package com.mysite.jira.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -27,3 +27,5 @@
 //		return new BCryptPasswordEncoder();
 //	}
 //}
+
+

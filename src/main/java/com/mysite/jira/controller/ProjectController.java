@@ -19,6 +19,9 @@ public class ProjectController {
 	
 	@GetMapping("/summation")
 	public String summationPage() {
+		
+		Integer projectIdx = 1;
+		
 		return "project/summation";
 	}
 	

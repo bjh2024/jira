@@ -43,7 +43,7 @@
 		<div>확인</div>
 		<div class="my_issue">
 			<span>나에게 할당</span>
-			<span>3</span>
+			<span th:text="${managerByIssueCount}"></span>
 		</div>
 		<div>별표 표시됨</div>
 	</div>
@@ -195,9 +195,18 @@
 						<div>
 							<h4 th:text="${item.name}"></h4>
 							<p>
-								<span
-									th:text="${#strings.substring(item.iconFilename,0,#strings.indexOf(item.iconFilename, '_'))}"></span>
-								<span></span>
+								<th:block
+									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+									<span th:case="'dashboard'">대시보드</span>
+									<span th:case="'filter'">필터</span>
+									<th:block th:case="'issue'">
+										<span th:text="${item.key}"></span>
+										<span style="margin: 0 4px;">·</span>
+										<span th:text="${item.projectName}"></span>
+									</th:block>
+									<span th:case="*">알 수 없음</span>
+								</th:block>
 							</p>
 						</div>
 					</div>
@@ -213,9 +222,18 @@
 						<div>
 							<h4 th:text="${item.name}"></h4>
 							<p>
-								<span
-									th:text="${#strings.substring(item.iconFilename,0,#strings.indexOf(item.iconFilename, '_'))}"></span>
-								<span></span>
+								<th:block
+									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+									<span th:case="'dashboard'">대시보드</span>
+									<span th:case="'filter'">필터</span>
+									<th:block th:case="'issue'">
+										<span th:text="${item.key}"></span>
+										<span style="margin: 0 4px;">·</span>
+										<span th:text="${item.projectName}"></span>
+									</th:block>
+									<span th:case="*">알 수 없음</span>
+								</th:block>
 							</p>
 						</div>
 					</div>
@@ -231,9 +249,18 @@
 						<div>
 							<h4 th:text="${item.name}"></h4>
 							<p>
-								<span
-									th:text="${#strings.substring(item.iconFilename,0,#strings.indexOf(item.iconFilename, '_'))}"></span>
-								<span></span>
+								<th:block
+									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+									<span th:case="'dashboard'">대시보드</span>
+									<span th:case="'filter'">필터</span>
+									<th:block th:case="'issue'">
+										<span th:text="${item.key}"></span>
+										<span style="margin: 0 4px;">·</span>
+										<span th:text="${item.projectName}"></span>
+									</th:block>
+									<span th:case="*">알 수 없음</span>
+								</th:block>
 							</p>
 						</div>
 					</div>
@@ -249,9 +276,18 @@
 						<div>
 							<h4 th:text="${item.name}"></h4>
 							<p>
-								<span
-									th:text="${#strings.substring(item.iconFilename,0,#strings.indexOf(item.iconFilename, '_'))}"></span>
-								<span></span>
+								<th:block
+									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+									<span th:case="'dashboard'">대시보드</span>
+									<span th:case="'filter'">필터</span>
+									<th:block th:case="'issue'">
+										<span th:text="${item.key}"></span>
+										<span style="margin: 0 4px;">·</span>
+										<span th:text="${item.projectName}"></span>
+									</th:block>
+									<span th:case="*">알 수 없음</span>
+								</th:block>
 							</p>
 						</div>
 					</div>
@@ -267,9 +303,18 @@
 						<div>
 							<h4 th:text="${item.name}"></h4>
 							<p>
-								<span
-									th:text="${#strings.substring(item.iconFilename,0,#strings.indexOf(item.iconFilename, '_'))}"></span>
-								<span></span>
+								<th:block
+									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+									<span th:case="'dashboard'">대시보드</span>
+									<span th:case="'filter'">필터</span>
+									<th:block th:case="'issue'">
+										<span th:text="${item.key}"></span>
+										<span style="margin: 0 4px;">·</span>
+										<span th:text="${item.projectName}"></span>
+									</th:block>
+									<span th:case="*">알 수 없음</span>
+								</th:block>
 							</p>
 						</div>
 					</div>
@@ -279,26 +324,37 @@
 	</div>
 	<!-- 나에게 할당 -->
 	<div class="my_work_content my_issue">
-		<h3>할일이 많다</h3>
-		<div class="content_list">
-			<a href="#" class="list_item">
-				<div class="item_header">
-					<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10321?size=medium"
-						alt="issue" width="24" height="24">
-					<div>
-						<h4>해야 할일임</h4>
-						<p>TSYR-56 · 하이</p>
+		<div th:each="issue, loop : ${managerByIssue}">
+			<th:block th:switch="${loop.index}">
+				<h3 th:case="0" th:text="${issue.issueStatus.name}"></h3>
+				<h3 th:case="*" th:if="${issue.issueStatus.name != managerByIssue[loop.index - 1].issueStatus.name}"
+					th:text="${issue.issueStatus.name}">
+				</h3>
+			</th:block>
+			<div class="content_list">
+				<a href="#" class="list_item">
+					<div class="item_header">
+						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="issue" width="24" height="24">
+						<div>
+							<h4 th:text="${issue.name}"></h4>
+							<p>
+								<sapn th:text="${issue.key}"></sapn>
+								<sapn>·</sapn>
+								<sapn th:text="${issue.project.name}"></sapn>
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="item_foot">
-					<span>할일이 많다</span>
-				</div>
-			</a>
+					<div class="item_foot">
+						<span th:text="${issue.issueStatus.name}"></span>
+					</div>
+				</a>
+			</div>
 		</div>
+
 	</div>
 	<!-- 별표 표시됨 -->
 	<div class="my_work_content like">
-		<a href="#" class="list_item">
+		<a href="#" class="list_item" th:each="item : ${allLikeList}">
 			<div class="item_header">
 				<div class="like_star_box">
 					<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
@@ -306,10 +362,16 @@
 						<img th:src="@{/images/star_icon_yellow.svg}" width="12" height="12" />
 					</div>
 				</div>
-				<img src="images/filter_icon.svg" width="24" height="24" />
+				<img th:src="@{|/images/${item.iconFilename}|}" width="24" height="24" />
 				<div class="like_header">
-					<h4>필터 더미</h4>
-					<p>필터</p>
+					<h4 th:text="${item.projectKey != '' ? item.name + ' (' + item.projectKey + ')' : item.name}"></h4>
+					<th:block
+						th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+						<p th:case="'project'">팀에서 관리하는 비즈니스</p>
+						<p th:case="'dashboard'">대시보드</p>
+						<p th:case="'filter'">필터</p>
+						<p th:case="*">알 수 없음</p>
+					</th:block>
 				</div>
 			</div>
 		</a>

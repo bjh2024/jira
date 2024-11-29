@@ -58,7 +58,6 @@ let datas = {
 }
 
 function fetchInput() {
-	console.log(datas);
 	// fetch()를 사용하여 AJAX 요청
 	let url = "/api/header/filter";
 	fetch(url, {
@@ -70,7 +69,6 @@ function fetchInput() {
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueList => {
-			console.log(issueList);
 			// div 교체
 			document.querySelector(".input_recent_dynamic").classList.add("show");
 			document.querySelector(".input_recent_box1").classList.remove("show");
@@ -210,6 +208,7 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 					}
 				}
 			}
+			console.log(projectIdxArr);
 			datas.projectIdxArr = projectIdxArr;
 			datas.managerIdxArr = managerIdxArr;
 			datas.statusArr = statusArr;

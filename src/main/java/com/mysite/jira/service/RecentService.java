@@ -1,7 +1,5 @@
 package com.mysite.jira.service;
 
-import java.sql.Timestamp;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +15,7 @@ import com.mysite.jira.dto.header.HeaderRecentIssueDTO;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.DashboardRepository;
 import com.mysite.jira.repository.FilterRepository;
@@ -146,35 +143,16 @@ public class RecentService {
 	}
 
 	public List<AllRecentDTO> getAllRecentList(Integer accountIdx, Integer jiraIdx, LocalDateTime startDate, LocalDateTime endDate){
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				Timestamp clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null && allRecentList.get(i).get("name") instanceof String) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null && allRecentList.get(i).get("iconFilename") instanceof String) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				if(allRecentList.get(i).get("clickedDate") != null && allRecentList.get(i).get("clickedDate") instanceof Timestamp) {
-					clickedDate = objectMapper.convertValue(allRecentList.get(i).get("clickedDate"), Timestamp.class);
-					elapsedTime = utilityService.getElapsedComment(clickedDate.toLocalDateTime());
-				}
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 	
 	// jiraIdx 와 accountIdx에 대한 최근 project list(Name, key, iconName) end개
@@ -243,36 +221,15 @@ public class RecentService {
 	public List<AllRecentDTO> getTodayAllRecentList(Integer accountIdx, Integer jiraIdx){
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.now();
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
-		
-		List<AllRecentDTO> result = new ArrayList<>();
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				LocalDateTime clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
-				if(clickedDate != null) {
-					elapsedTime = utilityService.getElapsedComment(clickedDate);
-				}
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 	
 	// 어제
@@ -280,36 +237,16 @@ public class RecentService {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MAX);
 		
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				LocalDateTime clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
-				if(clickedDate != null) {
-					elapsedTime = utilityService.getElapsedComment(clickedDate);
-				}
-				System.out.println(allRecentList.get(i).get("clickedDate").getClass());
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 	
 	// 이번주
@@ -317,70 +254,32 @@ public class RecentService {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MAX);
 		
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				LocalDateTime clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
-				if(clickedDate != null) {
-					elapsedTime = utilityService.getElapsedComment(clickedDate);
-				}
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 	
 	// 이번달
 	public List<AllRecentDTO> getMonthAllRecentList(Integer accountIdx, Integer jiraIdx){
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(30), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(8), LocalTime.MIDNIGHT);
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				LocalDateTime clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
-				if(clickedDate != null) {
-					elapsedTime = utilityService.getElapsedComment(clickedDate);
-				}
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 	
 	// 한달이상
@@ -388,35 +287,16 @@ public class RecentService {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(365 * 2), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(31), LocalTime.MIDNIGHT);
 		
-		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
+		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		try {
 			for(int i = 0; i < allRecentList.size(); i++) {
-				String name = "";
-				String iconFilename = "";
-				LocalDateTime clickedDate = null;
-				String elapsedTime = "";
-				if(allRecentList.get(i).get("name") != null) {
-					name = allRecentList.get(i).get("name").toString();
-				}
-				if(allRecentList.get(i).get("iconFilename") != null) {
-					iconFilename = allRecentList.get(i).get("iconFilename").toString();
-				}
-				clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
-				if(clickedDate != null) {
-					elapsedTime = utilityService.getElapsedComment(clickedDate);
-				}
-				AllRecentDTO dto = AllRecentDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .elapsedTime(elapsedTime)
-											   .build();
-				result.add(dto);
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return allRecentList;
 	}
 
 

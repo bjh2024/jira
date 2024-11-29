@@ -14,7 +14,8 @@ import com.mysite.jira.entity.Project;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	
-	List<Issue> findIssuesByProjectIdx(Integer idx); 
+	List<Issue> findIssuesByProjectIdx(Integer idx);
+	
 	// kdw
 	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(
 			 @Param("accountIdx") Integer accountIdx, 
@@ -49,6 +50,13 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(@Param("jiraIdx") Integer jiraIdx, 
 												    	    @Param("startDate") LocalDateTime startDate, 
 												    	    @Param("endDate") LocalDateTime endDate);
+    
+	// kdw 나에게 할당(my_work)
+	Integer countByJiraIdxAndManagerIdxAndIssueStatus_StatusIn(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
 	
-
+	// kdw 나에게 할당(my_work)
+	List<Issue> findByJiraIdxAndManagerIdxAndIssueStatus_StatusInOrderByIssueStatus_NameDesc(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
+	
+	// kdw 프로젝트의 기간당 이슈 개수(완료, 업데이트, 만듦, 초과)
+	
 }
