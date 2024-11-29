@@ -11,6 +11,6 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 
 public interface JiraMembersRepository extends JpaRepository<JiraMembers, Integer>{
-	
-	List<JiraMembers> findByJiraIdx(Integer idx);
+	// kdw
+	List<JiraMembers> findByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 }

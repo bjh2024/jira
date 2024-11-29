@@ -407,7 +407,17 @@ aside {
   align-items: center;
 }
 
-.like_content_list {
+.like_content_dynamic.show{
+	display: block;
+}
+
+.like_content_list.show{
+	display: block;
+}
+
+.like_content_list,
+.like_content_dynamic {
+  display: none;
   height: 341px;
   padding: 4px;
   border-bottom: 1px solid #ddd;

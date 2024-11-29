@@ -6,12 +6,11 @@ body{
 }
 
 .my_work_container h1 {
-	margin-top: 26px;
+	margin-top: 12px;
 	padding-bottom: 22px;
 	border-bottom: 1px solid #ddd;
 
 	font-size: 24px;
-	font-weight: normal;
 }
 
 .my_work_container h2 {
@@ -46,12 +45,16 @@ body{
 .section1_content {
 	padding: 8px 0;
 	padding-top: 18px;
+	
+	display: flex;
+	gap: 12px;
+	
+	overflow-x: auto;
 }
 
 .project_recent_box {
 	width: 240px;
-	padding-top: 16px;
-	border-left: 20px solid #FFD5D2;
+	padding-top: 12px;
 	border-radius: 4px;
 
 	position: relative;
@@ -81,7 +84,7 @@ body{
 }
 
 .recent_header p {
-	font-size: 11px;
+	font-size: 12px;
 }
 
 .recent_content {
@@ -147,7 +150,7 @@ body{
 	height: 24px;
 	padding-left: 4px;
 	
-	font-size: 10px;
+	font-size: 11px;
 	display: flex;
 	align-items: center;
 	
@@ -225,10 +228,13 @@ body{
 
 .my_work_content h3 {
 	padding-top: 8px;
+	
+	color: #6B6E76;
 	font-size: 14px;
 }
 
 .list_item {
+	width: 100%;
 	height: 52px;
 	padding: 8px;
 	margin: 0 -8px;
@@ -266,15 +272,17 @@ body{
 }
 
 .item_header p span {
-	padding: 0 4px;
+	padding-right:4px;
 }
 
-.item_foot {
+.item_foot .img_list {
 	display: flex;
 	align-items: center;
 }
 
 .item_foot span {
+	padding-right: 24px;
+	color: #6B6E76;
 	font-size: 14px;
 }
 
@@ -283,20 +291,6 @@ body{
 	box-shadow: 2px 2px 2px 2px white;
 }
 
-.item_foot img:nth-of-type(1) {
-	left: calc(10px * 2);
-	z-index: 3;
-}
-
-.item_foot img:nth-of-type(2) {
-	left: calc(10px * 1);
-	z-index: 2;
-}
-
-.item_foot img:nth-of-type(3) {
-	right: 6px;
-	z-index: 1;
-}
 
 .my_work_content.like .list_item {
 	padding: 8px;
