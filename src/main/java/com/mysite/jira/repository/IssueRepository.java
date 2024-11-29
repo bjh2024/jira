@@ -30,5 +30,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> findByReporterIdx(Integer reporterIdx);
 	// kdw
     List<Issue> findByIssueStatusStatusIn(Integer[] statusArr);
-
+    // bjh
+    List<Issue> findByProjectKeyIn(String[] projectIdxArr);
 }

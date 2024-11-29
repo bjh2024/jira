@@ -81,10 +81,10 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										최근 프로젝트
 									</div>
-									<form method="get" action="/filter/filter_issue_table" id="projectForm">
+									<form method="post" action="/filter/filter_issue_table">
 										<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
 											<div style="height: 13px; margin-left: 6px;">
-												<input type="checkbox" name="projectKey" th:value="${projectList.key}" onclick="submitForm(event)">
+												<input type="checkbox" name="projectKey" th:value="${projectList.key}">
 											
 											</div>
 										<div style="height: 16px; margin-left: 12px;">
@@ -591,16 +591,7 @@
  
 				</div>
 			</div>
-			<script th:src="@{/js/filter_issue.js}"></script>
-			<script>
-				function submitForm(event) {
-				    // 클릭한 요소가 체크박스인지 확인
-				    if (event.target.type === 'checkbox') {
-				        // 체크박스일 때만 폼을 제출
-				        document.getElementById('projectForm').submit();
-				    }
-				}
-			</script>
+			<script th:src="@{/js/filter_issue_table.js}"></script>
 			
 		</div>
 

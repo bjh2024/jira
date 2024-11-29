@@ -36,4 +36,53 @@ document.querySelector("body").addEventListener("click", function(e) {
     }
 });
 
+document.querySelectorAll(".filter_issue_box input[type='checkbox']").forEach(function(input){
+	console.log(input);
+	input.addEventListener("click", function(e) {
+		console.log("sdsd");
+		});
+})
 
+function fetchInput() {
+	let datas = {
+		"projecIdxArr" : []
+	}
+	// fetch()를 사용하여 AJAX 요청
+	let url = "/api/filter_issue_table/project_filter";
+	console.log("sdsd");
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(datas)
+	})
+		.then(response => response.json())  // JSON 형태로 응답 받기
+		.then(issueListByProjectKey => {
+			console.log(issueListByProjectKey);
+			
+		})
+		.catch(error => {
+			console.error("Fetch error:", error);
+		});
+}
+
+document.querySelector("body").addEventListener("click", function(e) {
+	const account = e.target.closest(".filter_save_button");
+	const modal = document.querySelector(".modal");
+	const active = document.querySelector(".modal.active")
+	const modalContent = document.querySelector(".modal_content")
+	const cancleButton = modalContent.querySelector(".cancle_button")
+	if (account) {
+		modal.classList.add("active");
+	}
+	if(modal.classList.contains("active")){
+		if(cancleButton && cancleButton.contains(e.target)){
+			modal.classList.remove("active");
+		}else if (!modalContent.contains(e.target) && !e.target.closest(".filter_save_button")) {
+			modal.classList.remove("active");
+		}
+		
+	}
+		
+});
