@@ -149,33 +149,33 @@
 								<div class="typefilterbox">
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+												th:src="@{/images/issue_bug.svg}"></span>
 										<span>버그</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/epik_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_epik.svg}"></span>
 										<span>에픽</span>
 									</div>
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10304?size=medium"></span>
+												th:src="@{/images/issue_bug.svg}"></span>
 										<span>이게뭐야</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/task_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_task.svg}"></span>
 										<span>작업</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/bug_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_bug.svg}"></span>
 										<span>작업1</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/work_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_work.svg}"></span>
 										<span>체크리스트</span>
 									</div>
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium"></span>
+												th:src="@{/images/issue_work.svg}"></span>
 										<span>테스트</span>
 									</div>
 								</div>
@@ -312,14 +312,13 @@
 		</div>
 		<div class="board-body-container">
 			<div class="issue-container" th:each="statusList1 : ${statusList}">
-
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
 							<div class="status-titlebox">
-								<div class="status-title" th:text="${statusList1[0]}"></div>
-								<div class="status-complete" th:if="${statusList1[3] == 3}">
+								<div class="status-title" th:text="${statusList1[3]}"></div>
+								<div class="status-complete" th:if="${statusList1[0] == 3}">
 									<img th:src="@{/images/status_complete_icon.svg}"
 										style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
 								</div>
@@ -337,8 +336,8 @@
 							</button>
 						</div>
 					</div>
-					<div class="issuebox-issues">
-						<div class="issues" th:each="issueList : ${issueList}"
+					<div class="issuebox-issues" draggable="true">
+						<div class="issues" th:each="issueList : ${issueList}" draggable="true"
 							th:if="${issueList.issueStatus.idx == statusList1[2]}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
@@ -383,7 +382,6 @@
 											th:src="@{|/images/${issueList.manager.iconFilename}|}"></span>
 								</div>
 							</div>
-
 							<div th:if="${#lists.size(issueList.parentList) > 0} and ${issueList.issueStatus.status != 1}" style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
 								<button class="subissuebtn">
 									<div class="subissuebtnbox">
@@ -396,9 +394,7 @@
 										</span>
 									</div>
 								</button>
-
 							</div>
-
 							<div class="subissuebox" th:if="${#lists.size(issueList.parentList)} > 0 and ${issueList.issueStatus.status != 1}">
 								<div class="subissueline"></div>
 								<div class="subissues" th:each="extendsList : ${extendsList}"
@@ -407,7 +403,7 @@
 										<span th:text="${extendsList.child.name}"></span>
 									</div>
 									<div class="subissue-underbox">
-										<div class="issue-typebox"> 
+										<div class="issue-typebox"> <!---->
 											<span style="height: 16px;">
 												<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}" style="width: 16px; height: 16px;">
 											</span>
@@ -424,8 +420,8 @@
 										</div>
 									</div>
 								</div>
-							 </div> -->
-							<div class="issuedetail-container">
+							 </div>
+							<div class="issuedetail-container" draggable="false">
 								<div class="issuedetailbox">
 									<div class="issuedetail-headerbar">
 										<div class="issuekeypathbox">
@@ -500,7 +496,7 @@
 														</button>
 														<button class="insertwindow-btn">
 															<span style="height: 24px; margin-bottom: 2px;"><img
-																	th:src="@{/images/sub_issue_icon.svg}"
+																	th:src="@{/images/issue_sub_task.svg}"
 																	style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
 															<span style="margin-bottom: 4px;">하위 이슈</span>
 														</button>
@@ -647,17 +643,17 @@
 												</div>
 											</div>
 											<div class="issuedetail-replylist">
-												<div class="issuedetail-reply">
-													<div><img width="32" height="32"
-															src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-															style="border-radius: 50%;"></div>
-													<div class="issuedetail-replydetailbox" style="padding-top: 3px;">
+												<div class="issuedetail-reply" th:each="replyList : ${replyList}" th:if="${replyList.issue.idx == issueList.idx}">
+													<div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+														<img class="issue-managerimg" th:src="@{|/images/${replyList.account.iconFilename}|}">
+													</div>
+													<div class="issuedetail-replydetailbox">
 														<div class="replydetail-name-date">
-															<span>다현</span>
-															<span style="letter-spacing: -0.2px;">2024년 11월 14일 오후
-																4:53</span>
+															<span th:text="${replyList.account.name}"></span>
+															<span th:text="${#temporals.format(replyList.createDate, 'yyyy-MM-dd HH:mm:ss')}" style="letter-spacing: -0.2px; margin-top: 2px;"></span>
+															<div th:if="${replyList.editDate != null}">편집됨</div>
 														</div>
-														<div class="replydetail-content">뭐야!</div>
+														<div th:text="${replyList.content}" class="replydetail-content"></div>
 													</div>
 													<div></div>
 													<div class="replydetail-managebar">
@@ -690,12 +686,12 @@
 														+${issueList.issueStatus.status == 3 ? 'status3':''}">
 													<div class="issuedetail-statuswindow" style="left: 0px;">
 														<div class="statuswindow-menubox">
-															<div class="statuswindow-status" th:each="myStatusList : ${statusList}"
-																	th:if="${myStatusList[2] != issueList.issueStatus.idx}">
-																<span class="statuswindow-title" th:text="${myStatusList[0]}"
-																	  th:classappend="${myStatusList[3] == 1 ? 'status1':''}
-																					  +${myStatusList[3] == 2 ? 'status2':''}
-																					  +${myStatusList[3] == 3 ? 'status3':''}">
+															<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+																	th:if="${orderedStatusList.idx != issueList.issueStatus.idx}">
+																<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+																th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+																				+${orderedStatusList.status == 2 ? 'status2':''}
+																				+${orderedStatusList.status == 3 ? 'status3':''}">
 																</span>
 															</div>
 														</div>
@@ -729,7 +725,7 @@
 															<span>우선 순위</span>
 														</div>
 														<div class="issuedetail-graphval">
-															<div class="graphval-selectwindow" style="display: none;">
+															<div class="graphval-selectwindow">
 																<div class="graphvalwindow-value" th:each="orderedPriority : ${orderedPriorityList}"
 																th:if="${orderedPriority.idx != issueList.issuePriority.idx}">
 																	<span style="height: 16px;"><img th:src="@{|/images/${orderedPriority.iconFilename}|}"></span>
@@ -750,6 +746,7 @@
 														</div>
 														<div>
 															<div class="issuedetail-graphval">
+																<div class="graphval-selectwindow"></div>
 																<span
 																	style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
 																		th:src="@{|/images/${issueList.manager.iconFilename}|}"
@@ -788,6 +785,7 @@
 															<span>기한</span>
 														</div>
 														<div class="issuedetail-graphval dl-def">
+															<div class="graphval-selectwindow"></div>
 															<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${issueList.deadlineDate != null}">
 																<a class="graphval-date" th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')}"
 																th:classappend="${issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
@@ -805,8 +803,8 @@
 															<span>Start date</span>
 														</div>
 														<div class="issuedetail-graphval">
-															<span style="margin-bottom: 5px;" 
-															th:text="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'"></span>
+															<div class="graphval-selectwindow"></div>
+															<span th:text="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'"></span>
 														</div>
 													</div>
 													<div class="issuedetail-graph">
@@ -814,7 +812,19 @@
 															<span>Team</span>
 														</div>
 														<div class="issuedetail-graphval">
-															<span style="margin-bottom: 4px;">없음</span>
+															<div class="graphval-selectwindow" style="top: 40px; left: 0px;">
+																<div class="graphvalwindow-value withimg" th:each="teamList : ${teamList}"
+																th:if="${teamList.jira.idx == issueList.jira.idx}">
+																	<span style="height: 32px;">
+																		<img th:src="@{|/images/${teamList.account.iconFilename}|}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
+																	</span>
+																	<div>
+																		<span th:text="${teamList.name}"></span>
+																	</div>
+																</div>
+															</div>
+															<span style="margin-bottom: 3px;"
+															th:text="${issueList.team != null} ? ${issueList.team.name} : '없음'"></span>
 														</div>
 													</div>
 													<div class="issuedetail-graph"
@@ -824,7 +834,8 @@
 														</div>
 														<div>
 															<div class="issuedetail-graphval"
-																style="margin-top: 1px; margin-left: 2px;">
+																style="margin-top: 1px;">
+																<div class="graphval-selectwindow"></div>
 																<span
 																	style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
 																		th:src="@{|/images/${issueList.reporter.iconFilename}|}"
@@ -870,7 +881,7 @@
 								<div class="createissue-btnbox">
 									<div class="createissue-typebtn">
 										<span style="width: 16px; height: 16px;"><img
-												th:src="@{/images/bug_issue.svg}"></span>
+												th:src="@{/images/issue_bug.svg}"></span>
 										<span style="margin-top: 1px;">
 											<img th:src="@{/images/arrow_under_icon.svg}"
 												style="width: 12px; filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">

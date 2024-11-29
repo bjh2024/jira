@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
+import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.repository.IssueExtendsRepository;
+import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
@@ -22,6 +25,7 @@ import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.repository.ProjectRepository;
+import com.mysite.jira.repository.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +40,8 @@ public class BoardMainService {
 	private final IssueLabelDataRepository issueLabelDataRepository;
 	private final IssueReplyRepository issueReplyRepository;
 	private final IssuePriorityRepository issuePriorityRepository;
+	private final TeamRepository teamRepository;
+	private final IssueFileRepository issueFileRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -72,11 +78,23 @@ public class BoardMainService {
 		return this.issueLabelDataRepository.findAll();
 	}
 	
+	public List<IssueLabelData> getAlterLabelData(Integer idx){
+		return this.issueLabelDataRepository.findDistinctByIssueLabelIdxNot(idx);
+	}
+	
 	public List<IssueReply> getIssueReply(){
 		return this.issueReplyRepository.findAll();
 	}
 	
 	public List<IssuePriority> getIssuePriority(){
 		return this.issuePriorityRepository.findAllByOrderByIdxDesc();
+	}
+	
+	public List<Team> getTeamList(){
+		return this.teamRepository.findAll();
+	}
+	
+	public List<IssueFile> getFiles(){
+		return this.issueFileRepository.findAll();
 	}
 }

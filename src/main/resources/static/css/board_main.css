@@ -1163,6 +1163,7 @@ body{
 	height: 100%;
 	z-index: 999;
 	display: none;
+	user-select: none;
 }
 
 .issuedetail-container.show{
@@ -1852,12 +1853,19 @@ body{
 	background-color: white;
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 	z-index: 3;
+	display: none;
 }
 
-.graphval-selectwindow.label{
+.graphval-selectwindow.show, .graphval-selectwindow.label.show{
+	display: block;
+}
+
+/*.graphval-selectwindow.label{
 	padding: 14px 0px;
 	font-size: 12px; 
-}
+	top: 324px;
+	left: 986px;
+}*/
 
 .graphval-selectwindow-title{
 	font-weight: bold;
@@ -1884,6 +1892,10 @@ body{
 
 .graphvalwindow-value:hover .graphvalwindow-title{
 	margin-left: 10px;
+}
+
+.graphvalwindow-value.withimg{
+	height: 50px;
 }
 
 .graphval-dead{

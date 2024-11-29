@@ -9,6 +9,10 @@ document.querySelectorAll(".editor").forEach(function(editor, index){
 	  });
 });
 
+function submitForm(){
+	document.querySelector(".get-alter-label-form").submit();
+}
+
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
@@ -46,26 +50,17 @@ document.querySelector("body").addEventListener("click", function(e) {
 
 document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e) {
-		
-		const defBoxItem = document.querySelectorAll(".subissuebox.show");
-		const defBtnItem = document.querySelectorAll(".subissuebtnimg.rotate");
+		const subissueBtnIcon = btn.children[0].children[2];
+		const subissueItem = btn.parentElement.nextElementSibling;
 
-		for(let i = 0; i < defBoxItem.length; i++){
-			defBoxItem.item(i).classList.remove("show");
-			defBtnItem.item(i).classList.remove("rotate");
-		}
-		
-		const subissueBtn = e.target.closest(".subissuebtn");
-		const subissueBtnIcon = document.querySelectorAll(".subissuebtnimg")[index];
-		const subissueItem = document.querySelectorAll(".subissuebox")[index];
-
-		if(subissueBtn !== null && subissueBtn.children[0].children[2].className.includes("rotate")){
+		if(btn !== null && subissueItem.className.includes("show")){
+			console.log("hihihihi");
 			subissueItem.classList.remove("show");
-			subissueBtnIcon.classList.remove("rotate");
+			subissueBtn.children[0].children[2].classList.remove("rotate");
 			return;
 		}
 		
-		if(subissueBtn !== null){
+		if(btn !== null){
 			subissueItem.classList.add("show");
 			subissueBtnIcon.classList.add("rotate");
 		}
@@ -137,27 +132,27 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			return;
 		}
 		
-		const lblCntItem = document.querySelectorAll(".issuedetail-graphval.label-def")[index]?.childElementCount;
+		const lblItem = btn.querySelector(".issuedetail-graphval.label-def");
 		
-		if(lblCntItem < 2){
-			document.querySelectorAll(".graphval-label-def")[index].classList.remove("none");
+		if(lblItem?.childElementCount < 2){
+			lblItem.querySelector(".graphval-label-def").classList.remove("none");
 		}else{
-			document.querySelectorAll(".graphval-label-def")[index].classList.add("none");
+			lblItem.querySelector(".graphval-label-def").classList.add("none");
 		}
 		
-		const dlCntItem = document.querySelectorAll(".issuedetail-graphval.dl-def")[index]?.childElementCount;
+		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def");
 				
-		if(dlCntItem < 2){
-			document.querySelectorAll(".graphval-dl-def")[index].classList.remove("none");
+		if(dlItem?.childElementCount < 3){
+			dlItem.querySelector(".graphval-dl-def").classList.remove("none");
 		}else{
-			document.querySelectorAll(".graphval-dl-def")[index].classList.add("none");
+			dlItem.querySelector(".graphval-dl-def").classList.add("none");
 		}
 		
 		const issueItem = document.querySelectorAll(".issues")[index];
 		const issueDetailItem = document.querySelectorAll(".issuedetail-container")[index];
 		
 		if(issueItem !== null){
-			issueDetailItem.classList.add("show");
+			btn.querySelector(".issuedetail-container").classList.add("show");
 		}
 	});
 });
@@ -169,12 +164,10 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		const bgItem = e.target.closest(".issuedetail-off");
 		const issueDetailItem = e.target.closest(".issuedetailbox");
 		
-		const containerItem = document.querySelectorAll(".issuedetail-container")[index];
-		
 		if(bgItem == null && issueDetailItem !== null){
-			containerItem.classList.add("show");
+			container.classList.add("show");
 		}else{
-			containerItem.classList.remove("show");
+			container.classList.remove("show");
 		}
 	});
 });
@@ -259,6 +252,9 @@ document.querySelectorAll(".issuedetail-replylist").forEach(function(btn, index)
 
 document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".statuswindow-menubox") !== null){
+			return;
+		}
 		btn.children[0].classList.toggle("show");
 	})
 });
@@ -271,9 +267,11 @@ document.querySelector(".issuedetail-insertbtn").addEventListener("click", funct
 });
 
 document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, index){
-	btn.addEventListener("click", function(e){
-		const btnItem = e.target.closest(".rightdetail-subissue-status");
-		const windowItem = btnItem.children[0];
+	btn.addEventListener("mousedown", function(e){
+		if(e.target.closest(".statuswindow-menubox") !== null){
+			return;
+		}
+		const windowItem = btn.children[0];
 		
 		windowItem.classList.toggle("show");
 	});
@@ -287,10 +285,39 @@ document.querySelector(".issuedetail-sortbtn").addEventListener("click", functio
 
 document.querySelectorAll(".issues").forEach(function(box, index){
 	box.addEventListener("dragstart", function(e){
+		if(e.target.closest(".subissuebtn") !== null){
+			return;
+		}
 		box.classList.add("dragging");
 	});
 	box.addEventListener("dragend", function(e){
 		box.classList.remove("dragging");
+	});
+});
+
+document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".graphval-selectwindow") !== null){
+			return;
+		}
+		const btnItem = document.querySelectorAll(".issuedetail-graphval")[index];
+		
+		
+		if(index == 2){
+			console.log("hihhi");
+			btn.querySelector(".graphval-selectwindow.label").classList.toggle("show");
+		}else{
+			btn.querySelector(".graphval-selectwindow").classList.toggle("show");
+		}
+
+	});
+	
+	btn.addEventListener("mouseover", function(e){
+		
+	});
+	
+	btn.addEventListener("mouseout", function(e){
+		
 	});
 });
 
@@ -312,7 +339,7 @@ document.querySelectorAll(".issues").forEach(function(box, index){
 	});
 });*/
 
-/*const columns = document.querySelectorAll(".board-body-container");
+const columns = document.querySelectorAll(".issuebox-issues");
 
 columns.forEach((column) => {
     new Sortable(column, {
@@ -320,7 +347,7 @@ columns.forEach((column) => {
         animation: 150,
         ghostClass: "blue-background-class"
     });
-});*/
+});
 
 /*document.querySelectorAll(".issuebox-issues").forEach(function(box, index){
 	box.addEventListener("dragover", function(e){

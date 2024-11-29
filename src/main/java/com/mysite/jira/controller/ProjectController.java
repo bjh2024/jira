@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
+import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.BoardMainService;
 
 @Controller
@@ -42,7 +44,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/board_main")
-	public String boardMain(Model model) {
+	public String boardMain(@RequestParam(value = "thisLabelIdx",required = false) Integer thisLabelIdx, Model model) {
+		// 이슈 별 해당하지 않는 레이블 리스트
+		List<IssueLabelData> alterLabelDataList = boardMainService.getAlterLabelData(thisLabelIdx);
+		model.addAttribute("alterLabelDataList", alterLabelDataList);
+		
 		// 현재 시간용 변수
 		LocalDateTime now = LocalDateTime.now();
 		model.addAttribute("currentTime", now);
@@ -75,48 +81,13 @@ public class ProjectController {
 		List<IssueExtends> extendsList = boardMainService.getIssueExtendsByProjectIdx(1);
 		model.addAttribute("extendsList", extendsList);
 		
-
 		// 높은 순으로 정렬된 이슈 중요도 리스트
 		List<IssuePriority> orderedPriorityList = boardMainService.getIssuePriority();
 		model.addAttribute("orderedPriorityList", orderedPriorityList);
 		
-		return "project/board_main";
-	}
-	
-	@GetMapping("/board_main/{issueKey}")
-	public String boardMainDetail(String issueKey, Model model) {
-		model.addAttribute("issueKey", issueKey);
-		// 현재 시간용 변수
-		LocalDateTime now = LocalDateTime.now();
-		model.addAttribute("currentTime", now);
-		
-		// 프로젝트 별 상태 개수를 알기 위해 그룹화된 상태 리스트
-		List<Object[]> statusList = boardMainService.getIssueStatusByProjectIdx(1);
-		model.addAttribute("statusList", statusList);
-		
-		// 프로젝트 별 이슈 진행도 순으로 정렬된 상태 리스트
-		List<IssueStatus> orderedStatusList = boardMainService.getIssueStatusByProjectIdxOrderByStatusAsc(1);
-		model.addAttribute("orderedStatusList", orderedStatusList);
-		
-		// 프로젝트 별 이슈 리스트
-		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(1);
-		model.addAttribute("issueList", issueList);
-		
-		// 프로젝트 별 서브 이슈 유형을 제외한 이슈 유형 리스트
-		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGrade(1, 1);
-		model.addAttribute("issueTypeList", issueTypeList);
-		
-		// 전체 레이블 리스트
-		List<IssueLabelData> labelDataList = boardMainService.getLabelData();
-		model.addAttribute("labelDataList", labelDataList);
-		
-		// 전체 댓글 리스트
-		List<IssueReply> replyList = boardMainService.getIssueReply();
-		model.addAttribute("replyList", replyList);
-		
-		// 프로젝트 별 상속 관계 리스트
-		List<IssueExtends> extendsList = boardMainService.getIssueExtendsByProjectIdx(1);
-		model.addAttribute("extendsList", extendsList);
+		// 지라 별 팀 리스트
+		List<Team> teamList = boardMainService.getTeamList();
+		model.addAttribute("teamList", teamList);
 		
 		
 		
@@ -129,7 +100,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/attached_files")
-	public String attachedFiles() {
+	public String attachedFiles(Model model) {
+		// 모든 첨부파일 리스트
+		List<IssueFile> fileList = boardMainService.getFiles();
+		model.addAttribute("fileList", fileList);
+		
 		return "project/attached_files";
 	}
 	

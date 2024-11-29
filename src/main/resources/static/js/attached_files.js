@@ -53,7 +53,7 @@ document.querySelectorAll(".attached-file-box").forEach(function(btn, index){
 		document.querySelector(".file-detail-container.show")?.classList.remove("show");
 		
 		const issueItem = document.querySelectorAll(".attached-file-box")[index];
-		const issueDetailItem = document.querySelector(".file-detail-container");
+		const issueDetailItem = document.querySelectorAll(".file-detail-container")[index];
 		
 		if(issueItem !== null){
 			issueDetailItem.classList.add("show");
@@ -61,19 +61,22 @@ document.querySelectorAll(".attached-file-box").forEach(function(btn, index){
 	})
 });
 
-document.querySelector(".file-detail-container").addEventListener("mouseup", function(e) {
-	if(e.target.closest(".file-download-btn") !== null){
-		return;
-	}
+document.querySelectorAll(".file-detail-container").forEach(function(container, index){
+	container.addEventListener("click", function(e) {
+		if(e.target.closest(".file-download-btn") !== null){
+			return;
+		}
+		
+		document.querySelector(".file-detail-container.show")?.classList.remove("show");
+		
+		const btnItem = e.target.closest(".file-exit-btn");
+		const fileDetailItem = e.target.closest(".file-detail");
+		
+		if(btnItem == null && fileDetailItem !== null){
+			document.querySelectorAll(".file-detail-container")[index].classList.add("show");
+		}else{
+			document.querySelectorAll(".file-detail-container")[index].classList.remove("show");
+		}
 	
-	document.querySelector(".file-detail-container.show")?.classList.remove("show");
-	
-	const btnItem = e.target.closest(".file-exit-btn");
-	const fileDetailItem = e.target.closest(".file-detail");
-	
-	if(btnItem == null && fileDetailItem !== null){
-		document.querySelector(".file-detail-container").classList.add("show");
-	}else{
-		document.querySelector(".file-detail-container").classList.remove("show");
-	}
+	});
 });
