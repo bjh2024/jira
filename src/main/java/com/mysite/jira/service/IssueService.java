@@ -148,9 +148,37 @@ public class IssueService {
  		return issueRepository.findByJiraIdxAndManagerIdxAndIssueStatus_StatusInOrderByIssueStatus_NameDesc(jiraIdx, managerIdx, statusArr);
 	}
 	
+	// kdw
 	public Integer getMangerByIssueCount(Integer jiraIdx, Integer managerIdx) {
 		Integer[] statusArr = {1, 2};
 		return issueRepository.countByJiraIdxAndManagerIdxAndIssueStatus_StatusIn(jiraIdx, managerIdx, statusArr);
 	}
 
+	// kdw (7일이내 완료한 이슈의 개수 summation)
+	public Integer getSevenDayComplementIssueCount(Integer ProjectIdx) {
+		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
+		LocalDateTime endDate = LocalDateTime.now();
+		// 완료 3
+		Integer status = 3;
+		return issueRepository.countByProjectIdxAndIssueStatus_statusAndFinishDateBetween(ProjectIdx, status, startDate, endDate);
+	}
+	// kdw (7일이내 업데이트한 이슈의 개수 summation)
+	public Integer getSevenDayUpdateIssueCount(Integer ProjectIdx) {
+		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
+		LocalDateTime endDate = LocalDateTime.now();
+		return issueRepository.countByProjectIdxAndEditDateBetween(ProjectIdx, startDate, endDate);
+	}
+	// kdw (7일이내 만든 이슈의 개수 summation)
+	public Integer getSevenDayCreateIssueCount(Integer ProjectIdx) {
+		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
+		LocalDateTime endDate = LocalDateTime.now();
+		return issueRepository.countByProjectIdxAndCreateDateBetween(ProjectIdx, startDate, endDate);
+	}
+	// kdw (7일이내 기한초과한 이슈의 개수 summation)
+	public Integer getSevenDayDeadlineIssueCount(Integer ProjectIdx) {
+		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
+		LocalDateTime endDate = LocalDateTime.now();
+		return issueRepository.countByProjectIdxAndDeadlineDateBetween(ProjectIdx, startDate, endDate);
+	}
+	
 }

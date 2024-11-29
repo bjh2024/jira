@@ -53,7 +53,7 @@
 						</div>
 						<p>
 							<span>최근 7일 이내에</span>
-							<span class="complete_number">1개 완료</span>
+							<span class="complete_number" th:text="|${complementIssueCount}개 완료|"></span>
 						</p>
 					</a>
 					<a th:href="@{#}" class="item">
@@ -62,7 +62,7 @@
 						</div>
 						<p>
 							<span>최근 7일 이내에</span>
-							<span class="update_number">5개 업데이트</span>
+							<span class="update_number" th:text="|${updateIssueCount}개 업데이트|"></span>
 						</p>
 					</a>
 					<a th:href="@{#}" class="item">
@@ -71,7 +71,7 @@
 						</div>
 						<p>
 							<span>최근 7일 이내에</span>
-							<span class="create_number">0개 만듦</span>
+							<span class="create_number" th:text="|${createIssueCount}개 만듦|"></span>
 						</p>
 					</a>
 					<a th:href="@{#}" class="item">
@@ -80,7 +80,7 @@
 						</div>
 						<p>
 							<span>다음 7일</span>
-							<span class="deadline_number">0개 기한 초과</span>
+							<span class="deadline_number" th:text="|${deadlineIssueCount}개 기한 초과|"></span>
 						</p>
 					</a>
 				</section>

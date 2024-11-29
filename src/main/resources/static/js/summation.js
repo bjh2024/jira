@@ -81,7 +81,6 @@ doughnutChartList.forEach(function(item) {
 		if (color === 'rgb(223, 225, 230)') {
 			color = '#172b4d';
 		}
-		console.log(color);
 		updateChartRatio(statusNumArr, num, comment, color);
 	});
 });

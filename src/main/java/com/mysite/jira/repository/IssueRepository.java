@@ -57,6 +57,16 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	// kdw 나에게 할당(my_work)
 	List<Issue> findByJiraIdxAndManagerIdxAndIssueStatus_StatusInOrderByIssueStatus_NameDesc(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
 	
-	// kdw 프로젝트의 기간당 이슈 개수(완료, 업데이트, 만듦, 초과)
+	// kdw 프로젝트의 기간당 이슈 개수(완료)
+	Integer countByProjectIdxAndIssueStatus_statusAndFinishDateBetween(Integer projectIdx, Integer status, LocalDateTime startDate, LocalDateTime endDate);
+	
+	// kdw 프로젝트의 기간당 이슈 개수(업데이트)
+	Integer countByProjectIdxAndEditDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
+	
+	// kdw 프로젝트의 기간당 이슈 개수(만듦)
+	Integer countByProjectIdxAndCreateDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
+	
+	// kdw 프로젝트의 기간당 이슈 개수(기한 초과)
+	Integer countByProjectIdxAndDeadlineDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
 	
 }

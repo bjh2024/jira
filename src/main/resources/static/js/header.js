@@ -48,7 +48,7 @@ document.querySelector(".rable_filtering input").addEventListener("click", funct
 	document.querySelector(".rable_content_box").classList.toggle("show");
 })
 
-let datas = {
+let headerInputDatas = {
 	"startDate": null,
 	"endDate": null,
 	"projectIdxArr": [],
@@ -65,7 +65,7 @@ function fetchInput() {
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(datas)
+		body: JSON.stringify(headerInputDatas)
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueList => {
@@ -147,8 +147,8 @@ document.querySelectorAll(".last_update_box>ul>li").forEach(function(li) {
 		startDate = startDate.toISOString();
 		endDate = endDate.toISOString();
 
-		datas.startDate = startDate;
-		datas.endDate = endDate;
+		headerInputDatas.startDate = startDate;
+		headerInputDatas.endDate = endDate;
 		fetchInput();
 
 	});
@@ -209,9 +209,9 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 				}
 			}
 			console.log(projectIdxArr);
-			datas.projectIdxArr = projectIdxArr;
-			datas.managerIdxArr = managerIdxArr;
-			datas.statusArr = statusArr;
+			headerInputDatas.projectIdxArr = projectIdxArr;
+			headerInputDatas.managerIdxArr = managerIdxArr;
+			headerInputDatas.statusArr = statusArr;
 			fetchInput();
 		});
 	});

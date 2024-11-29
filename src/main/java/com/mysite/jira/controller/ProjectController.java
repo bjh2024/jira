@@ -10,18 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.IssueService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/project")
 public class ProjectController {
 	@Autowired
 	private BoardMainService boardMainService;
 	
+	private final IssueService issueService;
+	
 	@GetMapping("/summation")
-	public String summationPage() {
-		
+	public String summationPage(Model model) {
+		Integer accountIdx = 1;
 		Integer projectIdx = 1;
-		
+		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
+		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
+		model.addAttribute("updateIssueCount", issueService.getSevenDayUpdateIssueCount(projectIdx));
+		model.addAttribute("deadlineIssueCount", issueService.getSevenDayDeadlineIssueCount(projectIdx));
 		return "project/summation";
 	}
 	
