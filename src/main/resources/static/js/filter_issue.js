@@ -59,13 +59,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 		
 });
-document.querySelector('.category_1').addEventListener('click', function() {
-	window.location.href = "filter_issue_table";
-});
-
-document.querySelector('.category_2').addEventListener('click', function() {
-	window.location.href = "filter_issue";
-});
 
 document.querySelector(".button_div").addEventListener("click", function(e) {
 	const issueListFilter = e.target.closest(".button_div");
@@ -77,5 +70,6 @@ document.querySelector(".button_div").addEventListener("click", function(e) {
 	}
 		
 });
+
 
 

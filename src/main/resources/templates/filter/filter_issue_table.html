@@ -16,7 +16,7 @@
 					<div class="filter_issue_list">
 						<button class="category_1"
 							style="color: #0052CC; background-color: #E9F2FE; border:1px solid #0C66E4;">목록 보기</button>
-						<button class="category_2">세부 정보 보기</button>
+						<button class="category_2" onclick="location.href='filter_issue/projectKey'">세부 정보 보기</button>
 					</div>
 					<div class="category_3">
 						<svg fill="none" viewBox="-4 -4 24 24" role="presentation" style="width: 24px; height: 24px;">
@@ -82,11 +82,11 @@
 										최근 프로젝트
 									</div>
 									<form method="get" action="/filter/filter_issue_table" id="projectForm">
-									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
-										<div style="height: 13px; margin-left: 6px;">
-											<input type="checkbox" name="projectKey" th:value="${projectList.key}" onclick="submitForm()">
+										<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
+											<div style="height: 13px; margin-left: 6px;">
+												<input type="checkbox" name="projectKey" th:value="${projectList.key}" onclick="submitForm(event)">
 											
-										</div>
+											</div>
 										<div style="height: 16px; margin-left: 12px;">
 											<img width="16" height="16"
 												th:src="@{|/images/${projectList.iconFilename}|}"
@@ -357,6 +357,7 @@
 					<th>기한</th>
 					<th style="border-top-right-radius: 8px; text-align: right;">...</th>
 				</tr>
+				<!--이슈 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 				<th:block th:each="issue : ${issue}" th:if="${projectKey != null ? issue.project.key == projectKey : ''}">
 				<tr class="filter_row">
 					<td>
@@ -428,6 +429,7 @@
 					</td>
 				</tr>
 				</th:block>
+				<!--이슈 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 				<tr class="filter_row_last">
 					<td colspan="12">
 						<div class="filter_last_div">
@@ -586,39 +588,20 @@
 						<div class="save_button">저장</div>
 						<div class="cancle_button">취소</div>
 					</div>
-
+ 
 				</div>
 			</div>
 			<script th:src="@{/js/filter_issue.js}"></script>
 			<script>
-				    document.getElementById('projectForm').onclick = function() {
-				        // 폼 데이터를 직접 제출 (submit())
+				function submitForm(event) {
+				    // 클릭한 요소가 체크박스인지 확인
+				    if (event.target.type === 'checkbox') {
+				        // 체크박스일 때만 폼을 제출
 				        document.getElementById('projectForm').submit();
-				    };
+				    }
+				}
 			</script>
-			<script>
-			    function submitForm() {
-			        const form = document.getElementById('projectForm');
-			        const formData = new FormData(form); // 폼 데이터를 가져옴
-
-			        // Fetch API를 이용해 비동기 요청을 보냄
-			        fetch('/filter/filter_issue_table', {
-			            method: 'GET',
-			            headers: {
-			                'Accept': 'application/json'
-			            },
-			            body: new URLSearchParams(formData).toString()  // FormData를 URLSearchParams로 변환하여 보내기
-			        })
-			        .then(response => response.json()) // 서버 응답을 JSON으로 처리
-			        .then(data => {
-			            console.log(data); // 서버로부터 받은 데이터 처리 (예: 테이블 업데이트)
-			            // 데이터에 따라 페이지의 내용을 동적으로 갱신할 수 있습니다.
-			        })
-			        .catch(error => {
-			            console.error('Error:', error);
-			        });
-			    }
-			</script>
+			
 		</div>
 
 </html>
