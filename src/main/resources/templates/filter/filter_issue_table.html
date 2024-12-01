@@ -84,7 +84,7 @@
 									<form method="post" action="/filter/filter_issue_table">
 										<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
 											<div style="height: 13px; margin-left: 6px;">
-												<input type="checkbox" name="projectKey" th:value="${projectList.key}">
+												<input type="checkbox" name="ProjectIdx" th:value="${projectList.idx}">
 											
 											</div>
 										<div style="height: 16px; margin-left: 12px;">
@@ -143,7 +143,8 @@
 									</div>
 									<div class="filter_issue_project_div_3"
 										th:each="issueTypeList, loop : ${issueType}">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="height: 13px; margin-left: 6px;">
+											<input type="checkbox" name="issueTypeIdx" th:value="${issueTypeList.iconFilename}"></div>
 										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
 												th:src="@{|/images/${issueTypeList.iconFilename}|}"
 												style="border-radius: 2px;">
@@ -194,7 +195,7 @@
 							<div style="padding: 10px 0px;">
 								<div style="height: 32px;" th:each="issueStatus, i : ${issueStatus}">
 									<div class="filter_issue_project_div_3">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox" name="issueStatus"></div>
 										<div class="issuestatus" th:text="${issueStatus[1]}" th:classappend="${issueStatus[0] == 2 ? 'first':''}
 																+${issueStatus[0] == 1 ? 'second':''}"></div>
 									</div>
@@ -245,7 +246,7 @@
 											제안하는 사용자
 										</div>
 										<div class="filter_issue_project_div_3" th:each="account : ${account}">
-											<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+											<div style="height: 13px; margin-left: 6px;"><input type="checkbox" name="issueManager"></div>
 											<div style="height: 16px; margin-left: 12px;">
 												<img width="16" height="16"
 													th:src="@{|/images/${account.account.iconFilename}|}"
@@ -343,21 +344,24 @@
 					<col width="5%" />
 					<col width="26%" />
 				</colgroup>
-				<tr class="filter_column">
-					<th style="border-top-left-radius: 8px;">유형</th>
-					<th>키</th>
-					<th>요약</th>
-					<th>담당자</th>
-					<th>보고자</th>
-					<th>우선순위</th>
-					<th>상태</th>
-					<th>해결</th>
-					<th>만듦</th>
-					<th>업데이트</th>
-					<th>기한</th>
-					<th style="border-top-right-radius: 8px; text-align: right;">...</th>
-				</tr>
+				<thead>
+					<tr class="filter_column">
+						<th style="border-top-left-radius: 8px;">유형</th>
+						<th>키</th>
+						<th>요약</th>
+						<th>담당자</th>
+						<th>보고자</th>
+						<th>우선순위</th>
+						<th>상태</th>
+						<th>해결</th>
+						<th>만듦</th>
+						<th>업데이트</th>
+						<th>기한</th>
+						<th style="border-top-right-radius: 8px; text-align: right;">...</th>
+					</tr>
+				</thead>
 				<!--이슈 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+				<tbody>
 				<th:block th:each="issue : ${issue}" th:if="${projectKey != null ? issue.project.key == projectKey : ''}">
 				<tr class="filter_row">
 					<td>
@@ -416,19 +420,20 @@
 
 					</td>
 					<td>
-						<div th:text="${issue.createDate != null} ? ${#temporals.format(issue.createDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.createDate != null} ? ${#temporals.format(issue.createDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
-						<div th:text="${issue.editDate != null} ? ${#temporals.format(issue.editDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.editDate != null} ? ${#temporals.format(issue.editDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
-						<div th:text="${issue.deadlineDate != null} ? ${#temporals.format(issue.deadlineDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.deadlineDate != null} ? ${#temporals.format(issue.deadlineDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
 
 					</td>
 				</tr>
 				</th:block>
+				</tbody>
 				<!--이슈 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 				<tr class="filter_row_last">
 					<td colspan="12">

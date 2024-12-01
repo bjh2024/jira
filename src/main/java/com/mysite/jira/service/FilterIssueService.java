@@ -16,8 +16,8 @@ public class FilterIssueService {
 	
 	private final IssueRepository issueRepository;
  
-	public List<Issue> getIssueByProjectIdxIn(String[] projectKey){
-		List<Issue> result = issueRepository.findByProjectKeyIn(projectKey);
+	public List<Issue> getIssueByProjectIdxIn(Integer[] projectKey){
+		List<Issue> result = issueRepository.findByProjectIdxIn(projectKey);
 		return result;
 	}
 }

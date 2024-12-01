@@ -24,7 +24,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 		List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 
 		List<Project> findByKey(String keys); 
-
+		
 	// kdw
 	List<Project> findByProjectClickedList_AccountIdxAndJiraIdxOrderByProjectClickedList_ClickedDateDesc(
 						@Param("accountIdx") Integer accountIdx,

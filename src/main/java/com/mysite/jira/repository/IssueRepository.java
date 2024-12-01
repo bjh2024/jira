@@ -20,6 +20,7 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 			 @Param("jiraIdx") Integer jiraIdx);
 	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
+	
 	// kdw
 	List<Issue> findByEditDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 	// kdw
@@ -31,5 +32,4 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	// kdw
     List<Issue> findByIssueStatusStatusIn(Integer[] statusArr);
     // bjh
-    List<Issue> findByProjectKeyIn(String[] projectIdxArr);
 }

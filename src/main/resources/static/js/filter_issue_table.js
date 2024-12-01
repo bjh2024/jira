@@ -36,31 +36,125 @@ document.querySelector("body").addEventListener("click", function(e) {
     }
 });
 
-document.querySelectorAll(".filter_issue_box input[type='checkbox']").forEach(function(input){
-	console.log(input);
+let filterDatas = {
+		"projecIdxArr" : [],
+		"issueTypeIdxArr" : [],
+		"issueStatusIdxArr" : [],
+		"issueReporterIdxArr" : []
+		
+	}
+	
+document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
-		console.log("sdsd");
+		if(this.checked){
+		filterDatas.projecIdxArr.push(this.value);
+		}else{
+		filterDatas.projecIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
+		}
+		fetchInput();
 		});
 })
 
+/*document.querySelectorAll(".filter_issue_box input[name='issueTypeIdx']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.issueTypeIdxArr.push(this.value);
+		}else{
+		filterDatas.issueTypeIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
+		}
+		fetchInput();
+		});
+})*/
+
+
 function fetchInput() {
-	let datas = {
-		"projecIdxArr" : []
-	}
 	// fetch()를 사용하여 AJAX 요청
 	let url = "/api/filter_issue_table/project_filter";
-	console.log("sdsd");
+
 	fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(datas)
+		body: JSON.stringify(filterDatas.projecIdxArr)
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueListByProjectKey => {
-			console.log(issueListByProjectKey);
-			
+			document.querySelector("tbody").innerHTML = ""
+			issueListByProjectKey.forEach(function(item){
+				document.querySelector("tbody").innerHTML +=
+				`<tr class="filter_row">
+					<td>
+						<div style="display: flex;">
+							<img width="16" height="16" src="/images/${item.issueIconFilename}">
+						</div>
+					</td>
+					<td>
+						<a>${item.issueKey}</a>
+					</td>
+					<td>
+						<a>${item.issueName}</a>
+					</td>
+					<td>
+						<div style="display: flex; align-items: center;">
+							<div style="height: 24px;">
+								<img width="24" height="24" src="/images/${item.issueManagerIconFilename}" alt="Manager Icon">
+							</div>
+							<div class="td_div">
+							${item.issueManagerName}
+							</div>
+						</div>
+					</td>
+					<td>
+						<div style="display: flex; align-items: center;">
+							<div style="height: 24px;">
+								<img width="24" height="24"
+									src="/images/${item.issueReporterIconFilename}">
+							</div>
+							<div class="td_div">
+							${item.issueReporterName}
+							</div>
+						</div>
+					</td>
+					<td>
+						<div style="display: flex;">
+							<div style="height: 16px;">
+								<img src="/images/${item.issuePriorityIconFilename}"
+									width="16px" height="16px">
+							</div>
+							<div class="td_div">
+							${item.issuePriorityName}
+							</div>
+						</div>
+					</td>
+					<td>
+						<button class="button_color ${item.issueStatus == 1 ? 'first' : ''}"
+						                      + ${item.issueStatus == 2 ? 'second' : ''}">
+							${item.issueStatusName}
+							<svg role="presentation" width="12" height="12" viewBox="5 5 13 13">
+								<path
+									d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+									fill="currentColor" fill-rule="evenodd"></path>
+							</svg>
+						</button>
+					</td>
+					<td>
+
+					</td>
+					<td>
+						<div>${item.createDate != null ? item.createDate : ""}</div>
+					</td>
+					<td>
+						<div>${item.editDate != null ? item.editDate : ""}</div>
+					</td>
+					<td>
+						<div>${item.deadlineDate != null ? item.deadlineDate : ""}</div>
+					</td>
+					<td>
+
+					</td>
+				</tr>`
+			})
 		})
 		.catch(error => {
 			console.error("Fetch error:", error);
