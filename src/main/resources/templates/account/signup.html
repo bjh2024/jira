@@ -7,9 +7,9 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/signup.css}">
 	<title>jira_project</title>
 </head>
-<div layout:fragment="content" style="display: flex;">
-	<div class="login-container">
-		<div class="login-header">
+<div style="display: flex;">
+	<div class="signup-container">
+		<div class="signup-header">
 			<div class="top-logo"><svg viewBox="0 0 69 32" width="100" xmlns="http://www.w3.org/2000/svg"
 					focusable="false" aria-hidden="true">
 					<defs>
@@ -34,24 +34,31 @@
 					</g>
 				</svg>
 			</div>
-			<span class="login-text">계속하려면 가입하세요.</span>
+			<span class="signup-text">계속하려면 가입하세요.</span>
 		</div>
-		<div class="login-content">
-			<form>
-				<div class="top-input" name="username">
-					<input type="text" placeholder="Jira에서 사용될 이름을 입력하세요" class="borderline">
+		<div class="signup-content">
+			<form th:action="@{/account/signup}" th:object="${createUserForm}" method="post">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+		            <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+		        </div>
+				<div class="top-input">
+					<label for="email" class="form-label">이메일</label>
+					<input type="email" name="email" th:field="*{email}" placeholder="이메일을 입력하세요" class="borderline">
 				</div>
-				<div class="other-input" name="email">
-					<input type="text" placeholder="이메일을 입력하세요" class="borderline">
+				<div class="other-input">
+					<label for="username" class="form-label">사용자 이름</label>
+					<input type="text" name="username" th:field="*{username}" placeholder="Jira에서 사용될 이름을 입력하세요" class="borderline">
 				</div>
-				<div class="other-input" name="password">
-					<input type="password" placeholder="비밀번호를 입력하세요" class="borderline">
+				<div class="other-input">
+					<label for="pw" class="form-label">비밀번호</label>
+					<input type="password" name="pw" th:field="*{pw}" placeholder="비밀번호를 입력하세요" class="borderline">
 				</div>
-				<div class="other-input" name="password2">
-					<input type="password" placeholder="비밀번호가 일치한지 확인해 주세요" class="borderline">
+				<div class="other-input">
+					<label for="checkpw" class="form-label">비밀번호 확인</label>
+					<input type="password" name="checkpw" th:field="*{checkpw}" placeholder="비밀번호가 일치한지 확인해 주세요" class="borderline">
 				</div>
 				<div>
-					<button class="next-btn" type="button" onclick="location.href='check_authcode'">계속</button>
+					<button class="next-btn">계속</button>
 				</div>
 			</form>
 			<div class="next-text">또는 다음을 사용하여 계속하기</div>
@@ -106,6 +113,6 @@
 			</div>
 		</div>
 	</div>
+<script th:src="@{/js/signup.js}"></script>
 </div>
-
 </html>

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
 	<title>jira_project</title>
 </head>
-<div layout:fragment="content" style="display: flex;">
+<div style="display: flex;">
 	<div class="login-container">
 		<div class="login-header">
 			<div class="top-logo"><svg viewBox="0 0 69 32" width="100" xmlns="http://www.w3.org/2000/svg"
@@ -37,15 +37,22 @@
 			<span class="login-text">계속하려면 로그인하세요.</span>
 		</div>
 		<div class="login-content">
-			<form>
-				<div class="top-input" name="email">
-					<input type="text" placeholder="이메일을 입력하세요" class="borderline">
+			<form th:action="@{/account/login}" method="post">
+				<div th:if="${param.error}">
+		            <div class="alert alert-danger">
+		                사용자ID 또는 비밀번호를 확인해 주세요.
+		            </div>
+		        </div>
+				<div class="top-input" >
+					<label for="email" class="form-label">이메일</label>
+					<input type="email" name="username" id="email" placeholder="이메일을 입력하세요" class="borderline">
 				</div>
-				<div class="other-input" name="password">
-					<input type="password" placeholder="비밀번호를 입력하세요" class="borderline">
+				<div class="other-input">
+					<label for="pw" class="form-label">비밀번호</label>
+					<input type="password" name="password" id="pw" placeholder="비밀번호를 입력하세요" class="borderline">
 				</div>
 				<div>
-					<button class="next-btn" type="button">계속</button>
+					<button class="next-btn">계속</button>
 				</div>
 			</form>
 			<div class="next-text">또는 다음을 사용하여 계속하기</div>

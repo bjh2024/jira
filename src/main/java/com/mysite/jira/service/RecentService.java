@@ -298,7 +298,6 @@ public class RecentService {
 				if(clickedDate != null) {
 					elapsedTime = utilityService.getElapsedComment(clickedDate);
 				}
-				System.out.println(allRecentList.get(i).get("clickedDate").getClass());
 				AllRecentDTO dto = AllRecentDTO.builder()
 											   .name(name)
 											   .iconFilename(iconFilename)

@@ -33,7 +33,6 @@ public class IssueService {
 		LocalDateTime endDate = LocalDateTime.now();
 		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
 				endDate);
-		System.out.println("오늘 : " + "startDate : " + startDate +", endDate : " + endDate);
 		// ProjectLogData의 중복값 제거
 		for (int i = 0; i < issues.size(); i++) {
 			Set<String> setIconFiles = new HashSet<>();
