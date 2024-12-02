@@ -12,6 +12,7 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.IssueType;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	
@@ -21,7 +22,7 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(
 			 @Param("accountIdx") Integer accountIdx, 
 			 @Param("jiraIdx") Integer jiraIdx);
-	// kdw
+
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 	// kdw
 	List<Issue> findByEditDateBetween(LocalDateTime startDate, LocalDateTime endDate);
@@ -69,5 +70,5 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	
 	// kdw 프로젝트의 기간당 이슈 개수(기한 초과)
 	Integer countByProjectIdxAndDeadlineDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
-	
+
 }

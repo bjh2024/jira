@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.IssueStatus;
 
 public interface IssueStatusRepository extends JpaRepository<IssueStatus, Integer>{
-	@Query("SELECT s.name, count(s.idx), s.idx "
+	@Query("SELECT s.name, count(s.idx), s.idx, s.status "
 			+ "FROM Issue i LEFT JOIN IssueStatus s ON i.issueStatus.idx = s.idx "
 			+ "WHERE i.project.idx = :idx "
 			+ "GROUP BY s.idx, s.name, s.status, s.divOrder ORDER BY s.divOrder") 
@@ -30,4 +30,5 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 			GROUP BY ist.name
 			""")
 	List<Map<String, Object>> findByStatusByIssueCount(@Param("projectIdx") Integer projectIdx);
+
 }

@@ -70,7 +70,7 @@
 									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
 										<div style="height: 16px; margin-left: 12px;">
-											<img width="16" height="16" th:src="@{|/images/${projectList.iconName}|}"
+											<img width="16" height="16" th:src="@{|/images/${projectList.iconFilename}|}"
 												style="border-radius: 2px;">
 										</div>
 										<div style="margin-left: 8px; font-size: 14px;"><span th:text="${projectList.name}"></span></div>
@@ -120,14 +120,15 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										표준 이슈 유형
 									</div>
-									<div class="filter_issue_project_div_3" th:each="issueTypeList, loop : ${issue}">
+									<div class="filter_issue_project_div_3" th:each="issueTypeList, loop : ${issueType}" >
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
 										<div style="height: 16px; margin-left: 12px;">
 											<img width="16" height="16"
-												style="border-radius: 2px;">
+										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
+												th:src="@{|/images/${issueTypeList.iconFilename}|}" style="border-radius: 2px;">
 										</div>
 										<div style="margin-left: 8px; font-size: 14px;">
-											<span th:text="${issueTypeList.issueType.name}"></span>
+											<span th:text="${issueTypeList.name}"></span>
 										</div>
 									</div>
 								</div>
@@ -169,22 +170,15 @@
 									</svg>
 								</div>
 							</div>
-							<div style="padding: 8px 0px;">
-								<div style="padding: 8px 0px">
+							<div style="padding: 10px 0px;">
+							<div style="height: 32px;" th:each="issueStatus, i : ${issueStatus}">
 									<div class="filter_issue_project_div_3">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
-										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div class="issuestatus" th:text="${issueStatus[1]}"
+										th:classappend="${issueStatus[0] == 2 ? 'first':''}
+													+${issueStatus[0] == 1 ? 'second':''}"></div>
 									</div>
-								</div>
+							</div>
 							</div>
 							<div class="filter_issue_project_div_4">
 								전체 목록 표시
@@ -225,23 +219,21 @@
 							</div>
 							<div style="padding: 8px 0px;">
 								<div style="padding: 8px 0px">
-									<div
-										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
-										제안하는 사용자
-									</div>
-									<div class="filter_issue_project_div_3">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
+									<div style="font-size: 11px;margin-bottom:2.75px;" >
+										<div style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
+											제안하는 사용자
 										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div class="filter_issue_project_div_3" th:each="account : ${account}">
+											<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+											<div style="height: 16px; margin-left: 12px;">
+												<img width="16" height="16"
+													th:src="@{|/images/${account.account.iconFilename}|}"
+													style="border-radius: 2px;">
+											</div>
+											<div style="margin-left: 8px; font-size: 14px;" th:text="${account.account.name}"></div>
+										</div>
 									</div>
+								
 								</div>
 							</div>
 							<div class="filter_issue_project_div_4">
@@ -273,16 +265,31 @@
 								<div style="padding: 8px 0px">
 									<div class="filter_issue_project_div_3">
 										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
-										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=small"
-												alt=""
-												data-testid="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												aria-hidden="true"
-												data-vc="jql-builder-basic-picker.ui.format-option-label.avatar-option-label.avatar--image"
-												data-ssr-placeholder-ignored="true" class="css-1gr7gcv"
-												style="border-radius: 2px;">
-										</div>
-										<div style="margin-left: 8px; font-size: 14px;">하이</div>
+										<div style="margin-left: 8px; font-size: 14px;">우선 순위</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">해결 날짜</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">해결</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">최근 업데이트</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">최근 생성</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">상태 범주</div>
+									</div>
+									<div class="filter_issue_project_div_3">
+										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="margin-left: 8px; font-size: 14px;">보고자</div>
 									</div>
 								</div>
 							</div>
@@ -303,7 +310,61 @@
 				<div class="all_issue">
 					<div class="issue_list">
 						<div class="button_div">
-							<button class="make_button" style="background-color: transparent; color:#505258;">만듦</button>
+								<div class="button_div_box">
+									<div style="font-size: 12px; width: 100%; padding:0px 16px; margin:16px 0px 4px; font-weight: bold;">
+										이슈 정렬 기준
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">만듦</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">키</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">최근 확인</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">우선 순위</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">해결됨</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">상태</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">업데이트</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">이슈유형</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">담당자</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">기한</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">보고자</div>
+									</div>
+									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<div style="width: 60px; font-size: 14px;">요약</div>
+									</div>
+								</div>
+							<button class="make_button" style="background-color: transparent; color:#505258;">만듦
+							</button>
 								<svg fill="none" viewBox="0 0 12 12" role="presentation" style="width: 18px; height: 12px;"><path stroke="currentcolor" stroke-linejoin="round" stroke-width="1.5" d="M10.5 4.5 8.25 6.75 6 9 3.75 6.75 1.5 4.5"></path></svg>
 							</div>
 						<div class="button_size_1">
@@ -329,7 +390,7 @@
 									<span th:text="${issueList.key}"></span>
 								</div>
 								<img width="24" height="24"
-									th:src="@{|/images/${issueList.reporter.iconFileName}|}"
+									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
 									alt="프로필이미지" style="border-radius: 50%;">
 							</div>
 						</div>

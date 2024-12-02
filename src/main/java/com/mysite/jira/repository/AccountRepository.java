@@ -25,5 +25,4 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 			ORDER BY i.manager.idx
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
-	
 }

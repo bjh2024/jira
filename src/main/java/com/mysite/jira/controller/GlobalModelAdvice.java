@@ -51,6 +51,7 @@ public class GlobalModelAdvice {
 		// 가져올 값들
 		Integer accountIdx = 1;
 		Integer jiraIdx = 1;
+		
 		// header null 처리 필요
 		List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
 		List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
@@ -72,7 +73,7 @@ public class GlobalModelAdvice {
 		List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 		List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
 		List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
-		
+
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (!uri.contains("/project/create")) {
 			// header
@@ -100,7 +101,6 @@ public class GlobalModelAdvice {
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
 		}
-		
 	}
 	
 	private final BoardMainService boardMainService;

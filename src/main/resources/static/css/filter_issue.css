@@ -192,6 +192,24 @@
 	align-items: center;
 	display: flex;
 }
+.issuestatus {
+	font-size: 10px;
+	font-weight: 800;
+	margin-left: 8px;
+	border: 1px solid rgb(148, 199, 72);
+	padding: 0px 4px;
+	border-radius: 3px;
+}
+.issuestatus.first {
+	border: 1px solid rgb(102, 157, 241);
+}
+.issuestatus.second {
+	border: 1px solid rgb(183, 185, 190);
+}
+.filter_issue_project_div_3:hover{
+	background-color: #DFE1E6;
+	cursor: pointer;
+}
 
 .filter_issue_project_div_4 {
 	border-top: 1px solid #DFE1E6;
@@ -240,7 +258,7 @@
 }
 
 .issue_list {
-	padding: 0px 0px 2px;
+	padding: 2px;
 	width: 256px;
 	height: 40px;
 	background-color: #17171708;;
@@ -252,7 +270,12 @@
 .make_button {
 	font-size: 14px;
 	padding-top: 1px;
-	margin: 0 2px;
+	
+}
+.button_div:hover {
+	border-radius: 3px;
+	background-color: #0515240C;
+	cursor: pointer;
 }
 
 .all_issue {
@@ -267,16 +290,36 @@
 .button_div {
 	display: flex;
 	width: 76px;
-	height: 32px;
+	height: 36px;
 	align-items: center;
 	padding: 0px 10px;
 	border-radius: 3px;
 	padding-bottom: 3px;
+	position: relative;
 }
-
+.button_div_box {
+	position: absolute;
+	background-color: white;
+	left: 0;
+	top: 46px;
+	width: 144.84px;
+	height: 320px;
+	border: 1px solid #091E420f;
+	border-radius: 3px;
+	overflow: auto;
+	display: none;
+}
+.button_div_box.show{
+	display: block;
+}
 .button_div svg {
 	position: relative;
 }
+
+.issue_list_small_filter:hover {
+	background-color: #0515240C;
+}
+
 
 .button_size_1 button {
 	width: 32px;

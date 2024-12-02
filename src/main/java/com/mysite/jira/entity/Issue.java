@@ -44,6 +44,9 @@ public class Issue {
 	private LocalDateTime editDate;
 	
 	@Column
+	private LocalDateTime startDate;
+	
+	@Column
 	private LocalDateTime finishDate;
 	
 	@Column
@@ -78,11 +81,14 @@ public class Issue {
 	@ManyToOne
 	private Jira jira;
 	
+	@ManyToOne
+	private Team team;
+	
 	@Builder
 	public Issue(String key, String name, String content, LocalDateTime createDate, LocalDateTime editDate,
 			LocalDateTime finishDate, LocalDateTime deadlineDate, Integer divOrder,
 			Project project, IssueType issueType, IssueStatus issueStatus, Account manager, Account reporter,
-			IssuePriority issuePriority) {
+			IssuePriority issuePriority, Team team, LocalDateTime startDate) {
 		this.key = key;
 		this.name = name;
 		this.content = content;
@@ -97,6 +103,8 @@ public class Issue {
 		this.manager = manager;
 		this.reporter = reporter;
 		this.issuePriority = issuePriority;
+		this.team = team;
+		this.startDate = startDate;
 	}
 	
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE) 
