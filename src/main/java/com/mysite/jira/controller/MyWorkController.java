@@ -47,8 +47,8 @@ public class MyWorkController {
 		model.addAttribute("recentMonthGreaterList", recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx));
 		
 		// 나에게 할당
-		model.addAttribute("managerByIssue", issueService.getManagerByIssue(jiraIdx, accountIdx));
-		model.addAttribute("managerByIssueCount", issueService.getMangerByIssueCount(jiraIdx, accountIdx));
+		model.addAttribute("managerByIssue", issueService.getManagerByIssueStatusIn(jiraIdx, accountIdx));
+		model.addAttribute("managerByIssueCount", issueService.getMangerByIssueStatusInCount(jiraIdx, accountIdx));
 		
 		// 별표 표시됨
 		model.addAttribute("allLikeList", likeService.getAllLikeList(accountIdx, jiraIdx));

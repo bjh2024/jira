@@ -1,12 +1,12 @@
 package com.mysite.jira.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueStatus;
 
 public interface IssueStatusRepository extends JpaRepository<IssueStatus, Integer>{
@@ -18,4 +18,16 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 	
 //	// kdw 보류
 //	List<IssueStatus> findByIssueList_JiraIdxAndIssueList_ManagerIdxAndStatusIn(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
+	
+	// kdw
+	@Query("""
+			SELECT  ist.name as name, 
+					count(i.idx) as count
+			FROM    IssueStatus ist
+			LEFT JOIN    Issue i
+			ON  ist.idx = i.issueStatus.idx
+			WHERE   ist.project.idx = :projectIdx
+			GROUP BY ist.name
+			""")
+	List<Map<String, Object>> findByStatusByIssueCount(@Param("projectIdx") Integer projectIdx);
 }

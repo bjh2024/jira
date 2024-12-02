@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.LogDataService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,8 @@ public class ProjectController {
 	
 	private final IssueService issueService;
 	
+	private final LogDataService logDataService;
+	
 	@GetMapping("/summation")
 	public String summationPage(Model model) {
 		Integer accountIdx = 1;
@@ -30,7 +34,17 @@ public class ProjectController {
 		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
 		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
 		model.addAttribute("updateIssueCount", issueService.getSevenDayUpdateIssueCount(projectIdx));
+		// 상태 개요
 		model.addAttribute("deadlineIssueCount", issueService.getSevenDayDeadlineIssueCount(projectIdx));
+		// 최근 활동
+		model.addAttribute("projectLogData", logDataService.getProjectLogData(projectIdx));
+		// 우선순위 분석
+		model.addAttribute("taskTypeData", issueService.getTaskTypeDTO(projectIdx));
+		// 작업 유형
+		model.addAttribute("sumTaskTypeData", issueService.getSumTaskTypeDTO(projectIdx));
+		// 팀 워크로드
+		model.addAttribute("managerCountData", issueService.getManagerIssueCount(projectIdx));
+		
 		return "project/summation";
 	}
 	

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class HeaderAlarmDTO {
+public class HeaderAlaramLogDataDTO {
 
 	private String accountName;
 	private String accountFilename;
@@ -16,7 +16,7 @@ public class HeaderAlarmDTO {
 	private String key;
 
 	@Builder
-	public HeaderAlarmDTO(String accountName, String accountFilename, 
+	public HeaderAlaramLogDataDTO(String accountName, String accountFilename, 
 						  String issueName, String issueTypeFilename,
 						  String issueStatusName, String logContent, 
 						  String elapsedTime, String key) {

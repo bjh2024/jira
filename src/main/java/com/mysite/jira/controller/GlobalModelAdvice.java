@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.LikeContentDTO;
-import com.mysite.jira.dto.header.HeaderAlarmDTO;
+import com.mysite.jira.dto.header.HeaderAlaramLogDataDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
@@ -51,15 +51,15 @@ public class GlobalModelAdvice {
 		// 가져올 값들
 		Integer accountIdx = 1;
 		Integer jiraIdx = 1;
-		// header
+		// header null 처리 필요
 		List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
 		List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
 		List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
 		List<Account> allAccountList = accountService.getAccountList(jiraIdx);
-		List<HeaderAlarmDTO> alarmLogData = logDataService.getProjectLogData(jiraIdx);
+		List<HeaderAlaramLogDataDTO> alarmLogData = logDataService.getJiraLogData(jiraIdx);
 		List<AllRecentDTO> allRecentList = recentService.getAllRecentList(accountIdx, jiraIdx, LocalDateTime.now().minusDays(30),LocalDateTime.now());
 		
-		// aside
+		// aside null 처리 필요
 		List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
 		List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);
 		List<AllRecentDTO> thisWeekRecentList = recentService.getWeekAllRecentList(accountIdx, jiraIdx);

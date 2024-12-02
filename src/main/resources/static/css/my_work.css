@@ -227,7 +227,7 @@ body{
 }
 
 .my_work_content h3 {
-	padding-top: 8px;
+	padding: 8px 0;
 	
 	color: #6B6E76;
 	font-size: 14px;
