@@ -31,8 +31,6 @@ public class RecentService {
 	
 	private final JiraRepository jiraRepository;
 	
-	private final ObjectMapper objectMapper;
-	
 	private final UtilityService utilityService;
 	
 	private final IssueRepository issueRepository;

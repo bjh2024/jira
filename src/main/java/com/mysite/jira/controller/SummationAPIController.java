@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysite.jira.dto.summation.chartDTO;
+import com.mysite.jira.dto.project.summation.chartDTO;
 import com.mysite.jira.service.IssueService;
 
 import lombok.RequiredArgsConstructor;

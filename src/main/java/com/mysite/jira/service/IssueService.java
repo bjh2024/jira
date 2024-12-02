@@ -11,13 +11,12 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.mysite.jira.dto.summation.PercentTableDTO;
-import com.mysite.jira.dto.summation.chartDTO;
+import com.mysite.jira.dto.project.summation.PercentTableDTO;
+import com.mysite.jira.dto.project.summation.chartDTO;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
-import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
@@ -48,7 +47,6 @@ public class IssueService {
 		LocalDateTime endDate = LocalDateTime.now();
 		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
 				endDate);
-		System.out.println("오늘 : " + "startDate : " + startDate +", endDate : " + endDate);
 		// ProjectLogData의 중복값 제거
 		for (int i = 0; i < issues.size(); i++) {
 			Set<String> setIconFiles = new HashSet<>();
@@ -286,18 +284,14 @@ public class IssueService {
 		List<PercentTableDTO> result = new ArrayList<>();
 		for(int i = 0; i < managerByIssueDTOList.size(); i++) {
 			String name = "";
-			if(managerByIssueDTOList.get(i).get("name") instanceof String) {
-				if(managerByIssueDTOList.get(i).get("name") == null)
-					name = null;
-				else
-					name = managerByIssueDTOList.get(i).get("name").toString();
+			if(managerByIssueDTOList.get(i).get("name") instanceof String
+			&& managerByIssueDTOList.get(i).get("name") != null) {
+				name = managerByIssueDTOList.get(i).get("name").toString();
 			}
 			String iconFilename = "";
-			if(managerByIssueDTOList.get(i).get("iconFilename") instanceof String) {
-				if(managerByIssueDTOList.get(i).get("iconFilename") == null)
-					iconFilename = null;
-				else
-					iconFilename = managerByIssueDTOList.get(i).get("iconFilename").toString();
+			if(managerByIssueDTOList.get(i).get("iconFilename") instanceof String 
+			&& managerByIssueDTOList.get(i).get("iconFilename") != null) {
+				iconFilename = managerByIssueDTOList.get(i).get("iconFilename").toString();
 			}
 			Long count = 0l;
 			if(managerByIssueDTOList.get(i).get("count") instanceof Long) {

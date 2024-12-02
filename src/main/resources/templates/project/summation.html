@@ -49,7 +49,7 @@
 				<section class="summation_content_box1">
 					<a th:href="@{#}" class="item">
 						<div>
-							<img src="/images/green_check_icon.svg" alt="" width="16" height="16" />
+							<img src="/images/green_check_icon.svg" alt="" width="24" height="24" />
 						</div>
 						<p>
 							<span>최근 7일 이내에</span>
@@ -58,7 +58,7 @@
 					</a>
 					<a th:href="@{#}" class="item">
 						<div>
-							<img src="/images/blue_pencil_icon.svg" alt="" width="16" height="16" />
+							<img src="/images/blue_pencil_icon.svg" alt="" width="24" height="24" />
 						</div>
 						<p>
 							<span>최근 7일 이내에</span>
@@ -76,7 +76,7 @@
 					</a>
 					<a th:href="@{#}" class="item">
 						<div>
-							<img src="/images/calender_icon.svg" alt="" width="16" height="16" />
+							<img src="/images/calender_icon.svg" alt="" width="24" height="24" />
 						</div>
 						<p>
 							<span>다음 7일</span>
@@ -259,9 +259,9 @@
 									<tr th:each="item : ${managerCountData}">
 										<td>
 											<div>
-												<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24"
-													height="24">
-												<span th:text="${item.name}"></span>
+												<img th:src="@{|/images/${item.iconFilename == '' ? 'default_icon_file.png' : item.iconFilename}|}"
+													alt="" width="32" height="32" style="border-radius: 16px;">
+												<span th:text="${item.name != '' ? item.name : '할당되지 않음'}"></span>
 											</div>
 										</td>
 										<td>
@@ -281,13 +281,14 @@
 									</tr>
 								</tbody>
 							</table>
-							<button class="invite_team_member_btn">
-								<div>
-									<img th:src="@{/images/invite_team_member_icon.svg}" width="16" height="16" />
-								</div>
-								<span>팀원 초대</span>
-							</button>
+
 						</div>
+						<button class="invite_team_member_btn">
+							<div>
+								<img th:src="@{/images/invite_team_member_icon.svg}" width="16" height="16" />
+							</div>
+							<span>팀원 초대</span>
+						</button>
 					</div>
 					<div class="item">
 						<h2>관련 프로젝트</h2>
@@ -302,24 +303,14 @@
 								</div>
 								<span>프로젝트 만들기</span>
 							</a>
-							<a th:href="@{#}">
+							<a th:href="@{#}" th:each="item : ${relevantProjectList}"
+								th:if="${item.name != project.name}">
 								<div class="img_box">
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10406?size=xxlarge"
-										alt="" width="48" height="48">
+									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="48" height="48">
 								</div>
 								<p>
-									개인 템플릿
-									<span>EZBY</span>
-								</p>
-							</a>
-							<a th:href="@{#}">
-								<div class="img_box">
-									<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424?size=xxlarge"
-										alt="" width="48" height="48">
-								</div>
-								<p>
-									hihihihi
-									<span>HIH</span>
+									<span th:text="${item.name}"></span>
+									<span class="key" th:text="${item.key}"></span>
 								</p>
 							</a>
 						</div>

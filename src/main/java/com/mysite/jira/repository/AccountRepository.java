@@ -22,7 +22,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 			ON  a.idx = i.manager.idx
 			WHERE   i.project.idx = :projectIdx
 			GROUP BY i.manager.idx, a.name, a.iconFilename
-			ORDER BY i.manager.idx
+			ORDER BY count(i.idx) DESC, i.manager.idx
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
 }

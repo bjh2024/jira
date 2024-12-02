@@ -3,6 +3,8 @@ package com.mysite.jira.repository;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -75,6 +77,25 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 			""", nativeQuery = true)
     List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 
+	// kdw 프로젝트 리스트(즐겨찾기 유무 => 별표가 위로)
+	@Query("""
+			SELECT  p.name as projectName,
+					p.iconFilename as projectIconFilename,
+					p.key as projectKey,
+					p.account.name as accountName,
+					p.account.iconFilename as accountIconFilename,
+					CASE WHEN plm.idx IS NULL THEN 'false'
+					ELSE 'true' END as isLike
+			FROM    Project p
+			LEFT JOIN    ProjectLikeMembers plm
+			ON  p.idx = plm.project.idx AND plm.account.idx = :accountIdx
+			WHERE   p.jira.idx = :jiraIdx
+			ORDER BY isLike DESC
+			""")
+	Page<Map<String, Object>> findByProjectListIsLike(@Param("accountIdx") Integer accountIdx,
+													  @Param("jiraIdx") Integer jiraIdx,
+													  Pageable pageable);
+	
 	// 지라가 1인 프로젝트의 모든 유형을 가져와서 distinct
 	@Query("SELECT DISTINCT iss.status, iss.name "
 		     + "FROM IssueStatus iss "
@@ -83,7 +104,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 		     + "    FROM Project p "
 		     + "    WHERE p.jira.idx = :jiraIdx )"
 		     + "    ORDER BY iss.status Desc" )
-		List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
-
+	List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);	
+		
 
 }

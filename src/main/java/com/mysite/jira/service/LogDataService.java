@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.header.HeaderAlaramLogDataDTO;
-import com.mysite.jira.dto.summation.RecentLogDataDTO;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.ProjectLogDataRepository;
 

@@ -8,14 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Issue;
-import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.LogDataService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,11 +29,14 @@ public class ProjectController {
 	
 	private final IssueService issueService;
 	
+	private final ProjectService projectService;
+	
 	private final LogDataService logDataService;
 	
 	@GetMapping("/summation")
 	public String summationPage(Model model) {
 		Integer accountIdx = 1;
+		Integer jiraIdx = 1;
 		Integer projectIdx = 1;
 		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
 		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
@@ -47,12 +51,18 @@ public class ProjectController {
 		model.addAttribute("sumTaskTypeData", issueService.getSumTaskTypeDTO(projectIdx));
 		// 팀 워크로드
 		model.addAttribute("managerCountData", issueService.getManagerIssueCount(projectIdx));
+		// 관련 프로젝트
+		model.addAttribute("relevantProjectList", projectService.getProjectByJiraIdx(jiraIdx));
 		
 		return "project/summation";
 	}
 	
 	@GetMapping("/list")
-	public String listPage() {
+	public String listPage(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
+		Integer accountIdx = 1;
+		Integer jiraIdx = 1;
+		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
+		
 		return "project/project_list";
 	}
 	

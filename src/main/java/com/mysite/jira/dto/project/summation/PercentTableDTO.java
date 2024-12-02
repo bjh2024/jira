@@ -1,4 +1,4 @@
-package com.mysite.jira.dto.summation;
+package com.mysite.jira.dto.project.summation;
 
 import lombok.Builder;
 import lombok.Getter;

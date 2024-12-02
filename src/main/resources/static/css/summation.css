@@ -296,7 +296,7 @@ main {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	z-index: 998;
+	z-index: 997;
 }
 
 .issue_status_doughnut_chart_box>.doughnut_chart_ratio p{
@@ -622,7 +622,7 @@ main {
 	gap: 4px;
 }
 
-.relation_project_box > a p span{
+.relation_project_box > a p .key{
 	color: #aaa;
 	font-weight: normal;
 }

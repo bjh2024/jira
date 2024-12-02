@@ -143,7 +143,7 @@
 
 .template_choice_box .more_btn_box .more_btn{
 	display: flex;
-	gap: 4px;
+	gap: 12px;
 	align-items: center;
 	
 	cursor: pointer;
