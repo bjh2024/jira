@@ -135,10 +135,14 @@ public class Issue {
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<ProjectLogData> projectLogDataList;
 	
+	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
+	private List<IssueRecentClicked> issueClickedList;
+	
 	public void updateProjectLogDataList(List<ProjectLogData> projectLogDataList) {
 		this.projectLogDataList = projectLogDataList;
 	}
 	
-	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
-	private List<IssueRecentClicked> issueClickedList;
+//	public void updateIssueStatus(IssueStatus newStatus) {
+//		this.issueStatus = newStatus;
+//	}
 }

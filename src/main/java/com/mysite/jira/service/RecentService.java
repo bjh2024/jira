@@ -5,17 +5,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.header.HeaderRecentIssueDTO;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.DashboardRepository;
 import com.mysite.jira.repository.FilterRepository;
@@ -237,13 +234,7 @@ public class RecentService {
 		
 		List<AllRecentDTO> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
-		try {
-			for(int i = 0; i < allRecentList.size(); i++) {
-				
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		
 		return allRecentList;
 	}
 	

@@ -216,7 +216,3 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 		});
 	});
 });
-
-
-
-

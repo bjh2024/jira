@@ -12,3 +12,4 @@ document.querySelector("body").addEventListener("click", function(e) {
 	        modal.classList.remove("active");
 	    }
 });
+

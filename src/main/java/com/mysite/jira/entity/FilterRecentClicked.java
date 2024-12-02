@@ -18,21 +18,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class FilterRecentClicked {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_clicked_seq")
-	@SequenceGenerator(name = "filter_clicked_seq", sequenceName = "filter_clicked_seq", allocationSize = 1)
-	private Integer idx; 
-	
-	@ManyToOne
-	private Account account;
-	
-	@ManyToOne
-	private Filter filter;
-	
-	@ManyToOne
-	private Jira jira;
-	
-	@ColumnDefault("sysdate")
-	@Column
-	private LocalDateTime clickedDate;
+   @Id
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filter_clicked_seq")
+   @SequenceGenerator(name = "filter_clicked_seq", sequenceName = "filter_clicked_seq", allocationSize = 1)
+   private Integer idx; 
+   
+   @ManyToOne
+   private Account account;
+   
+   @ManyToOne
+   private Filter filter;
+   
+   @ManyToOne
+   private Jira jira;
+   
+   @ColumnDefault("sysdate")
+   @Column
+   private LocalDateTime clickedDate;
+
 }

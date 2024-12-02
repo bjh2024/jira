@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/board_main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/project/ckeditor5/ckeditor5.css}">
+	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </head>
 <div layout:fragment="content" style="display: flex;" class="board-main-container">
 	<div class="header-container">
@@ -17,12 +17,12 @@
 					<input placeholder="보드 검색" class="board-searchkey" value="">
 				</div>
 				<div class="profilebox">
-					<div class="myprofileimgbox" style="z-index: 3;">
+					<div class="myprofileimgbox" style="">
 						<img class="myprofileimg"
 							src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
 							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
 					</div>
-					<div class="profileimgbox" style="z-index: 2; border-color: white;">
+					<div class="profileimgbox" style="">
 						<img class="profileimg"
 							src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
 							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
@@ -148,33 +148,33 @@
 								<div class="typefilterbox">
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium"></span>
+												th:src="@{/images/issue_bug.svg}"></span>
 										<span>버그</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/epik_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_epik.svg}"></span>
 										<span>에픽</span>
 									</div>
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10304?size=medium"></span>
+												th:src="@{/images/issue_bug.svg}"></span>
 										<span>이게뭐야</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/task_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_task.svg}"></span>
 										<span>작업</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/bug_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_bug.svg}"></span>
 										<span>작업1</span>
 									</div>
 									<div class="typefilterbtn">
-										<span class="typefilterbtnicon"><img th:src="@{/images/work_issue.svg}"></span>
+										<span class="typefilterbtnicon"><img th:src="@{/images/issue_work.svg}"></span>
 										<span>체크리스트</span>
 									</div>
 									<div class="typefilterbtn">
 										<span class="typefilterbtnicon"><img
-												src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium"></span>
+												th:src="@{/images/issue_work.svg}"></span>
 										<span>테스트</span>
 									</div>
 								</div>
@@ -310,14 +310,14 @@
 			</div>
 		</div>
 		<div class="board-body-container">
-			<div class="issue-container" th:each="statusList1, statusStat : ${statusList}">
+			<div class="issue-container" th:each="statusList1 : ${statusList}">
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
 						<div class="issue-status">
 							<div class="status-titlebox">
-								<div class="status-title" th:text="${statusList1[0]}"></div>
-								<div class="status-complete" th:if="${statusList1[3] == 3}">
+								<div class="status-title" th:text="${statusList1[3]}"></div>
+								<div class="status-complete" th:if="${statusList1[0] == 3}">
 									<img th:src="@{/images/status_complete_icon.svg}"
 										style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);">
 								</div>
@@ -336,8 +336,9 @@
 						</div>
 					</div>
 					<div class="issuebox-issues">
-						<div class="issues" th:each="issueList : ${issueList}"
-							th:if="${issueList.issueStatus.idx == statusList1[2]}">
+						<div class="issues" th:each="issueList : ${issueList}" draggable="true"
+							th:if="${issueList.issueStatus.idx == statusList1[2]}"
+							th:attr="data-id=${issueList.idx}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
@@ -373,7 +374,7 @@
 											th:src="@{|/images/${issueList.issueType.iconFilename}|}"></span>
 									<span class="issuekey" th:text="${issueList.key}"></span>
 								</div>
-								<div class="issue-managerbox">
+								<div class="issue-managerbox" th:if="${issueList.manager != null}">
 									<span style="margin-top: 2px;"><img width="16"
 											th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"></span>
 									<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;"><img
@@ -381,422 +382,1038 @@
 											th:src="@{|/images/${issueList.manager.iconFilename}|}"></span>
 								</div>
 							</div>
-							<!-- <div style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
-							 <button class="subissuebtn">
-								 <div class="subissuebtnbox">
-							 		<span style="width: 16px; height: 16px;">
-										<img th:src="@{/images/subissue_files_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-									</span>
-									<span style="font-weight: bolder;">0/1</span>
-									<span class="subissuebtnimg">
-										<img th:src="@{/images/arrow_right_icon.svg}" style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-									</span>
-								</div>
-							</button>
+							<div th:if="${#lists.size(issueList.parentList) > 0} and ${issueList.issueStatus.status != 1}"
+								style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
+								<button class="subissuebtn">
+									<div class="subissuebtnbox">
+										<span style="width: 16px; height: 16px;">
+											<img th:src="@{/images/subissue_files_icon.svg}">
+										</span>
+										<span style="font-weight: bolder;" th:text="|0/${#lists.size(issueList.parentList)}|"></span>
+										<span class="subissuebtnimg">
+											<img th:src="@{/images/arrow_right_icon.svg}">
+										</span>
+									</div>
+								</button>
 							</div>
 							<div class="subissuebox">
-								<div class="subissues">
-									<div class="subissueline"></div>
-									<div class="testester">
-										<div class="subissuename">
-											<span>이슈 1의 하위 이슈</span>
+								<div class="subissueline"></div>
+								<div class="subissues" th:each="extendsList : ${extendsList}"
+									th:if="${extendsList.parent.idx == issueList.idx}"
+									>
+									<div class="subissuename">
+										<span th:text="${extendsList.child.name}"></span>
+									</div>
+									<div class="subissue-underbox">
+										<div class="issue-typebox"> <!---->
+											<span style="height: 16px;">
+												<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}" style="width: 16px; height: 16px;">
+											</span>
+											<span class="issuekey" th:text="${extendsList.child.key}"></span>
 										</div>
-										<div class="subissue-underbox">
-											<div class="issue-typebox">
-												<span style="height: 16px; margin-top: 2px;"><img th:src="@{/images/sub_task_issue.svg}"></span>
-												<span class="issuekey">TSYR-55</span>
-											</div>
-											<div class="issue-managerbox">
-												<span class="subissue-status">해야 할 일</span>
-												<span><img width="24" src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"></span>
-											</div>
+										<div class="subissue-managerbox" th:if="${extendsList.child.manager != null}">
+											<span class="subissue-status" th:text="${extendsList.child.issueStatus.name}"
+											th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+															+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+															+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"></span>
+											<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;">
+												<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" style="width: 100%; height: 100%; object-fit: cover;">
+											</span>
 										</div>
 									</div>
-								</div>
-							 </div> -->
-							<div class="issuedetail-container">
-								<div class="issuedetailbox">
-									<div class="issuedetail-headerbar">
-										<div class="issuekeypathbox">
-											<div class="issuekeypath">
-												<span class="path-issuekeyicon"><img th:src="@{/images/epik_issue.svg}"
-														width="16px" height="16px" alt="에픽"></span>
-												<span style="margin-bottom: 2px;">
-													<a th:href="@{#}">TSYR-8</a>
-												</span>
-											</div>
-											<div class="issuekeypath">
-												<span
-													style="font-size: 16px; margin-left: -7px; margin-right: 2px;">/</span>
-												<span class="path-issuekeyicon"><img
-														th:src="@{|/images/${issueList.issueType.iconFilename}|}"
-														width="16px" height="16px"></span>
-												<span style="margin-bottom: 2px;">
-													<a th:href="@{#}" th:text="${issueList.key}">TSYR-34</a>
-												</span>
-											</div>
-										</div>
-										<div class="issuedetail-menubar">
-											<div class="issuedetail-option-observ">
-												<span style="margin-top: 2px; color: #0C66E4;">
-													<img th:src="@{/images/eye_icon.svg}"
-														style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
-												</span>
-												<span style="color: #0C66E4; margin-left: 4px;">2</span>
-											</div>
-											<div class="issuedetail-option">
-												<span style="margin-top: 2px;">
-													<img th:src="@{/images/thumbsup_icon.svg}"
-														style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
-												</span>
-											</div>
-											<div class="issuedetail-option">
-												<span style="margin-top: 2.5px;">
-													<img th:src="@{/images/three_dots_icon_small.svg}"
-														style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
-												</span>
-											</div>
-											<div class="issuedetail-option issuedetail-off">
-												<span style="margin-top: 2.5px;">
-													<img th:src="@{/images/cancel_icon.svg}"
-														style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
-												</span>
-											</div>
-										</div>
-									</div>
-									<div class="issuedetailbody-container">
-										<div class="issuedetailviewbox">
-											<div style="padding-left: 24px;">
-												<h1 class="issuedetail-title" th:text="${issueList.name}"></h1>
-												<div class="issuedetail-insertbtn">
-													<div class="issuedetail-insertwindow">
-														<button class="insertwindow-btn">
-															<span
-																style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
-																	th:src="@{/images/attachment_icon.svg}"
-																	style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-															<span style="margin-bottom: 4px; margin-left: 4px;">첨부
-																파일</span>
-														</button>
-														<button class="insertwindow-btn">
-															<span style="height: 24px; margin-bottom: 2px;"><img
-																	th:src="@{/images/sub_issue_icon.svg}"
-																	style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-															<span style="margin-bottom: 4px;">하위 이슈</span>
-														</button>
-														<button class="insertwindow-btn">
-															<span
-																style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
-																	th:src="@{/images/project_issue_icon.svg}"
-																	style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-															<span style="margin-bottom: 4px; margin-left: 4px;">연결한
-																이슈</span>
-														</button>
-														<button class="insertwindow-btn">
-															<span style="height: 24px; margin-bottom: 2px;"><img
-																	th:src="@{/images/web_icon.svg}"
-																	style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-															<span style="margin-bottom: 4px;">웹 링크</span>
-														</button>
-													</div>
-													<span style="height: 16px;">
-														<img class="insertbtn-icon"
-															th:src="@{/images/plus_icon_small.svg}">
-													</span>
-													<span style="margin-bottom: 2px;">추가</span>
-												</div>
-												<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명
-												</div>
+									<div class="subissuedetail-container" draggable="false">
+								 		<div class="issuedetailbox">
+								 			<div class="issuedetail-headerbar">
+								 				<div class="issuekeypathbox">
+								 					<div class="issuekeypath" th:if="${#lists.size(extendsList.child.childList) > 0}">
+								 						<th:block th:each="subchildList : ${extendsList.child.childList}">
+								 						<span class="path-issuekeyicon"><img th:src="@{|/images/${subchildList.parent.issueType.iconFilename}|}" width="16px" height="16px"></span>
+								 						<span style="margin-bottom: 2px; padding-right: 4px;">
+								 							<a th:href="@{#}" th:text="${subchildList.parent.key}"></a>
+								 						</span>
+								 						<span style="font-size: 16px; ">/</span>
+								 						</th:block>
+								 					</div>
+								 					<div class="issuekeypath">
+								 						<span class="path-issuekeyicon" style="padding-left: 0px;"><img
+								 								th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}"
+								 								width="16px" height="16px"></span>
+								 						<span style="margin-bottom: 2px;">
+								 							<a th:href="@{#}" th:text="${extendsList.child.key}"></a>
+								 						</span>
+								 					</div>
+								 				</div>
+								 				<div class="issuedetail-menubar">
+								 					<div class="issuedetail-option-observ">
+								 						<span style="margin-top: 2px; color: #0C66E4;">
+								 							<img th:src="@{/images/eye_icon.svg}"
+								 								style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
+								 						</span>
+								 						<span style="color: #0C66E4; margin-left: 4px;">2</span>
+								 					</div>
+								 					<div class="issuedetail-option">
+								 						<span style="margin-top: 2px;">
+								 							<img th:src="@{/images/thumbsup_icon.svg}"
+								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+								 						</span>
+								 					</div>
+								 					<div class="issuedetail-option">
+								 						<span style="margin-top: 2.5px;">
+								 							<img th:src="@{/images/three_dots_icon_small.svg}"
+								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+								 						</span>
+								 					</div>
+								 					<div class="issuedetail-option issuedetail-off">
+								 						<span style="margin-top: 2.5px;">
+								 							<img th:src="@{/images/cancel_icon.svg}"
+								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+								 						</span>
+								 					</div>
+								 				</div>
+								 			</div>
+								 			<div class="issuedetailbody-container">
+								 				<div class="issuedetailviewbox">
+								 					<div style="padding-left: 24px;">
+								 						<h1 class="issuedetail-title" th:text="${extendsList.child.name}"></h1>
+								 						<div class="issuedetail-insertbtn">
+								 							<div class="issuedetail-insertwindow">
+								 								<button class="insertwindow-btn">
+								 									<span
+								 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
+								 											th:src="@{/images/attachment_icon.svg}"
+								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
+								 										파일</span>
+								 								</button>
+								 								<button class="insertwindow-btn" style="display: none;">
+								 									<span style="height: 24px; margin-bottom: 2px;"><img
+								 											th:src="@{/images/sub_issue_icon.svg}"
+								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								 									<span style="margin-bottom: 4px;">하위 이슈</span>
+								 								</button>
+								 								<button class="insertwindow-btn">
+								 									<span
+								 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
+								 											th:src="@{/images/project_issue_icon.svg}"
+								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								 									<span style="margin-bottom: 4px; margin-left: 4px;">연결한
+								 										이슈</span>
+								 								</button>
+								 								<button class="insertwindow-btn">
+								 									<span style="height: 24px; margin-bottom: 2px;"><img
+								 											th:src="@{/images/web_icon.svg}"
+								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+								 									<span style="margin-bottom: 4px;">웹 링크</span>
+								 								</button>
+								 							</div>
+								 							<span style="height: 16px;">
+								 								<img class="insertbtn-icon"
+								 									th:src="@{/images/plus_icon_small.svg}">
+								 							</span>
+								 							<span style="margin-bottom: 2px;">추가</span>
+								 						</div>
+								 						<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명
+								 						</div>
 
-											</div>
-											<div class="issuedetail-exarea">
-												<div class="editor-container">
-													<div class="editor" style="width: 738px;">
-														<p th:text="${issueList.content}"></p>
-													</div>
-													<div class="editareabtns">
-														<button class="editarea-save">저장</button>
-														<button class="editarea-cancel">취소</button>
-													</div>
-												</div>
-												<span class="issuedetail-exvalue"
-													th:text="${#strings.defaultString(issueList.content, '설명 편집')}"
-													value></span>
-											</div>
-											<div class="issuedetail-activebox">
-												<div
-													style="font-weight: bold; color: #172B4D; margin-top: 75px; margin-bottom: 7px;">
-													활동</div>
-												<div class="issuedetail-activebar">
-													<div class="issuedetail-activebtns">
-														<span style="margin-right: 4px;">표시: </span>
-														<button class="issuedetail-atvbtn">
-															<span style="margin: auto 2px 2px 0px;">전체</span>
-														</button>
-														<button class="issuedetail-atvbtn"
-															style="background-color: #E9F2FF; color: #0C66E4;">
-															<span style="margin-right: 2px;">댓글</span>
-														</button>
-														<button class="issuedetail-atvbtn">
-															<span style="margin-right: 2px;">기록</span>
-														</button>
-													</div>
-													<div>
-														<button class="issuedetail-sortbtn">
-															<span style="width: 16px; height: 16px; margin-top: 2px;">
-																<img th:src="@{/images/act_sort_icon.svg}"
-																	style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-															</span>
-														</button>
-													</div>
-												</div>
-											</div>
-											<div class="issuedetail-replybox">
-												<div class="writereplybox">
-													<span style="margin-top: 4px;"><img width="24" height="24"
-															src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-															style="border-radius: 50%;"></span>
-													<div class="editor-container">
-														<div class="editor" style="width: 690px;">
-															<p></p>
-														</div>
-														<div class="editareabtns">
-															<button class="editarea-save">저장</button>
-															<button class="editarea-cancel">취소</button>
-														</div>
-													</div>
-													<div class="issuedetail-replytextarea">
-														<span>댓글 추가...</span>
-													</div>
-												</div>
-												<div class="issuedetail-tipmsg">
-													<strong>전문가 팁: </strong>
-													<span>눌러서</span>
-													<span class="issuedetail-keyguide">M</span>
-													<span>댓글 추가</span>
-												</div>
-											</div>
-											<div class="issuedetail-replylist">
-												<div class="issuedetail-reply">
-													<div><img width="32" height="32"
-															src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-															style="border-radius: 50%;"></div>
-													<div class="issuedetail-replydetailbox" style="padding-top: 3px;">
-														<div class="replydetail-name-date">
-															<span>다현</span>
-															<span style="letter-spacing: -0.2px;">2024년 11월 14일 오후
-																4:53</span>
-														</div>
-														<div class="replydetail-content">뭐야!</div>
-													</div>
-													<div></div>
-													<div class="replydetail-managebar">
-														<span class="reply-geteditbtn">댓글</span><strong>·</strong>
-														<span class="reply-geteditbtn">편집</span><strong>·</strong>
-														<span>삭제</span><strong>·</strong>
-														<button class="replydetail-emojibtn">
-															<span style="height: 16px;">
-																<img th:src="@{/images/reply_emoji_icon.svg}"
-																	style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
-															</span>
-														</button>
-													</div>
-													<div class="editor-container">
-														<div class="editor" style="width: 738px;">
-															<p>뭐야!</p>
-														</div>
-														<div class="editareabtns">
-															<button class="editarea-save">저장</button>
-															<button class="editarea-cancel">취소</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="issuedetailbar">
-											<div class="issuedetail-statusbar">
-												<button class="issuedetail-statusbtn" th:classappend="${issueList.issueStatus.status == 1 ? 'statusbtn1':''}
-														+${issueList.issueStatus.status == 2 ? 'statusbtn2':''}
-														+${issueList.issueStatus.status == 3 ? 'statusbtn3':''}">
-													<div class="issuedetail-statuswindow">
-														<div class="statuswindow-menubox">
-															<div class="statuswindow-status" th:each="myStatusList : ${statusList}"
-																	th:if="${myStatusList[2] != issueList.issueStatus.idx}">
-																<span class="statuswindow-title" th:text="${myStatusList[0]}"
-																	  th:classappend="${myStatusList[3] == 1 ? 'status1':''}
-																					  +${myStatusList[3] == 2 ? 'status2':''}
-																					  +${myStatusList[3] == 3 ? 'status3':''}">
-																</span>
-															</div>
-														</div>
-													</div>
-													<span style="margin-bottom: 3px;"
-														th:text="${issueList.issueStatus.name}"></span>
-													<span style="margin-top: 1px; margin-left: 1px;">
-														<img th:src="@{/images/arrow_under_icon.svg}"
-															style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
-													</span>
-												</button>
-												<div class="issuedetail-status-complete"
-													th:if="${issueList.issueStatus.status == 3}">
-													<span style="height: 16px;"><img
-															src="/images/status_complete_icon.svg"
-															style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);"></span>
-													<span>완료</span>
-												</div>
-											</div>
-											<div class="issuedetail-graphcontainer">
-												<div class="issuedetail-graphtitle">
-													<span style="margin-bottom: 3px;">세부 사항</span>
-													<span style="height: 24px; margin-right: 2px; margin-top: 2px;">
-														<img th:src="@{/images/arrow_up_icon.svg}"
-															style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
-													</span>
-												</div>
-												<div class="issuedetail-graphbox">
-													<div class="issuedetail-graph">
-														<div class="issuedetail-graphtype">
-															<span>우선 순위</span>
-														</div>
-														<div class="issuedetail-graphval">
-															<span style="margin-top: 2px;"><img
-																	th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"
-																	width="16px" height="16px"></span>
-															<span style="color: #172B4D;"
-																th:text="${issueList.issuePriority.name}"></span>
-														</div>
-													</div>
-													<div class="issuedetail-graph"
-														style="align-items: flex-start; margin-bottom: 8px;">
-														<div class="issuedetail-graphtype">
-															<span>담당자</span>
-														</div>
-														<div>
-															<div class="issuedetail-graphval">
-																<span
-																	style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
-																		th:src="@{|/images/${issueList.manager.iconFilename}|}"
-																		style="width: 100%; height: 100%; object-fit: cover;"></span>
-																<span
-																	style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;"
-																	th:text="${issueList.manager.name}"></span>
-															</div>
-															<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
-														</div>
-													</div>
-													<div class="issuedetail-graph">
-														<div class="issuedetail-graphtype">
-															<span>레이블</span>
-														</div>
-														<div class="issuedetail-graphval label-def">
-															<th:block th:each="labelValList : ${labelDataList}">
-																<span class="graphval-label" th:if="${labelValList.issue.idx == issueList.idx}">
-																	<a th:text="${labelValList.issueLabel.name}"></a>
-																</span>
-															</th:block>
-															<span class="graphval-label-def none">
-																없음
-															</span>
-														</div>
-													</div>
-													<div class="issuedetail-graph">
-														<div class="issuedetail-graphtype">
-															<span>기한</span>
-														</div>
-														<div class="issuedetail-graphval dl-def">
-															<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${issueList.deadlineDate != null}">
-																<a class="graphval-date" th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')}"
-																th:classappend="${issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
-																<span th:if="${issueList.deadlineDate < currentTime}" style="height: 16px; margin-left: 6px;">
-																	<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
-																</span>
-															</span>
-															<span class="graphval-dl-def none">
-																없음
-															</span>
-														</div>
-													</div>
-													<div class="issuedetail-graph">
-														<div class="issuedetail-graphtype" style="margin-top: 3px;">
-															<span>Start date</span>
-														</div>
-														<div class="issuedetail-graphval">
-															<span style="margin-bottom: 5px;" 
-															th:text="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'"></span>
-														</div>
-													</div>
-													<div class="issuedetail-graph">
-														<div class="issuedetail-graphtype">
-															<span>Team</span>
-														</div>
-														<div class="issuedetail-graphval">
-															<span style="margin-bottom: 4px;">없음</span>
-														</div>
-													</div>
-													<div class="issuedetail-graph"
-														style="align-items: flex-start; margin-bottom: 6px;">
-														<div class="issuedetail-graphtype" style="margin-top: 1px;">
-															<span>보고자</span>
-														</div>
-														<div>
-															<div class="issuedetail-graphval"
-																style="margin-top: 1px; margin-left: 2px;">
-																<span
-																	style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
-																		th:src="@{|/images/${issueList.reporter.iconFilename}|}"
-																		style="width: 100%; height: 100%; object-fit: cover;"></span>
-																<span th:text="${issueList.reporter.name}"
-																	style="font-size: 14px; margin-left: 2px; margin-bottom: 2px; color: #172B4D;"></span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="issuedetail-datereport">
-												<div>
-													<div class="issuedetail-date">
-														<span>만듦</span>
-														<span
-															th:text="${#temporals.format(issueList.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-													</div>
-													<div class="issuedetail-date">
-														<span>업데이트</span>
-														<span
-															th:text="${#temporals.format(issueList.editDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-													</div>
-												</div>
-												<a class="issuedetail-typeset">
-													<span style="height: 16px;">
-														<img th:src="@{/images/setting_icon_small.svg}"
-															style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
-													</span>
-													<span style="margin-bottom: 2px;">구성</span>
-												</a>
-											</div>
-										</div>
-									</div>
+								 					</div>
+								 					<div class="issuedetail-exarea">
+								 						<div class="editor-container" draggable="false">
+								 							<div class="editor" style="width: 738px;" draggable="false">
+								 								<p th:text="${extendsList.child.content}" draggable="false"></p>
+								 							</div>
+								 							<div class="editareabtns">
+								 								<button class="editarea-save">저장</button>
+								 								<button class="editarea-cancel">취소</button>
+								 							</div>
+								 						</div>
+								 						<span class="issuedetail-exvalue"
+								 							th:text="${#strings.defaultString(extendsList.child.content, '설명 편집')}"
+								 							value></span>
+								 					</div>
+													<div class="subissue-list-box" th:if="${#lists.size(extendsList.child.parentList) > 0}">
+								 						<div class="subissue-list-title">
+								 							<span>하위 이슈</span>
+								 							<div class="subissue-list-btnbar">
+								 								<button class="subissue-list-sortbtn">
+								 									<span style="margin-bottom: 2px; margin-left: 4px;">을(를) 기준으로 정렬</span>
+								 									<span style="height: 12px;"><img th:src="@{/images/arrow_under_icon.svg}"></span>
+								 								</button>
+								 								<button class="subissue-list-addbtn">
+								 									<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
+								 								</button>
+								 							</div>
+								 						</div>
+								 						<div class="subissue-list" th:each="subextendsList : ${extendsList}"
+								 						th:if="${subextendsList.parent.idx == extendsList.child.idx}">
+								 							<div class="subissue-list-leftdetail">
+								 								<span style="height: 16px;">
+								 									<img th:src="@{|/images/${subextendsList.child.issueType.iconFilename}|}">
+								 								</span>
+								 								<span th:text="${subextendsList.child.key}" style="height: 13px;"></span>
+								 								<span th:text="${subextendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"></span>
+								 							</div>
+								 							<div class="subissue-list-rightdetail">
+								 								<span style="height: 20px;">
+								 									<img th:src="@{|/images/${subextendsList.child.issuePriority.iconFilename}|}" width="20px" height="20px">
+								 								</span>
+								 								<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+																	  th:if="${extendsList.child.manager != null}">
+								 									<img th:src="@{|/images/${subextendsList.child.manager.iconFilename}|}" class="issue-managerimg">
+								 								</span>
+																<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+																	  th:if="${extendsList.child.manager == null}">
+								 									<img th:src="@{|/images/user_icon_file5.png|}" class="issue-managerimg">
+								 								</span>
+								 								<div th:classappend="${subextendsList.child.issueStatus.status == 1 ? 'status1':''}
+								 												+${subextendsList.child.issueStatus.status == 2 ? 'status2':''}
+								 												+${subextendsList.child.issueStatus.status == 3 ? 'status3':''}"
+								 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
+								 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
+								 										<div class="statuswindow-menubox">
+								 											<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+								 													th:if="${orderedStatusList.idx != subextendsList.child.issueStatus.idx}">
+								 												<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+								 												th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+								 																+${orderedStatusList.status == 2 ? 'status2':''}
+								 																+${orderedStatusList.status == 3 ? 'status3':''}">
+								 												</span>
+								 											</div>
+								 										</div>
+								 									</div>
+								 									<span th:text="${subextendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
+								 									<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px"></div>
+								 							</div>
+								 						</div>
+								 					</div>
+								 					<div class="issuedetail-activebox">
+								 						<div
+								 							style="font-weight: bold; color: #172B4D; margin-top: 40px; margin-bottom: 7px;">
+								 							활동</div>
+								 						<div class="issuedetail-activebar">
+								 							<div class="issuedetail-activebtns">
+								 								<span style="margin-right: 4px;">표시: </span>
+								 								<button class="issuedetail-atvbtn">
+								 									<span style="margin: auto 2px 2px 0px;">전체</span>
+								 								</button>
+								 								<button class="issuedetail-atvbtn"
+								 									style="background-color: #E9F2FF; color: #0C66E4;">
+								 									<span style="margin-right: 2px;">댓글</span>
+								 								</button>
+								 								<button class="issuedetail-atvbtn">
+								 									<span style="margin-right: 2px;">기록</span>
+								 								</button>
+								 							</div>
+								 							<div>
+								 								<button class="issuedetail-sortbtn">
+								 									<span style="width: 16px; height: 16px; margin-top: 2px;">
+								 										<img th:src="@{/images/act_sort_icon.svg}"
+								 											style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+								 									</span>
+								 								</button>
+								 							</div>
+								 						</div>
+								 					</div>
+								 					<div class="issuedetail-replybox">
+								 						<div class="writereplybox">
+								 							<span style="margin-top: 4px;"><img width="24" height="24"
+								 									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+								 									style="border-radius: 50%;"></span>
+								 							<div class="editor-container">
+								 								<div class="editor" style="width: 690px;">
+								 									<p></p>
+								 								</div>
+								 								<div class="editareabtns">
+								 									<button class="editarea-save">저장</button>
+								 									<button class="editarea-cancel">취소</button>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-replytextarea">
+								 								<span>댓글 추가...</span>
+								 							</div>
+								 						</div>
+								 						<div class="issuedetail-tipmsg">
+								 							<strong>전문가 팁: </strong>
+								 							<span>눌러서</span>
+								 							<span class="issuedetail-keyguide">M</span>
+								 							<span>댓글 추가</span>
+								 						</div>
+								 					</div>
+								 					<div class="issuedetail-replylist">
+								 						<div class="issuedetail-reply" th:each="replyList : ${replyList}" th:if="${replyList.issue.idx == extendsList.child.idx}">
+								 							<div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+								 								<img class="issue-managerimg" th:src="@{|/images/${replyList.account.iconFilename}|}">
+								 							</div>
+								 							<div class="issuedetail-replydetailbox">
+								 								<div class="replydetail-name-date">
+								 									<span th:text="${replyList.account.name}"></span>
+								 									<span th:text="${#temporals.format(replyList.createDate, 'yyyy-MM-dd HH:mm:ss')}" style="letter-spacing: -0.2px; margin-top: 2px;"></span>
+								 									<div th:if="${replyList.editDate != null}">편집됨</div>
+								 								</div>
+								 								<div th:text="${replyList.content}" class="replydetail-content"></div>
+								 							</div>
+								 							<div></div>
+								 							<div class="replydetail-managebar">
+								 								<span class="reply-geteditbtn">댓글</span><strong>·</strong>
+								 								<span class="reply-geteditbtn">편집</span><strong>·</strong>
+								 								<span>삭제</span><strong>·</strong>
+								 								<button class="replydetail-emojibtn">
+								 									<span style="height: 16px;">
+								 										<img th:src="@{/images/reply_emoji_icon.svg}"
+								 											style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+								 									</span>
+								 								</button>
+								 							</div>
+								 							<div class="editor-container">
+								 								<div class="editor" style="width: 676px;">
+								 									<p>뭐야!</p>
+								 								</div>
+								 								<div class="editareabtns">
+								 									<button class="editarea-save">저장</button>
+								 									<button class="editarea-cancel">취소</button>
+								 								</div>
+								 							</div>
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="issuedetailbar">
+								 					<div class="issuedetail-statusbar">
+								 						<button class="issuedetail-statusbtn" th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+								 								+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+								 								+${extendsList.child.issueStatus.status == 3 ? 'status3':''}">
+								 							<div class="issuedetail-statuswindow" style="left: 0px;">
+								 								<div class="statuswindow-menubox">
+								 									<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+								 											th:if="${orderedStatusList.idx != extendsList.child.issueStatus.idx}">
+								 										<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+								 										th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+								 														+${orderedStatusList.status == 2 ? 'status2':''}
+								 														+${orderedStatusList.status == 3 ? 'status3':''}">
+								 										</span>
+								 									</div>
+								 								</div>
+								 							</div>
+								 							<span style="margin-bottom: 3px;"
+								 								th:text="${extendsList.child.issueStatus.name}"></span>
+								 							<span style="margin-top: 1px; margin-left: 1px;">
+								 								<img th:src="@{/images/arrow_under_icon.svg}"
+								 									style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
+								 							</span>
+								 						</button>
+								 						<div class="issuedetail-status-complete"
+								 							th:if="${extendsList.child.issueStatus.status == 3}">
+								 							<span style="height: 16px;"><img
+								 									src="/images/status_complete_icon.svg"
+								 									style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);"></span>
+								 							<span>완료</span>
+								 						</div>
+								 					</div>
+								 					<div class="issuedetail-graphcontainer">
+								 						<div class="issuedetail-graphtitle">
+								 							<span style="margin-bottom: 3px;">세부 사항</span>
+								 							<span style="height: 24px; margin-right: 2px; margin-top: 2px;">
+								 								<img th:src="@{/images/arrow_up_icon.svg}"
+								 									style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
+								 							</span>
+								 						</div>
+								 						<div class="issuedetail-graphbox">
+								 							<div class="issuedetail-graph">
+								 								<div class="issuedetail-graphtype">
+								 									<span>우선 순위</span>
+								 								</div>
+								 								<div class="issuedetail-graphval">
+								 									<div class="graphval-selectwindow">
+								 										<div class="graphvalwindow-value" th:each="orderedPriority : ${orderedPriorityList}"
+								 										th:if="${orderedPriority.idx != extendsList.child.issuePriority.idx}">
+								 											<span style="height: 16px;"><img th:src="@{|/images/${orderedPriority.iconFilename}|}"></span>
+								 											<span th:text="${orderedPriority.name}"></span>
+								 										</div>
+								 									</div>
+								 									<span style="margin-top: 2px;"><img
+								 											th:src="@{|/images/${extendsList.child.issuePriority.iconFilename}|}"
+								 											width="16px" height="16px"></span>
+								 									<span style="color: #172B4D;"
+								 										th:text="${extendsList.child.issuePriority.name}"></span>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph"
+								 								style="align-items: flex-start; margin-bottom: 8px;">
+								 								<div class="issuedetail-graphtype">
+								 									<span>담당자</span>
+								 								</div>
+								 								<div>
+								 									<div class="issuedetail-graphval">
+								 										<div class="graphval-selectwindow">
+								 											<div class="graphvalwindow-value withimg">
+								 												<span>
+								 													<img th:src="@{/images/user_icon_file5.png}"
+								 													style="width: 32px; height: 32px; margin-left: 6px;">
+								 												</span>
+								 												<span>나에게 할당</span>
+								 											</div>
+								 											<div class="graphvalwindow-value withimg" 
+								 											th:each="managerList : ${prjMemberList}"
+								 											th:if="${extendsList.child.manager != null && managerList.account.idx != extendsList.child.manager.idx}">
+								 												<span>
+								 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
+								 													style="width: 32px; height: 32px; margin-left: 6px;">
+								 												</span>
+								 												<span th:text="${managerList.account.name}"></span>
+								 											</div>
+																			<div class="graphvalwindow-value withimg" 
+								 											th:each="managerList : ${prjMemberList}"
+								 											th:if="${extendsList.child.manager == null}">
+								 												<span>
+								 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
+								 													style="width: 32px; height: 32px; margin-left: 6px;">
+								 												</span>
+								 												<span th:text="${managerList.account.name}"></span>
+								 											</div>
+								 										</div>
+									 										<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"
+																			th:if="${extendsList.child.manager != null}">
+																				<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}"
+																					 style="width: 100%; height: 100%; object-fit: cover;"></span>
+									 										<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;"
+									 											th:text="${extendsList.child.manager.name}"
+																				th:if="${extendsList.child.manager != null}"></span>
+									 										<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px;"
+									 											th:text="없음"
+																				th:if="${extendsList.child.manager == null}"></span>
+								 									</div>
+								 									<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph">
+								 								<div class="issuedetail-graphtype">
+								 									<span>레이블</span>
+								 								</div>
+								 								<div class="issuedetail-graphval label-def">
+								 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == extendsList.child.idx}">
+								 										<div class="graphval-selectwindow label">
+								 										</div>
+								 										<span class="graphval-label">
+								 											<input type="hidden" class="send-label-value" th:value="${labelValList.issueLabel.idx}">
+								 											<a th:text="${labelValList.issueLabel.name}"></a>
+								 										</span>
+								 									</th:block>
+								 									<span class="graphval-label-def none">
+								 										없음
+								 									</span>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph">
+								 								<div class="issuedetail-graphtype">
+								 									<span>기한</span>
+								 								</div>
+								 								<div class="issuedetail-graphval dl-def">
+								 									<div class="graphval-selectwindow"></div>
+								 									<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${extendsList.child.deadlineDate != null}">
+								 										<a class="graphval-date" th:text="${#temporals.format(extendsList.child.deadlineDate, 'yyyy-MM-dd')}"
+								 										th:classappend="${extendsList.child.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
+								 										<span th:if="${extendsList.child.deadlineDate < currentTime}" style="height: 16px; margin-left: 6px;">
+								 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
+								 										</span>
+								 									</span>
+								 									<span class="graphval-dl-def none">
+								 										없음
+								 									</span>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph">
+								 								<div class="issuedetail-graphtype" style="margin-top: 3px;">
+								 									<span>Start date</span>
+								 								</div>
+								 								<div class="issuedetail-graphval">
+								 									<div class="graphval-selectwindow"></div>
+								 									<span th:text="${extendsList.child.startDate != null} ? ${#temporals.format(extendsList.child.startDate, 'yyyy-MM-dd')} : '없음'"></span>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph">
+								 								<div class="issuedetail-graphtype">
+								 									<span>Team</span>
+								 								</div>
+								 								<div class="issuedetail-graphval">
+								 									<div class="graphval-selectwindow" style="top: 40px; left: 0px;">
+								 										<div class="graphvalwindow-value withimg" th:each="teamList : ${teamList}"
+								 										th:if="${teamList.jira.idx == extendsList.child.jira.idx}">
+								 											<span style="height: 32px;">
+								 												<img th:src="@{|/images/${teamList.account.iconFilename}|}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
+								 											</span>
+								 											<div>
+								 												<span th:text="${teamList.name}"></span>
+								 											</div>
+								 										</div>
+								 									</div>
+								 									<span style="margin-bottom: 3px;"
+								 									th:text="${extendsList.child.team != null} ? ${extendsList.child.team.name} : '없음'"></span>
+								 								</div>
+								 							</div>
+								 							<div class="issuedetail-graph"
+								 								style="align-items: flex-start; margin-bottom: 6px;">
+								 								<div class="issuedetail-graphtype" style="margin-top: 1px;">
+								 									<span>보고자</span>
+								 								</div>
+								 								<div>
+								 									<div class="issuedetail-graphval"
+								 										style="margin-top: 1px;">
+								 										<div class="graphval-selectwindow">
+								 											<div class="graphvalwindow-value withimg" 
+								 											th:each="reporterList : ${prjMemberList}"
+								 											th:if="${reporterList.account.idx != extendsList.child.reporter.idx}">
+								 												<span>
+								 													<img th:src="@{|/images/${reporterList.account.iconFilename}|}"
+								 													style="width: 32px; height: 32px; margin-left: 6px;">
+								 												</span>
+								 												<span th:text="${reporterList.account.name}"></span>
+								 											</div>
+								 										</div>
+								 										<span
+								 											style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
+								 												th:src="@{|/images/${extendsList.child.reporter.iconFilename}|}"
+								 												style="width: 100%; height: 100%; object-fit: cover;"></span>
+								 										<span th:text="${extendsList.child.reporter.name}"
+								 											style="font-size: 14px; margin-left: 2px; margin-bottom: 2px; color: #172B4D;"></span>
+								 									</div>
+								 								</div>
+								 							</div>
+								 						</div>
+								 					</div>
+								 					<div class="issuedetail-datereport">
+								 						<div>
+								 							<div class="issuedetail-date">
+								 								<span>만듦</span>
+								 								<span
+								 									th:text="${#temporals.format(extendsList.child.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+								 							</div>
+								 							<div class="issuedetail-date">
+								 								<span>업데이트</span>
+								 								<span
+								 									th:text="${#temporals.format(extendsList.child.editDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+								 							</div>
+								 						</div>
+								 						<a class="issuedetail-typeset">
+								 							<span style="height: 16px;">
+								 								<img th:src="@{/images/setting_icon_small.svg}"
+								 									style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+								 							</span>
+								 							<span style="margin-bottom: 2px;">구성</span>
+								 						</a>
+								 					</div>
+								 				</div>
+								 			</div>
+								 		</div>
+								 	</div>
 								</div>
-							</div>
+							 </div>
+							 <div class="issuedetail-container" draggable="false">
+						 		<div class="issuedetailbox">
+						 			<div class="issuedetail-headerbar">
+						 				<div class="issuekeypathbox">
+						 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) > 0}">
+						 						<th:block th:each="childList : ${issueList.childList}">
+						 						<span class="path-issuekeyicon"><img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px"></span>
+						 						<span style="margin-bottom: 2px; padding-right: 4px;">
+						 							<a th:href="@{#}" th:text="${childList.parent.key}"></a>
+						 						</span>
+						 						<span style="font-size: 16px; ">/</span>
+						 						</th:block>
+						 					</div>
+						 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) < 1} and ${issueList.issueType.grade != 3}" style="gap: 0px;">
+						 						<button class="addissuepathbtn">
+						 							<span style="height: 16px;">
+						 								<img th:src="@{/images/add_path_icon.svg}">
+						 							</span>
+						 							<span>에픽 추가</span>
+						 						</button>
+						 						<span style="font-size: 16px; ">/</span>
+						 					</div>
+						 					<div class="issuekeypath">
+						 						<span class="path-issuekeyicon" style="padding-left: 0px;"><img
+						 								th:src="@{|/images/${issueList.issueType.iconFilename}|}"
+						 								width="16px" height="16px"></span>
+						 						<span style="margin-bottom: 2px;">
+						 							<a th:href="@{#}" th:text="${issueList.key}"></a>
+						 						</span>
+						 					</div>
+						 				</div>
+						 				<div class="issuedetail-menubar">
+						 					<div class="issuedetail-option-observ">
+						 						<span style="margin-top: 2px; color: #0C66E4;">
+						 							<img th:src="@{/images/eye_icon.svg}"
+						 								style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
+						 						</span>
+						 						<span style="color: #0C66E4; margin-left: 4px;">2</span>
+						 					</div>
+						 					<div class="issuedetail-option">
+						 						<span style="margin-top: 2px;">
+						 							<img th:src="@{/images/thumbsup_icon.svg}"
+						 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						 						</span>
+						 					</div>
+						 					<div class="issuedetail-option">
+						 						<span style="margin-top: 2.5px;">
+						 							<img th:src="@{/images/three_dots_icon_small.svg}"
+						 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						 						</span>
+						 					</div>
+						 					<div class="issuedetail-option issuedetail-off">
+						 						<span style="margin-top: 2.5px;">
+						 							<img th:src="@{/images/cancel_icon.svg}"
+						 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						 						</span>
+						 					</div>
+						 				</div>
+						 			</div>
+						 			<div class="issuedetailbody-container">
+						 				<div class="issuedetailviewbox">
+						 					<div style="padding-left: 24px;">
+						 						<h1 class="issuedetail-title" th:text="${issueList.name}"></h1>
+						 						<div class="issuedetail-insertbtn">
+						 							<div class="issuedetail-insertwindow">
+						 								<button class="insertwindow-btn">
+						 									<span
+						 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
+						 											th:src="@{/images/attachment_icon.svg}"
+						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+						 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
+						 										파일</span>
+						 								</button>
+						 								<button class="insertwindow-btn">
+						 									<span style="height: 24px; margin-bottom: 2px;"><img
+						 											th:src="@{/images/sub_issue_icon.svg}"
+						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+						 									<span style="margin-bottom: 4px;">하위 이슈</span>
+						 								</button>
+						 								<button class="insertwindow-btn">
+						 									<span
+						 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
+						 											th:src="@{/images/project_issue_icon.svg}"
+						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+						 									<span style="margin-bottom: 4px; margin-left: 4px;">연결한
+						 										이슈</span>
+						 								</button>
+						 								<button class="insertwindow-btn">
+						 									<span style="height: 24px; margin-bottom: 2px;"><img
+						 											th:src="@{/images/web_icon.svg}"
+						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+						 									<span style="margin-bottom: 4px;">웹 링크</span>
+						 								</button>
+						 							</div>
+						 							<span style="height: 16px;">
+						 								<img class="insertbtn-icon"
+						 									th:src="@{/images/plus_icon_small.svg}">
+						 							</span>
+						 							<span style="margin-bottom: 2px;">추가</span>
+						 						</div>
+						 						<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명
+						 						</div>
+
+						 					</div>
+						 					<div class="issuedetail-exarea">
+						 						<div class="editor-container" draggable="false">
+						 							<div class="editor" style="width: 738px;" draggable="false">
+						 								<p th:text="${issueList.content}" draggable="false"></p>
+						 							</div>
+						 							<div class="editareabtns">
+						 								<button class="editarea-save">저장</button>
+						 								<button class="editarea-cancel">취소</button>
+						 							</div>
+						 						</div>
+						 						<span class="issuedetail-exvalue"
+						 							th:text="${#strings.defaultString(issueList.content, '설명 편집')}"
+						 							value></span>
+						 					</div>
+						 					<div class="subissue-list-box" th:if="${#lists.size(issueList.parentList) > 0}">
+						 						<div class="subissue-list-title">
+						 							<span>하위 이슈</span>
+						 							<div class="subissue-list-btnbar">
+						 								<button class="subissue-list-sortbtn">
+						 									<span style="margin-bottom: 2px; margin-left: 4px;">을(를) 기준으로 정렬</span>
+						 									<span style="height: 12px;"><img th:src="@{/images/arrow_under_icon.svg}"></span>
+						 								</button>
+						 								<button class="subissue-list-addbtn">
+						 									<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
+						 								</button>
+						 							</div>
+						 						</div>
+						 						<div class="subissue-list" th:each="extendsList : ${extendsList}"
+						 						th:if="${extendsList.parent.idx == issueList.idx}">
+						 							<div class="subissue-list-leftdetail">
+						 								<span style="height: 16px;">
+						 									<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}">
+						 								</span>
+						 								<span th:text="${extendsList.child.key}" style="height: 13px;"></span>
+						 								<span th:text="${extendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"></span>
+						 							</div>
+						 							<div class="subissue-list-rightdetail">
+						 								<span style="height: 20px;">
+						 									<img th:src="@{|/images/${extendsList.child.issuePriority.iconFilename}|}" width="20px" height="20px">
+						 								</span>
+						 								<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+															  th:if="${extendsList.child.manager != null}">
+						 									<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" class="issue-managerimg">
+						 								</span>
+														<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+															  th:if="${extendsList.child.manager == null}">
+						 									<img th:src="@{|/images/user_icon_file5.png|}" class="issue-managerimg">
+						 								</span>
+						 								<div th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+						 												+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+						 												+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"
+						 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
+						 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
+						 										<div class="statuswindow-menubox">
+						 											<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+						 													th:if="${orderedStatusList.idx != extendsList.child.issueStatus.idx}">
+						 												<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+						 												th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+						 																+${orderedStatusList.status == 2 ? 'status2':''}
+						 																+${orderedStatusList.status == 3 ? 'status3':''}">
+						 												</span>
+						 											</div>
+						 										</div>
+						 									</div>
+						 									<span th:text="${extendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
+						 									<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px"></div>
+						 							</div>
+						 						</div>
+						 					</div>
+						 					<div class="issuedetail-activebox">
+						 						<div
+						 							style="font-weight: bold; color: #172B4D; margin-top: 40px; margin-bottom: 7px;">
+						 							활동</div>
+						 						<div class="issuedetail-activebar">
+						 							<div class="issuedetail-activebtns">
+						 								<span style="margin-right: 4px;">표시: </span>
+						 								<button class="issuedetail-atvbtn">
+						 									<span style="margin: auto 2px 2px 0px;">전체</span>
+						 								</button>
+						 								<button class="issuedetail-atvbtn"
+						 									style="background-color: #E9F2FF; color: #0C66E4;">
+						 									<span style="margin-right: 2px;">댓글</span>
+						 								</button>
+						 								<button class="issuedetail-atvbtn">
+						 									<span style="margin-right: 2px;">기록</span>
+						 								</button>
+						 							</div>
+						 							<div>
+						 								<button class="issuedetail-sortbtn">
+						 									<span style="width: 16px; height: 16px; margin-top: 2px;">
+						 										<img th:src="@{/images/act_sort_icon.svg}"
+						 											style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+						 									</span>
+						 								</button>
+						 							</div>
+						 						</div>
+						 					</div>
+						 					<div class="issuedetail-replybox">
+						 						<div class="writereplybox">
+						 							<span style="margin-top: 4px;"><img width="24" height="24"
+						 									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+						 									style="border-radius: 50%;"></span>
+						 							<div class="editor-container">
+						 								<div class="editor" style="width: 690px;">
+						 									<p></p>
+						 								</div>
+						 								<div class="editareabtns">
+						 									<button class="editarea-save">저장</button>
+						 									<button class="editarea-cancel">취소</button>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-replytextarea">
+						 								<span>댓글 추가...</span>
+						 							</div>
+						 						</div>
+						 						<div class="issuedetail-tipmsg">
+						 							<strong>전문가 팁: </strong>
+						 							<span>눌러서</span>
+						 							<span class="issuedetail-keyguide">M</span>
+						 							<span>댓글 추가</span>
+						 						</div>
+						 					</div>
+						 					<div class="issuedetail-replylist">
+						 						<div class="issuedetail-reply" th:each="replyList : ${replyList}" th:if="${replyList.issue.idx == issueList.idx}">
+						 							<div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+						 								<img class="issue-managerimg" th:src="@{|/images/${replyList.account.iconFilename}|}">
+						 							</div>
+						 							<div class="issuedetail-replydetailbox">
+						 								<div class="replydetail-name-date">
+						 									<span th:text="${replyList.account.name}"></span>
+						 									<span th:text="${#temporals.format(replyList.createDate, 'yyyy-MM-dd HH:mm:ss')}" style="letter-spacing: -0.2px; margin-top: 2px;"></span>
+						 									<div th:if="${replyList.editDate != null}">편집됨</div>
+						 								</div>
+						 								<div th:text="${replyList.content}" class="replydetail-content"></div>
+						 							</div>
+						 							<div></div>
+						 							<div class="replydetail-managebar">
+						 								<span class="reply-geteditbtn">댓글</span><strong>·</strong>
+						 								<span class="reply-geteditbtn">편집</span><strong>·</strong>
+						 								<span>삭제</span><strong>·</strong>
+						 								<button class="replydetail-emojibtn">
+						 									<span style="height: 16px;">
+						 										<img th:src="@{/images/reply_emoji_icon.svg}"
+						 											style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+						 									</span>
+						 								</button>
+						 							</div>
+						 							<div class="editor-container">
+						 								<div class="editor" style="width: 676px;">
+						 									<p>뭐야!</p>
+						 								</div>
+						 								<div class="editareabtns">
+						 									<button class="editarea-save">저장</button>
+						 									<button class="editarea-cancel">취소</button>
+						 								</div>
+						 							</div>
+						 						</div>
+						 					</div>
+						 				</div>
+						 				<div class="issuedetailbar">
+						 					<div class="issuedetail-statusbar">
+						 						<button class="issuedetail-statusbtn" th:classappend="${issueList.issueStatus.status == 1 ? 'status1':''}
+						 								+${issueList.issueStatus.status == 2 ? 'status2':''}
+						 								+${issueList.issueStatus.status == 3 ? 'status3':''}">
+						 							<div class="issuedetail-statuswindow" style="left: 0px;">
+						 								<div class="statuswindow-menubox">
+						 									<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
+						 											th:if="${orderedStatusList.idx != issueList.issueStatus.idx}">
+						 										<span class="statuswindow-title" th:text="${orderedStatusList.name}"
+						 										th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
+						 														+${orderedStatusList.status == 2 ? 'status2':''}
+						 														+${orderedStatusList.status == 3 ? 'status3':''}">
+						 										</span>
+						 									</div>
+						 								</div>
+						 							</div>
+						 							<span style="margin-bottom: 3px;"
+						 								th:text="${issueList.issueStatus.name}"></span>
+						 							<span style="margin-top: 1px; margin-left: 1px;">
+						 								<img th:src="@{/images/arrow_under_icon.svg}"
+						 									style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
+						 							</span>
+						 						</button>
+						 						<div class="issuedetail-status-complete"
+						 							th:if="${issueList.issueStatus.status == 3}">
+						 							<span style="height: 16px;"><img
+						 									src="/images/status_complete_icon.svg"
+						 									style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);"></span>
+						 							<span>완료</span>
+						 						</div>
+						 					</div>
+						 					<div class="issuedetail-graphcontainer">
+						 						<div class="issuedetail-graphtitle">
+						 							<span style="margin-bottom: 3px;">세부 사항</span>
+						 							<span style="height: 24px; margin-right: 2px; margin-top: 2px;">
+						 								<img th:src="@{/images/arrow_up_icon.svg}"
+						 									style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
+						 							</span>
+						 						</div>
+						 						<div class="issuedetail-graphbox">
+						 							<div class="issuedetail-graph">
+						 								<div class="issuedetail-graphtype">
+						 									<span>우선 순위</span>
+						 								</div>
+						 								<div class="issuedetail-graphval">
+						 									<div class="graphval-selectwindow">
+						 										<div class="graphvalwindow-value" th:each="orderedPriority : ${orderedPriorityList}"
+						 										th:if="${orderedPriority.idx != issueList.issuePriority.idx}">
+						 											<span style="height: 16px;"><img th:src="@{|/images/${orderedPriority.iconFilename}|}"></span>
+						 											<span th:text="${orderedPriority.name}"></span>
+						 										</div>
+						 									</div>
+						 									<span style="margin-top: 2px;"><img
+						 											th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"
+						 											width="16px" height="16px"></span>
+						 									<span style="color: #172B4D;"
+						 										th:text="${issueList.issuePriority.name}"></span>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph"
+						 								style="align-items: flex-start; margin-bottom: 8px;">
+						 								<div class="issuedetail-graphtype">
+						 									<span>담당자</span>
+						 								</div>
+						 								<div>
+						 									<div class="issuedetail-graphval">
+						 										<div class="graphval-selectwindow">
+						 											<div class="graphvalwindow-value withimg">
+						 												<span>
+						 													<img th:src="@{/images/user_icon_file5.png}"
+						 													style="width: 32px; height: 32px; margin-left: 6px;">
+						 												</span>
+						 												<span>나에게 할당</span>
+						 											</div>
+						 											<div class="graphvalwindow-value withimg" 
+						 											th:each="managerList : ${prjMemberList}"
+						 											th:if="${issueList.manager != null && managerList.account.idx != issueList.manager.idx}">
+						 												<span>
+						 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
+						 													style="width: 32px; height: 32px; margin-left: 6px;">
+						 												</span>
+						 												<span th:text="${managerList.account.name}"></span>
+						 											</div>
+																	<div class="graphvalwindow-value withimg" 
+						 											th:each="managerList : ${prjMemberList}"
+						 											th:if="${issueList.manager == null}">
+						 												<span>
+						 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
+						 													style="width: 32px; height: 32px; margin-left: 6px;">
+						 												</span>
+						 												<span th:text="${managerList.account.name}"></span>
+						 											</div>
+						 										</div>
+							 										<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"
+																	th:if="${issueList.manager != null}"><img
+							 												th:src="@{|/images/${issueList.manager.iconFilename}|}"
+							 												style="width: 100%; height: 100%; object-fit: cover;"></span>
+							 										<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;"
+																		  th:if="${issueList.manager != null}"
+																		  th:text="${issueList.manager.name}"></span>
+							 										<span th:if="${issueList.manager == null}"
+							 											style="font-size: 14px; margin-bottom: 2px; margin-left: 2px;"
+							 											th:text="없음"></span>
+						 									</div>
+						 									<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph">
+						 								<div class="issuedetail-graphtype">
+						 									<span>레이블</span>
+						 								</div>
+						 								<div class="issuedetail-graphval label-def">
+						 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
+						 										<div class="graphval-selectwindow label">
+						 										</div>
+						 										<span class="graphval-label">
+						 											<input type="hidden" class="send-label-value" th:value="${labelValList.issueLabel.idx}">
+						 											<a th:text="${labelValList.issueLabel.name}"></a>
+						 										</span>
+						 									</th:block>
+						 									<span class="graphval-label-def none">
+						 										없음
+						 									</span>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph">
+						 								<div class="issuedetail-graphtype">
+						 									<span>기한</span>
+						 								</div>
+						 								<div class="issuedetail-graphval dl-def">
+						 									<div class="graphval-selectwindow"></div>
+						 									<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${issueList.deadlineDate != null}">
+						 										<a class="graphval-date" th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')}"
+						 										th:classappend="${issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
+						 										<span th:if="${issueList.deadlineDate < currentTime}" style="height: 16px; margin-left: 6px;">
+						 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
+						 										</span>
+						 									</span>
+						 									<span class="graphval-dl-def none">
+						 										없음
+						 									</span>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph">
+						 								<div class="issuedetail-graphtype" style="margin-top: 3px;">
+						 									<span>Start date</span>
+						 								</div>
+						 								<div class="issuedetail-graphval">
+						 									<div class="graphval-selectwindow"></div>
+						 									<span th:text="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'"></span>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph">
+						 								<div class="issuedetail-graphtype">
+						 									<span>Team</span>
+						 								</div>
+						 								<div class="issuedetail-graphval">
+						 									<div class="graphval-selectwindow" style="top: 40px; left: 0px;">
+						 										<div class="graphvalwindow-value withimg" th:each="teamList : ${teamList}"
+						 										th:if="${teamList.jira.idx == issueList.jira.idx}">
+						 											<span style="height: 32px;">
+						 												<img th:src="@{|/images/${teamList.account.iconFilename}|}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
+						 											</span>
+						 											<div>
+						 												<span th:text="${teamList.name}"></span>
+						 											</div>
+						 										</div>
+						 									</div>
+						 									<span style="margin-bottom: 3px;"
+						 									th:text="${issueList.team != null} ? ${issueList.team.name} : '없음'"></span>
+						 								</div>
+						 							</div>
+						 							<div class="issuedetail-graph"
+						 								style="align-items: flex-start; margin-bottom: 6px;">
+						 								<div class="issuedetail-graphtype" style="margin-top: 1px;">
+						 									<span>보고자</span>
+						 								</div>
+						 								<div>
+						 									<div class="issuedetail-graphval"
+						 										style="margin-top: 1px;">
+						 										<div class="graphval-selectwindow">
+						 											<div class="graphvalwindow-value withimg" 
+						 											th:each="reporterList : ${prjMemberList}"
+						 											th:if="${reporterList.account.idx != issueList.reporter.idx}">
+						 												<span>
+						 													<img th:src="@{|/images/${reporterList.account.iconFilename}|}"
+						 													style="width: 32px; height: 32px; margin-left: 6px;">
+						 												</span>
+						 												<span th:text="${reporterList.account.name}"></span>
+						 											</div>
+						 										</div>
+						 										<span
+						 											style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
+						 												th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+						 												style="width: 100%; height: 100%; object-fit: cover;"></span>
+						 										<span th:text="${issueList.reporter.name}"
+						 											style="font-size: 14px; margin-left: 2px; margin-bottom: 2px; color: #172B4D;"></span>
+						 									</div>
+						 								</div>
+						 							</div>
+						 						</div>
+						 					</div>
+						 					<div class="issuedetail-datereport">
+						 						<div>
+						 							<div class="issuedetail-date">
+						 								<span>만듦</span>
+						 								<span
+						 									th:text="${#temporals.format(issueList.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+						 							</div>
+						 							<div class="issuedetail-date">
+						 								<span>업데이트</span>
+						 								<span
+						 									th:text="${#temporals.format(issueList.editDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+						 							</div>
+						 						</div>
+						 						<a class="issuedetail-typeset">
+						 							<span style="height: 16px;">
+						 								<img th:src="@{/images/setting_icon_small.svg}"
+						 									style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+						 							</span>
+						 							<span style="margin-bottom: 2px;">구성</span>
+						 						</a>
+						 					</div>
+						 				</div>
+						 			</div>
+						 		</div>
+						 	</div>
 						</div>
 					</div>
 					<div class="createissue-container">
 						<div class="createissuebox">
-							<form class="createissueform">
-								<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-								<div class="createissue-btnbox">
-									<div class="createissue-typebtn">
-										<span style="width: 16px; height: 16px;"><img
-												th:src="@{/images/bug_issue.svg}"></span>
-										<span style="margin-top: 1px;">
-											<img th:src="@{/images/arrow_under_icon.svg}"
-												style="width: 12px; filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
-										</span>
-									</div>
-									<div class="createissuebtn">
-										<span style="margin-bottom: 2px;">⏎</span>
-									</div>
+							<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
+							<div class="createissue-btnbox">
+								<div class="createissue-typebtn">
+									<span style="width: 16px; height: 16px;"><img
+											th:src="@{/images/issue_bug.svg}"></span>
+									<span style="margin-top: 1px;">
+										<img th:src="@{/images/arrow_under_icon.svg}"
+											style="width: 12px; filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+									</span>
 								</div>
-							</form>
+								<div class="createissuebtn">
+									<span style="margin-bottom: 2px;">⏎</span>
+								</div>
+							</div>
 						</div>
 						<div class="issuebox-create">
 							<span class="createissueicon">
@@ -826,42 +1443,10 @@
 			</div>
 		</div>
 	</div>
-
+	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>
-<script type="importmap">
-{
-	"imports": {
-		"ckeditor5": "./ckeditor5/ckeditor5.js",
-		"ckeditor5/": "./ckeditor5/"
-	}
-}
-</script>
-	<script type="module">
-		import {
-			ClassicEditor,
-			Essentials,
-			Paragraph,
-			Bold,
-			Italic,
-			Font
-		} from 'ckeditor5';
-
-		ClassicEditor
-			.create(document.querySelector('.editor'), {
-				plugins: [Essentials, Paragraph, Bold, Italic, Font],
-				toolbar: [
-					'undo', 'redo', '|', 'bold', 'italic', '|',
-					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-				]
-			})
-			.then(editor => {
-				window.editor = editor;
-			})
-			.catch(error => {
-				console.error(error);
-			});
-	</script>
-
+<script th:inline="javascript"></script>
 </div>
-
 </html>

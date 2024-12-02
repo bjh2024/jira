@@ -5,7 +5,7 @@ body {
 .login-container {
 	text-align: center;
 	width: 400px;
-	height: 610px;
+	padding: 20px 0px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
 	background-color: white;
 	border-radius: 4px;
@@ -13,10 +13,6 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-}
-
-.login-header {
-	margin-top: 30px;
 }
 
 .top-logo {
@@ -52,6 +48,10 @@ body {
 	border: 2px solid #0C66E4;
 	outline: none;
 	border-radius: 3px;
+}
+
+.form-label{
+	display: none;
 }
 
 .next-btn {

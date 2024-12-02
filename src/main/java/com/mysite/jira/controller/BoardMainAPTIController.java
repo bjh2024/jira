@@ -3,14 +3,20 @@ package com.mysite.jira.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
+import com.mysite.jira.dto.board.UpdateStatusDTO;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.service.BoardMainService;
 
 import lombok.RequiredArgsConstructor;

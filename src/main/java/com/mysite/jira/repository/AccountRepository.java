@@ -3,6 +3,7 @@ package com.mysite.jira.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 			ORDER BY count(i.idx) DESC, i.manager.idx
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
+	Optional<Account> findByEmail(String email);
 }

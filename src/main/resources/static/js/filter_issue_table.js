@@ -35,3 +35,10 @@ document.querySelector("body").addEventListener("click", function(e) {
         }
     }
 });
+
+function applyFilter(projectKey) {
+	function applyFilter(projectKey) {
+	    // 서버로 projectKey를 보내는 방법
+	    window.location.href = '/issues?projectKey=' + projectKey; // URL로 파라미터 전달
+	}
+}

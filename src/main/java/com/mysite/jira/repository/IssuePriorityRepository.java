@@ -23,4 +23,5 @@ public interface IssuePriorityRepository extends JpaRepository<IssuePriority, In
 			""")
 	List<Map<String, Object>> findByPriorityByIssueCount(@Param("projectIdx") Integer projectIdx);
 	
+	List<IssuePriority> findAllByOrderByIdxDesc(); 
 }

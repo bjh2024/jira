@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,8 +47,9 @@ public class GlobalModelAdvice {
 	
 	
 	@ModelAttribute
-	public void addHeaderAttributes(HttpServletRequest request, Model model) {
+	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI(); 
+		System.out.println(principal.getName());
 		// 가져올 값들
 		Integer accountIdx = 1;
 		Integer jiraIdx = 1;
@@ -73,7 +75,6 @@ public class GlobalModelAdvice {
 		List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 		List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
 		List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
-
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (!uri.contains("/project/create")) {
 			// header

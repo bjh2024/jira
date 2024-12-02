@@ -17,6 +17,7 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
