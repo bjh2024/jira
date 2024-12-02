@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysite.jira.dto.IssueTypeListDto;
+import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
@@ -37,7 +37,7 @@ public class FilterController {
 
 	@GetMapping("/filter_issue/{issueKey}")
 	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issueKey,Model model) {
-		Integer jiraIdx = 1;
+		Integer jiraIdx = 1; 
 		try {
 		model.addAttribute("issueKey", issueKey != null ? issueKey : "");
 		 // issueKey에 맞는 필터링된 이슈 목록 가져오기
@@ -48,7 +48,7 @@ public class FilterController {
 		List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 		model.addAttribute("project", project);
 
-		List<IssueTypeListDto> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
+		List<IssueTypeListDTO> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
 		model.addAttribute("issueType", issueType);
 
 		List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
@@ -63,12 +63,12 @@ public class FilterController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "/filter/filter_issue";
+		return "filter/filter_issue";
 	}
 
 	@GetMapping("/every_filter")
 	public String everyfilter() {
-		return "/filter/every_filter.html";
+		return "filter/every_filter";
 	}
 
 	@GetMapping("/filter_issue_table")
@@ -83,7 +83,7 @@ public class FilterController {
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);
 			
-			List<IssueTypeListDto> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
+			List<IssueTypeListDTO> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
 			model.addAttribute("issueType", issueType);
 			
 			List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
@@ -95,6 +95,6 @@ public class FilterController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/filter/filter_issue_table.html";
+		return "filter/filter_issue_table.html";
 	}
 }

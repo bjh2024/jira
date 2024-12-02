@@ -21,4 +21,13 @@ public class IssueService {
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
 	
+	public List<Issue> getIssuesByIssueTypeName(String[] name){
+		List<Issue> result = issueRepository.findByIssueTypeNameIn(name);
+		return result;
+	}
+	
+	public List<Issue> getIssuesByIssueStatusName(String[] name){
+		List<Issue> result = issueRepository.findByIssueStatusNameIn(name);
+		return result;
+	}
 }

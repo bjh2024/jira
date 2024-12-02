@@ -38,16 +38,15 @@ document.querySelector("body").addEventListener("click", function(e) {
 
 let filterDatas = {
 		"projecIdxArr" : [],
-		"issueTypeIdxArr" : [],
-		"issueStatusIdxArr" : [],
-		"issueReporterIdxArr" : []
-		
+		"issueTypeArr" : [],
+		"issueStatusArr" : []
 	}
 	
 document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
 		filterDatas.projecIdxArr.push(this.value);
+		console.log(this.value);
 		}else{
 		filterDatas.projecIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
 		}
@@ -55,16 +54,29 @@ document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(
 		});
 })
 
-/*document.querySelectorAll(".filter_issue_box input[name='issueTypeIdx']").forEach(function(input){
+document.querySelectorAll(".filter_issue_box input[name='issueTypeIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
-		filterDatas.issueTypeIdxArr.push(this.value);
+		filterDatas.issueTypeArr.push(this.value); 
+		console.log(this.value);
 		}else{
-		filterDatas.issueTypeIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
+		filterDatas.issueTypeArr.splice(filterDatas.issueTypeArr.indexOf(this.value), 1);
 		}
 		fetchInput();
 		});
-})*/
+})
+
+document.querySelectorAll(".filter_issue_box input[name='issueStatus']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.issueStatusArr.push(this.value); 
+		console.log(this.value);
+		}else{
+		filterDatas.issueStatusArr.splice(filterDatas.issueStatusArr.indexOf(this.value), 1);
+		}
+		fetchInput();
+		});
+})
 
 
 function fetchInput() {
@@ -76,11 +88,16 @@ function fetchInput() {
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(filterDatas.projecIdxArr)
+		body: JSON.stringify({
+			projectIdx: filterDatas.projecIdxArr, 
+			issueTypes: filterDatas.issueTypeArr,
+			issueStatus: filterDatas.issueStatusArr
+		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueListByProjectKey => {
 			document.querySelector("tbody").innerHTML = ""
+			
 			issueListByProjectKey.forEach(function(item){
 				document.querySelector("tbody").innerHTML +=
 				`<tr class="filter_row">
@@ -128,8 +145,8 @@ function fetchInput() {
 						</div>
 					</td>
 					<td>
-						<button class="button_color ${item.issueStatus == 1 ? 'first' : ''}"
-						                      + ${item.issueStatus == 2 ? 'second' : ''}">
+						<button class="button_color ${item.issueStatus == 1 ? 'first' : ''}
+						                      ${item.issueStatus == 2 ? 'second' : ''}">
 							${item.issueStatusName}
 							<svg role="presentation" width="12" height="12" viewBox="5 5 13 13">
 								<path

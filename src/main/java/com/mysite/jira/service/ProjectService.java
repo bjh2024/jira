@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
-	private final IssueStatusRepository issueStatusRepository;
 
 	
 	private final UtilityService utilityService;

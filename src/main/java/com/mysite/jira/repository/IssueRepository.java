@@ -21,6 +21,12 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 	
+	// bjh
+	List<Issue> findByIssueTypeNameIn(String[] name);
+	
+	//bjh
+	List<Issue> findByIssueStatusNameIn(String[] name);
+	
 	// kdw
 	List<Issue> findByEditDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 	// kdw
