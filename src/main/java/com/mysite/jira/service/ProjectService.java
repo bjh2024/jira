@@ -52,11 +52,12 @@ public class ProjectService {
 	}
 	// kdw 프로젝트 리스트(project/create)
 	public List<ProjectListIsLikeDTO> getProjectListIsLike(Integer accountIdx, Integer jiraIdx, int page){
-		Pageable pageable = PageRequest.of(page, 10);
-		Page<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, pageable);
+		int startRow = page;
+		int endRow = startRow + 10;
+		List<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, startRow, endRow);
 		List<ProjectListIsLikeDTO> result = new ArrayList<>();
 		
-		for(Map<String, Object> project : projectPage.getContent()) {
+		for(Map<String, Object> project : projectPage) {
 			String projectName = project.get("projectName").toString();
 			String projectIconFilename = project.get("projectIconFilename").toString();
 			String projectKey = project.get("projectKey").toString();
