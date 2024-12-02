@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -45,12 +46,14 @@ public class GlobalModelAdvice {
 	
 	private final LikeService likeService;
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@ModelAttribute
-	public void addHeaderAttributes(HttpServletRequest request, Model model) {
+	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI(); 
+		Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+		System.out.println(principal.getName());
 		// 가져올 값들
-		Integer accountIdx = 1;
+		Integer accountIdx = currentUser.getIdx();
 		Integer jiraIdx = 1;
 		
 		// header null 처리 필요
@@ -100,6 +103,7 @@ public class GlobalModelAdvice {
 			
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
+			
 		}
 	}
 	
