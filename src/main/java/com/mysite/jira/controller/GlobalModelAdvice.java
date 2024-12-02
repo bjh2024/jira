@@ -47,9 +47,8 @@ public class GlobalModelAdvice {
 	
 	
 	@ModelAttribute
-	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
+	public void addHeaderAttributes(HttpServletRequest request, Model model) {
 		String uri = request.getRequestURI(); 
-		System.out.println(principal.getName());
 		// 가져올 값들
 		Integer accountIdx = 1;
 		Integer jiraIdx = 1;

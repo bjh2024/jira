@@ -19,6 +19,7 @@ public class AccountService {
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	private final AccountRepository accountRepository;
+	
 	private final PasswordEncoder passwordEncoder;
 	
 	public List<JiraMembers> getByJiraIdx(Integer idx){
