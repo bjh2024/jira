@@ -71,10 +71,13 @@ body{
 
 .myprofileimgbox{
 	height: 28px;
+	z-index: 3;
 }
 
 .profileimgbox{
 	height: 28px;
+	z-index: 2; 
+	border-color: white;
 }
 
 .invitebox{
@@ -1097,6 +1100,10 @@ body{
 	transform: rotate(90deg);
 }
 
+.nonebtn{
+	display: none;
+}
+
 .subissuebox.show{
 	display: block;
 }
@@ -1154,7 +1161,7 @@ body{
 	align-items: center;
 }
 
-.issuedetail-container{
+.issuedetail-container, .subissuedetail-container{
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -1166,7 +1173,7 @@ body{
 	user-select: none;
 }
 
-.issuedetail-container.show{
+.issuedetail-container.show, .subissuedetail-container.show{
 	display: block;
 }
 

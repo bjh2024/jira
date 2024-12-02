@@ -9,10 +9,6 @@ document.querySelectorAll(".editor").forEach(function(editor, index){
 	  });
 });
 
-function submitForm(){
-	document.querySelector(".get-alter-label-form").submit();
-}
-
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
@@ -54,7 +50,6 @@ document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 		const subissueItem = btn.parentElement.nextElementSibling;
 
 		if(btn !== null && subissueItem.className.includes("show")){
-			console.log("hihihihi");
 			subissueItem.classList.remove("show");
 			subissueBtn.children[0].children[2].classList.remove("rotate");
 			return;
@@ -63,6 +58,30 @@ document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 		if(btn !== null){
 			subissueItem.classList.add("show");
 			subissueBtnIcon.classList.add("rotate");
+		}
+	});
+});
+
+document.querySelectorAll(".subissues").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		const lblItem = btn.querySelector(".issuedetail-graphval.label-def");
+		
+		if(lblItem?.childElementCount < 2){
+			lblItem.querySelector(".graphval-label-def").classList.remove("none");
+		}else{
+			lblItem.querySelector(".graphval-label-def").classList.add("none");
+		}
+		
+		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def");
+				
+		if(dlItem?.childElementCount < 3){
+			dlItem.querySelector(".graphval-dl-def").classList.remove("none");
+		}else{
+			dlItem.querySelector(".graphval-dl-def").classList.add("none");
+		}
+		
+		if(btn !== null){
+			btn.querySelector(".subissuedetail-container").classList.add("show");
 		}
 	});
 });
@@ -162,6 +181,26 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		document.querySelectorAll(".issuedetail-container")[index]?.classList.remove("show");
 		
 		const bgItem = e.target.closest(".issuedetail-off");
+		const subIssueItem = e.target.closest(".subissue-list");
+		const issueDetailItem = e.target.closest(".issuedetailbox");
+		
+		if(bgItem == null && issueDetailItem !== null){
+			
+			container.classList.add("show");
+		}else{
+			container.classList.remove("show");
+			/*if(e.target.closest(".subissue-list-rightdetail") !== null){
+				container.classList.add("show");	
+			}*/
+		}
+	});
+});
+
+document.querySelectorAll(".subissuedetail-container").forEach(function(container, index){
+	container.addEventListener("mousedown", function(e) {
+		document.querySelectorAll(".issuedetail-container")[index]?.classList.remove("show");
+		
+		const bgItem = e.target.closest(".issuedetail-off");
 		const issueDetailItem = e.target.closest(".issuedetailbox");
 		
 		if(bgItem == null && issueDetailItem !== null){
@@ -171,8 +210,6 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		}
 	});
 });
-
-
 
 document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
 	area.addEventListener("click", function(e) {
@@ -250,20 +287,115 @@ document.querySelectorAll(".issuedetail-replylist").forEach(function(btn, index)
 
 });
 
+document.querySelectorAll(".subissue-list").forEach(function(list, index){
+	list.addEventListener("click", function(e){
+		if(e.target.closest(".subissue-list-rightdetail") !== null){
+			return;
+		}
+		if(list !== null){
+			list.closest(".issuedetail-container")?.classList.remove("show");
+			document.querySelectorAll(".subissuedetail-container")[index]?.classList.add("show");
+		}
+	});
+});
+
 document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
-		if(e.target.closest(".statuswindow-menubox") !== null){
+		if(e.target.closest(".issuedetail-statuswindow") !== null){
 			return;
 		}
 		btn.children[0].classList.toggle("show");
 	})
 });
 
-document.querySelector(".issuedetail-insertbtn").addEventListener("click", function(e){
-	const btnItem = e.target.closest(".issuedetail-insertbtn");
-	const windowItem = btnItem.children[0];
-	btnItem.classList.toggle("active");
-	windowItem.classList.toggle("show");
+/*// Event listener for status change
+document.querySelectorAll('.statuswindow-status').forEach(statusElement => {
+    statusElement.addEventListener('click', function (event) {
+        // Get the clicked statuswindow-title element
+        const titleElement = event.target.closest('.statuswindow-status').querySelector('.statuswindow-title');
+
+        if (titleElement !== null) {
+            // Extract data attributes
+            const projectIdx = titleElement.getAttribute('data-project-idx');
+            const issueIdx = titleElement.getAttribute('data-issue-idx');
+            const newStatus = titleElement.getAttribute('data-issue-status');
+
+            // Construct the payload for the update request
+            const payload = {
+                projectIdx: projectIdx,
+                issueIdx: issueIdx,
+                status: newStatus
+            };
+
+            // Make an AJAX request to update the status
+            fetch('/api/project/updateStatus', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(statusList => {
+                console.log('Update successful:', data);
+
+                // Optional: Update the UI to reflect the new status
+                const statusButton = statusElement.parentElement.parentElement.parentElement.children[1];
+                statusButton.textContent = titleElement.textContent; // Update the button's displayed status
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            // Toggle the visibility of the status window
+            const statusWindow = titleElement.closest('.issuedetail-statuswindow');
+            if (statusWindow) {
+                statusWindow.classList.toggle('show');
+            }
+        }
+    });
+});*/
+
+
+/*document.querySelectorAll('.statuswindow-status').forEach(function(statusElement) {
+        statusElement.addEventListener('click', function() {
+            // 클릭한 statuswindow-status에서 상태 정보 가져오기
+            const titleElement = statusElement.querySelector('.statuswindow-title');
+            const status = titleElement.getAttribute('data-status');
+            const statusName = titleElement.getAttribute('data-status-name');
+			
+            // 상태에 따른 클래스를 설정
+            let statusBtn = statusElement.parentNode.parentNode.parentNode;
+			
+            // 기존의 상태 클래스를 제거
+            statusBtn.classList.remove('status1', 'status2', 'status3');
+			
+            // 새로운 상태 클래스를 추가
+            if (status == 1) {
+                statusBtn.classList.add('status1');
+            } else if (status == 2) {
+                statusBtn.classList.add('status2');
+            } else if (status == 3) {
+                statusBtn.classList.add('status3');
+            }
+
+            // 버튼 내부 텍스트를 업데이트 (선택한 상태 이름)
+            statusBtn.children[1].innerHTML = statusName;
+
+            // issuedetail-statuswindow 클래스에 show 토글
+            const statusWindow = statusElement.parentNode.parentNode;
+            statusWindow.classList.toggle('show');
+        });
+    });*/
+
+
+document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		const btnItem = e.target.closest(".issuedetail-insertbtn");
+			const windowItem = btnItem.children[0];
+			btnItem.classList.toggle("active");
+			windowItem.classList.toggle("show");
+	});
 });
 
 document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, index){
@@ -300,24 +432,65 @@ document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
 		if(e.target.closest(".graphval-selectwindow") !== null){
 			return;
 		}
-		const btnItem = document.querySelectorAll(".issuedetail-graphval")[index];
-		
-		
-		if(index == 2){
-			console.log("hihhi");
-			btn.querySelector(".graphval-selectwindow.label").classList.toggle("show");
-		}else{
-			btn.querySelector(".graphval-selectwindow").classList.toggle("show");
-		}
+		btn.querySelector(".graphval-selectwindow").classList.toggle("show");
 
 	});
 	
-	btn.addEventListener("mouseover", function(e){
+	/*btn.addEventListener("mouseover", function(e){
 		
 	});
 	
 	btn.addEventListener("mouseout", function(e){
 		
+	});*/
+});
+
+let labelDatas = {
+	"idx": []
+}
+
+function fetchInput(){
+	let url = "/api/project/get_label_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(labelDatas)
+	})
+	.then(response => response.json())
+	.then(alterLabelList => {
+		console.log(alterLabelList);
+		const uniqueLabels = alterLabelList.filter((value, index, self) =>
+           index === self.findIndex(item => item.name === value.name)
+       );
+		document.querySelectorAll(".graphval-selectwindow.label").forEach(function(label, index){
+			label.innerHTML = "";
+			const labelTitle = document.createElement("span");
+			labelTitle.innerHTML = `<span class="graphval-selectwindow-title">모든 레이블</span>`;
+			label.appendChild(labelTitle);
+			
+			uniqueLabels.forEach(function(value){	
+				const labelValue = document.createElement("div");
+				labelValue.classList.add("graphvalwindow-value");
+				labelValue.innerHTML = `<span>${value.name}</span>`;
+				label.appendChild(labelValue);
+			});
+		});
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".graphval-selectwindow") !== null){
+			return;
+		}
+		
+		let label = [...btn.querySelectorAll(".send-label-value")].map(input => input.value);
+		labelDatas.idx = label;
+		fetchInput();
 	});
 });
 

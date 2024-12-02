@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
@@ -24,14 +25,17 @@ public class IssueLabel {
 	@SequenceGenerator(name = "issue_label_seq", sequenceName = "issue_label_seq", allocationSize = 1)
 	private Integer idx; 
 	
+	@ManyToOne
+	private Jira jira;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
 	@NotNull
-	private String name;
+	private String name; 
 
 	@Builder
-	public IssueLabel(String name) {
+	public IssueLabel(String name, Jira jira) {
 		this.name = name;
+		this.jira = jira;
 	}
 	
 	@OneToMany(mappedBy = "issueLabel", cascade = CascadeType.REMOVE) 
