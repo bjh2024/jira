@@ -2,6 +2,7 @@ package com.mysite.jira.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,15 @@ public class AccountService {
 								.build();
 		this.accountRepository.save(newUser);					
 		return null;
+	}
+	
+	public Account getAccountByEmail(String email) {
+		Optional<Account> optAccount = this.accountRepository.findByEmail(email);
+		Account account = null;
+		if(optAccount.isPresent()) {
+			account = optAccount.get();
+		}
+		return account;
 	}
 	
 }
