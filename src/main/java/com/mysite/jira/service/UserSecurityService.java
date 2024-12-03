@@ -31,6 +31,9 @@ public class UserSecurityService implements UserDetailsService {
 		}
 		
 		Account user = existUser.get();
+		if(user.getAuthCode() != null) {
+			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+		}
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		if ("admin".equals(email)) {
             authorities.add(new SimpleGrantedAuthority(AccountRole.ADMIN.getValue()));

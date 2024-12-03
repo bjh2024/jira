@@ -70,7 +70,6 @@ public class Jira {
 	
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<FilterRecentClicked> filterClickedList;
-
 	
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
 	private List<ProjectRecentClicked> projectClickedList; 

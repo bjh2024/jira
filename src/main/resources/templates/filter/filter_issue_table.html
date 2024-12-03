@@ -16,7 +16,7 @@
 					<div class="filter_issue_list">
 						<button class="category_1"
 							style="color: #0052CC; background-color: #E9F2FE; border:1px solid #0C66E4;">목록 보기</button>
-						<button class="category_2">세부 정보 보기</button>
+						<button class="category_2" onclick="location.href='filter_issue/projectKey'">세부 정보 보기</button>
 					</div>
 					<div class="category_3">
 						<svg fill="none" viewBox="-4 -4 24 24" role="presentation" style="width: 24px; height: 24px;">
@@ -81,12 +81,12 @@
 										style="font-size: 11px; padding: 0px 12px;margin-bottom:2.75px; font-weight: bold;">
 										최근 프로젝트
 									</div>
-									<form method="get" action="/filter/filter_issue_table" class="projectForm">
-									<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
-										<div style="height: 13px; margin-left: 6px;">
-											<input type="checkbox" name="projectKey" th:value="${projectList.key}" onclick="submitForm()">
+									<form method="post" action="/filter/filter_issue_table">
+										<div class="filter_issue_project_div_3" th:each="projectList, loop : ${project}">
+											<div style="height: 13px; margin-left: 6px;">
+												<input type="checkbox" name="projectIdx" th:value="${projectList.idx}">
 											
-										</div>
+											</div>
 										<div style="height: 16px; margin-left: 12px;">
 											<img width="16" height="16"
 												th:src="@{|/images/${projectList.iconFilename}|}"
@@ -143,7 +143,8 @@
 									</div>
 									<div class="filter_issue_project_div_3"
 										th:each="issueTypeList, loop : ${issueType}">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="height: 13px; margin-left: 6px;">
+											<input type="checkbox" name="issueTypeIdx" th:value="${issueTypeList.name}"></div>
 										<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
 												th:src="@{|/images/${issueTypeList.iconFilename}|}"
 												style="border-radius: 2px;">
@@ -194,7 +195,8 @@
 							<div style="padding: 10px 0px;">
 								<div style="height: 32px;" th:each="issueStatus, i : ${issueStatus}">
 									<div class="filter_issue_project_div_3">
-										<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+										<div style="height: 13px; margin-left: 6px;">
+											<input type="checkbox" name="issueStatus" th:value="${issueStatus[1]}"></div>
 										<div class="issuestatus" th:text="${issueStatus[1]}" th:classappend="${issueStatus[0] == 2 ? 'first':''}
 																+${issueStatus[0] == 1 ? 'second':''}"></div>
 									</div>
@@ -245,14 +247,15 @@
 											제안하는 사용자
 										</div>
 										<div class="filter_issue_project_div_3" th:each="account : ${account}">
-											<div style="height: 13px; margin-left: 6px;"><input type="checkbox"></div>
+											<div style="height: 13px; margin-left: 6px;">
+												<input type="checkbox" name="issueManager" th:value="${account.managerName}"></div>
 											<div style="height: 16px; margin-left: 12px;">
 												<img width="16" height="16"
-													th:src="@{|/images/${account.account.iconFilename}|}"
+													th:src="@{|/images/${account.managerIdx != 0 ? account.managerIconFilename : 'default_icon_file.png'}|}"
 													style="border-radius: 2px;">
 											</div>
 											<div style="margin-left: 8px; font-size: 14px;"
-												th:text="${account.account.name}"></div>
+												th:text="${account.managerIdx != 0 ? account.managerName : '할당되지 않음'}"></div>
 										</div>
 									</div>
 
@@ -343,20 +346,24 @@
 					<col width="5%" />
 					<col width="26%" />
 				</colgroup>
-				<tr class="filter_column">
-					<th style="border-top-left-radius: 8px;">유형</th>
-					<th>키</th>
-					<th>요약</th>
-					<th>담당자</th>
-					<th>보고자</th>
-					<th>우선순위</th>
-					<th>상태</th>
-					<th>해결</th>
-					<th>만듦</th>
-					<th>업데이트</th>
-					<th>기한</th>
-					<th style="border-top-right-radius: 8px; text-align: right;">...</th>
-				</tr>
+				<thead>
+					<tr class="filter_column">
+						<th style="border-top-left-radius: 8px;">유형</th>
+						<th>키</th>
+						<th>요약</th>
+						<th>담당자</th>
+						<th>보고자</th>
+						<th>우선순위</th>
+						<th>상태</th>
+						<th>해결</th>
+						<th>만듦</th>
+						<th>업데이트</th>
+						<th>기한</th>
+						<th style="border-top-right-radius: 8px; text-align: right;">...</th>
+					</tr>
+				</thead>
+				<!--이슈 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+				<tbody>
 				<th:block th:each="issue : ${issue}" th:if="${projectKey != null ? issue.project.key == projectKey : ''}">
 				<tr class="filter_row">
 					<td>
@@ -415,19 +422,21 @@
 
 					</td>
 					<td>
-						<div th:text="${issue.createDate != null} ? ${#temporals.format(issue.createDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.createDate != null} ? ${#temporals.format(issue.createDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
-						<div th:text="${issue.editDate != null} ? ${#temporals.format(issue.editDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.editDate != null} ? ${#temporals.format(issue.editDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
-						<div th:text="${issue.deadlineDate != null} ? ${#temporals.format(issue.deadlineDate, 'yyyy년 MM월 dd일')} : '없음'"></div>
+						<div th:text="${issue.deadlineDate != null} ? ${#temporals.format(issue.deadlineDate, 'yyyy년 MM월 dd일')} : ''"></div>
 					</td>
 					<td>
 
 					</td>
 				</tr>
 				</th:block>
+				</tbody>
+				<!--이슈 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 				<tr class="filter_row_last">
 					<td colspan="12">
 						<div class="filter_last_div">
@@ -586,16 +595,11 @@
 						<div class="save_button">저장</div>
 						<div class="cancle_button">취소</div>
 					</div>
-
+ 
 				</div>
 			</div>
-			<script th:src="@{/js/filter_issue.js}"></script>
-			<script>
-			    // 체크박스 클릭 시 폼 자동 제출
-			    function submitForm() {
-			       document.querySelector('.projectForm').submit();
-			    }
-			</script>
+			<script th:src="@{/js/filter_issue_table.js}"></script>
+			
 		</div>
 
 </html>

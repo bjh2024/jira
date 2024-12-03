@@ -16,6 +16,15 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 			+ "GROUP BY s.idx, s.name, s.status, s.divOrder ORDER BY s.divOrder") 
 	List<Object[]> findGroupByIssueStatusWithJPQL(@Param("idx") Integer idx);
 	
+	// jira가 1인 issueStatus의 모든 목록을 distinct로 추출
+	@Query("""
+			SELECT distinct iss.name, iss.status
+			FROM IssueStatus iss JOIN Project p 
+			on iss.project.idx = p.idx
+			where p.jira.idx = :idx
+			""")
+	List<Object[]> findDistinctNameAndStatusByJiraIdx(@Param("idx") Integer idx);
+	
 //	// kdw 보류
 //	List<IssueStatus> findByIssueList_JiraIdxAndIssueList_ManagerIdxAndStatusIn(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
 	

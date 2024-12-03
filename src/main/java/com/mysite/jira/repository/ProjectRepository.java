@@ -25,6 +25,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 		     + "    ORDER BY iss.status Desc" )
 		List<Object[]> findDistinctStatusAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 
+		List<Project> findByKey(String keys); 
+		
 	// kdw
 	List<Project> findByProjectClickedList_AccountIdxAndJiraIdxOrderByProjectClickedList_ClickedDateDesc(
 			@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
@@ -88,9 +90,10 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			GROUP BY p.name, p.color, p.icon_filename, p.key, prc.clicked_date
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
+	
 	List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx,
 			@Param("jiraIdx") Integer jiraIdx);
-
+	
 	// kdw 프로젝트 리스트(즐겨찾기 유무 => 별표가 위로)
 	@Query(value = """
 			SELECT *

@@ -54,6 +54,10 @@ body {
 	border-radius: 3px;
 }
 
+.form-label{
+	display: none;
+}
+
 .next-btn {
 	width: 320px;
 	height: 40px;

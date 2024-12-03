@@ -3,7 +3,6 @@ package com.mysite.jira.controller;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -21,6 +20,7 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.HeaderService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.LogDataService;
@@ -54,9 +54,13 @@ public class GlobalModelAdvice {
 		if(uri.contains("/api")) return;
 		// 현재 로그인한 계정 정보
 	    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+		
 		// 가져올 값들
 		Integer accountIdx = currentUser.getIdx();
+		// Integer accountIdx = 1;
 		Integer jiraIdx = 1;
+
+		// header
 		
 		// header null 처리 필요
 		List<String> leaders = jiraService.getjiraLeaderList(accountIdx);

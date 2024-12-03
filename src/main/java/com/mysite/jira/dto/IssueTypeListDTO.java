@@ -7,13 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IssueTypeListDto {
+public class IssueTypeListDTO {
 
 	private String name;
     private String iconFilename;
     
     @Builder
-    public IssueTypeListDto(String name, String iconFilename) {
+    public IssueTypeListDTO(String name, String iconFilename) {
     	  this.name = name;
           this.iconFilename = iconFilename;
     }

@@ -67,6 +67,15 @@ body {
 	padding-bottom: 2px;
 }
 
+.alert.alert-danger{
+	width: 331px;
+	margin: -8px auto 0px auto;
+	color: #AE2E24;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: left;
+}
+
 .social-btn {
 	width: 320px;
 	height: 40px;

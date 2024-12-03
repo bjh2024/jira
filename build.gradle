@@ -63,10 +63,11 @@ dependencies {
    implementation 'org.springframework.boot:spring-boot-starter-security'
    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+	// email
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
