@@ -247,7 +247,8 @@
 											제안하는 사용자
 										</div>
 										<div class="filter_issue_project_div_3" th:each="account : ${account}">
-											<div style="height: 13px; margin-left: 6px;"><input type="checkbox" name="issueManager"></div>
+											<div style="height: 13px; margin-left: 6px;">
+												<input type="checkbox" name="issueManager" th:value="${account.account.idx}"></div>
 											<div style="height: 16px; margin-left: 12px;">
 												<img width="16" height="16"
 													th:src="@{|/images/${account.account.iconFilename}|}"

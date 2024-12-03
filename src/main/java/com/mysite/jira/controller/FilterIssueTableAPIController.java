@@ -1,6 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,13 +13,15 @@ import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
 import com.mysite.jira.dto.IssueStatusListDTO;
 import com.mysite.jira.dto.IssueTypeListDTO;
+import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.entity.Issue;
-import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.FilterIssueService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueStatusService;
 import com.mysite.jira.service.IssueTypeService;
+import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,10 +36,14 @@ public class FilterIssueTableAPIController {
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
     private final IssueStatusService issueStatusService;
+    private final JiraMembersService jiraMembersService;
+    private final AccountService accountService;
     
     @PostMapping("/project_filter")
     public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
 
+    	List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+    	
         Integer[] projectIdx = filterRequest.getProjectIdx();
         List<Project> projectList = projectService.getProjectByJiraIdx(1);
         
@@ -69,15 +76,30 @@ public class FilterIssueTableAPIController {
         		issueStatus[i] = issueStatusList.get(i).getName();
         	}
         }
-
+        
+        List<Integer> managerIdx = filterRequest.getIssueManagerIdx();
+        List<ManagerDTO> managerList = issueService.getManagerIdxAndNameByJiraIdx(1);
+        
+        if (managerIdx == null || managerIdx.size() == 0) {
+        	managerIdx = new ArrayList<>();
+        	for (int i = 0; i < managerList.size(); i++) {
+        		managerIdx.add(managerList.get(i).getManagerIdx());
+        	}
+        }
+       
+        
+        
         List<Issue> issueByProjectIdx = filterIssueService.getIssueByProjectIdxIn(projectIdx);
         List<Issue> issueByIssueTypeName = issueService.getIssuesByIssueTypeName(issueTypes);
         List<Issue> issueByIssueStatusName = issueService.getIssuesByIssueStatusName(issueStatus);
+        List<Issue> issueByManagerIdx = issueService.getIssuesByManagerIdxIn(managerIdx);
         
         // 두 리스트에서 공통된 아이템만 필터링
         issueByProjectIdx.retainAll(issueByIssueTypeName);
         issueByProjectIdx.retainAll(issueByIssueStatusName);
-
+        issueByProjectIdx.retainAll(issueByManagerIdx);
+        
+      
         // FilterIssueDTO로 변환하여 반환
         List<FilterIssueDTO> filterIssue = new ArrayList<>();
         for (Issue issue : issueByProjectIdx) {

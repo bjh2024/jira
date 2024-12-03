@@ -39,7 +39,8 @@ document.querySelector("body").addEventListener("click", function(e) {
 let filterDatas = {
 		"projecIdxArr" : [],
 		"issueTypeArr" : [],
-		"issueStatusArr" : []
+		"issueStatusArr" : [],
+		"issueManagersArr" : []
 	}
 	
 document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(function(input){
@@ -78,6 +79,18 @@ document.querySelectorAll(".filter_issue_box input[name='issueStatus']").forEach
 		});
 })
 
+document.querySelectorAll(".filter_issue_box input[name='issueManager']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.issueManagersArr.push(this.value); 
+		console.log(this.value);
+		}else{
+		filterDatas.issueManagersArr.splice(filterDatas.issueManagersArr.indexOf(this.value), 1);
+		}
+		fetchInput();
+		});
+})
+
 
 function fetchInput() {
 	// fetch()를 사용하여 AJAX 요청
@@ -91,7 +104,8 @@ function fetchInput() {
 		body: JSON.stringify({
 			projectIdx: filterDatas.projecIdxArr, 
 			issueTypes: filterDatas.issueTypeArr,
-			issueStatus: filterDatas.issueStatusArr
+			issueStatus: filterDatas.issueStatusArr,
+			issueManager: filterDatas.issueManagersArr
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
@@ -115,7 +129,8 @@ function fetchInput() {
 					<td>
 						<div style="display: flex; align-items: center;">
 							<div style="height: 24px;">
-								<img width="24" height="24" src="/images/${item.issueManagerIconFilename}" alt="Manager Icon">
+								<img width="24" height="24" 
+								src="/images/${item.issueManagerIconFilename}" alt="Manager Icon">
 							</div>
 							<div class="td_div">
 							${item.issueManagerName}

@@ -21,6 +21,24 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 	
+	
+	@Query("""
+			SELECT DISTINCT a.idx, a.name
+			FROM Issue i left JOIN Account a
+			on i.manager.idx = a.idx
+			where i.jira.idx = :jiraIdx
+			""")
+	List<Object[]> findManagerIdxAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
+	
+	
+	@Query("""
+			SELECT i
+			FROM Issue i
+			WHERE manager.idx is null
+			or manager.idx in :managerIdxArr
+			""")
+	List<Issue> findByManagerIdxNullIn(@Param("managerIdxArr") List<Integer> managerIdxArr);
+	
 	// bjh
 	List<Issue> findByIssueTypeNameIn(String[] name);
 	
