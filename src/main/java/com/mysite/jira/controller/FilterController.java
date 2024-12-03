@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/filter")
+@RequestMapping("/{jiraName}/filter")
 public class FilterController {
 
 	private final IssueService issueService;

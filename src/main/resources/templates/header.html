@@ -12,14 +12,14 @@
 			</div>
 			<div class="my_app_content item_lnb">
 				<div class="account_jira_list">
-					<div class="active" th:each="leader : ${leaders}">
-						<div th:text="${leader}"></div>
+					<div th:classappend="${currentJira == leader} ? active : '' " th:each="leader : ${leaders}">
+						<div th:text="${#strings.substring(leader, 0, 2)}"></div>
 					</div>
 				</div>
 				<div class="my_app_content_detail">
 					<div class="detail_header">
-						<h1>dahyun0521</h1>
-						<p>ksgkdw78@gmail.com</p>
+						<h1 th:text="${currentJira}"></h1>
+						<p th:text="${currentUser.email}"></p>
 					</div>
 					<div class="detail_content1">
 						<h2>내 앱</h2>
@@ -113,7 +113,7 @@
 				</div>
 			</div>
 		</div>
-		<a href="/" class="logo_box">
+		<a th:href="@{|/${currentJira}|}" class="logo_box">
 			<img src="/images/logo.svg" alt="" width="58" height="24">
 		</a>
 	</div>

@@ -235,7 +235,8 @@
 							<span>프로젝트</span>
 						</div>
 						<div class="img_container">
-							<div href="/project/create" class="img_box project_craete_anchor">
+							<!-- js에서 a태그 처리 -->
+							<div class="img_box" th:data-jira-name="${currentJira}" th:onclick="goProjectCreatePage(this)">
 								<img src="/images/plus_icon.svg" alt="" width="12" height="12" />
 							</div>
 							<div class="img_box more">

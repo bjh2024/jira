@@ -1,6 +1,7 @@
 
 package com.mysite.jira.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+	
+	@Autowired
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -32,8 +37,7 @@ public class SecurityConfig {
         )
         .formLogin((formLogin) -> formLogin
             .loginPage("/account/login")
-            .successHandler(new CustomAuthenticationSuccessHandler())
-            .defaultSuccessUrl("/project/summation")
+            .successHandler(customAuthenticationSuccessHandler)
 		)
         .logout((logout) -> logout
 			.logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
@@ -50,11 +54,6 @@ public class SecurityConfig {
     ;
 	    return http.build();
 	}
-	
-	@Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 	
 	@Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

@@ -39,13 +39,16 @@ public class ProjectService {
 				String name = projectList.get(i).get("name").toString();
 				String iconFilename = projectList.get(i).get("iconFilename").toString();
 				String color = projectList.get(i).get("color").toString();
+				String key = projectList.get(i).get("key").toString();
 				Integer issueCount = utilityService.isBigDecimal(projectList.get(i).get("issueCount")).intValue();
+				
 				RecentProjectDTO dto = RecentProjectDTO.builder()
-											   .name(name)
-											   .iconFilename(iconFilename)
-											   .color(color)
-											   .issueCount(issueCount)
-											   .build();
+													   .name(name)
+													   .iconFilename(iconFilename)
+													   .color(color)
+													   .key(key)
+													   .issueCount(issueCount)
+													   .build();
 				result.add(dto);
 			}
 		}catch(Exception e){
@@ -86,5 +89,12 @@ public class ProjectService {
 		}
 		return result;
 	}
-
+	
+	public Project getRecentTop1Project(Integer accountIdx, Integer jiraIdx) {
+		return projectRepository.findByRecentClickedProject(accountIdx, jiraIdx);
+	}
+	
+	public Project getByJiraIdxAndKeyProject(Integer accountIdx, String key) {
+		return projectRepository.findByJira_IdxAndKey(accountIdx, key);
+	}
 }

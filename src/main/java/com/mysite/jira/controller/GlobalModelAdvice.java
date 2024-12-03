@@ -3,8 +3,8 @@ package com.mysite.jira.controller;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +17,7 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
@@ -50,7 +51,7 @@ public class GlobalModelAdvice {
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI(); 
 		if(principal == null) return;
-		
+		if(uri.contains("/api")) return;
 		// 현재 로그인한 계정 정보
 	    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
 		// 가져올 값들
@@ -80,6 +81,9 @@ public class GlobalModelAdvice {
 		List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (!uri.contains("/project/create")) {
+			// 현재 jiraName url에서 가져오기
+			model.addAttribute("currentJira", uri.split("/")[1]);
+			
 			// header
 			model.addAttribute("leaders", leaders);
 			model.addAttribute("issuesRecentList", issuesRecentList);
@@ -108,16 +112,15 @@ public class GlobalModelAdvice {
 		}
 	}
 	
-	private final BoardMainService boardMainService;
-	
 	@ModelAttribute
 	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
 		String uri = request.getRequestURI(); 
-		Integer projectIdx = 1;
-		Project project = boardMainService.getProjectNameById(projectIdx);
-		
+		if(uri.contains("/api")) return;
 		if(uri.contains("/project")) {
+			Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+			Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
 			model.addAttribute("project", project);
+			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 		
 	}

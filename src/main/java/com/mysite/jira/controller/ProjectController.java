@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/{jiraName}/project")
 public class ProjectController {
 	@Autowired
 	private BoardMainService boardMainService;
@@ -40,7 +40,7 @@ public class ProjectController {
 	
 	private final LogDataService logDataService;
 	
-	@GetMapping("/summation")
+	@GetMapping("/{projectKey}/summation")
 	public String summationPage(Model model) {
 		Integer accountIdx = 1;
 		Integer jiraIdx = 1;
@@ -78,7 +78,7 @@ public class ProjectController {
 		return "project/project_create";
 	}
 	
-	@GetMapping("/board_main")
+	@GetMapping("/{projectKey}/board_main")
 	public String boardMain(Model model) {
 		Integer projectIdx = 1;
 		model.addAttribute("projectIdx", projectIdx);
@@ -131,12 +131,12 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/setting_issue_type")
+	@GetMapping("/{projectKey}/setting_issue_type")
 	public String settingIssueType() {
 		return "project/setting_issue_type";
 	}
 	
-	@GetMapping("/attached_files")
+	@GetMapping("/{projectKey}/attached_files")
 	public String attachedFiles(Model model) {
 		// 모든 첨부파일 리스트
 		List<IssueFile> fileList = boardMainService.getFiles();
@@ -145,7 +145,7 @@ public class ProjectController {
 		return "project/attached_files";
 	}
 	
-	@GetMapping("/chart")
+	@GetMapping("/{projectKey}/chart")
 	public String chart() {
 		return "project/chart";
 	}

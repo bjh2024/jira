@@ -12,7 +12,7 @@
 		<div class="section1_content">
 			<div class="project_recent_box" th:style="|border-left: 20px solid ${project.color};|"
 				th:each=" project : ${projectList}">
-				<a th:href="@{/project/summation}" class="recent_header">
+				<a th:href="@{|/${currentJira}/project/${project.key}/summation|}" class="recent_header">
 					<img th:src="@{|/images/${project.iconFilename}|}" width="24px" height="24px" alt=""
 						draggable="false" style="border-radius: 4px;">
 					<div>

@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysite.jira.entity.Account;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class UtilityService {
 
 	private final ObjectMapper objectMapper;
-
+	
 	public String getElapsedComment(LocalDateTime date) {
 		
 		Duration duration = Duration.between(date, LocalDateTime.now());
@@ -52,5 +54,5 @@ public class UtilityService {
 		}
 		return result;
 	}
-
+	
 }

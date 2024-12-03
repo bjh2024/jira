@@ -126,9 +126,10 @@ document
   });
 
 // project/create 이동
-document.querySelector(".project_craete_anchor").addEventListener("click", function(e){
-	location.href = "/project/create";
-});
+function goProjectCreatePage(element){
+	let jiraName = element.getAttribute("data-jira-name");
+	location.href = `${jiraName}/project/create`;
+}
   
 // 프로젝트, 필터, 대시보드
 document.querySelectorAll(".view_under_box_btn").forEach(function (btn) {

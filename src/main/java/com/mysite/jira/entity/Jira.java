@@ -48,9 +48,9 @@ public class Jira {
 	// 대시보드 FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<Dashboard> dashbaordList;
-	
+	// 소문자 고침
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
-	private List<JiraMembers> JiraMembersList;
+	private List<JiraMembers> jiraMembersList;
 	
 	// Filter FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)

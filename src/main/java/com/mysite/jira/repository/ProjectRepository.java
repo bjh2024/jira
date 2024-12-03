@@ -11,6 +11,9 @@ import com.mysite.jira.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
+	// 프로젝트 키로 프로젝트 조회
+	Project findByJira_IdxAndKey(Integer jiraIdx, String key);
+	
 	List<Project> findByJiraIdx(Integer jiraIdx);
 	// 지라가 1인 프로젝트의 모든 유형을 가져와서 distinct
 	@Query("SELECT DISTINCT iss.status, iss.name "
@@ -70,6 +73,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			SELECT  p.name,
 				    p.color,
 			        p.icon_filename,
+			        p.key,
 			        count(i.idx) AS issue_count
 			FROM    project p
 			JOIN    project_recent_clicked prc
@@ -81,7 +85,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			WHERE   ist.status BETWEEN 1 AND 2
 			AND     prc.account_idx = :accountIdx
 			AND     p.jira_idx = :jiraIdx
-			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date
+			GROUP BY p.name, p.color, p.icon_filename, p.key, prc.clicked_date
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
 	List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx,
@@ -110,5 +114,18 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 													  @Param("jiraIdx") Integer jiraIdx, 
 													  @Param("startRow") int startRow, 
 													  @Param("endRow") int endRow);
+	// kdw 가장 최근 방문한 프로젝트
+	@Query("""
+			SELECT  al.project
+			FROM
+			(SELECT  prc.project as project,
+			         rownum as rnum
+			FROM     ProjectRecentClicked as prc
+			WHERE   prc.account.idx = :accountIdx
+			AND prc.jira.idx = :jiraIdx
+			ORDER BY prc.clickedDate DESC) al
+			WHERE   al.rnum = 1
+			""")
+	Project findByRecentClickedProject(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 
 }

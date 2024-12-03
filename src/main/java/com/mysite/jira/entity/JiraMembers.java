@@ -33,8 +33,9 @@ public class JiraMembers {
 	private Account account;
 	
 	@Builder
-	public JiraMembers(Jira jira, Account account) {
+	public JiraMembers(Jira jira, Account account, LocalDateTime clickedDate) {
 		this.jira = jira;
 		this.account = account;
+		this.clickedDate = clickedDate;
 	}
 }

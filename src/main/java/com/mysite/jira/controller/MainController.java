@@ -1,13 +1,17 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
@@ -16,7 +20,11 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class MyWorkController {
+public class MainController {
+	
+	private final AccountService accountService;
+
+	private final JiraService jiraService;
 	
 	private final ProjectService projectService;
 	
@@ -26,7 +34,20 @@ public class MyWorkController {
 
 	private final LikeService likeService;
 	
-	@GetMapping("/{userId}")
+	@GetMapping("/")
+	public String main(Principal principal) {
+		String jiraName = "";
+		if(principal == null) {
+			return "redirect:/account/login";
+		}
+		Account account = accountService.getAccountByEmail(principal.getName());
+		Integer accountIdx = account.getIdx();
+		jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
+		return "redirect:/" + jiraName;
+	}
+	
+	
+	@GetMapping("/{jiraName}")
 	public String filter(Model model) {
 		Integer jiraIdx = 1;
 		Integer accountIdx = 1;
