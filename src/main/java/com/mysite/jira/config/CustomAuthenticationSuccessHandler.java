@@ -1,4 +1,4 @@
-package com.mysite.jira.confile;
+package com.mysite.jira.config;
 
 import java.io.IOException;
 
