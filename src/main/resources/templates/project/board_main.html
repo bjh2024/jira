@@ -374,11 +374,12 @@
 											th:src="@{|/images/${issueList.issueType.iconFilename}|}"></span>
 									<span class="issuekey" th:text="${issueList.key}"></span>
 								</div>
-								<div class="issue-managerbox" th:if="${issueList.manager != null}">
+								<div class="issue-managerbox">
 									<span style="margin-top: 2px;"><img width="16"
 											th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"></span>
-									<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;"><img
-											class="issue-managerimg"
+									<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;"
+									 		th:if="${issueList.manager != null}">
+									 <img class="issue-managerimg"
 											th:src="@{|/images/${issueList.manager.iconFilename}|}"></span>
 								</div>
 							</div>
@@ -411,12 +412,12 @@
 											</span>
 											<span class="issuekey" th:text="${extendsList.child.key}"></span>
 										</div>
-										<div class="subissue-managerbox" th:if="${extendsList.child.manager != null}">
+										<div class="subissue-managerbox">
 											<span class="subissue-status" th:text="${extendsList.child.issueStatus.name}"
 											th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
 															+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
 															+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"></span>
-											<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;">
+											<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden;" th:if="${extendsList.child.manager != null}">
 												<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" style="width: 100%; height: 100%; object-fit: cover;">
 											</span>
 										</div>

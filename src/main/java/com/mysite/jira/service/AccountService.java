@@ -37,7 +37,7 @@ public class AccountService {
 		return result;
 	}
 	
-	public Account singup(String username, String email, String pw) {
+	public String singup(String username, String email, String pw) {
 		String code = "";
 		for(int i = 0; i < 4; i++) {
 			int tempCode = (int) (Math.random() * 26) + 65;
@@ -50,8 +50,8 @@ public class AccountService {
 								.iconFilename("user_icon_file5.png")
 								.authCode(code)
 								.build();
-		this.accountRepository.save(newUser);					
-		return null;
+		this.accountRepository.save(newUser);
+		return code;
 	}
 	
 	public Account getAccountByEmail(String email) {

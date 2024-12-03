@@ -32,19 +32,18 @@ public class AccountController {
 	
 	@PostMapping("/signup")
 	public String signup(@Valid CreateUserForm createUserForm, BindingResult bindingResult, Authentication authentication) {
-		System.out.println(createUserForm.getUsername());
 		
 		if (bindingResult.hasErrors()) {
             return "account/signup";
         }
 		if (!createUserForm.getPw().equals(createUserForm.getCheckpw())) {
-            bindingResult.rejectValue("passwordInCorrect", 
+            bindingResult.reject("checkpw",
                     "패스워드가 일치하지 않습니다.");
             return "account/signup";
         }
 		
 		try {
-			accountService.singup(createUserForm.getUsername(), createUserForm.getEmail(), createUserForm.getPw());
+			String authCode = accountService.singup(createUserForm.getUsername(), createUserForm.getEmail(), createUserForm.getPw());
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -60,6 +59,12 @@ public class AccountController {
 	
 	@GetMapping("/check_authcode")
 	public String checkAuthcode() {
+		System.out.println("dddddddddddddddddddddddddddddddddddddddddddd");
 		return "account/check_authcode";
+	}
+	
+	@GetMapping("/send_email")
+	public String emailTest() {
+		return "account/send_email";
 	}
 }
