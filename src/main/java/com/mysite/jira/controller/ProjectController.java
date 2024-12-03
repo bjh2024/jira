@@ -149,4 +149,10 @@ public class ProjectController {
 	public String chart() {
 		return "project/chart";
 	}
+	
+	@GetMapping("/profile")
+	public String profile() {
+		return "account/profile.html";
+	}
+
 }

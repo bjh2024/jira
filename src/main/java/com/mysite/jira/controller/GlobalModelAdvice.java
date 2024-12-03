@@ -50,8 +50,10 @@ public class GlobalModelAdvice {
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		if(principal == null) return;
 		String uri = request.getRequestURI(); 
+		
 		Account currentUser = this.accountService.getAccountByEmail(principal.getName());
 		if(currentUser == null) return;
+
 		// 가져올 값들
 		Integer accountIdx = currentUser.getIdx();
 		// Integer accountIdx = 1;
@@ -87,6 +89,7 @@ public class GlobalModelAdvice {
 			model.addAttribute("allAccountList", allAccountList);
 			model.addAttribute("alarmLogData", alarmLogData);
 			model.addAttribute("allRecentList", allRecentList);
+			model.addAttribute("currentUser", currentUser);
 			
 			// aside
 			model.addAttribute("todayRecentList", todayRecentList);
@@ -104,9 +107,7 @@ public class GlobalModelAdvice {
 			
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
-			
-			// 현재 접속 유저
-			model.addAttribute("currentUser", currentUser);
+
 		}
 	}
 	

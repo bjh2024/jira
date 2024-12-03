@@ -6,11 +6,12 @@ body{
 }
 
 .my_work_container h1 {
-	margin-top: 12px;
+	margin-top: 24px;
 	padding-bottom: 22px;
 	border-bottom: 1px solid #ddd;
 
 	font-size: 24px;
+	font-weight: normal;
 }
 
 .my_work_container h2 {

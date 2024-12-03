@@ -386,7 +386,7 @@
 			</div>
 			<div class="gnb2_box_btn">
 				<div class="gnb2_box_icon">
-					<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+					<img th:src="@{|/images/${currentUser.iconFilename}|}"
 						alt="" style="border-radius: 50%;" width="24" height="24">
 				</div>
 				<div class="user_lnb_box gnb2_box_content">
