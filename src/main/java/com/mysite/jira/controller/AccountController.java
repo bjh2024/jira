@@ -3,12 +3,18 @@ package com.mysite.jira.controller;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysite.jira.dto.account.AuthCodeForm;
 import com.mysite.jira.dto.account.CreateUserForm;
+import com.mysite.jira.email.EmailClient;
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.service.AccountService;
 
 import jakarta.validation.Valid;
@@ -19,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/account")
 public class AccountController {
 	private final AccountService accountService;
+	
+	private final EmailClient emailClient;
 
 	@GetMapping("/login")
 	public String login() {
@@ -31,7 +39,8 @@ public class AccountController {
 	}
 	
 	@PostMapping("/signup")
-	public String signup(@Valid CreateUserForm createUserForm, BindingResult bindingResult, Authentication authentication) {
+	public String signup(@Valid CreateUserForm createUserForm, BindingResult bindingResult, 
+			Authentication authentication, RedirectAttributes rttr) {
 		
 		if (bindingResult.hasErrors()) {
             return "account/signup";
@@ -43,7 +52,9 @@ public class AccountController {
         }
 		
 		try {
-			String authCode = accountService.singup(createUserForm.getUsername(), createUserForm.getEmail(), createUserForm.getPw());
+			Account user = accountService.singup(createUserForm.getUsername(), createUserForm.getEmail(), createUserForm.getPw());
+			rttr.addFlashAttribute("user", user);
+			emailClient.sendEmail(user.getEmail(), user.getAuthCode());
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -58,9 +69,32 @@ public class AccountController {
 	}
 	
 	@GetMapping("/check_authcode")
-	public String checkAuthcode() {
-		System.out.println("dddddddddddddddddddddddddddddddddddddddddddd");
+	public String checkAuthcode(AuthCodeForm authCodeForm) {
 		return "account/check_authcode";
+	}
+	
+	@PostMapping("/check_authcode")
+	public String sendEmail(@Valid AuthCodeForm authCodeForm, BindingResult bindingResult,
+			@ModelAttribute("user") Account user) {
+		if (bindingResult.hasErrors()) {
+            return "account/check_authcode";
+        }
+		if(authCodeForm.getEmail() == null) {
+			bindingResult.reject("checkAuthcodeFailed", "이메일 값이 없습니다.");
+            return "account/check_authcode";
+		}
+		String receivedCode = authCodeForm.getFirst() + authCodeForm.getSecond() + authCodeForm.getThird() + authCodeForm.getFourth();
+		String usersCode = accountService.getAccountByEmail(authCodeForm.getEmail()).getAuthCode();
+		System.out.println(receivedCode + "   " + usersCode);
+		if(!receivedCode.equals(usersCode)) {
+			bindingResult.reject("checkAuthcodeFailed", "입력한 코드가 전송된 코드와 다릅니다.");
+            return "account/check_authcode";
+		}else {
+			accountService.updateAccount(authCodeForm.getEmail());
+		}
+		
+		return "redirect:/account/login";
+		// return "redirect:/account/login";
 	}
 	
 	@GetMapping("/send_email")

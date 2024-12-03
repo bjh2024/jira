@@ -13,27 +13,38 @@
 			<div class="top-logo">
 				<img src="/images/sendEmail.png" width="130" class="emailicon">
 			</div>
-			<span class="login-text">kritac.ndh0521@gmail.com</span>
+			<span class="login-text" th:text="${user.email}">kritac.ndh0521@gmail.com</span>
 			<span>인증번호 이메일을 발송했습니다.<br>받으신 번호를 입력해 주세요.</span>
 		</div>
 		<div class="login-content">
-			<form>
+			<form th:action="@{/account/check_authcode}" th:object="${authCodeForm}" method="post">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+		            <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+		        </div>
 				<div class="authcode-container">
-					<div class="inputcode" name="email">
-						<input type="text" placeholder="1" class="borderline" maxlength="1">
+					<div class="inputcode" style="display: none;">
+						<label for="email" class="form-label">이메일</label>
+						<input type="text" name="email" id="email" class="borderline" th:value="${user.email}">
 					</div>
-					<div class="inputcode" name="password">
-						<input type="text" placeholder="2" class="borderline" maxlength="1">
+					<div class="inputcode">
+						<label for="first" class="form-label">첫번째 코드</label>
+						<input type="text" th:field="*{first}" class="borderline" maxlength="1">
 					</div>
-					<div class="inputcode" name="password">
-						<input type="text" placeholder="3" class="borderline" maxlength="1">
+					<div class="inputcode">
+						<label for="second" class="form-label">두번째 코드</label>
+						<input type="text" th:field="*{second}" class="borderline" maxlength="1">
 					</div>
-					<div class="inputcode" name="password">
-						<input type="text" placeholder="4" class="borderline" maxlength="1">
+					<div class="inputcode">
+						<label for="third" class="form-label">세번째 코드</label>
+						<input type="text" th:field="*{third}" class="borderline" maxlength="1">
+					</div>
+					<div class="inputcode"> 
+						<label for="fourth" class="form-label">네번째 코드</label>
+						<input type="text" th:field="*{fourth}" class="borderline" maxlength="1">
 					</div>
 				</div>
 				<div style="display: block;">
-					<button class="next-btn" type="button" onclick="location.href='login'">인증하기</button>
+					<button class="next-btn">인증하기</button>
 				</div>
 			</form>
 			<div class="retry">

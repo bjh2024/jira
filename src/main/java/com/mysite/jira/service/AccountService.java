@@ -2,6 +2,7 @@ package com.mysite.jira.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class AccountService {
 		return result;
 	}
 	
-	public String singup(String username, String email, String pw) {
+	public Account singup(String username, String email, String pw) {
 		String code = "";
 		for(int i = 0; i < 4; i++) {
 			int tempCode = (int) (Math.random() * 26) + 65;
@@ -51,7 +52,7 @@ public class AccountService {
 								.authCode(code)
 								.build();
 		this.accountRepository.save(newUser);
-		return code;
+		return newUser;
 	}
 	
 	public Account getAccountByEmail(String email) {
@@ -61,6 +62,20 @@ public class AccountService {
 			account = optAccount.get();
 		}
 		return account;
+	}
+	
+	public void updateAccount(String email) {
+		Optional<Account> optUser = this.accountRepository.findByEmail(email);
+		Account existingAccount = null;
+		if(optUser.isPresent()) {
+			existingAccount = optUser.get();
+		}
+		if(existingAccount == null) {
+			throw new NoSuchElementException("Account not found");
+		}
+		
+		existingAccount.updateAccount();
+		this.accountRepository.save(existingAccount);
 	}
 	
 }
