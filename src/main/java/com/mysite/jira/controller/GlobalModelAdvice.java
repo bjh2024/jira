@@ -51,6 +51,7 @@ public class GlobalModelAdvice {
 		if(principal == null) return;
 		String uri = request.getRequestURI(); 
 		Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+		if(currentUser == null) return;
 		// 가져올 값들
 		Integer accountIdx = currentUser.getIdx();
 		// Integer accountIdx = 1;
@@ -78,8 +79,7 @@ public class GlobalModelAdvice {
 		List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
 		List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
-		if (!uri.contains("/project/create") && !uri.contains("login") && 
-				!uri.contains("signup") && !uri.contains("check_authcode")) {
+		if (!uri.contains("/project/create")) {
 			// header
 			model.addAttribute("leaders", leaders);
 			model.addAttribute("issuesRecentList", issuesRecentList);
