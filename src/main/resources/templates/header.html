@@ -386,18 +386,18 @@
 			</div>
 			<div class="gnb2_box_btn">
 				<div class="gnb2_box_icon">
-					<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+					<img th:src="@{|/images/${currentUser.iconFilename}|}"
 						alt="" style="border-radius: 50%;" width="24" height="24">
 				</div>
 				<div class="user_lnb_box gnb2_box_content">
 					<div class="user_lnb_box_content1">
 						<h6>계정</h6>
 						<div class="item1">
-							<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
+							<img th:src="@{|/images/${currentUser.iconFilename}|}"
 								alt="" style="border-radius: 50%;" width="32" height="32">
 							<div>
-								<span>김대완</span>
-								<p>ksgkdw78@gmail.com</p>
+								<span th:text="${currentUser.name}"></span>
+								<p th:text="${currentUser.email}"></p>
 							</div>
 						</div>
 						<div class="item2">
@@ -414,7 +414,7 @@
 						<div>테마<img th:src="@{/images/arrow_right_icon.svg}" width="12" height="12" /></div>
 					</div>
 					<div class="logout_btn_box">
-						<a th:href="@{#}">로그아웃</a>
+						<a th:href="@{/account/logout}">로그아웃</a>
 					</div>
 				</div>
 			</div>

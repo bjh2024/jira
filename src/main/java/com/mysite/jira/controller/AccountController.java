@@ -1,6 +1,7 @@
 package com.mysite.jira.controller;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,9 @@ public class AccountController {
 	}
 	
 	@PostMapping("/signup")
-	public String signup(@Valid CreateUserForm createUserForm, BindingResult bindingResult) {
+	public String signup(@Valid CreateUserForm createUserForm, BindingResult bindingResult, Authentication authentication) {
 		System.out.println(createUserForm.getUsername());
+		
 		if (bindingResult.hasErrors()) {
             return "account/signup";
         }
@@ -60,10 +62,4 @@ public class AccountController {
 	public String checkAuthcode() {
 		return "account/check_authcode";
 	}
-	
-	@GetMapping("/profile")
-	public String profile() {
-		return "account/profile.html";
-	}
-
 }

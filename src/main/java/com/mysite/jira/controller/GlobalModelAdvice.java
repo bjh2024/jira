@@ -46,12 +46,12 @@ public class GlobalModelAdvice {
 	
 	private final LikeService likeService;
 	
-	@PreAuthorize("isAuthenticated()")
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI(); 
-		Account currentUser = this.accountService.getAccountByEmail(principal.getName());
-		System.out.println(principal.getName());
+		if(principal == null) return;
+		// 현재 로그인한 계정 정보
+	    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
 		// 가져올 값들
 		Integer accountIdx = currentUser.getIdx();
 		Integer jiraIdx = 1;
@@ -86,6 +86,7 @@ public class GlobalModelAdvice {
 			model.addAttribute("allAccountList", allAccountList);
 			model.addAttribute("alarmLogData", alarmLogData);
 			model.addAttribute("allRecentList", allRecentList);
+			model.addAttribute("currentUser", currentUser);
 			
 			// aside
 			model.addAttribute("todayRecentList", todayRecentList);
@@ -103,7 +104,6 @@ public class GlobalModelAdvice {
 			
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
-			
 		}
 	}
 	
