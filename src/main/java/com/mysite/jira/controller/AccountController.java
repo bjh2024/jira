@@ -56,10 +56,10 @@ public class AccountController {
 		return "redirect:/account/check_authcode";
 	}
 
-	@GetMapping("/check_authcode")
-	public String checkAuthcode() {
-		return "account/check_authcode";
-	}
+//	@GetMapping("/check_authcode")
+//	public String checkAuthcode() {
+//		return "account/check_authcode";
+//	}
 	
 	@GetMapping("/profile")
 	public String profile() {
