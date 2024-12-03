@@ -1,7 +1,5 @@
 package com.mysite.jira.dto.header;
 
-import java.time.LocalDateTime;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

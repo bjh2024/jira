@@ -75,6 +75,7 @@ public class FilterController {
 	@GetMapping("/filter_issue_table")
 	public String filterIssueTable(@RequestParam(value = "projectKey",required = false) String projectKey,Model model) {
 		Integer jiraIdx = 1;
+
 		try {
 			model.addAttribute("projectKey", projectKey);
 			

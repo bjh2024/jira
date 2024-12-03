@@ -8,4 +8,5 @@ import com.mysite.jira.entity.IssueLabelData;
 
 public interface IssueLabelDataRepository extends JpaRepository<IssueLabelData, Integer>{
 	List<IssueLabelData> findAll();
+	List<IssueLabelData> findDistinctByIssueLabelIdxNotIn(Integer[] idx);
 }

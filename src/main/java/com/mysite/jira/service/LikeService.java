@@ -29,7 +29,7 @@ public class LikeService {
 	
 	private final FilterLikeMembersRepository filterLikeMembersRepository;
 	
-	// 별표 표시한 프로젝트, 대시보드, 필터
+	// 별표 표시한 프로젝트, 대시보드, 필터 kdw
 	public List<LikeContentDTO> getAllLikeList(Integer accountIdx, Integer jiraIdx){
 		List<LikeContentDTO> result = new ArrayList<>();
 		List<Map<String, Object>> allLikeList = projectRepository.findLikeMembers(accountIdx, jiraIdx);
@@ -37,15 +37,20 @@ public class LikeService {
 			for(int i = 0; i < allLikeList.size(); i++) {
 				String name = "";
 				String iconFilename = "";
+				String projectKey = "";
 				if(allLikeList.get(i).get("name") != null) {
 					name = allLikeList.get(i).get("name").toString();
 				}
 				if(allLikeList.get(i).get("iconFilename") != null) {
 					iconFilename = allLikeList.get(i).get("iconFilename").toString();
 				}
+				if(allLikeList.get(i).get("projectKey") != null) {
+					projectKey = allLikeList.get(i).get("projectKey").toString();
+				}
 				LikeContentDTO dto = LikeContentDTO.builder()
 						   .name(name)
 						   .iconFilename(iconFilename)
+						   .projectKey(projectKey)
 						   .build();
 				result.add(dto);
 			}
@@ -55,7 +60,7 @@ public class LikeService {
 		return result;
 	}
 	
-	// 별표 표시한 프로젝트
+	// 별표 표시한 프로젝트 kdw
 	public List<LikeContentDTO> getProjectLikeList(Integer accountIdx, Integer jiraIdx){
 		List<LikeContentDTO> result = new ArrayList<>();
 		List<ProjectLikeMembers> projectLikeList = projectLikeMembersRepository.findByProject_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
@@ -74,7 +79,7 @@ public class LikeService {
 		return result;
 	}
 	
-	// 별표 표시한 대시보드
+	// 별표 표시한 대시보드 kdw
 	public List<LikeContentDTO> getDashboardLikeList(Integer accountIdx, Integer jiraIdx){
 		List<LikeContentDTO> result = new ArrayList<>();
 		List<DashboardLikeMembers> dashboardLikeList = dashboardLikeMembersRepository.findByDashboard_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
@@ -92,7 +97,7 @@ public class LikeService {
 		return result;
 	}
 		
-	// 별표 표시한 필터
+	// 별표 표시한 필터 kdw
 	public List<LikeContentDTO> getFilterLikeList(Integer accountIdx, Integer jiraIdx){
 			List<LikeContentDTO> result = new ArrayList<>();
 			List<FilterLikeMembers> filterLikeList = filterLikeMembersRepository.findByFilter_jiraIdxAndAccountIdx(accountIdx, jiraIdx);

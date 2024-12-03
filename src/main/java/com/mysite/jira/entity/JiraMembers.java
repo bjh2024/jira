@@ -1,5 +1,8 @@
 package com.mysite.jira.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +22,9 @@ public class JiraMembers {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jira_members_seq")
 	@SequenceGenerator(name = "jira_members_seq", sequenceName = "jira_members_seq", allocationSize = 1)
 	private Integer idx;
+	
+	@Column
+	private LocalDateTime clickedDate;
 	
 	@ManyToOne
 	private Jira jira;

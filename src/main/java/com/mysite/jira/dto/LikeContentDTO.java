@@ -7,11 +7,12 @@ import lombok.Getter;
 public class LikeContentDTO {
 	private String name;
 	private String iconFilename;
+	private String projectKey;
 	
 	@Builder
-	public LikeContentDTO(String name, String iconFilename) {
+	public LikeContentDTO(String name, String iconFilename, String projectKey) {
 		this.name = name;
 		this.iconFilename = iconFilename;
+		this.projectKey = projectKey;
 	}
-
 }

@@ -51,6 +51,14 @@ public class FilterIssueTableAPIController {
         List<Issue> issueByIssueStatusName = issueService.getIssuesByIssueStatusName(issueStatus);
         List<Issue> issueByManagerName = issueService.getByManagerNameIn(managerName);
         // 두 리스트에서 공통된 아이템만 필터링
+        if(managerName.length > 0) {
+        	issueList.retainAll(issueByManagerName);
+        	if (Arrays.asList(managerName).contains("할당되지 않음")) {
+        		List<Issue> issueByManagerNull = issueService.getByManagerNull();
+        		// manager가 없는 이슈도 포함
+        		issueList.addAll(issueByManagerNull);
+        	}
+        }
         if(projectIdx.length > 0) {
         	issueList.retainAll(issueByProjectIdx);
         }
@@ -59,14 +67,6 @@ public class FilterIssueTableAPIController {
         }
         if(issueStatus.length > 0) {
         	issueList.retainAll(issueByIssueStatusName);
-        }
-        if(managerName.length > 0) {
-        	issueList.retainAll(issueByManagerName);
-    	   if (Arrays.asList(managerName).contains("할당되지 않음")) {
-    		   List<Issue> issueByManagerNull = issueService.getByManagerNull();
-    	        // manager가 없는 이슈도 포함
-    	        issueList.addAll(issueByManagerNull);
-    	    }
         }
         
         // FilterIssueDTO로 변환하여 반환

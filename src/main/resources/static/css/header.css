@@ -491,6 +491,7 @@ body{
 }
 
 .input_lnb_footer1 {
+	padding-top: 24px;
 	padding-left: 14px;
 	display: flex;
 	align-items: center;
@@ -943,6 +944,8 @@ font-size: 14px;
 }
 
 .alarm_content_item1 .item1_box {
+	font-size: 14px;
+	
 	display: flex;
 	gap: 12px;
 }
@@ -960,7 +963,6 @@ font-size: 14px;
 
 .alarm_content_item1 .item1_box_center {
 	padding-top: 4px;
-
 	display: flex;
 	align-items: center;
 }
@@ -1111,10 +1113,13 @@ font-size: 14px;
 .logout_btn_box {
 	height: 40px;
 	margin: 8px 0;
-	padding: 8px 16px;
-
 	display: flex;
 	align-items: center;
 
 	cursor: pointer;
+}
+.logout_btn_box a{
+	width: 100%;
+	height: 100%;
+	padding: 8px 16px;
 }

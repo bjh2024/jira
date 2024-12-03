@@ -125,6 +125,11 @@ document
     });
   });
 
+// project/create 이동
+document.querySelector(".project_craete_anchor").addEventListener("click", function(e){
+	location.href = "/project/create";
+});
+  
 // 프로젝트, 필터, 대시보드
 document.querySelectorAll(".view_under_box_btn").forEach(function (btn) {
   btn.addEventListener("click", function (e) {

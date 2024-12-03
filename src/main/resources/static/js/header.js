@@ -48,9 +48,7 @@ document.querySelector(".rable_filtering input").addEventListener("click", funct
 	document.querySelector(".rable_content_box").classList.toggle("show");
 })
 
-
-
-let datas = {
+let headerInputDatas = {
 	"startDate": null,
 	"endDate": null,
 	"projectIdxArr": [],
@@ -60,7 +58,6 @@ let datas = {
 }
 
 function fetchInput() {
-	console.log(datas);
 	// fetch()를 사용하여 AJAX 요청
 	let url = "/api/header/filter";
 	fetch(url, {
@@ -68,11 +65,10 @@ function fetchInput() {
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(datas)
+		body: JSON.stringify(headerInputDatas)
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueList => {
-			console.log(issueList);
 			// div 교체
 			document.querySelector(".input_recent_dynamic").classList.add("show");
 			document.querySelector(".input_recent_box1").classList.remove("show");
@@ -151,8 +147,8 @@ document.querySelectorAll(".last_update_box>ul>li").forEach(function(li) {
 		startDate = startDate.toISOString();
 		endDate = endDate.toISOString();
 
-		datas.startDate = startDate;
-		datas.endDate = endDate;
+		headerInputDatas.startDate = startDate;
+		headerInputDatas.endDate = endDate;
 		fetchInput();
 
 	});
@@ -212,14 +208,11 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 					}
 				}
 			}
-			datas.projectIdxArr = projectIdxArr;
-			datas.managerIdxArr = managerIdxArr;
-			datas.statusArr = statusArr;
+			console.log(projectIdxArr);
+			headerInputDatas.projectIdxArr = projectIdxArr;
+			headerInputDatas.managerIdxArr = managerIdxArr;
+			headerInputDatas.statusArr = statusArr;
 			fetchInput();
 		});
 	});
 });
-
-
-
-

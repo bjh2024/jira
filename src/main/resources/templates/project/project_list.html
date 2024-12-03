@@ -17,8 +17,8 @@
 	</div>
 	<div class="project_list_filter_box">
 		<div class="input_box">
-			<input type="text" placeholder="프로젝트 검색" />
 			<img th:src="@{/images/search_icon.svg}" alt="" width="16" height="16" />
+			<input type="text" placeholder="프로젝트 검색" />
 		</div>
 		<div class="input_box">
 			<input type="text" placeholder="제품별 필터링" />
@@ -36,67 +36,75 @@
 				<col width="7%" />
 				<col width="8%" />
 			</colgroup>
-			<tr>
-				<th>
-					<button>
-						<img th:src="@{/images/star_icon_black.svg}" class="like_icon" alt="" width="16" height="16" />
-						<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon" alt="" width="16" height="16" />
-					</button>
-				</th>
-				<th>
-					<button>
-						이름
-						<img th:src="@{/images/arrow_tail_bottom_icon.svg}" alt="" width="16" height="16" />
-					</button>
-				</th>
-				<th>
-					<button>
-						키
-						<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon left" alt="" width="16"
-							height="16" />
-					</button>
-				</th>
-				<th>유형</th>
-				<th>
-					<button>
-						리더
-						<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon left" alt="" width="16"
-							height="16" />
-					</button>
-				</th>
-				<th>프로젝트<br /><b>URL</b></th>
-				<th>추가 작업</th>
-			</tr>
-			<tr>
-				<td>
-					<button><img th:src="@{/images/star_icon_empty.svg}" alt="" /></button>
-				</td>
-				<td>
-					<a href="#">
-						<img class="css-1vqlrw"
-							src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424?size=medium"
-							alt="" width="24" height="24" />
-						hihihihi
-					</a>
-				</td>
-				<td>HIH</td>
-				<td>팀에서 관리하는 비즈니스</td>
-				<td>
-					<a href="#">
-						<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-							alt="" class="css-1gr7gcv" style="border-radius: 50%" width="24" height="24" />
-						김대완
-					</a>
-				</td>
-				<td></td>
-				<td>
-					<div>
-						<div class="img_box">
-							<img th:src="@{/images/three_dots_row_icon.svg}" alt="" />
+			<thead>
+				<tr>
+					<th>
+						<button>
+							<img th:src="@{/images/star_icon_black.svg}" class="like_icon" alt="" width="16"
+								height="16" />
+							<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon" alt="" width="16"
+								height="16" />
+						</button>
+					</th>
+					<th>
+						<button>
+							이름
+							<img th:src="@{/images/arrow_tail_bottom_icon.svg}" alt="" width="16" height="16" />
+						</button>
+					</th>
+					<th>
+						<button>
+							키
+							<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon left" alt="" width="16"
+								height="16" />
+						</button>
+					</th>
+					<th>유형</th>
+					<th>
+						<button>
+							리더
+							<img th:src="@{/images/arrow_tail_bottom_icon.svg}" class="sort_icon left" alt="" width="16"
+								height="16" />
+						</button>
+					</th>
+					<th>프로젝트<br /><b>URL</b></th>
+					<th>추가 작업</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="project : ${projectListIsLike}">
+					<td>
+						<button>
+							<img th:src="@{|/images/${project.isLike ? 'star_icon_yellow.svg' : 'star_icon_empty.svg'}|}" alt="" width="16" height="16" />
+						</button>
+					</td>
+					<td>
+						<a href="#">
+							<img th:src="@{|/images/${project.projectIconFilename}|}"
+								alt="" width="24" height="24" />
+							<span th:text="${project.projectName}"></span>
+						</a>
+					</td>
+					<td th:text="${project.projectKey}"></td>
+					<td>팀에서 관리하는 비즈니스</td>
+					<td>
+						<a href="#">
+							<img th:src="@{|/images/${project.accountIconFilename}|}"
+								alt=""
+								style="border-radius: 50%" width="24" height="24" />
+							<span th:text="${project.accountName}"></span>
+						</a>
+					</td>
+					<td></td>
+					<td>
+						<div>
+							<div class="img_box">
+								<img th:src="@{/images/three_dots_row_icon.svg}" alt="" width="16" height="16" />
+							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 	<div class="project_list_paging_box">
@@ -112,6 +120,7 @@
 			<img th:src="@{/images/paging_right_icon.svg}" alt="" />
 		</button>
 	</div>
-<script th:src="@{/js/project_list.js}"></script>
+	<script th:src="@{/js/project_list.js}"></script>
 </div>
+
 </html>
