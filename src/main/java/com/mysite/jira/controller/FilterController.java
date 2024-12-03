@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
+import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
@@ -89,8 +90,8 @@ public class FilterController {
 			List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
 			model.addAttribute("issueStatus", issueStatus);
 			
-			List<JiraMembers> account = accountService.getByJiraIdx(jiraIdx);
-			model.addAttribute("account", account);
+			List<ManagerDTO> ManagerDTO = issueService.getManagerIdxAndNameByJiraIdx(jiraIdx);
+			model.addAttribute("account", ManagerDTO);
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -10,11 +10,13 @@ public class ManagerDTO {
 
 	private Integer managerIdx;
 	private String managerName;
+	private String managerIconFilename;
 	
 	@Builder
-	public ManagerDTO(Integer managerIdx, String managerName) {
+	public ManagerDTO(Integer managerIdx, String managerName, String managerIconFilename) {
 		this.managerIdx = managerIdx;
 		this.managerName = managerName;
+		this.managerIconFilename = managerIconFilename;
 	}
 
 }

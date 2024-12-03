@@ -20,8 +20,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 			 @Param("jiraIdx") Integer jiraIdx);
 	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
-	
-	
 	@Query("""
 			SELECT DISTINCT a.idx, a.name
 			FROM Issue i left JOIN Account a
@@ -29,19 +27,20 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 			where i.jira.idx = :jiraIdx
 			""")
 	List<Object[]> findManagerIdxAndNameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
-	
-	
 	@Query("""
-			SELECT i
-			FROM Issue i
-			WHERE manager.idx is null
-			or manager.idx in :managerIdxArr
+			SELECT distinct nvl(a.idx,0), nvl(a.name,'할당되지 않음'), nvl(a.iconFilename, 'default_icon_file.png')
+			FROM Issue i left join Account a
+			on i.manager.idx = a.idx
+			where i.jira.idx = :jiraIdx
 			""")
-	List<Issue> findByManagerIdxNullIn(@Param("managerIdxArr") List<Integer> managerIdxArr);
+	List<Object[]> findByManagerIdxNullIn(@Param("jiraIdx") Integer jiraIdx);
+	
+	List<Issue> findByManagerNameIn(String[] name);
+	
+	List<Issue> findByManagerIsNull();
 	
 	// bjh
 	List<Issue> findByIssueTypeNameIn(String[] name);
-	
 	//bjh
 	List<Issue> findByIssueStatusNameIn(String[] name);
 	

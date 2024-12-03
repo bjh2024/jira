@@ -248,14 +248,14 @@
 										</div>
 										<div class="filter_issue_project_div_3" th:each="account : ${account}">
 											<div style="height: 13px; margin-left: 6px;">
-												<input type="checkbox" name="issueManager" th:value="${account.account.idx}"></div>
+												<input type="checkbox" name="issueManager" th:value="${account.managerName}"></div>
 											<div style="height: 16px; margin-left: 12px;">
 												<img width="16" height="16"
-													th:src="@{|/images/${account.account.iconFilename}|}"
+													th:src="@{|/images/${account.managerIdx != 0 ? account.managerIconFilename : 'default_icon_file.png'}|}"
 													style="border-radius: 2px;">
 											</div>
 											<div style="margin-left: 8px; font-size: 14px;"
-												th:text="${account.account.name}"></div>
+												th:text="${account.managerIdx != 0 ? account.managerName : '할당되지 않음'}"></div>
 										</div>
 									</div>
 

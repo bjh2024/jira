@@ -1,5 +1,6 @@
 package com.mysite.jira.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,29 +35,32 @@ public class IssueService {
 		return result;
 	}
 	
-	public List<Issue> getIssuesByManagerIdxIn(List<Integer> idx) {
-	    // idx가 null이거나 빈 리스트일 경우 빈 리스트를 반환
-	    if (idx == null || idx.isEmpty()) {
-	        return new ArrayList<>(); // 빈 리스트 반환
-	    }
-
-	    return issueRepository.findByManagerIdxNullIn(idx);
+	public List<Issue> getByManagerIdxIn(Integer[] idx){
+		return issueRepository.findByManagerIdxIn(idx);
 	}
-
 	
 	public List<ManagerDTO> getManagerIdxAndNameByJiraIdx(Integer idx){
 		List<ManagerDTO> managerList = new ArrayList<>();
 		
-		List<Object[]> managerListObject = issueRepository.findManagerIdxAndNameByJiraIdx(idx);
+		List<Object[]> managerListObject = issueRepository.findByManagerIdxNullIn(idx);
 		 for (Object[] result : managerListObject) {
-			 	Integer managerIdx= (Integer) result[0]; 
+			 	Integer managerIdx=((BigDecimal)result[0]).intValue(); 
 	            String name = (String) result[1]; 
-	            
+	            String iconFilename = (String) result[2];
 	            // DTO 객체 생성
-	            ManagerDTO managerDTO = new ManagerDTO(managerIdx, name);
+	            ManagerDTO managerDTO = new ManagerDTO(managerIdx, name, iconFilename);
 	            // DTO 객체를 List에 추가
 	            managerList.add(managerDTO);
 	        }
 		return managerList;
 	}
+	
+	public List<Issue> getByManagerNameIn(String[] name){
+		return issueRepository.findByManagerNameIn(name);
+	}
+	
+	public List<Issue> getByManagerNull(){
+		return issueRepository.findByManagerIsNull();
+	}
+	
 }
