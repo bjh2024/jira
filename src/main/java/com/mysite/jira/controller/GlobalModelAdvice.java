@@ -46,9 +46,9 @@ public class GlobalModelAdvice {
 	
 	private final LikeService likeService;
 	
-	@PreAuthorize("isAuthenticated()")
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
+		if(principal == null) return;
 		String uri = request.getRequestURI(); 
 		Account currentUser = this.accountService.getAccountByEmail(principal.getName());
 		// 가져올 값들

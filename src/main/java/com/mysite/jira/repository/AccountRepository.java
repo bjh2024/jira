@@ -26,5 +26,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 			ORDER BY count(i.idx) DESC, i.manager.idx
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
+
+	//kdw 
 	Optional<Account> findByEmail(String email);
 }
