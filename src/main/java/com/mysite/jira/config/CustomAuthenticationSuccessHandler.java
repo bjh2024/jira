@@ -14,7 +14,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	// 로그인 성공시 호출 메서드
 	// 로그인 성공시 jiraIdx 암호화 세션 저장(가장 최근에 방문한)
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
+	public void onAuthenticationSuccess(HttpServletRequest request, 
+										HttpServletResponse response, 
+										Authentication authentication) throws IOException, ServletException{
+		
+		
 		
 	}
 		

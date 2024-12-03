@@ -50,6 +50,7 @@ public class GlobalModelAdvice {
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI(); 
 		if(principal == null) return;
+		
 		// 현재 로그인한 계정 정보
 	    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
 		// 가져올 값들

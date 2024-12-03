@@ -26,7 +26,7 @@ public class MyWorkController {
 
 	private final LikeService likeService;
 	
-	@GetMapping("/")
+	@GetMapping("/{userId}")
 	public String filter(Model model) {
 		Integer jiraIdx = 1;
 		Integer accountIdx = 1;

@@ -25,7 +25,7 @@ public class SecurityConfig {
             .requestMatchers("/account/**").permitAll() 
             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
             .anyRequest().authenticated()
-        ) 
+        )
         .headers((headers) -> headers
             .addHeaderWriter(new XFrameOptionsHeaderWriter(
                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
