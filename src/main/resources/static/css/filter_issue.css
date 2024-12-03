@@ -358,6 +358,10 @@ div::-webkit-scrollbar {
 	padding: 8px;
 	margin:2px;
 }
+.issue_box_choice.active {
+	background-color: #E9F2FE;
+	color : #1868DB;
+}
 .issue_box_choice:hover {
 	background-color: #0515240C;
 	cursor: pointer;

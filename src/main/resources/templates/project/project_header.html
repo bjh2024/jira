@@ -13,7 +13,7 @@
 					<div>
 						<span class="header-titleimg">
 							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=xlarge"
-								alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
+								alt="">
 						</span>
 					</div>
 					<div>
@@ -31,7 +31,7 @@
 		</div>
 		<nav class="header-menubar">
 			<div class="menu-icon-box">
-				<a th:href="@{/project/summation}">
+				<a th:href="@{|/${currentJira}/project/${project.key}/summation|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/summation_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -41,7 +41,7 @@
 			</div>
 			<div class="menu-icon-box"
 				style="border-bottom: 2px solid #44546f; padding-bottom: 3px; padding-right: 4px;">
-				<a th:href="@{/project/board_main}">
+				<a th:href="@{|/${currentJira}/project/${project.key}/board_main|}">
 					<span class="menu-icon" style="width: 24px; margin-bottom: 5px;">
 						<img th:src="@{/images/board_icon.svg}"
 							style="width: 24px; filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -50,7 +50,7 @@
 				</a>
 			</div>
 			<div class="menu-icon-box">
-				<a th:href="@{/project/chart}">
+				<a th:href="@{|/${currentJira}/project/${project.key}/chart|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/list_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -59,7 +59,7 @@
 				</a>
 			</div>
 			<div class="menu-icon-box">
-				<a th:href="@{/project/attached_files}">
+				<a th:href="@{|/${currentJira}/project/${project.key}/attached_files|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/attachment_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">

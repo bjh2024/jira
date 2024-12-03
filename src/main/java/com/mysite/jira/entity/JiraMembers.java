@@ -1,5 +1,8 @@
 package com.mysite.jira.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +23,9 @@ public class JiraMembers {
 	@SequenceGenerator(name = "jira_members_seq", sequenceName = "jira_members_seq", allocationSize = 1)
 	private Integer idx;
 	
+	@Column
+	private LocalDateTime clickedDate;
+	
 	@ManyToOne
 	private Jira jira;
 	
@@ -27,8 +33,9 @@ public class JiraMembers {
 	private Account account;
 	
 	@Builder
-	public JiraMembers(Jira jira, Account account) {
+	public JiraMembers(Jira jira, Account account, LocalDateTime clickedDate) {
 		this.jira = jira;
 		this.account = account;
+		this.clickedDate = clickedDate;
 	}
 }

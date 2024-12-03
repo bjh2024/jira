@@ -29,6 +29,9 @@ public class ProjectRecentClicked {
 	@ManyToOne
 	private Project project;
 	
+	@ManyToOne
+	private Jira jira;
+	
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;

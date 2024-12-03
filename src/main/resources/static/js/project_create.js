@@ -57,7 +57,7 @@ moreBtnBox.addEventListener("click", function(){
 	check = !check;
 	if(check){
 		moreBox.classList.add("show");
-		img.src="/images/arrow_bottom_icon.svg"
+		img.src="/images/arrow_under_icon.svg"
 		button.innerText = "간략히 보기";
 	}else{
 		moreBox.classList.remove("show");

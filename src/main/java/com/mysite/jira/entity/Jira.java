@@ -48,15 +48,36 @@ public class Jira {
 	// 대시보드 FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<Dashboard> dashbaordList;
-	
+	// 소문자 고침
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
-	private List<JiraMembers> JiraMembersList;
+	private List<JiraMembers> jiraMembersList;
 	
 	// Filter FK 추가
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
 	private List<Filter> filterList;
 	
 	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
-	private List<Issue> issueList; 
+	private List<Issue> issueList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<ProjectRecentClicked> projectRecentClickedList; 
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<IssueRecentClicked> issueClickedList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<DashboardRecentClicked> dashboardClickedList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE)
+	private List<FilterRecentClicked> filterClickedList;
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<ProjectRecentClicked> projectClickedList; 
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<DashboardRecentClicked> dashClickedList; 
+	
+	@OneToMany(mappedBy = "jira", cascade = CascadeType.REMOVE) 
+	private List<IssueLabel> issueLabelList;
 
 }

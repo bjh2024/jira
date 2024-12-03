@@ -24,7 +24,7 @@ public class IssueLabelData {
 	
 	@ManyToOne
 	private Issue issue; 
-
+	
 	@Builder
 	public IssueLabelData(IssueLabel issueLabel, Issue issue) {
 		this.issueLabel = issueLabel;

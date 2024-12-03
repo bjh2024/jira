@@ -17,6 +17,10 @@ function filterBoxReset() {
     ?.classList.remove("show");
   document.querySelector(".filter_select_result_item > span").innerText =
     "전체";
+	
+	document.querySelector(".like_content_list").classList.add("show");
+	document.querySelector(".like_content_dynamic.show")?.classList.remove("show");
+	
 }
 
 // 최근, 별표 표시됨
@@ -57,6 +61,7 @@ document.querySelector("body").addEventListener("click", function (e) {
   prevRightBtn = rightBoxBtn;
 });
 
+// 별표 표시됨 필터박스
 document
   .querySelectorAll(".like_filter_box > button")
   .forEach(function (btn, idx) {
@@ -75,13 +80,57 @@ document
         filterSelectBox.classList.add("show");
         filterSelectBox.querySelector("span").innerText =
           this.querySelector("span").innerText;
-      } else {
-        filterContainer.classList.remove("active");
-        filterSelectBox.classList.remove("show");
+		  
+		  let url = "";
+		  if(this.querySelector("span").innerText == "보드"){
+			document.querySelector(".like_content_list").classList.add("show");
+			document.querySelector(".like_content_dynamic.show")?.classList.remove("show");
+			return;
+		  }else if(this.querySelector("span").innerText == "필터"){
+		  	url = "/api/aside/like/filter"
+		  }else if(this.querySelector("span").innerText == "대시보드"){
+		    url = "/api/aside/like/dashboard"
+		  }else if(this.querySelector("span").innerText == "프로젝트"){
+			url = "/api/aside/like/project"
+		  }
+		  
+		  fetch(url,{method: "GET"})
+		  .then(res => res.json())
+		  .then(res => {
+				document.querySelector(".like_content_list.show")?.classList.remove("show");
+		 		document.querySelector(".like_content_dynamic").classList.add("show");
+				
+				const dynamicContainer = document.querySelector(".like_content_dynamic");
+				dynamicContainer.innerHTML = "";
+				res.forEach(function(item){
+					const aElement = document.createElement("a");
+					aElement.classList.add("like_item_box", "accent_btn");
+					aElement.innerHTML = `
+									<div class="accent_border"></div>
+									<div class="like_item">
+										<img src="/images/${item.iconFilename}" alt="" width="24" height="24" />
+										<span>${item.name}</span>
+									</div>
+									<button class="img_box">
+										<img src="/images/star_icon_yellow.svg" alt="" width="16" height="16" />
+									</button>`
+					dynamicContainer.appendChild(aElement);
+				});
+		  }).catch(error => {
+		    console.error("Fetch error:", error);
+		  });
+      } else {// 전체 버튼 클릭시
+		filterBoxReset();
       }
     });
   });
 
+// project/create 이동
+function goProjectCreatePage(element){
+	let jiraName = element.getAttribute("data-jira-name");
+	location.href = `${jiraName}/project/create`;
+}
+  
 // 프로젝트, 필터, 대시보드
 document.querySelectorAll(".view_under_box_btn").forEach(function (btn) {
   btn.addEventListener("click", function (e) {

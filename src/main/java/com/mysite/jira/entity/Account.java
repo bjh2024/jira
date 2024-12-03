@@ -62,6 +62,11 @@ public class Account {
 		this.authCode = authCode;
 		this.codeExpDate = LocalDateTime.now().plusMinutes(3);
 	}
+	
+	public void updateAccount() {
+		this.authCode = null;
+		this.codeExpDate = null;
+	}
 
 	// 지라 생성자 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
@@ -159,4 +164,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<DashboardRecentClicked> dashClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<FilterRecentClicked> filterClickedList;
 }

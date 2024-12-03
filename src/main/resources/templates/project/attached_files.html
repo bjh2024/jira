@@ -154,9 +154,9 @@
 			</div>
 		</div>
 		<div class="attached-files-body-container">
-			<div class="attached-file-box">
+			<div class="attached-file-box" th:each="file : ${fileList}">
 				<div class="attached-file-preview">
-					<img class="file-previewimg" th:src="@{/images/스크린샷 2024-10-02 시간_ 23.43.55.png}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
+					<img class="file-previewimg" th:src="@{|/attached_files/${file.name}|}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
 				</div>
 				<div class="attached-file-options">
 					<button class="attached-file-btn">
@@ -168,77 +168,56 @@
 				</div>
 				<div class="attached-file-line"></div>
 				<div class="attached-file-detail">
-					<div class="attached-file-title">스크린샷 2024-10-02 시간_23.43.55.png</div>
+					<div class="attached-file-title" th:text="${file.name}"></div>
 					<div class="attached-file-affiliation">
-						<span style="height: 16px;"><img th:src="@{/images/task_issue.svg}"></span>
-						<span style="letter-spacing: -0.5px;">TSYR-26</span>
-						<span style="margin-bottom: 2px;">남다현</span>
+						<span style="height: 16px;"><img th:src="@{|/images/${file.issue.issueType.iconFilename}|}"></span>
+						<span style="letter-spacing: -0.5px;" th:text="${file.issue.key}"></span>
+						<span style="margin-bottom: 2px;" th:text="${file.issue.name}"></span>
+					</div>
+				</div>
+				<div class="file-detail-container">
+					<div class="file-detail-header">
+						<div class="file-detail-title">
+							<div class="file-detail-img">
+								<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="#ffab00" fill-rule="evenodd" d="M3 0h18a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3m7 17-1.293-1.293a1 1 0 0 0-1.414 0L4 19h16v-3.6l-3.295-3.624a1 1 0 0 0-1.447-.034zm-3.333-6.667a2.667 2.667 0 1 0 0-5.333 2.667 2.667 0 0 0 0 5.333"></path></svg>
+							</div>
+							<div class="file-detail-text">
+								<div style="margin-bottom: 2px;" th:text="${file.name}"></div>
+								<div>ㅠㅠ</div>
+							</div>
+						</div>
+						<div class="file-detail-btnbar">
+							<button class="file-download-btn">
+								<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/download_icon.svg}">
+							</button>
+							<button class="file-exit-btn">
+								<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/cancel_icon.svg}">
+							</button>
+						</div>
+					</div>
+					<div class="file-detail-body">
+						<img class="file-detail" th:src="@{|/attached_files/${file.name}|}">
+					</div>
+					<div class="file-detail-footer">
+						<div class="footer-resize-bar">
+							<div class="footer-risize-btns">
+								<button>
+									<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/resize_small_icon.svg}">
+								</button>
+								<button>
+									<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/resize_big_icon.svg}">
+								</button>
+							</div>
+						</div>
+						<div class="footer-percent">
+							100 %
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="attached-file-box">
-				<div class="attached-file-preview">
-					
-				</div>
-				<div class="attached-file-options">
-					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/download_icon.svg}"></span>
-					</button>
-					<button class="attached-file-btn">
-						<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/file_trash_icon.svg}"></span>
-					</button>
-				</div>
-				<div class="attached-file-line"></div>
-				<div class="attached-file-detail">
-					<div class="attached-file-title">7계층.txt</div>
-					<div class="attached-file-affiliation">
-						<span style="height: 16px;"><img th:src="@{/images/task_issue.svg}"></span>
-						<span style="letter-spacing: -0.5px;">TSYR-26</span>
-						<span style="margin-bottom: 2px;">남다현</span>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
-<div class="file-detail-container">
-	<div class="file-detail-header">
-		<div class="file-detail-title">
-			<div class="file-detail-img">
-				<svg width="24" height="24" viewBox="0 0 24 24" role="presentation"><path fill="#ffab00" fill-rule="evenodd" d="M3 0h18a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3m7 17-1.293-1.293a1 1 0 0 0-1.414 0L4 19h16v-3.6l-3.295-3.624a1 1 0 0 0-1.447-.034zm-3.333-6.667a2.667 2.667 0 1 0 0-5.333 2.667 2.667 0 0 0 0 5.333"></path></svg>
-			</div>
-			<div class="file-detail-text">
-				<div style="margin-bottom: 2px;">스크린샷 2024-10-02 시간: 23.43.55.png</div>
-				<div>이미지 · 71 KB</div>
-			</div>
-		</div>
-		<div class="file-detail-btnbar">
-			<button class="file-download-btn">
-				<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/download_icon.svg}">
-			</button>
-			<button class="file-exit-btn">
-				<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/cancel_icon.svg}">
-			</button>
-		</div>
-	</div>
-	<div class="file-detail-body">
-		<img class="file-detail" th:src="@{/images/스크린샷 2024-10-02 시간_ 23.43.55.png}">
-	</div>
-	<div class="file-detail-footer">
-		<div class="footer-resize-bar">
-			<div class="footer-risize-btns">
-				<button>
-					<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/resize_small_icon.svg}">
-				</button>
-				<button>
-					<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/resize_big_icon.svg}">
-				</button>
-			</div>
-		</div>
-		<div class="footer-percent">
-			100 %
-		</div>
-	</div>
-</div>
+
 <script th:src="@{/js/attached_files.js}"></script>
 </div>
 </html>

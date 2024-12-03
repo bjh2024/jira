@@ -2,10 +2,10 @@ body {
 	overflow: hidden;
 }
 
-.login-container {
+.signup-container {
 	text-align: center;
 	width: 400px;
-	height: 700px;
+	padding: 20px 0px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
 	background-color: white;
 	border-radius: 4px;
@@ -15,15 +15,11 @@ body {
 	transform: translate(-50%, -50%);
 }
 
-.login-header {
-	margin-top: 30px;
-}
-
 .top-logo {
 	margin-bottom: 16px;
 }
 
-.login-text {
+.signup-text {
 	font-weight: bold;
 	color: black;
 	letter-spacing: -0.01em;
@@ -48,6 +44,10 @@ body {
 	padding-left: 5px;
 }
 
+.form-label{
+	display: none;
+}
+
 .borderline:focus {
 	border: 2px solid #0C66E4;
 	outline: none;
@@ -65,6 +65,15 @@ body {
 	text-align: center;
 	font-size: 14px;
 	padding-bottom: 2px;
+}
+
+.alert.alert-danger{
+	width: 331px;
+	margin: -8px auto 0px auto;
+	color: #AE2E24;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: left;
 }
 
 .social-btn {

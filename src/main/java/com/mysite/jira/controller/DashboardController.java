@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/dashboard")
+@RequestMapping("/{jiraName}/dashboard")
 public class DashboardController {
 
 	@GetMapping("/list")
