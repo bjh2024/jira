@@ -142,7 +142,7 @@ public class Issue {
 		this.projectLogDataList = projectLogDataList;
 	}
 	
-//	public void updateIssueStatus(IssueStatus newStatus) {
-//		this.issueStatus = newStatus;
-//	}
+	public void updateIssueStatus(IssueStatus newStatus) {
+		this.issueStatus = newStatus;
+	}
 }

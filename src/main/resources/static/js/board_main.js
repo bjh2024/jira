@@ -188,7 +188,8 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 			
 			container.classList.add("show");
 		}else{
-			container.classList.remove("show");
+			// container.classList.remove("show");
+			location.reload(true);
 			/*if(e.target.closest(".subissue-list-rightdetail") !== null){
 				container.classList.add("show");	
 			}*/
@@ -299,95 +300,116 @@ document.querySelectorAll(".subissue-list").forEach(function(list, index){
 	});
 });
 
-document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
-	btn.addEventListener("click", function(e){
-		if(e.target.closest(".issuedetail-statuswindow") !== null){
-			return;
-		}
-		btn.children[0].classList.toggle("show");
+let statusDatas = {
+	"issueIdx": "",
+	"statusIdx": ""
+}
+
+function updateStatusfetch(btn){
+	let url = "/api/project/update_current_status";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(statusDatas)
 	})
+	.then(response => response.json())
+	.then(newStatus => {
+		btn.className = '';
+		btn.classList.add("issuedetail-statusbtn");
+		if(newStatus.status == 1){
+			btn.classList.add("status1");
+		}else if(newStatus.status == 2){
+			btn.classList.add("status2");
+		}else if(newStatus.status = 3){
+			btn.classList.add("status3");
+		}
+		btn.children[1].innerText = newStatus.name;
+	}).catch(error => {
+			console.error("Fetch error:", error);
+		});
+}
+
+let currentStatus = {
+	"projectIdx" : "",
+	"statusIdx" : ""
+}
+
+function fetchStatusList(){
+	let url = "/api/project/get_status_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(currentStatus)
+	})
+	.then(response => response.json())
+	.then(statusList => {
+		document.querySelectorAll(".statuswindow-menubox").forEach(function(box){
+			box.innerHTML = "";
+			
+			statusList.forEach(function(status){
+				const statusVal = document.createElement("div");
+				statusVal.classList.add("statuswindow-status");
+				
+				const statusTitle = document.createElement("span");
+				statusTitle.classList.add("statuswindow-title");
+				statusTitle.innerHTML = `${status.name}`;
+				if(status.status == 1){
+					statusTitle.classList.add("status1");
+				}else if(status.status == 2){
+					statusTitle.classList.add("status2");
+				}else if(status.status = 3){
+					statusTitle.classList.add("status3");
+				}
+				statusVal.appendChild(statusTitle);
+				statusVal.innerHTML += `<input type="hidden" class="send-status-value" value="${status.idx}">`;
+				box.appendChild(statusVal);
+				statusVal.addEventListener("click", function(e){
+					statusDatas.statusIdx = `${status.idx}`;
+					statusDatas.issueIdx = box.parentElement.parentElement.querySelector(".send-status-issueidx").value;
+					console.log(statusDatas.statusIdx);
+					const btn = box.parentElement.parentElement;
+					updateStatusfetch(btn);
+				});
+			});
+			
+			/*box.querySelectorAll(".statuswindow-status").forEach(function(status){
+				status.addEventListener("click", function(e){
+					statusDatas.statusIdx = box.parentElement.parentElement.querySelector(".send-status-value").value;
+					statusDatas.issueIdx = box.parentElement.parentElement.querySelector(".send-status-issueidx").value;
+					console.log(statusDatas.statusIdx);
+					updateStatusfetch();
+				});
+			});*/
+		});
+	}).catch(error => {
+			console.error("Fetch error:", error);
+		});
+}
+
+document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
+	/*btn.querySelectorAll(".statuswindow-status").forEach(function(status){
+		status.addEventListener("click", function(e){
+			statusDatas.statusIdx = status.querySelector(".send-status-value").value;
+			statusDatas.issueIdx = status.querySelector(".send-status-issueidx").value;
+			console.log("저기요ㅆㅂ");
+			updateStatusfetch();
+		});
+	});*/
+	
+	btn.addEventListener("click", function(e){
+		btn.children[0].classList.toggle("show");
+		
+		if(btn !== null && e.target.closest(".issuedetail-statuswindow") == null){
+			currentStatus.projectIdx = btn.querySelector(".current-status-projectidx").value;
+			currentStatus.statusIdx = btn.querySelector(".current-status-value").value;
+			fetchStatusList();
+		}
+	});
 });
-
-/*// Event listener for status change
-document.querySelectorAll('.statuswindow-status').forEach(statusElement => {
-    statusElement.addEventListener('click', function (event) {
-        // Get the clicked statuswindow-title element
-        const titleElement = event.target.closest('.statuswindow-status').querySelector('.statuswindow-title');
-
-        if (titleElement !== null) {
-            // Extract data attributes
-            const projectIdx = titleElement.getAttribute('data-project-idx');
-            const issueIdx = titleElement.getAttribute('data-issue-idx');
-            const newStatus = titleElement.getAttribute('data-issue-status');
-
-            // Construct the payload for the update request
-            const payload = {
-                projectIdx: projectIdx,
-                issueIdx: issueIdx,
-                status: newStatus
-            };
-
-            // Make an AJAX request to update the status
-            fetch('/api/project/updateStatus', {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(statusList => {
-                console.log('Update successful:', data);
-
-                // Optional: Update the UI to reflect the new status
-                const statusButton = statusElement.parentElement.parentElement.parentElement.children[1];
-                statusButton.textContent = titleElement.textContent; // Update the button's displayed status
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-            // Toggle the visibility of the status window
-            const statusWindow = titleElement.closest('.issuedetail-statuswindow');
-            if (statusWindow) {
-                statusWindow.classList.toggle('show');
-            }
-        }
-    });
-});*/
-
-
-/*document.querySelectorAll('.statuswindow-status').forEach(function(statusElement) {
-        statusElement.addEventListener('click', function() {
-            // 클릭한 statuswindow-status에서 상태 정보 가져오기
-            const titleElement = statusElement.querySelector('.statuswindow-title');
-            const status = titleElement.getAttribute('data-status');
-            const statusName = titleElement.getAttribute('data-status-name');
-			
-            // 상태에 따른 클래스를 설정
-            let statusBtn = statusElement.parentNode.parentNode.parentNode;
-			
-            // 기존의 상태 클래스를 제거
-            statusBtn.classList.remove('status1', 'status2', 'status3');
-			
-            // 새로운 상태 클래스를 추가
-            if (status == 1) {
-                statusBtn.classList.add('status1');
-            } else if (status == 2) {
-                statusBtn.classList.add('status2');
-            } else if (status == 3) {
-                statusBtn.classList.add('status3');
-            }
-
-            // 버튼 내부 텍스트를 업데이트 (선택한 상태 이름)
-            statusBtn.children[1].innerHTML = statusName;
-
-            // issuedetail-statuswindow 클래스에 show 토글
-            const statusWindow = statusElement.parentNode.parentNode;
-            statusWindow.classList.toggle('show');
-        });
-    });*/
-
 
 document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){

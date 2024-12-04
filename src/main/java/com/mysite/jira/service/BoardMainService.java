@@ -74,8 +74,13 @@ public class BoardMainService {
 		return this.issueStatusRepository.findGroupByIssueStatusWithJPQL(idx);
 	}
 	
-	public Optional<IssueStatus> getOnceIssueStatus(Integer idx) {
-		return this.issueStatusRepository.findById(idx);
+	public IssueStatus getOnceIssueStatus(Integer idx) {
+		Optional<IssueStatus> issueStatus = this.issueStatusRepository.findById(idx);
+		if(issueStatus.isPresent()) {
+			return issueStatus.get();
+		}
+		
+		return null;
 	}
 	
 	public List<IssueStatus> getIssueStatusByProjectIdxOrderByStatusAsc(Integer idx){
@@ -118,24 +123,13 @@ public class BoardMainService {
 		return this.projectMembersRepository.findAllByProjectIdx(idx);
 	}
 	
-//	@Transactional
-//	public void updateIssueStatus(Integer projectIdx, Integer issueIdx, IssueStatus issueStatus){
-//		Issue updatedIssue = issueRepository.findById(issueIdx).orElse(null);
-//		
-//		 if (issueStatus == null) {
-//			 throw new IllegalArgumentException("IssueStatus cannot be null");
-//		 }
-//		 
-//		 if(updatedIssue != null) {
-//			 updatedIssue.updateIssueStatus(issueStatus);
-//			 issueRepository.save(updatedIssue);
-//		 }
-//		
-//	}
-//	
-//	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
-//		List<IssueStatus> updatedStatusList = issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
-//		
-//		return updatedStatusList;
-//	}
+	public void updateStatus(Issue issue, IssueStatus issueStatus) {
+		issue.updateIssueStatus(issueStatus);
+		this.issueRepository.save(issue);
+	}
+
+	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
+		List<IssueStatus> updatedStatusList = issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
+		return updatedStatusList;
+	}
 }

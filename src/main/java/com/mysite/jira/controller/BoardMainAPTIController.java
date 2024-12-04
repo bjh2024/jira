@@ -3,18 +3,17 @@ package com.mysite.jira.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Optional;
-
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
+import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
-import com.mysite.jira.dto.board.UpdateStatusDTO;
+import com.mysite.jira.dto.board.StatusListDTO;
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.service.BoardMainService;
@@ -36,6 +35,36 @@ public class BoardMainAPTIController {
 			alterLabelList.add(dto);
 		}
 		return alterLabelList;
+	}
+	
+	@PostMapping("/get_status_list")
+	public List<StatusListDTO> getStatusList(@RequestBody GetCurrentStatusDTO getCurrentStatusDTO){
+		List<IssueStatus> statusList = boardMainService.getSortedIssueStatus(getCurrentStatusDTO.getProjectIdx(), getCurrentStatusDTO.getStatusIdx());
+		List<StatusListDTO> alterStatusList = new ArrayList<>();
+		for(int i = 0; i < statusList.size(); i++) {
+			IssueStatus status = statusList.get(i);
+			StatusListDTO dto = StatusListDTO.builder()
+								.idx(status.getIdx())
+								.name(status.getName())
+								.status(status.getStatus())
+								.build();
+			alterStatusList.add(dto);
+		}
+		return alterStatusList;
+	}
+	
+	@PostMapping("/update_current_status")
+	public StatusListDTO updateIssueStatus(@RequestBody GetStatusDataDTO getStatusDTO){
+		IssueStatus newStatus =	boardMainService.getOnceIssueStatus(getStatusDTO.getStatusIdx());
+		Issue currentIssue = boardMainService.getIssueByIdx(getStatusDTO.getIssueIdx());
+		boardMainService.updateStatus(currentIssue, newStatus);
+		
+		StatusListDTO dto = StatusListDTO.builder()
+							.idx(newStatus.getIdx())
+							.name(newStatus.getName())
+							.status(newStatus.getStatus())
+							.build();
+		return dto;
 	}
 	
 //	@PatchMapping("/updateStatus")

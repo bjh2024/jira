@@ -571,14 +571,7 @@
 								 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
 								 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
 								 										<div class="statuswindow-menubox">
-								 											<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
-								 													th:if="${orderedStatusList.idx != subextendsList.child.issueStatus.idx}">
-								 												<span class="statuswindow-title" th:text="${orderedStatusList.name}"
-								 												th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
-								 																+${orderedStatusList.status == 2 ? 'status2':''}
-								 																+${orderedStatusList.status == 3 ? 'status3':''}">
-								 												</span>
-								 											</div>
+																			<!--서브이슈, input 태그나 부모 버튼 클래스명 수정해야 할 곳-->
 								 										</div>
 								 									</div>
 								 									<span th:text="${subextendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
@@ -683,14 +676,7 @@
 								 								+${extendsList.child.issueStatus.status == 3 ? 'status3':''}">
 								 							<div class="issuedetail-statuswindow" style="left: 0px;">
 								 								<div class="statuswindow-menubox">
-								 									<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
-								 											th:if="${orderedStatusList.idx != extendsList.child.issueStatus.idx}">
-								 										<span class="statuswindow-title" th:text="${orderedStatusList.name}"
-								 										th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
-								 														+${orderedStatusList.status == 2 ? 'status2':''}
-								 														+${orderedStatusList.status == 3 ? 'status3':''}">
-								 										</span>
-								 									</div>
+								 									
 								 								</div>
 								 							</div>
 								 							<span style="margin-bottom: 3px;"
@@ -1064,14 +1050,7 @@
 						 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
 						 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
 						 										<div class="statuswindow-menubox">
-						 											<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
-						 													th:if="${orderedStatusList.idx != extendsList.child.issueStatus.idx}">
-						 												<span class="statuswindow-title" th:text="${orderedStatusList.name}"
-						 												th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
-						 																+${orderedStatusList.status == 2 ? 'status2':''}
-						 																+${orderedStatusList.status == 3 ? 'status3':''}">
-						 												</span>
-						 											</div>
+						 											<!--서브이슈, input 태그나 부모 버튼 클래스명 수정해야 할 곳-->
 						 										</div>
 						 									</div>
 						 									<span th:text="${extendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
@@ -1176,18 +1155,14 @@
 						 								+${issueList.issueStatus.status == 3 ? 'status3':''}">
 						 							<div class="issuedetail-statuswindow" style="left: 0px;">
 						 								<div class="statuswindow-menubox">
-						 									<div class="statuswindow-status" th:each="orderedStatusList : ${orderedStatusList}"
-						 											th:if="${orderedStatusList.idx != issueList.issueStatus.idx}">
-						 										<span class="statuswindow-title" th:text="${orderedStatusList.name}"
-						 										th:classappend="${orderedStatusList.status == 1 ? 'status1':''}
-						 														+${orderedStatusList.status == 2 ? 'status2':''}
-						 														+${orderedStatusList.status == 3 ? 'status3':''}">
-						 										</span>
-						 									</div>
+						 									
 						 								</div>
 						 							</div>
 						 							<span style="margin-bottom: 3px;"
 						 								th:text="${issueList.issueStatus.name}"></span>
+													<input type="hidden" class="current-status-value" th:value="${issueList.issueStatus.idx}">
+													<input type="hidden" class="current-status-projectidx" th:value="${issueList.issueStatus.project.idx}">
+													<input type="hidden" class="send-status-issueidx" th:value="${issueList.idx}">
 						 							<span style="margin-top: 1px; margin-left: 1px;">
 						 								<img th:src="@{/images/arrow_under_icon.svg}"
 						 									style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
