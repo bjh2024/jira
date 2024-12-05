@@ -793,10 +793,10 @@
 								 								</div>
 																<div class="issuedetail-graphval-date" >
 																	<div class="deadline-bg-box"
-																	th:classappend="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></div>
-																	<input type="text" class="datepicker dead" th:attr="data-issueidx=${issueList.idx}" 
-																	th:placeholder="${issueList.deadlineDate != null} ? ${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')} : '없음'">
-																	<span th:if="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime}" 
+																	th:classappend="${extendsList.child.deadlineDate != null && extendsList.child.deadlineDate < currentTime ? 'graphval-dead':''}"></div>
+																	<input type="text" class="datepicker dead" th:attr="data-issueidx=${extendsList.child.idx}" 
+																	th:placeholder="${extendsList.child.deadlineDate != null} ? ${#temporals.format(extendsList.child.deadlineDate, 'yyyy-MM-dd')} : '없음'">
+																	<span th:if="${extendsList.child.deadlineDate != null && issueList.deadlineDate < currentTime}" 
 																	style="height: 16px;position: absolute; top: 8px; right: 154px;">
 							 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
 							 										</span>
@@ -807,9 +807,7 @@
 								 									<span>Start date</span>
 								 								</div>
 																<div class="issuedetail-graphval-date">
-																	<form>
-																		<input type="text" class="datepicker" name="pickedDate" th:placeholder="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'">
-																	</form>
+																	<input type="text" class="datepicker start" th:attr="data-issueidx=${extendsList.child.idx}" th:placeholder="${extendsList.child.startDate != null} ? ${#temporals.format(extendsList.child.startDate, 'yyyy-MM-dd')} : '없음'">
 								 								</div>
 								 							</div>
 								 							<div class="issuedetail-graph">
@@ -1186,14 +1184,9 @@
 						 								<div class="issuedetail-graphtype">
 						 									<span>우선 순위</span>
 						 								</div>
-						 								<div class="issuedetail-graphval">
-						 									<div class="graphval-selectwindow">
-						 										<div class="graphvalwindow-value" th:each="orderedPriority : ${orderedPriorityList}"
-						 										th:if="${orderedPriority.idx != issueList.issuePriority.idx}">
-						 											<span style="height: 16px;"><img th:src="@{|/images/${orderedPriority.iconFilename}|}"></span>
-						 											<span th:text="${orderedPriority.name}"></span>
-						 										</div>
-						 									</div>
+						 								<div class="issuedetail-graphval priority" th:attr="data-issueidx=${issueList.idx}, 
+														data-priorityidx=${issueList.issuePriority.idx}, data-iconfilename=${issueList.issuePriority.iconFilename}">
+						 									<div class="graphval-selectwindow"></div>
 						 									<span style="margin-top: 2px;"><img
 						 											th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"
 						 											width="16px" height="16px"></span>

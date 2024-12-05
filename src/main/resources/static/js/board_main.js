@@ -9,7 +9,7 @@ document.querySelectorAll(".editor").forEach(function(editor, index){
 	  });
 });
 
-changeDate = {
+let changeDate = {
 	"issueIdx": "",
 	"date": "",
 	"type": ""
@@ -97,14 +97,6 @@ document.querySelectorAll(".subissues").forEach(function(btn, index){
 			lblItem.querySelector(".graphval-label-def").classList.remove("none");
 		}else{
 			lblItem.querySelector(".graphval-label-def").classList.add("none");
-		}
-		
-		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def-sub");
-		
-		if(dlItem?.childElementCount < 3){
-			dlItem.querySelector(".graphval-dl-def").classList.remove("none");
-		}else{
-			dlItem.querySelector(".graphval-dl-def").classList.add("none");
 		}
 		
 		if(btn !== null){
@@ -448,6 +440,8 @@ document.querySelectorAll(".issues").forEach(function(box, index){
 	});
 });
 
+
+
 document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".graphval-selectwindow") !== null){
@@ -514,6 +508,77 @@ document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(bt
 		fetchInput();
 	});
 });
+
+let priorityDatas = {
+	"issueIdx": "",
+	"priorityIdx": "",
+	"iconFilename": "",
+	"name": ""
+}
+
+function updatePriorityFetch(graphval){
+	let url = "/api/project/update_priority";
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json' // JSON 데이터를 전송
+				},
+				body: JSON.stringify(priorityDatas)
+			})
+			.then(response => response.json())
+			.then(priority => {
+				graphval.dataset.priorityidx = priority.priorityIdx;
+				graphval.dataset.iconFilename = priority.iconFilename;
+				graphval.children[1].children[0].src = `/images/${priority.iconFilename}`;
+				graphval.children[2].innerHTML = `${priority.name}`;
+			}).catch(error => {
+					console.error("Fetch error:", error);
+			});
+}
+
+function getPriorityListFetch(window){
+	let url = "/api/project/get_priority_list";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // JSON 데이터를 전송
+			},
+			body: JSON.stringify(priorityDatas)
+		})
+		.then(response => response.json())
+		.then(priorityList => {
+			window.innerHTML = "";
+			priorityList.forEach(function(item){
+				const value = document.createElement("div");
+				value.classList.add("graphvalwindow-value");
+				value.innerHTML = `<span style="height: 16px;"><img src="/images/${item.iconFilename}"></span>
+								<span>${item.name}</span>`;
+				window.appendChild(value);
+				value.addEventListener("click", function(e){
+					console.log(priorityDatas.issueIdx);
+					priorityDatas.priorityIdx = item.priorityIdx;
+					priorityDatas.iconFilename = item.iconFilename;
+					priorityDatas.name = item.name;
+					updatePriorityFetch(window.parentElement);
+				});
+			});
+		}).catch(error => {
+				console.error("Fetch error:", error);
+			});
+}
+
+document.querySelectorAll(".issuedetail-graphval.priority").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".graphval-selectwindow") !== null){
+			return;
+		}
+		priorityDatas.issueIdx = btn.dataset.issueidx;
+		priorityDatas.priorityIdx = btn.dataset.priorityidx;
+		priorityDatas.iconFilename = btn.dataset.iconfilename;
+		console.log(priorityDatas);
+		getPriorityListFetch(btn.children[0]);
+	})
+})
 
 /*document.querySelectorAll(".issue-container").forEach(function(box, index){
 	box.addEventListener("click", function(e){

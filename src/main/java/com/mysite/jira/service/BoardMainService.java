@@ -108,8 +108,21 @@ public class BoardMainService {
 		return this.issueReplyRepository.findAll();
 	}
 	
+	public IssuePriority getOnceIssuePriority(Integer idx) {
+		Optional<IssuePriority> optPriority = this.issuePriorityRepository.findById(idx);
+		IssuePriority priority = null;
+		if(optPriority.isPresent()) {
+			priority = optPriority.get();
+		}
+		return priority;
+	}
+	
 	public List<IssuePriority> getIssuePriority(){
 		return this.issuePriorityRepository.findAllByOrderByIdxDesc();
+	}
+	
+	public List<IssuePriority> getAlterIssuePriority(Integer idx){
+		return this.issuePriorityRepository.findAllByIdxNotOrderByIdxDesc(idx);
 	}
 	
 	public List<Team> getTeamList(){
@@ -142,5 +155,10 @@ public class BoardMainService {
 	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
 		List<IssueStatus> updatedStatusList = issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
 		return updatedStatusList;
+	}
+	
+	public void updatePriority(Issue issue, IssuePriority priority) {
+		issue.updatePriority(priority);
+		this.issueRepository.save(issue);
 	}
 }

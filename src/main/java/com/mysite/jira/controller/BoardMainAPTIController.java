@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
+import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.service.BoardMainService;
 
@@ -79,7 +81,6 @@ public class BoardMainAPTIController {
 	@PostMapping("/update_date")
 	public void updateStartDate(@RequestBody UpdateDateDTO updateDateDTO) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		System.out.println(updateDateDTO.getIssueIdx());
 		Issue issue = boardMainService.getIssueByIdx(updateDateDTO.getIssueIdx());
 		LocalDateTime date = LocalDateTime.parse(updateDateDTO.getDate() + " 00:00:00", formatter);
 		if(updateDateDTO.getType().contains("start")) {
@@ -87,7 +88,37 @@ public class BoardMainAPTIController {
 		}else {
 			boardMainService.updateDeadlineDate(issue, date);
 		}
+	}
+
+	@PostMapping("/get_priority_list")
+	public List<GetPriorityDTO> getPriorityList(@RequestBody GetPriorityDTO getPriorityDTO) {
+		List<IssuePriority> arrList = boardMainService.getAlterIssuePriority(getPriorityDTO.getPriorityIdx());
+		List<GetPriorityDTO> priorityList = new ArrayList<>();
+		for(int i = 0; i < arrList.size(); i++) {
+			GetPriorityDTO dto = GetPriorityDTO.builder()
+											   .issueIdx(getPriorityDTO.getIssueIdx())
+											   .priorityIdx(arrList.get(i).getIdx())
+											   .iconFilename(arrList.get(i).getIconFilename())
+											   .name(arrList.get(i).getName())
+											   .build();
+			priorityList.add(dto);
+		}
+		return priorityList;
+	}
+	
+	@PostMapping("/update_priority")
+	public GetPriorityDTO updatePriority(@RequestBody  GetPriorityDTO getPriorityDTO) {
+		IssuePriority priority = boardMainService.getOnceIssuePriority(getPriorityDTO.getPriorityIdx());
+		Issue currentIssue = boardMainService.getIssueByIdx(getPriorityDTO.getIssueIdx());
+		boardMainService.updatePriority(currentIssue, priority);
+		GetPriorityDTO newPriority = GetPriorityDTO.builder()
+											.issueIdx(getPriorityDTO.getIssueIdx())
+											.priorityIdx(getPriorityDTO.getPriorityIdx())
+											.iconFilename(getPriorityDTO.getIconFilename())
+											.name(getPriorityDTO.getName())
+											.build();
 		
+		return newPriority;
 	}
 	
 //	@PatchMapping("/updateStatus")

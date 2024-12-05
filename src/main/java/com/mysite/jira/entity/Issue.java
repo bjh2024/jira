@@ -153,4 +153,8 @@ public class Issue {
 	public void updateDeadlineDate(LocalDateTime date) {
 		this.deadlineDate = date;
 	}
+	
+	public void updatePriority(IssuePriority priority) {
+		this.issuePriority = priority;
+	}
 }
