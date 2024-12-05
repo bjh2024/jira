@@ -9,6 +9,33 @@ document.querySelectorAll(".editor").forEach(function(editor, index){
 	  });
 });
 
+changeDate = {
+	"issueIdx": "",
+	"date": "",
+	"type": ""
+}
+
+function updateStartDateFetch(){
+	let url = "/api/project/update_date";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(changeDate)
+	})
+	.catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function loadDateData(issueIdx, date, type){
+	changeDate.issueIdx = issueIdx;
+	changeDate.date = date;
+	changeDate.type = type;
+	updateStartDateFetch();
+}
+
 document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
@@ -51,7 +78,7 @@ document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 
 		if(btn !== null && subissueItem.className.includes("show")){
 			subissueItem.classList.remove("show");
-			subissueBtn.children[0].children[2].classList.remove("rotate");
+			subissueBtnIcon.classList.remove("rotate");
 			return;
 		}
 		
@@ -64,16 +91,16 @@ document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 
 document.querySelectorAll(".subissues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
-		const lblItem = btn.querySelector(".issuedetail-graphval.label-def");
+		const lblItem = btn.querySelector(".issuedetail-graphval.label-def-sub");
 		
-		if(lblItem?.childElementCount < 2){
+		if(lblItem.children.length < 3){
 			lblItem.querySelector(".graphval-label-def").classList.remove("none");
 		}else{
 			lblItem.querySelector(".graphval-label-def").classList.add("none");
 		}
 		
-		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def");
-				
+		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def-sub");
+		
 		if(dlItem?.childElementCount < 3){
 			dlItem.querySelector(".graphval-dl-def").classList.remove("none");
 		}else{
@@ -83,7 +110,9 @@ document.querySelectorAll(".subissues").forEach(function(btn, index){
 		if(btn !== null){
 			btn.querySelector(".subissuedetail-container").classList.add("show");
 		}
+		
 	});
+	
 });
 
 document.querySelector("body").addEventListener("click", function(e) {
@@ -152,25 +181,13 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 		}
 		
 		const lblItem = btn.querySelector(".issuedetail-graphval.label-def");
-		
-		if(lblItem?.childElementCount < 2){
+		if(lblItem?.children.length < 3){
 			lblItem.querySelector(".graphval-label-def").classList.remove("none");
 		}else{
 			lblItem.querySelector(".graphval-label-def").classList.add("none");
 		}
 		
-		const dlItem = btn.querySelector(".issuedetail-graphval.dl-def");
-				
-		if(dlItem?.childElementCount < 3){
-			dlItem.querySelector(".graphval-dl-def").classList.remove("none");
-		}else{
-			dlItem.querySelector(".graphval-dl-def").classList.add("none");
-		}
-		
-		const issueItem = document.querySelectorAll(".issues")[index];
-		const issueDetailItem = document.querySelectorAll(".issuedetail-container")[index];
-		
-		if(issueItem !== null){
+		if(btn !== null){
 			btn.querySelector(".issuedetail-container").classList.add("show");
 		}
 	});
@@ -188,8 +205,8 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 			
 			container.classList.add("show");
 		}else{
-			// container.classList.remove("show");
-			location.reload(true);
+			container.classList.remove("show");
+			// location.reload(true);
 			/*if(e.target.closest(".subissue-list-rightdetail") !== null){
 				container.classList.add("show");	
 			}*/
@@ -353,6 +370,7 @@ function fetchStatusList(){
 			statusList.forEach(function(status){
 				const statusVal = document.createElement("div");
 				statusVal.classList.add("statuswindow-status");
+				statusVal.setAttribute("data-statusidx", status.idx);
 				
 				const statusTitle = document.createElement("span");
 				statusTitle.classList.add("statuswindow-title");
@@ -365,25 +383,15 @@ function fetchStatusList(){
 					statusTitle.classList.add("status3");
 				}
 				statusVal.appendChild(statusTitle);
-				statusVal.innerHTML += `<input type="hidden" class="send-status-value" value="${status.idx}">`;
+				// statusVal.innerHTML += `<input type="hidden" class="send-status-value" value="${status.idx}">`;
 				box.appendChild(statusVal);
 				statusVal.addEventListener("click", function(e){
 					statusDatas.statusIdx = `${status.idx}`;
-					statusDatas.issueIdx = box.parentElement.parentElement.querySelector(".send-status-issueidx").value;
-					console.log(statusDatas.statusIdx);
+					statusDatas.issueIdx = box.parentElement.parentElement.dataset.issueidx;
 					const btn = box.parentElement.parentElement;
 					updateStatusfetch(btn);
 				});
 			});
-			
-			/*box.querySelectorAll(".statuswindow-status").forEach(function(status){
-				status.addEventListener("click", function(e){
-					statusDatas.statusIdx = box.parentElement.parentElement.querySelector(".send-status-value").value;
-					statusDatas.issueIdx = box.parentElement.parentElement.querySelector(".send-status-issueidx").value;
-					console.log(statusDatas.statusIdx);
-					updateStatusfetch();
-				});
-			});*/
 		});
 	}).catch(error => {
 			console.error("Fetch error:", error);
@@ -391,21 +399,12 @@ function fetchStatusList(){
 }
 
 document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index){
-	/*btn.querySelectorAll(".statuswindow-status").forEach(function(status){
-		status.addEventListener("click", function(e){
-			statusDatas.statusIdx = status.querySelector(".send-status-value").value;
-			statusDatas.issueIdx = status.querySelector(".send-status-issueidx").value;
-			console.log("저기요ㅆㅂ");
-			updateStatusfetch();
-		});
-	});*/
-	
 	btn.addEventListener("click", function(e){
 		btn.children[0].classList.toggle("show");
 		
 		if(btn !== null && e.target.closest(".issuedetail-statuswindow") == null){
-			currentStatus.projectIdx = btn.querySelector(".current-status-projectidx").value;
-			currentStatus.statusIdx = btn.querySelector(".current-status-value").value;
+			currentStatus.projectIdx = btn.dataset.projectidx;
+			currentStatus.statusIdx = btn.dataset.statusidx;
 			fetchStatusList();
 		}
 	});
@@ -482,7 +481,6 @@ function fetchInput(){
 	})
 	.then(response => response.json())
 	.then(alterLabelList => {
-		console.log(alterLabelList);
 		const uniqueLabels = alterLabelList.filter((value, index, self) =>
            index === self.findIndex(item => item.name === value.name)
        );
@@ -510,7 +508,8 @@ document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(bt
 			return;
 		}
 		
-		let label = [...btn.querySelectorAll(".send-label-value")].map(input => input.value);
+		let label = [...btn.querySelectorAll(".graphval-label")].map(input => input.dataset.idx);
+		label = label.length > 0 ? label : [-1];
 		labelDatas.idx = label;
 		fetchInput();
 	});

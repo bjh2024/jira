@@ -145,4 +145,12 @@ public class Issue {
 	public void updateIssueStatus(IssueStatus newStatus) {
 		this.issueStatus = newStatus;
 	}
+	
+	public void updateStartDate(LocalDateTime date) {
+		this.startDate = date;
+	}
+	
+	public void updateDeadlineDate(LocalDateTime date) {
+		this.deadlineDate = date;
+	}
 }

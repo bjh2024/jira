@@ -1,5 +1,7 @@
 package com.mysite.jira.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
+import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueStatus;
@@ -28,7 +31,13 @@ public class BoardMainAPTIController {
 	
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
-		List<IssueLabelData> labelList = boardMainService.getAlterLabelData(labelListDTO.getIdx());
+		System.out.println(labelListDTO.getIdx()[0]);
+		List<IssueLabelData> labelList = new ArrayList<>();
+		if(labelListDTO.getIdx()[0] == -1) {
+			labelList = boardMainService.getLabelData();
+		}else {
+			labelList = boardMainService.getAlterLabelData(labelListDTO.getIdx());
+		}
 		List<LabelListDTO> alterLabelList = new ArrayList<>();
 		for(int i = 0; i < labelList.size(); i++) {
 			LabelListDTO dto = LabelListDTO.builder().name(labelList.get(i).getIssueLabel().getName()).build();
@@ -65,6 +74,20 @@ public class BoardMainAPTIController {
 							.status(newStatus.getStatus())
 							.build();
 		return dto;
+	}
+	
+	@PostMapping("/update_date")
+	public void updateStartDate(@RequestBody UpdateDateDTO updateDateDTO) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		System.out.println(updateDateDTO.getIssueIdx());
+		Issue issue = boardMainService.getIssueByIdx(updateDateDTO.getIssueIdx());
+		LocalDateTime date = LocalDateTime.parse(updateDateDTO.getDate() + " 00:00:00", formatter);
+		if(updateDateDTO.getType().contains("start")) {
+			boardMainService.updateStartDate(issue, date);
+		}else {
+			boardMainService.updateDeadlineDate(issue, date);
+		}
+		
 	}
 	
 //	@PatchMapping("/updateStatus")

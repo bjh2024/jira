@@ -1,5 +1,6 @@
 package com.mysite.jira.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +126,16 @@ public class BoardMainService {
 	
 	public void updateStatus(Issue issue, IssueStatus issueStatus) {
 		issue.updateIssueStatus(issueStatus);
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateStartDate(Issue issue, LocalDateTime date) {
+		issue.updateStartDate(date);
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateDeadlineDate(Issue issue, LocalDateTime date) {
+		issue.updateDeadlineDate(date);
 		this.issueRepository.save(issue);
 	}
 

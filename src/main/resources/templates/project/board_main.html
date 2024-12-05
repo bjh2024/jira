@@ -365,7 +365,7 @@
 									<span style="margin-left: -2px; margin-top: 2px;">
 										<img class="issue-deadlineimg" th:src="@{/images/issue_calender_icon.svg}">
 									</span>
-									<span th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd HH:mm')}"></span>
+									<span th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')}"></span>
 								</div>
 							</div>
 							<div class="issue-underbox">
@@ -383,7 +383,7 @@
 											th:src="@{|/images/${issueList.manager.iconFilename}|}"></span>
 								</div>
 							</div>
-							<div th:if="${#lists.size(issueList.parentList) > 0} and ${issueList.issueStatus.status != 1}"
+							<div th:if="${#lists.size(issueList.parentList) > 0} and ${issueList.issueType.grade != 3}"
 								style="padding-left: 12px; padding-bottom: 8px; margin-top: -3px;">
 								<button class="subissuebtn">
 									<div class="subissuebtnbox">
@@ -774,12 +774,11 @@
 								 								<div class="issuedetail-graphtype">
 								 									<span>레이블</span>
 								 								</div>
-								 								<div class="issuedetail-graphval label-def">
+								 								<div class="issuedetail-graphval label-def-sub">
+							 										<div class="graphval-selectwindow label">
+							 										</div>
 								 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == extendsList.child.idx}">
-								 										<div class="graphval-selectwindow label">
-								 										</div>
-								 										<span class="graphval-label">
-								 											<input type="hidden" class="send-label-value" th:value="${labelValList.issueLabel.idx}">
+								 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}">
 								 											<a th:text="${labelValList.issueLabel.name}"></a>
 								 										</span>
 								 									</th:block>
@@ -792,27 +791,25 @@
 								 								<div class="issuedetail-graphtype">
 								 									<span>기한</span>
 								 								</div>
-								 								<div class="issuedetail-graphval dl-def">
-								 									<div class="graphval-selectwindow"></div>
-								 									<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${extendsList.child.deadlineDate != null}">
-								 										<a class="graphval-date" th:text="${#temporals.format(extendsList.child.deadlineDate, 'yyyy-MM-dd')}"
-								 										th:classappend="${extendsList.child.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
-								 										<span th:if="${extendsList.child.deadlineDate < currentTime}" style="height: 16px; margin-left: 6px;">
-								 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
-								 										</span>
-								 									</span>
-								 									<span class="graphval-dl-def none">
-								 										없음
-								 									</span>
+																<div class="issuedetail-graphval-date" >
+																	<div class="deadline-bg-box"
+																	th:classappend="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></div>
+																	<input type="text" class="datepicker dead" th:attr="data-issueidx=${issueList.idx}" 
+																	th:placeholder="${issueList.deadlineDate != null} ? ${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')} : '없음'">
+																	<span th:if="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime}" 
+																	style="height: 16px;position: absolute; top: 8px; right: 154px;">
+							 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
+							 										</span>
 								 								</div>
 								 							</div>
 								 							<div class="issuedetail-graph">
 								 								<div class="issuedetail-graphtype" style="margin-top: 3px;">
 								 									<span>Start date</span>
 								 								</div>
-								 								<div class="issuedetail-graphval">
-								 									<div class="graphval-selectwindow"></div>
-								 									<span th:text="${extendsList.child.startDate != null} ? ${#temporals.format(extendsList.child.startDate, 'yyyy-MM-dd')} : '없음'"></span>
+																<div class="issuedetail-graphval-date">
+																	<form>
+																		<input type="text" class="datepicker" name="pickedDate" th:placeholder="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'">
+																	</form>
 								 								</div>
 								 							</div>
 								 							<div class="issuedetail-graph">
@@ -1152,17 +1149,17 @@
 						 					<div class="issuedetail-statusbar">
 						 						<button class="issuedetail-statusbtn" th:classappend="${issueList.issueStatus.status == 1 ? 'status1':''}
 						 								+${issueList.issueStatus.status == 2 ? 'status2':''}
-						 								+${issueList.issueStatus.status == 3 ? 'status3':''}">
+						 								+${issueList.issueStatus.status == 3 ? 'status3':''}"
+														th:attr="data-statusidx=${issueList.issueStatus.idx},
+																 data-projectidx=${issueList.issueStatus.project.idx},
+																 data-issueidx=${issueList.idx}">
 						 							<div class="issuedetail-statuswindow" style="left: 0px;">
-						 								<div class="statuswindow-menubox">
+						 								<div class="statuswindow-menubox" >
 						 									
 						 								</div>
 						 							</div>
 						 							<span style="margin-bottom: 3px;"
 						 								th:text="${issueList.issueStatus.name}"></span>
-													<input type="hidden" class="current-status-value" th:value="${issueList.issueStatus.idx}">
-													<input type="hidden" class="current-status-projectidx" th:value="${issueList.issueStatus.project.idx}">
-													<input type="hidden" class="send-status-issueidx" th:value="${issueList.idx}">
 						 							<span style="margin-top: 1px; margin-left: 1px;">
 						 								<img th:src="@{/images/arrow_under_icon.svg}"
 						 									style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
@@ -1257,11 +1254,10 @@
 						 									<span>레이블</span>
 						 								</div>
 						 								<div class="issuedetail-graphval label-def">
+					 										<div class="graphval-selectwindow label">
+					 										</div>
 						 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
-						 										<div class="graphval-selectwindow label">
-						 										</div>
-						 										<span class="graphval-label">
-						 											<input type="hidden" class="send-label-value" th:value="${labelValList.issueLabel.idx}">
+						 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}">
 						 											<a th:text="${labelValList.issueLabel.name}"></a>
 						 										</span>
 						 									</th:block>
@@ -1274,27 +1270,23 @@
 						 								<div class="issuedetail-graphtype">
 						 									<span>기한</span>
 						 								</div>
-						 								<div class="issuedetail-graphval dl-def">
-						 									<div class="graphval-selectwindow"></div>
-						 									<span style="margin-bottom: 2px; display: flex; align-items: center;" th:if="${issueList.deadlineDate != null}">
-						 										<a class="graphval-date" th:text="${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')}"
-						 										th:classappend="${issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></a>
-						 										<span th:if="${issueList.deadlineDate < currentTime}" style="height: 16px; margin-left: 6px;">
-						 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
-						 										</span>
-						 									</span>
-						 									<span class="graphval-dl-def none">
-						 										없음
-						 									</span>
+						 								<div class="issuedetail-graphval-date" >
+															<div class="deadline-bg-box"
+															th:classappend="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></div>
+															<input type="text" class="datepicker dead" th:attr="data-issueidx=${issueList.idx}" 
+															th:placeholder="${issueList.deadlineDate != null} ? ${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')} : '없음'">
+															<span th:if="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime}" 
+															style="height: 16px;position: absolute; top: 8px; right: 154px;">
+					 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
+					 										</span>
 						 								</div>
 						 							</div>
 						 							<div class="issuedetail-graph">
 						 								<div class="issuedetail-graphtype" style="margin-top: 3px;">
 						 									<span>Start date</span>
 						 								</div>
-						 								<div class="issuedetail-graphval">
-						 									<div class="graphval-selectwindow"></div>
-						 									<span th:text="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'"></span>
+						 								<div class="issuedetail-graphval-date">
+															<input type="text" class="datepicker start" th:attr="data-issueidx=${issueList.idx}" th:placeholder="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'">
 						 								</div>
 						 							</div>
 						 							<div class="issuedetail-graph">
@@ -1424,5 +1416,23 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>
 <script th:inline="javascript"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+	flatpickr(".datepicker", {
+		dateFormat: 'Y-m-d',
+		onChange: function(selectedDates, dateStr, instance) {
+			// selectedDates: [Thu Dec 05 2024 00:00:00 GMT+0900 (한국 표준시)]
+			// dateStr: 2024-12-11
+			// instance: {config: {…}, l10n: {…}, _handlers: Array(13), pluginElements: Array(0), parseDate: ƒ, …}
+			const issueIdx = instance.input.dataset.issueidx;
+			const date = dateStr;
+			const type = instance.input.classList[1];
+			loadDateData(issueIdx, date, type);
+		}
+	}); 
+</script>
+
 </div>
 </html>
