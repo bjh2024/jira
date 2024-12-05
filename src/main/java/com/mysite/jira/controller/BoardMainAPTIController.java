@@ -14,6 +14,7 @@ import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
+import com.mysite.jira.dto.board.GetTeamDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
@@ -21,6 +22,7 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.BoardMainService;
 
 import lombok.RequiredArgsConstructor;
@@ -107,7 +109,7 @@ public class BoardMainAPTIController {
 	}
 	
 	@PostMapping("/update_priority")
-	public GetPriorityDTO updatePriority(@RequestBody  GetPriorityDTO getPriorityDTO) {
+	public GetPriorityDTO updatePriority(@RequestBody GetPriorityDTO getPriorityDTO) {
 		IssuePriority priority = boardMainService.getOnceIssuePriority(getPriorityDTO.getPriorityIdx());
 		Issue currentIssue = boardMainService.getIssueByIdx(getPriorityDTO.getIssueIdx());
 		boardMainService.updatePriority(currentIssue, priority);
@@ -121,21 +123,35 @@ public class BoardMainAPTIController {
 		return newPriority;
 	}
 	
-//	@PatchMapping("/updateStatus")
-//	public List<IssueStatus> updateIssueStatus(@RequestBody UpdateStatusDTO updateStatusDTO){
-//		Integer projectIdx = updateStatusDTO.getProjectIdx();
-//		Integer issueIdx = updateStatusDTO.getIssueIdx();
-//		Integer issueStatusIdx = updateStatusDTO.getIssueStatusIdx();
-//		
-//		Optional<IssueStatus> issueStatus = boardMainService.getOnceIssueStatus(issueStatusIdx);
-//		
-//		if(issueStatus.isPresent()) {
-//			boardMainService.updateIssueStatus(projectIdx, issueIdx, issueStatus.get());
-//		}
-//		
-//		List<IssueStatus> updatedStatusList = boardMainService.getSortedIssueStatus(projectIdx, issueIdx);
-//		
-//		return updatedStatusList;
-//	}
+	@PostMapping("/get_team_list")
+	public List<GetTeamDTO> getTeamList(@RequestBody GetTeamDTO getTeamDTO){
+		List<Team> arrList = boardMainService.getJiraTeamList(getTeamDTO.getJiraIdx());
+		List<GetTeamDTO> teamList = new ArrayList<>();
+		for(int i = 0; i < arrList.size(); i++) {
+			GetTeamDTO dto = GetTeamDTO.builder()
+										.teamIdx(arrList.get(i).getIdx())
+										.jiraIdx(arrList.get(i).getJira().getIdx())
+										.name(arrList.get(i).getName())
+										.iconFilename(arrList.get(i).getAccount().getIconFilename())
+										.issueIdx(arrList.get(i).getAccount().getIdx())
+										.build();
+			teamList.add(dto);
+		}
+		
+		return teamList;
+	}
+	
+	@PostMapping("/update_team")
+	public GetTeamDTO updateTeam(@RequestBody GetTeamDTO getTeamDTO) {
+		Team team = boardMainService.getOnceTeam(getTeamDTO.getTeamIdx());
+		Issue currentIssue = boardMainService.getIssueByIdx(getTeamDTO.getIssueIdx());
+		boardMainService.updateTeam(currentIssue, team);
+		GetTeamDTO newTeam = GetTeamDTO.builder()
+										.teamIdx(team.getIdx())
+										.name(team.getName())
+										.iconFilename(team.getAccount().getIconFilename())
+										.build();
+		return newTeam;
+	}
 
 }

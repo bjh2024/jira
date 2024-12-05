@@ -1286,18 +1286,9 @@
 						 								<div class="issuedetail-graphtype">
 						 									<span>Team</span>
 						 								</div>
-						 								<div class="issuedetail-graphval">
-						 									<div class="graphval-selectwindow" style="top: 40px; left: 0px;">
-						 										<div class="graphvalwindow-value withimg" th:each="teamList : ${teamList}"
-						 										th:if="${teamList.jira.idx == issueList.jira.idx}">
-						 											<span style="height: 32px;">
-						 												<img th:src="@{|/images/${teamList.account.iconFilename}|}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
-						 											</span>
-						 											<div>
-						 												<span th:text="${teamList.name}"></span>
-						 											</div>
-						 										</div>
-						 									</div>
+						 								<div class="issuedetail-graphval team" th:attr="data-teamidx=${issueList.team?.idx}, 
+														data-jiraidx=${issueList.jira?.idx}, data-issueidx=${issueList.idx}">
+						 									<div class="graphval-selectwindow" style="top: 40px; left: 0px;"></div>
 						 									<span style="margin-bottom: 3px;"
 						 									th:text="${issueList.team != null} ? ${issueList.team.name} : '없음'"></span>
 						 								</div>

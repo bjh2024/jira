@@ -569,7 +569,7 @@ function getPriorityListFetch(window){
 
 document.querySelectorAll(".issuedetail-graphval.priority").forEach(function(btn){
 	btn.addEventListener("click", function(e){
-		if(e.target.closest(".graphval-selectwindow") !== null){
+		if(e.target.closest(".graphvalwindow-value") !== null){
 			return;
 		}
 		priorityDatas.issueIdx = btn.dataset.issueidx;
@@ -577,8 +577,81 @@ document.querySelectorAll(".issuedetail-graphval.priority").forEach(function(btn
 		priorityDatas.iconFilename = btn.dataset.iconfilename;
 		console.log(priorityDatas);
 		getPriorityListFetch(btn.children[0]);
-	})
-})
+	});
+});
+
+let teamDatas = {
+	"teamIdx": "",
+	"jiraIdx": "", 
+	"name": "", 
+	"iconFilename": "",
+	"issueIdx": ""
+}
+
+function updateTeamFetch(graphval){
+	let url = "/api/project/update_team";
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json' // JSON 데이터를 전송
+				},
+				body: JSON.stringify(teamDatas)
+			})
+			.then(response => response.json())
+			.then(team => {
+				graphval.dataset.teamidx = team.teamIdx;
+				graphval.dataset.jiraidx = team.jiraIdx;
+				graphval.dataset.issueidx = team.issueIdx;
+				graphval.children[1].innerHTML = `${team.name}`;
+			}).catch(error => {
+					console.error("Fetch error:", error);
+			});
+}
+
+function getTeamListFetch(window){
+	let url = "/api/project/get_team_list";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // JSON 데이터를 전송
+			},
+			body: JSON.stringify(teamDatas)
+		})
+		.then(response => response.json())
+		.then(teamList => {
+			window.innerHTML = "";
+			teamList.forEach(function(item){
+				const value = document.createElement("div");
+				value.classList.add("graphvalwindow-value");
+				value.classList.add("withimg");
+				value.innerHTML = `<span style="height: 32px;">
+										<img src="/images/${item.iconFilename}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
+									</span>
+									<div>
+										<span>${item.name}</span>
+									</div>`;
+				window.appendChild(value);
+				value.addEventListener("click", function(e){
+					teamDatas.teamIdx = item.teamIdx;
+					updateTeamFetch(window.parentElement);
+				});
+			});
+		}).catch(error => {
+				console.error("Fetch error:", error);
+			});
+}
+
+document.querySelectorAll(".issuedetail-graphval.team").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".graphvalwindow-value") !== null){
+			return;
+		}
+		teamDatas.teamIdx = btn.dataset.teamidx;
+		teamDatas.jiraIdx = btn.dataset.jiraidx;
+		teamDatas.issueIdx = btn.dataset.issueidx;
+		getTeamListFetch(btn.children[0]);
+	});
+});
 
 /*document.querySelectorAll(".issue-container").forEach(function(box, index){
 	box.addEventListener("click", function(e){

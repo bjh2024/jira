@@ -125,6 +125,11 @@ public class BoardMainService {
 		return this.issuePriorityRepository.findAllByIdxNotOrderByIdxDesc(idx);
 	}
 	
+	public Team getOnceTeam(Integer idx) {
+		Optional<Team> optTeam = this.teamRepository.findById(idx);
+		return optTeam.get();
+	}
+	
 	public List<Team> getTeamList(){
 		return this.teamRepository.findAll();
 	}
@@ -159,6 +164,16 @@ public class BoardMainService {
 	
 	public void updatePriority(Issue issue, IssuePriority priority) {
 		issue.updatePriority(priority);
+		this.issueRepository.save(issue);
+	}
+	
+	public List<Team> getJiraTeamList(Integer jiraIdx){
+		List<Team> teamList = teamRepository.findByJiraIdx(jiraIdx);
+		return teamList;
+	}
+	
+	public void updateTeam(Issue issue, Team team) {
+		issue.updateTeam(team);
 		this.issueRepository.save(issue);
 	}
 }

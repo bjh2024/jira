@@ -157,4 +157,8 @@ public class Issue {
 	public void updatePriority(IssuePriority priority) {
 		this.issuePriority = priority;
 	}
+	
+	public void updateTeam(Team team) {
+		this.team = team;
+	}
 }
