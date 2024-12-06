@@ -19,6 +19,7 @@ public class FilterIssueDTO {
 	private String issuePriorityName;
 	private String issueStatusName;
 	private Integer issueStatus;
+	private LocalDateTime finishDate;
 	private LocalDateTime createDate;
 	private LocalDateTime editDate;
 	private LocalDateTime deadlineDate;
@@ -27,7 +28,7 @@ public class FilterIssueDTO {
 	public FilterIssueDTO(String issueIconFilename, String issueKey, String issueName, String issueManagerIconFilename,
 			String issueManagerName, String issueReporterIconFilename, String issueReporterName,
 			String issuePriorityIconFilename, String issuePriorityName, String issueStatusName, Integer issueStatus,
-			LocalDateTime createDate, LocalDateTime editDate, LocalDateTime deadlineDate) {
+			LocalDateTime finishDate,LocalDateTime createDate, LocalDateTime editDate, LocalDateTime deadlineDate) {
 		this.issueIconFilename = issueIconFilename;
 		this.issueKey = issueKey;
 		this.issueName = issueName;
@@ -39,6 +40,7 @@ public class FilterIssueDTO {
 		this.issuePriorityName = issuePriorityName;
 		this.issueStatusName = issueStatusName;
 		this.issueStatus = issueStatus;
+		this.finishDate = finishDate;
 		this.createDate = createDate;
 		this.editDate = editDate;
 		this.deadlineDate = deadlineDate;

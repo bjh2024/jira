@@ -1,6 +1,6 @@
 package com.mysite.jira.dto;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -11,5 +11,15 @@ public class FilterIssueRequestDTO {
 	private String[] issueTypes;
 	private String[] issueStatus;
 	private String[] issueManager;
-	private List<Integer> issueManagerIdx;
+	private String[] issueReporter;
+	private String[] issuePriority;
+	private LocalDateTime updateStartDate;
+	private LocalDateTime updateLastDate;
+	private LocalDateTime updateBeforeDate;
+	private LocalDateTime createStartDate;
+	private LocalDateTime createLastDate;
+	private LocalDateTime createBeforeDate;
+	private LocalDateTime doneStartDate;
+	private LocalDateTime doneLastDate;
+	private LocalDateTime doneBeforeDate;
 }

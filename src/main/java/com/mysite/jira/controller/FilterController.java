@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
+import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,30 +41,34 @@ public class FilterController {
 
 	@GetMapping("/filter_issue/{issueKey}")
 	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issueKey,Model model) {
-		Integer jiraIdx = 1; 
+		Integer jiraIdx = 1;
+
 		try {
-		model.addAttribute("issueKey", issueKey != null ? issueKey : "");
-		 // issueKey에 맞는 필터링된 이슈 목록 가져오기
-
-		List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
-		model.addAttribute("issue", issue);
-
-		List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
-		model.addAttribute("project", project);
-
-		List<IssueTypeListDTO> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
-		model.addAttribute("issueType", issueType);
-
-		List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
-		model.addAttribute("issueStatus", issueStatus);
-
-		List<JiraMembers> account = accountService.getByJiraIdx(jiraIdx);
-		model.addAttribute("account", account);
-		
-		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(jiraIdx);
-		model.addAttribute("issueList", issueList);
-
-		}catch(Exception e) {
+			model.addAttribute("projectKey", issueKey);
+			
+			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
+			model.addAttribute("issue", issue);
+			
+			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
+			model.addAttribute("project", project);
+			
+			List<IssueTypeListDTO> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
+			model.addAttribute("issueType", issueType);
+			
+			List<Object[]> issueStatus = projectService.getDistinctStatusAndNameByJiraIdx(jiraIdx);
+			model.addAttribute("issueStatus", issueStatus);
+			
+			List<ManagerDTO> ManagerDTO = issueService.getManagerIdxAndNameByJiraIdx(jiraIdx);
+			model.addAttribute("account", ManagerDTO);
+			
+			List<IssuePriority> issuePriority = issueService.getIssuePriority();
+			model.addAttribute("issuePriority", issuePriority);
+			
+			List<Account> jiraMembers = accountService.getAccountList(jiraIdx);
+			model.addAttribute("jiraMembers", jiraMembers);
+			
+			
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "filter/filter_issue";
@@ -93,6 +100,13 @@ public class FilterController {
 			
 			List<ManagerDTO> ManagerDTO = issueService.getManagerIdxAndNameByJiraIdx(jiraIdx);
 			model.addAttribute("account", ManagerDTO);
+			
+			List<IssuePriority> issuePriority = issueService.getIssuePriority();
+			model.addAttribute("issuePriority", issuePriority);
+			
+			List<Account> jiraMembers = accountService.getAccountList(jiraIdx);
+			model.addAttribute("jiraMembers", jiraMembers);
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

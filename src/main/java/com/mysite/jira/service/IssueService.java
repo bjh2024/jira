@@ -18,6 +18,7 @@ import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.dto.project.summation.PercentTableDTO;
 import com.mysite.jira.dto.project.summation.chartDTO;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
@@ -44,6 +45,41 @@ public class IssueService {
 	
 	public List<Issue> getIssuesByJiraIdx(Integer jiraIdx) {
 		return issueRepository.findByJiraIdx(jiraIdx);
+	}
+	
+	public List<IssuePriority> getIssuePriority(){
+		return issuePriorityRepository.findAll();
+	}
+	
+	public List<Issue> getReporterNameIn(String[] name){
+		return issueRepository.findByReporterNameIn(name);
+	}
+	
+	public List<Issue> getIssuePriorityNameIn(String[] name){
+		return issueRepository.findByIssuePriorityNameIn(name);
+	}
+	
+	public List<Issue> getStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByStartDate(startDate);
+	}
+	
+	public List<Issue> getLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByLastDate(lastDate);
+	}
+	
+	public List<Issue> getcreateStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesBycreateStartDate(startDate);
+	}
+	
+	public List<Issue> getcreateLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesBycreateLastDate(lastDate);
+	}
+	public List<Issue> getfinishStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByfinishStartDate(startDate);
+	}
+	
+	public List<Issue> getfinishLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByfinishLastDate(lastDate);
 	}
 
 	// kdw 오늘
