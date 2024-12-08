@@ -16,12 +16,15 @@ import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.GetTeamDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
+import com.mysite.jira.dto.board.ReporterDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.BoardMainService;
 
@@ -152,6 +155,39 @@ public class BoardMainAPTIController {
 										.iconFilename(team.getAccount().getIconFilename())
 										.build();
 		return newTeam;
+	}
+	
+	@PostMapping("/get_reporter_list")
+	public List<ReporterDTO> getReporterList(@RequestBody ReporterDTO reporterDTO){
+		List<ProjectMembers> arrList = boardMainService.getReporterList(reporterDTO.getProjectIdx(), reporterDTO.getReporterIdx());
+		List<ReporterDTO> reporterList = new ArrayList<>();
+		for(int i = 0; i < arrList.size(); i++) {
+			ReporterDTO dto = ReporterDTO.builder()
+										.projectIdx(reporterDTO.getProjectIdx())
+										.issueIdx(reporterDTO.getIssueIdx())
+										.reporterIdx(arrList.get(i).getAccount().getIdx())
+										.name(arrList.get(i).getAccount().getName())
+										.iconFilename(arrList.get(i).getAccount().getIconFilename())
+										.build();
+			reporterList.add(dto);
+		}
+		return reporterList;
+	}
+	
+	@PostMapping("/update_reporter")
+	public ReporterDTO updateReporter(@RequestBody ReporterDTO reporterDTO) {
+		Account account = boardMainService.getAccountById(reporterDTO.getReporterIdx());
+		Issue currentIssue = boardMainService.getIssueByIdx(reporterDTO.getIssueIdx());
+		boardMainService.updateReporter(currentIssue, account);
+		ReporterDTO newReporter = ReporterDTO.builder()
+											.projectIdx(currentIssue.getProject().getIdx())
+											.issueIdx(currentIssue.getIdx())
+											.reporterIdx(account.getIdx())
+											.name(account.getName())
+											.iconFilename(account.getIconFilename())
+											.build();
+
+		return newReporter;
 	}
 
 }

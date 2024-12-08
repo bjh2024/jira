@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
@@ -18,6 +19,7 @@ import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
+import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
@@ -47,6 +49,7 @@ public class BoardMainService {
 	private final TeamRepository teamRepository;
 	private final IssueFileRepository issueFileRepository;
 	private final ProjectMembersRepository projectMembersRepository;
+	private final AccountRepository accountRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -158,7 +161,7 @@ public class BoardMainService {
 	}
 
 	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
-		List<IssueStatus> updatedStatusList = issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
+		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
 		return updatedStatusList;
 	}
 	
@@ -168,12 +171,27 @@ public class BoardMainService {
 	}
 	
 	public List<Team> getJiraTeamList(Integer jiraIdx){
-		List<Team> teamList = teamRepository.findByJiraIdx(jiraIdx);
+		List<Team> teamList = this.teamRepository.findByJiraIdx(jiraIdx);
 		return teamList;
 	}
 	
 	public void updateTeam(Issue issue, Team team) {
 		issue.updateTeam(team);
+		this.issueRepository.save(issue);
+	}
+	
+	public List<ProjectMembers> getReporterList(Integer projectIdx, Integer accountIdx){
+		List<ProjectMembers> membersList = this.projectMembersRepository.findAllByProjectIdxAndAccountIdxNot(projectIdx, accountIdx);
+		return membersList;
+	}
+	
+	public Account getAccountById(Integer idx) {
+		Optional<Account> account = this.accountRepository.findById(idx);
+		return account.get();
+	}
+	
+	public void updateReporter(Issue issue, Account reporter) {
+		issue.updateReporter(reporter);
 		this.issueRepository.save(issue);
 	}
 }

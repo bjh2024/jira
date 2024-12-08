@@ -161,4 +161,12 @@ public class Issue {
 	public void updateTeam(Team team) {
 		this.team = team;
 	}
+	
+	public void updateReporter(Account reporter) {
+		this.reporter = reporter;
+	}
+	
+	public void updateManager(Account manager) {
+		this.manager = manager;
+	}
 }

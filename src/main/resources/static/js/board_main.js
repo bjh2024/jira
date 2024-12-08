@@ -560,6 +560,7 @@ function getPriorityListFetch(window){
 					priorityDatas.iconFilename = item.iconFilename;
 					priorityDatas.name = item.name;
 					updatePriorityFetch(window.parentElement);
+					window.classList.remove("show");
 				});
 			});
 		}).catch(error => {
@@ -575,7 +576,6 @@ document.querySelectorAll(".issuedetail-graphval.priority").forEach(function(btn
 		priorityDatas.issueIdx = btn.dataset.issueidx;
 		priorityDatas.priorityIdx = btn.dataset.priorityidx;
 		priorityDatas.iconFilename = btn.dataset.iconfilename;
-		console.log(priorityDatas);
 		getPriorityListFetch(btn.children[0]);
 	});
 });
@@ -634,6 +634,7 @@ function getTeamListFetch(window){
 				value.addEventListener("click", function(e){
 					teamDatas.teamIdx = item.teamIdx;
 					updateTeamFetch(window.parentElement);
+					window.classList.remove("show");
 				});
 			});
 		}).catch(error => {
@@ -643,13 +644,98 @@ function getTeamListFetch(window){
 
 document.querySelectorAll(".issuedetail-graphval.team").forEach(function(btn){
 	btn.addEventListener("click", function(e){
-		if(e.target.closest(".graphvalwindow-value") !== null){
-			return;
-		}
 		teamDatas.teamIdx = btn.dataset.teamidx;
 		teamDatas.jiraIdx = btn.dataset.jiraidx;
 		teamDatas.issueIdx = btn.dataset.issueidx;
 		getTeamListFetch(btn.children[0]);
+	});
+});
+
+reporterDatas = {
+	"reporterIdx": "",
+	"projectIdx": "",
+	"issueIdx": "",
+	"type": "",
+	"name": "",
+	"iconFilename": ""
+}
+
+function updateReporterFetch(graphval){
+	let url = "/api/project/update_reporter";
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json' // JSON 데이터를 전송
+				},
+				body: JSON.stringify(reporterDatas)
+			})
+			.then(response => response.json())
+			.then(reporter => {
+				console.log(reporter);
+				graphval.dataset.reporteridx = reporter.reporterIdx;
+				graphval.dataset.projectidx = reporter.projectIdx;
+				graphval.dataset.issueidx = reporter.issueIdx;
+				graphval.children[1].children[0].src = `/images/${reporter.iconFilename}`;
+				graphval.children[2].innerHTML = `${reporter.name}`;
+			}).catch(error => {
+					console.error("Fetch error:", error);
+			});
+}
+
+function getReporterListFetch(window){
+	let url = "/api/project/get_reporter_list";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // JSON 데이터를 전송
+			},
+			body: JSON.stringify(reporterDatas)
+		})
+		.then(response => response.json())
+		.then(reporterList => {
+			console.log(reporterList);
+			window.innerHTML = "";
+			reporterList.forEach(function(item){
+				const value = document.createElement("div");
+				value.classList.add("graphvalwindow-value");
+				value.classList.add("withimg");
+				value.innerHTML = `<span style="height: 32px;">
+										<img src="/images/${item.iconFilename}" style="width: 32px; height: 32px; border-radius: 50%; margin-left: 6px;">
+									</span>
+									<div>
+										<span>${item.name}</span>
+									</div>`;
+				window.appendChild(value);
+				value.addEventListener("click", function(e){
+					reporterDatas.reporterIdx = item.reporterIdx;	
+					updateReporterFetch(window.parentElement);
+					window.classList.remove("show");
+				});
+			});
+		}).catch(error => {
+				console.error("Fetch error:", error);
+			});
+}
+
+document.querySelectorAll(".issuedetail-graphval.reporter").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		reporterDatas.reporterIdx = btn.dataset.reporteridx;
+		reporterDatas.projectIdx = btn.dataset.projectidx;
+		reporterDatas.issueIdx = btn.dataset.issueidx;
+		reporterDatas.type = "reporter";
+		console.log(reporterDatas);
+		getReporterListFetch(btn.children[0]);
+	});
+});
+
+document.querySelectorAll(".issuedetail-graphval.reporter").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		reporterDatas.reporterIdx = btn.dataset.reporteridx;
+		reporterDatas.projectIdx = btn.dataset.projectidx;
+		reporterDatas.issueIdx = btn.dataset.issueidx;
+		reporterDatas.type = "manager";
+		console.log(reporterDatas);
+		getReporterListFetch(btn.children[0]);
 	});
 });
 

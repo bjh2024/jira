@@ -5,9 +5,10 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
 	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </head>
-<div layout:fragment="content" style="display: flex;" class="board-main-container">
+<div layout:fragment="content" style="display: flex; overflow: hidden;" class="board-main-container">
 	<div class="header-container">
 		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+		<div th:replace="~{footer_menu_btn :: btnFragment}"></div>
 		<div class="board-top-container">
 			<div class="boardbar">
 				<div class="board-searchbox">
@@ -1025,7 +1026,8 @@
 						 									<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}">
 						 								</span>
 						 								<span th:text="${extendsList.child.key}" style="height: 13px;"></span>
-						 								<span th:text="${extendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"></span>
+						 								<span th:text="${extendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"
+														th:style="${extendsList.child.issueStatus.status == 3} ? 'text-decoration: line-through;' : ''"></span>
 						 							</div>
 						 							<div class="subissue-list-rightdetail">
 						 								<span style="height: 20px;">
@@ -1200,7 +1202,9 @@
 						 									<span>담당자</span>
 						 								</div>
 						 								<div>
-						 									<div class="issuedetail-graphval">
+						 									<div class="issuedetail-graphval manager" th:attr="data-reporteridx=${issueList.manager != null ? issueList.manager.idx : ''},
+															data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx},
+															data-name=${issueList.manager != null ? issueList.manager.name : ''}, data-iconFilename=${issueList.manager != null ? issueList.manager.iconFilename : ''}">
 						 										<div class="graphval-selectwindow">
 						 											<div class="graphvalwindow-value withimg">
 						 												<span>
@@ -1299,19 +1303,10 @@
 						 									<span>보고자</span>
 						 								</div>
 						 								<div>
-						 									<div class="issuedetail-graphval"
+						 									<div class="issuedetail-graphval reporter" th:attr="data-reporteridx=${issueList.reporter.idx},
+															data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx}"
 						 										style="margin-top: 1px;">
-						 										<div class="graphval-selectwindow">
-						 											<div class="graphvalwindow-value withimg" 
-						 											th:each="reporterList : ${prjMemberList}"
-						 											th:if="${reporterList.account.idx != issueList.reporter.idx}">
-						 												<span>
-						 													<img th:src="@{|/images/${reporterList.account.iconFilename}|}"
-						 													style="width: 32px; height: 32px; margin-left: 6px;">
-						 												</span>
-						 												<span th:text="${reporterList.account.name}"></span>
-						 											</div>
-						 										</div>
+						 										<div class="graphval-selectwindow"></div>
 						 										<span
 						 											style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
 						 												th:src="@{|/images/${issueList.reporter.iconFilename}|}"

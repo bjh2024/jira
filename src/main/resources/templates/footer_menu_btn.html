@@ -1,0 +1,30 @@
+<div th:fragment="btnFragment" style="position: fixed; right: 30px; bottom: 30px;">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/footer_menu_btn.css}">
+	</head>
+	<div class="btn-container">
+		<div class="selectwindow">
+			<div class="selectwindow-header">
+				<img src="/images/logo.svg" alt="" width="50">
+				<div>
+					<span th:text="${currentUser.name}" style="height: 20px;"></span>
+					<span style="height: 20px;"> 님, 안녕하세요!</span>
+				</div>
+			</div>
+			<div class="selectwindow-body">
+			</div>
+			<div class="selectwindow-footer">
+				<div class="ai-container">
+					<form method="post">
+						<div style="display: flex; align-items: center;">
+							<textarea class="question-inputbox" name="question" placeholder="무엇이든 물어 보세요."
+							oninput="autoResizeTextarea(this)" rows="1"></textarea>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<img th:src="@{/images/chat_icon.png}" width="25px" height="25px">
+	</div>
+	<script th:src="@{/js/footer_menu_btn.js}"></script>
+</div>
