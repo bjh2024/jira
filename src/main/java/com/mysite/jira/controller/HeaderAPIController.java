@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.header.HeaderRecentIssueDTO;
 import com.mysite.jira.dto.header.HeaderRequestFilterDTO;
-import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.RecentService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,10 +27,18 @@ public class HeaderAPIController {
 
     private final RecentService recentService;
     
+    private final JiraService jiraService;
+    
     // List<Issue> 일경우 엔티티는 json으로 변환시 문제가 발생함
     @PostMapping("/filter")
-    public List<HeaderRecentIssueDTO> getInputData(@RequestBody HeaderRequestFilterDTO IssueInputFilterDTO) {
-        Integer jiraIdx = 1; // 값 넣어야됨
+    public List<HeaderRecentIssueDTO> getInputData(@RequestBody HeaderRequestFilterDTO IssueInputFilterDTO,
+    											   HttpServletRequest request,
+    											   Principal principal) {
+    	String uri = IssueInputFilterDTO.getCurrentUrl(); 
+    	// 지라 idx
+    	Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Integer jiraIdx = jira.getIdx();
+		
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;
         // startDate와 endDate 처리
@@ -40,9 +51,9 @@ public class HeaderAPIController {
 
         Integer[] projectIdxArr = IssueInputFilterDTO.getProjectIdxArr();
         Integer[] managerIdxArr = IssueInputFilterDTO.getManagerIdxArr();
-        Integer reporterIdx = IssueInputFilterDTO.getReporterIdx();
+        Boolean isReporter = IssueInputFilterDTO.getIsReporter();
         Integer[] statusArr = IssueInputFilterDTO.getStatusArr();
-        List<HeaderRecentIssueDTO> issueList = recentService.getRecentIssueList(jiraIdx, startDate, endDate, projectIdxArr, managerIdxArr, reporterIdx, statusArr);
+        List<HeaderRecentIssueDTO> issueList = recentService.getRecentIssueList(jiraIdx, startDate, endDate, projectIdxArr, managerIdxArr, isReporter, statusArr, principal);
         return issueList;
     }
 

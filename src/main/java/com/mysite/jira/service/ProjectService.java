@@ -1,15 +1,23 @@
 package com.mysite.jira.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.mywork.RecentProjectDTO;
-import com.mysite.jira.dto.project.create.ProjectListIsLikeDTO;
+import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
+import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.ProjectRecentClicked;
 import com.mysite.jira.repository.IssueStatusRepository;
+import com.mysite.jira.repository.IssueTypeRepository;
+import com.mysite.jira.repository.ProjectRecentClickedRepository;
 import com.mysite.jira.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,97 +27,133 @@ import lombok.RequiredArgsConstructor;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
+	
+	private final ProjectRecentClickedRepository projectRecentClickedRepository;
+
+	private final IssueTypeRepository issueTypeRepository;
+	
+	private final IssueStatusRepository issueStatusRepository;
 
 	private final UtilityService utilityService;
-	
-	public List<Project> getProjectByJiraIdx(Integer jiraIdx){
+
+	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가!!!)
+	public void createProject(String name, String key, Jira jira, Account account) {
+		int idx = (int)(Math.random()*3);
+		int sequence = 0;
+		String[] colorArr = {"#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC"};
+		String[] iconArr = {"project_icon_file1.png", "project_icon_file2.png", "project_icon_file3.png", "project_icon_file4.png"};
+		Project project = Project.builder().key(key).name(name).color(colorArr[idx]).iconFilename(iconArr[idx])
+				.jira(jira).account(account).sequence(sequence).build();
+		projectRepository.save(project);
+		// 프로젝트 클릭 로그
+		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder()
+																		.account(account)
+																		.jira(jira)
+																		.project(project)
+																		.build();
+		projectRecentClickedRepository.save(projectRecentClicked);
+		// 기본 이슈유형
+		List<IssueType> issueTypes = Arrays.asList(
+			    IssueType.builder()
+			    		 .name("작업")
+			    		 .content("A small, distinct piece of work.")
+			    		 .subContent("")
+			    		 .iconFilename("issue_task.svg")
+			    		 .grade(2)
+			    		 .project(project).build(),
+			    IssueType.builder()
+			             .name("하위 작업")
+			             .content("A small piece of work that''s part of a larger task.")
+			             .subContent("")
+			             .iconFilename("issue_sub_task.svg")
+			    		 .grade(2)
+			    		 .project(project).build()
+			);
+		issueTypeRepository.saveAll(issueTypes);
+		// 기본 이슈상태
+		List<IssueStatus> issueStatuses = Arrays.asList(
+			    IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
+			    IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
+			    IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build()
+			);
+		issueStatusRepository.saveAll(issueStatuses);
+		// 기본 필터
+//		List<Filter> issueStatuses = Arrays.asList(
+//			    IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
+//			    IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
+//			    IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build()
+//		);
+	}
+
+	public List<Project> getProjectByJiraIdx(Integer jiraIdx) {
 		return projectRepository.findByJiraIdx(jiraIdx);
 	}
-	
+
 	// kdw 최근 프로젝트
 	public List<Object[]> getDistinctStatusAndNameByJiraIdx(Integer jiraIdx) {
 		return projectRepository.findDistinctStatusAndNameByJiraIdx(jiraIdx);
 	}
 
-	public List<Project> filterProjects(List<String> projectKeys) {
-        List<Project> filteredProjects = new ArrayList<>();
-
-        // projectKeys에 포함된 프로젝트들만 필터링
-        for (String key : projectKeys) {
-            // ProjectRepository에서 각 key에 해당하는 프로젝트를 찾음
-            Project project = new Project();
-            if (project != null) {
-                filteredProjects.add(project);  // 필터링된 프로젝트 리스트에 추가
-            }
-        }
-
-        return filteredProjects;
-    }
-	
-	public List<RecentProjectDTO> getProjectList(Integer accountIdx, Integer jiraIdx){
+	// kdw 최근 프로젝트 리스트(이슈의 개수 포함)
+	public List<RecentProjectDTO> getProjectList(Integer accountIdx, Integer jiraIdx) {
 		List<RecentProjectDTO> result = new ArrayList<>();
 		try {
 			List<Map<String, Object>> projectList = projectRepository.findProjectIssueCounts(accountIdx, jiraIdx);
-			for(int i = 0; i < projectList.size(); i++) {
+			for (int i = 0; i < projectList.size(); i++) {
 				String name = projectList.get(i).get("name").toString();
 				String iconFilename = projectList.get(i).get("iconFilename").toString();
 				String color = projectList.get(i).get("color").toString();
 				String key = projectList.get(i).get("key").toString();
 				Integer issueCount = utilityService.isBigDecimal(projectList.get(i).get("issueCount")).intValue();
-				
-				RecentProjectDTO dto = RecentProjectDTO.builder()
-													   .name(name)
-													   .iconFilename(iconFilename)
-													   .color(color)
-													   .key(key)
-													   .issueCount(issueCount)
-													   .build();
+
+				RecentProjectDTO dto = RecentProjectDTO.builder().name(name).iconFilename(iconFilename).color(color)
+						.key(key).issueCount(issueCount).build();
 				result.add(dto);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	// kdw 프로젝트 리스트(project/create)
-	public List<ProjectListIsLikeDTO> getProjectListIsLike(Integer accountIdx, Integer jiraIdx, int page){
-		int startRow = page;
-		int endRow = startRow + 10;
-		List<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, startRow, endRow);
+
+	// kdw 프로젝트 리스트(project/list, 즐겨찾기인지 확인한 프로젝트)
+	public List<ProjectListIsLikeDTO> getProjectListIsLike(Integer accountIdx, Integer jiraIdx, int page) {
+		int startRow = page * 10;
+		int endRow = (startRow + (page + 1) * 10) - 1;
+		List<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, startRow,
+				endRow);
 		List<ProjectListIsLikeDTO> result = new ArrayList<>();
-		
-		for(Map<String, Object> project : projectPage) {
+
+		for (Map<String, Object> project : projectPage) {
+			Integer projectIdx = (Integer)project.get("projectIdx");
 			String projectName = project.get("projectName").toString();
 			String projectIconFilename = project.get("projectIconFilename").toString();
 			String projectKey = project.get("projectKey").toString();
 			String accountName = project.get("accountName").toString();
 			String accountIconFilename = project.get("accountIconFilename").toString();
 			boolean isLike = project.get("isLike").toString().equals("true") ? true : false;
-			
+
 			ProjectListIsLikeDTO dto = ProjectListIsLikeDTO.builder()
-														   .projectName(projectName)
-														   .projectIconFilename(projectIconFilename)
-														   .projectKey(projectKey)
-														   .accountName(accountName)
-														   .accountIconFilename(accountIconFilename)
-														   .isLike(isLike)
-														   .build();
-			System.out.println("프로젝트 이름" + projectName);
-			System.out.println("프로젝트아이콘 이름" + projectIconFilename);
-			System.out.println("프로젝트 키" + projectKey);
-			System.out.println("유저 이름" + accountName);
-			System.out.println("유저아이콘 이름" + accountIconFilename);
-			System.out.println("즐겨찾기 유무" + isLike);
+					.projectIdx(projectIdx)
+					.projectName(projectName)
+					.projectIconFilename(projectIconFilename)
+					.projectKey(projectKey).accountName(accountName)
+					.accountIconFilename(accountIconFilename)
+					.isLike(isLike).build();
 			result.add(dto);
 		}
 		return result;
 	}
-	
+
 	public Project getRecentTop1Project(Integer accountIdx, Integer jiraIdx) {
 		return projectRepository.findByRecentClickedProject(accountIdx, jiraIdx);
 	}
-	
-	public Project getByJiraIdxAndKeyProject(Integer accountIdx, String key) {
-		return projectRepository.findByJira_IdxAndKey(accountIdx, key);
+
+	public Project getByJiraIdxAndKeyProject(Integer jiraIdx, String key) {
+		return projectRepository.findByJira_IdxAndKey(jiraIdx, key);
+	}
+
+	public Project getByJiraIdxAndNameProject(Integer jiraIdx, String name) {
+		return projectRepository.findByJira_idxAndName(jiraIdx, name);
 	}
 }

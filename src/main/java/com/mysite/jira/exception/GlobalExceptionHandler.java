@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	// 404 오류
-//	@ExceptionHandler(Exception.class)
-//	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//	 public String nothingPageException(Exception e) {
-//		return "error404";
-//	}
+	 //404 오류
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	 public String nothingPageException(Exception e) {
+		return "error404";
+	}
 }

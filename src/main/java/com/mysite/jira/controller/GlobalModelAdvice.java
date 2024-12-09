@@ -1,13 +1,16 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.LikeContentDTO;
@@ -19,8 +22,7 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
-import com.mysite.jira.service.BoardMainService;
-import com.mysite.jira.service.HeaderService;
+import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.LogDataService;
@@ -47,44 +49,60 @@ public class GlobalModelAdvice {
 	
 	private final LikeService likeService;
 	
+	private final DashboardService dashboardService;
+	
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
-		String uri = request.getRequestURI(); 
-		if(principal == null) return;
-		if(uri.contains("/api")) return;
-		// 현재 로그인한 계정 정보
-	    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
-		
-		// 가져올 값들
-		Integer accountIdx = currentUser.getIdx();
-		// Integer accountIdx = 1;
-		Integer jiraIdx = 1;
-
-		// header
-		
-		// header null 처리 필요
-		List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
-		List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
-		List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
-		List<Account> allAccountList = accountService.getAccountList(jiraIdx);
-		List<HeaderAlaramLogDataDTO> alarmLogData = logDataService.getJiraLogData(jiraIdx);
-		List<AllRecentDTO> allRecentList = recentService.getAllRecentList(accountIdx, jiraIdx, LocalDateTime.now().minusDays(30),LocalDateTime.now());
-		
-		// aside null 처리 필요
-		List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
-		List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);
-		List<AllRecentDTO> thisWeekRecentList = recentService.getWeekAllRecentList(accountIdx, jiraIdx);
-		List<AllRecentDTO> monthRecentList = recentService.getMonthAllRecentList(accountIdx, jiraIdx);
-		List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
-		List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
-		List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
-		List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);
-		List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
-		List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
-		List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
-		List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
+		String uri = request.getRequestURI();
+		System.out.println("globalModelAdvice "+uri);
+		if(principal == null ||
+		   uri.length() == 0 ||
+		   uri.equals("/") ||
+		   uri.contains("/api")||
+		   uri.contains("/error") ||
+		   uri.contains("/account") ||
+		   uri.equals("/favicon.ico")) return;
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
-		if (!uri.contains("/project/create")) {
+		if (uri.contains("/project") && uri.contains("/create")) return;
+		try {
+			// 현재 로그인한 계정 정보
+		    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+		    // 현재 들어온 지라 정보
+		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		    System.out.println("globalModelAdvice "+principal.getName());
+			// 가져올 값들
+		    
+			Integer accountIdx = currentUser.getIdx();
+			Integer jiraIdx = jira.getIdx();
+			// header
+			// header null 처리 필요
+			List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
+			List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
+			List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
+			List<Account> allAccountList = accountService.getAccountList(jiraIdx);
+			List<HeaderAlaramLogDataDTO> alarmLogData = logDataService.getJiraLogData(jiraIdx);
+			List<AllRecentDTO> allRecentList = recentService.getAllRecentList(accountIdx, jiraIdx, LocalDateTime.now().minusDays(30),LocalDateTime.now());
+			
+			// aside null 처리 필요
+			
+			List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
+			
+			List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);
+			
+			List<AllRecentDTO> thisWeekRecentList = recentService.getWeekAllRecentList(accountIdx, jiraIdx);
+			
+			List<AllRecentDTO> monthRecentList = recentService.getMonthAllRecentList(accountIdx, jiraIdx);
+			
+			List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
+			
+			List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
+			List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
+			List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);
+			List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
+			List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
+			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
+			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
+			
 			// 현재 jiraName url에서 가져오기
 			model.addAttribute("currentJira", uri.split("/")[1]);
 			
@@ -113,6 +131,8 @@ public class GlobalModelAdvice {
 			
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -126,7 +146,17 @@ public class GlobalModelAdvice {
 			model.addAttribute("project", project);
 			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
-		
 	}
 	
+	@ModelAttribute
+	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
+		String uri = request.getRequestURI();
+		if(uri.contains("/dashboard") && 
+		  !uri.contains("/list")) {
+			boolean isDetail = uri.contains("/detail") ? true : false;
+			Dashboard dashboard = dashboardService.getDashboard(dashboardIdx);
+			model.addAttribute("isDetail", isDetail);
+			model.addAttribute("currentDashboard", dashboard);
+		}
+	}
 }

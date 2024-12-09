@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,4 +36,14 @@ public class IssueRecentClicked {
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;
+
+	@Builder
+	public IssueRecentClicked(Integer idx, Account account, Issue issue, Jira jira) {
+		this.account = account;
+		this.issue = issue;
+		this.jira = jira;
+		this.clickedDate = LocalDateTime.now();
+	}
+	
+	
 }

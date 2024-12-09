@@ -17,7 +17,7 @@
 }
 
 .dashboard_detail_header .gnb_btn1.more{
-	background-color: #e9edf3a6;
+	border: 1px solid #0B120E24;
 	border-radius: 4px;
 }
 
@@ -34,7 +34,7 @@
 .dashboard_detail_header .gnb_btn2{
 	height: 32px;
 	padding: 0 10px;
-	background-color: #e9edf3a6;
+	border: 1px solid #0B120E24;
 	border-radius: 4px;
 	font-size: 14px;
 	

@@ -45,10 +45,6 @@ public class Project {
 
 	@ColumnDefault("sysdate")
 	@Column
-	private LocalDateTime clickedDate;
-
-	@ColumnDefault("sysdate")
-	@Column
 	private LocalDateTime createDate;
 
 	@ManyToOne
@@ -58,17 +54,15 @@ public class Project {
 	private Account account;
 
 	@NotNull
-	@ColumnDefault("0")
 	private Integer sequence;
 
 	@Builder
-	public Project(String key, String color, String iconFilename, String name, LocalDateTime clickedDate, Integer sequence,
+	public Project(String key, String color, String iconFilename, String name, Integer sequence,
 			Jira jira, Account account) {
 		this.key = key;
 		this.color = color;
 		this.iconFilename = iconFilename;
 		this.name = name;
-		this.clickedDate = clickedDate;
 		this.sequence = sequence;
 		this.createDate = LocalDateTime.now();
 		this.jira = jira;

@@ -106,117 +106,77 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- 백엔드에서 가져올 데이터 -->
-				<tr>
+				<tr th:each="dashboardList : ${dashboardList}">
 					<td>
 						<div class="dashboard_list_item_box">
 							<div class="star_box">
-								<img th:src="@{/images/star_icon_empty.svg}">
+								<img th:src="@{|/images/${dashboardList.isLike ? 'star_icon_yellow' : 'star_icon_empty'}.svg|}"
+									width="16" height="16">
 							</div>
 						</div>
 					</td>
-
 					<td>
-						<a href="#">
-							<div class="dashboard_list_item_box">대시보드</div>
+						<a th:href="@{|/${currentJira}/dashboard/detail/${dashboardList.dashboard.idx}|}">
+							<div class="dashboard_list_item_box" th:text="${dashboardList.dashboard.name}"></div>
 						</a>
 					</td>
 					<td>
 						<a href="#">
 							<div class="dashboard_list_item_box">
-								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" style="border-radius: 50%" />
-								<span>김대완</span>
+								<img th:src="@{|/images/${dashboardList.dashboard.account.iconFilename}|}" alt=""
+									style="border-radius: 50%" width="24" height="24" />
+								<span th:text="${dashboardList.dashboard.account.name}"></span>
 							</div>
 						</a>
 					</td>
 					<td>
 						<div>
-							<div class="dashboard_list_item_box">
-								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
-									alt="" style="border-radius: 2px" />
-								<span>하이, Member</span>
+							<div class="dashboard_list_item_box"
+								th:each="dashboardAuth : ${dashboardList.dashboard.dashboardAuthList}"
+								th:if="${dashboardAuth.type == 1}">
+								<img th:src="@{|/images/${dashboardAuth.project != null ? dashboardAuth.project.iconFilename :
+														  dashboardAuth.account != null ? dashboardAuth.account.iconFilename :
+														  'aside_team_icon.svg'}|}" 
+									 alt="" th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'" 
+									 width="24" height="24" />
+								<span th:text="${dashboardAuth.project != null ? dashboardAuth.project.name :
+											     dashboardAuth.account != null ? dashboardAuth.account.name :
+											     dashboardAuth.team.name}"></span>
+								<span th:text="${dashboardAuth.projectRole == 3 ? 'Administrator' :
+												 dashboardAuth.projectRole == 2 ? 'Member' :
+												 'Viewer'}"></span>
 							</div>
-							<div class="dashboard_list_item_box">
-								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
-									alt="" style="border-radius: 2px" />
-								<span>하이, Administrator</span>
-							</div>
-						</div>
-					</td>
-					<td>
-						<div class="dashboard_list_item_box">
-							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
-								alt="" style="border-radius: 2px" />
-							<span>hihihihi, Administrator</span>
-						</div>
-					</td>
-					<td>
-						<div class="dashboard_list_item_box">2명</div>
-					</td>
-					<td>
-						<div class="img_box">
-							<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-								<g fill="currentcolor" fill-rule="evenodd">
-									<circle cx="5" cy="12" r="2"></circle>
-									<circle cx="12" cy="12" r="2"></circle>
-									<circle cx="19" cy="12" r="2"></circle>
-								</g>
-							</svg>
-						</div>
-						<div class="more_box">
-							<button>대시보드 복사</button>
-							<button>대시보드 이름 변경 또는 공유</button>
-							<button>소유자 변경</button>
-							<button>휴지통으로 이동</button>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="dashboard_list_item_box">
-							<div class="star_box">
-								<img th:src="@{/images/star_icon_empty.svg}">
+							<div class="dashboard_list_item_box"
+							     th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 1])}">
+								<img src="/images/private_icon.svg" width="24" height="24"/>
+								<span>비공개</span>
 							</div>
 						</div>
 					</td>
 					<td>
-						<a href="#">
-							<div class="dashboard_list_item_box">대시보드</div>
-						</a>
-					</td>
-					<td>
-						<a href="#">
-							<div class="dashboard_list_item_box">
-								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" style="border-radius: 50%" />
-								<span>김대완</span>
-							</div>
-						</a>
-					</td>
-					<td>
-						<div>
-							<div class="dashboard_list_item_box">
-								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
-									alt="" style="border-radius: 2px" />
-								<span>하이, Member</span>
-							</div>
-							<div class="dashboard_list_item_box">
-								<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412"
-									alt="" style="border-radius: 2px" />
-								<span>하이, Administrator</span>
-							</div>
+						<div class="dashboard_list_item_box"
+							th:each="dashboardAuth : ${dashboardList.dashboard.dashboardAuthList}"
+							th:if="${dashboardAuth.type == 2}">
+							<img th:src="@{|/images/${dashboardAuth.project != null ? dashboardAuth.project.iconFilename :
+													  dashboardAuth.account != null ? dashboardAuth.account.iconFilename :
+													  'aside_team_icon.svg'}|}" 
+								 alt="" th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'" 
+								 width="24" height="24" />
+							<span th:text="${dashboardAuth.project != null ? dashboardAuth.project.name :
+										     dashboardAuth.account != null ? dashboardAuth.account.name :
+										     dashboardAuth.team.name}"></span>
+							<span th:text="${dashboardAuth.projectRole == 3 ? 'Administrator' :
+											 dashboardAuth.projectRole == 2 ? 'Member' :
+											 'Viewer'}"></span>
+						</div>
+						<div class="dashboard_list_item_box"
+							 th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 2])}">
+							<img src="/images/private_icon.svg" width="24" height="24"/>
+							<span>비공개</span>
 						</div>
 					</td>
 					<td>
-						<div class="dashboard_list_item_box">
-							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
-								alt="" style="border-radius: 2px" />
-							<span>hihihihi, Administrator</span>
-						</div>
-					</td>
-					<td>
-						<div class="dashboard_list_item_box">2명</div>
+						<div class="dashboard_list_item_box" th:text="${dashboardList.likeCount}+'명'"></div>
 					</td>
 					<td>
 						<div class="img_box">

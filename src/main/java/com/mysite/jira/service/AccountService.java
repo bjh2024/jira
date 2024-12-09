@@ -60,6 +60,8 @@ public class AccountService {
 		Account account = null;
 		if(optAccount.isPresent()) {
 			account = optAccount.get();
+		}else {
+			throw new NoSuchElementException("Account not found");
 		}
 		return account;
 	}

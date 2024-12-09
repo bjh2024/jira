@@ -2,13 +2,13 @@ package com.mysite.jira.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.entity.Jira;
 
 public interface JiraRepository extends JpaRepository<Jira, Integer> {
@@ -28,7 +28,11 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 	
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
-			SELECT new com.mysite.jira.dto.AllRecentDTO(iconFilename, name, projectName, key, clickedDate)
+			SELECT iconFilename as iconFilename,
+				   name as name,
+				   projectName as projectName, 
+				   key as key, 
+				   clickedDate as clickedDate
 			FROM(
 				SELECT  i.issueType.iconFilename as iconFilename, i.name as name, i.project.name as projectName, i.key as key, irc.clickedDate as clickedDate
 				FROM    IssueRecentClicked irc
@@ -61,7 +65,7 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 			WHERE clickedDate BETWEEN :startDate AND :endDate
 			ORDER BY clickedDate Desc
 					""")
-	List<AllRecentDTO> findClickedDataOrderByDateDesc(@Param("accountIdx") Integer accountIdx,
+	List<Map<String, Object>> findClickedDataOrderByDateDesc(@Param("accountIdx") Integer accountIdx,
 															@Param("jiraIdx") Integer jiraIdx, 
 															@Param("startDate") LocalDateTime startDate,
 															@Param("endDate") LocalDateTime endDate);
