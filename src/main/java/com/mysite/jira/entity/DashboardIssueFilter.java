@@ -29,9 +29,13 @@ public class DashboardIssueFilter {
 	@NotNull
 	private Integer viewNum;
 
-	@Column(columnDefinition = "VARCHAR2(20)")
+	@Column
 	@NotNull
-	private String divOrder;
+	private Integer divOrderX;
+	
+	@Column
+	@NotNull
+	private Integer divOrderY;
 	
 	@Column
 	@NotNull
@@ -47,10 +51,11 @@ public class DashboardIssueFilter {
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 	
 	@Builder
-	public DashboardIssueFilter(Integer viewNum, String divOrder, Dashboard dashboard, Filter filter, Integer isSave) {
+	public DashboardIssueFilter(Integer viewNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Filter filter, Integer isSave) {
 		this.isSave = isSave;
 		this.viewNum = viewNum;
-		this.divOrder = divOrder;
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
 		this.isSave = isSave;
 		this.dashboard = dashboard;
 		this.filter = filter;

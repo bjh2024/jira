@@ -23,9 +23,11 @@ document.querySelector("body").addEventListener("click", function(e) {
 			console.log(btnText);
 			switch (btnText) {
 				case "구성":
-					const chartName = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
+					const chartTitle = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
+					const projectName = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[1];
 					const contentBox = e.target.closest(".add_dashboard_content");
-					editChartChange(contentBox, chartName);
+					const colName = e.target.closest(".add_dashboard_content").querySelector(".dashboard_pie_chart_content .header h3").innerText;
+					editChartChange(contentBox, chartTitle, projectName, colName);
 					break;
 				case "복제":
 					break;
@@ -38,11 +40,11 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 });
 
-function editChartChange(contentBox, chartName) {
+function editChartChange(contentBox, chartTitle, projectName, colName, idx) {
 	contentBox.innerHTML = "";
-	switch (chartName) {
+	switch (chartTitle) {
 		case "파이 차트":
-			contentBox.innerHTML = setPieChartContent(true, '하이', '담당자');
+			contentBox.innerHTML = setPieChartContent(true, projectName, colName, 1);
 			break;
 		case "나에게 할당됨":
 			break;
@@ -67,7 +69,7 @@ function addDashboardGarget(tagStr) {
 	gadgetContentBox1.prepend(newDiv);
 }
 // 파이 차트 값 add
-function setPieChartContent(isChange, projectName, colName) {
+function setPieChartContent(isChange, projectName, colName, chartIdx) {
 	const pieChartContent = `
 						<div class="add_dashboard_content_header">
 							<h2>
@@ -146,7 +148,7 @@ function setPieChartContent(isChange, projectName, colName) {
 								</div>
 							</div>
 							<div class="save_btn">
-								<button>저장</button>
+								<button idx-data="${chartIdx}">저장</button>
 							</div>
 						</div>
 						<div class="add_dashboard_content_footer">

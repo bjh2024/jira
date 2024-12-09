@@ -21,9 +21,13 @@ public class DashboardPieChart {
 	@SequenceGenerator(name = "pie_chart_seq", sequenceName = "pie_chart_seq", allocationSize = 1)
 	private Integer idx;
 	
-	@Column(columnDefinition = "VARCHAR2(20)")
+	@Column
 	@NotNull
-	private String divOrder;
+	private Integer divOrderX;
+	
+	@Column
+	@NotNull
+	private Integer divOrderY;
 	
 	@Column
 	@NotNull
@@ -39,9 +43,10 @@ public class DashboardPieChart {
 	private DashboardCol dashboardCol;
 	
 	@Builder
-	public DashboardPieChart(String divOrder, Dashboard dashboard, Project project,
+	public DashboardPieChart(Integer divOrderX, Integer divOrderY, Dashboard dashboard, Project project,
 			DashboardCol dashboardCol, Integer isSave) {
-		this.divOrder = divOrder;
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
 		this.dashboard = dashboard;
 		this.project = project;
 		this.isSave = isSave;
