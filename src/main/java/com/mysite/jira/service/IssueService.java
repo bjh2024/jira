@@ -82,6 +82,22 @@ public class IssueService {
 		return issueRepository.findIssuesByfinishLastDate(lastDate);
 	}
 
+	public List<Issue> getIssueByNameLike(String text){
+		return issueRepository.findByNameLike("%" + text + "%");
+	}
+	
+	public List<Issue> getIssueByStatus(Integer number){
+		return issueRepository.findByIssueStatus_Status(number);
+	}
+	
+	public List<Issue> getIssueByStatusNot(Integer number){
+		return issueRepository.findByIssueStatus_StatusNot(number);
+	}
+	
+	public List<Issue> getIssueByQuery(String text){
+		return issueRepository.findByQuery(text);
+				}
+	
 	// kdw 오늘
 	public List<Issue> getTodayIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);

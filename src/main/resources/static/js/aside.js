@@ -223,3 +223,9 @@ document
     }
     this.nextElementSibling.classList.toggle("show");
   });
+
+  let urlPartss = window.location.pathname.split('/');
+  let usernames = urlPartss[1];  // 경로의 첫 번째 부분이 'dahyun0521'
+
+  // 추출한 username을 사용하여 동적으로 링크 생성
+  document.getElementById("filter_move").href = "/" + usernames + "/filter/filter_issue";

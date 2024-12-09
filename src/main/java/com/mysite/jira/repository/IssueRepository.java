@@ -41,6 +41,17 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	
 	List<Issue> findByManagerIsNull();
 	
+	List<Issue> findByNameLike(String text);
+	
+	List<Issue> findByIssueStatus_Status(Integer number);
+	
+	List<Issue> findByIssueStatus_StatusNot(Integer number);
+	
+	@Query("""
+			SELECT :query
+			""")
+	List<Issue> findByQuery(@Param("query") String text);
+	
 	@Query("SELECT i FROM Issue i WHERE i.editDate >= :startDate")
     List<Issue> findIssuesByStartDate(@Param("startDate") LocalDateTime startDate);
 	

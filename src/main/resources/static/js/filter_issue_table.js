@@ -56,7 +56,10 @@ let filterDatas = {
 			"createBeforeDate": null,
 			"doneStartDate" : null,
 			"doneLastDate" : null,
-			"doneBeforeDate": null
+			"doneBeforeDate": null,
+			"searchBox" : null,
+			"doneCheck" : null,
+			"notDoneCheck" : null
 		}
 // 업데이트 날짜 필터 -------------------------------------------------------------------
 	document.getElementById("radio_days").addEventListener("change", function() {
@@ -234,7 +237,8 @@ let filterDatas = {
 	 		}else if(filterDatas.doneStartDate < new Date(this.value)){
 	 			filterDatas.doneLastDate = new Date(this.value);
 	 		}
-	 		fetchInput();
+			fetchInput(); // API 호출 또는 함수 실행
+			fetchInputIssue();	
 	 	 })
 	 	 document.getElementById("done_date_reset").addEventListener("click",function(){
 	 		filterDatas = {
@@ -244,6 +248,8 @@ let filterDatas = {
 	 		}
 	 		document.querySelector(".done_date_box_1").classList.remove("show");
 	 		document.querySelector(".done_date_box_2").classList.remove("show");
+			fetchInput(); // API 호출 또는 함수 실행
+			fetchInputIssue();	
 	 	 })
 // 해결 필터 끝 =========================================================================================
 // 프로젝트 필터 시작 ========================================================================================
@@ -260,6 +266,30 @@ document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(
 		});
 })
 // 프로젝트 필터 끝 ========================================================================================
+// 해결 필터 시작 ========================================================================================
+document.querySelectorAll(".filter_issue_box input[name='donecheck1']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.doneCheck = this.value;
+		}else{
+		filterDatas.doneCheck = null;
+		}
+		fetchInputIssue();
+		fetchInput();
+		});
+})
+document.querySelectorAll(".filter_issue_box input[name='donecheck2']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.notDoneCheck = this.value;
+		}else{
+		filterDatas.notDoneCheck = null;
+		}
+		fetchInputIssue();
+		fetchInput();
+		});
+})
+// 해결 필터 끝 ========================================================================================
 // 이슈 타입 필터 시작 ========================================================================================
 document.querySelectorAll(".filter_issue_box input[name='issueTypeIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
@@ -325,24 +355,32 @@ document.querySelectorAll(".filter_issue_box input[name='issuePriority']").forEa
 		});
 })
 // 이슈 우선순위 끝 ========================================================================================
+document.getElementById("search_box").addEventListener("input",function(item){
+		filterDatas.searchBox = item.target.value;
+		fetchInput();
+		fetchInputIssue();
+})
 // 전체리셋버튼 ========================================================================================
 document.querySelector("#all_reset").addEventListener("click",function(){
 	filterDatas = {
 		"projecIdxArr" : [],
-					"issueTypeArr" : [],
-					"issueStatusArr" : [],
-					"issueManagersArr" : [],
-					"issueReporterArr" : [],
-					"issuePriorityArr" : [],
-					"updateStartDate" : null,
-					"updateLastDate" : null,
-					"updateBeforeDate": null,
-					"createStartDate" : null,
-					"createLastDate" : null,
-					"createBeforeDate": null,
-					"doneStartDate" : null,
-					"doneLastDate" : null,
-					"doneBeforeDate": null
+		"issueTypeArr" : [],
+		"issueStatusArr" : [],
+		"issueManagersArr" : [],
+		"issueReporterArr" : [],
+		"issuePriorityArr" : [],
+		"updateStartDate" : null,
+		"updateLastDate" : null,
+		"updateBeforeDate": null,
+		"createStartDate" : null,
+		"createLastDate" : null,
+		"createBeforeDate": null,
+		"doneStartDate" : null,
+		"doneLastDate" : null,
+		"doneBeforeDate": null,
+		"searchBox" : null,
+		"doneCheck" : null,
+		"notDoneCheck" : null
 		}
 		fetchInput();
 		fetchInputIssue();
@@ -374,7 +412,10 @@ function fetchInput() {
 			createBeforeDate: filterDatas.createBeforeDate,
 			doneStartDate : filterDatas.doneStartDate,
  			doneLastDate : filterDatas.doneLastDate,
- 			doneBeforeDate: filterDatas.doneBeforeDate
+ 			doneBeforeDate: filterDatas.doneBeforeDate,
+			searchContent : filterDatas.searchBox,
+			doneCheck : filterDatas.doneCheck,
+			notDoneCheck : filterDatas.notDoneCheck
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
@@ -487,7 +528,10 @@ function fetchInputIssue() {
 			createBeforeDate: filterDatas.createBeforeDate,
 			doneStartDate : filterDatas.doneStartDate,
  			doneLastDate : filterDatas.doneLastDate,
- 			doneBeforeDate: filterDatas.doneBeforeDate
+ 			doneBeforeDate: filterDatas.doneBeforeDate,
+			searchContent : filterDatas.searchBox,
+			doneCheck : filterDatas.doneCheck,
+			notDoneCheck : filterDatas.notDoneCheck
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
@@ -499,7 +543,7 @@ function fetchInputIssue() {
 			issueList.forEach(function(item){
 				document.querySelector(".issueListFilter").innerHTML += 
 				`<div class="issue_box_choice">
-					<a href="${item.issuseKey}" id="default-link">
+					<a href="${item.issueKey}" id="default-link">
 						<div class="issue_title">
 							<span>${item.issueName}</span>
 						</div>
@@ -515,7 +559,7 @@ function fetchInputIssue() {
 								alt="프로필이미지" style="border-radius: 50%;">
 						</div>
 					</a>
-				</div>`
+				</div>`;
 			})
 		})
 		.catch(error => {
@@ -523,7 +567,25 @@ function fetchInputIssue() {
 		});
 }
 // ajex 데이터 보내기 끝========================================================================================
+    window.onload = function() {
+        // 이미 리다이렉트가 수행되었는지 로컬 스토리지를 확인합니다.
+        if (!localStorage.getItem("redirected")) {
+            // 첫 번째 a 태그를 찾습니다.
+            let firstLink = document.querySelector("a#default-link");
 
+            // 첫 번째 링크의 href 값을 가져옵니다.
+            let href = firstLink ? firstLink.getAttribute("href") : "";
+
+            // href 값이 있다면 해당 URL로 리다이렉트합니다.
+            if (href) {
+                // 리다이렉트가 발생했음을 로컬 스토리지에 기록합니다.
+                localStorage.setItem("redirected", "true");
+
+                // 해당 URL로 리다이렉트
+                window.location.href = href;
+            }
+        }
+    };
 document.querySelector("body").addEventListener("click", function(e) {
 	const account = e.target.closest(".filter_save_button");
 	const modal = document.querySelector(".modal");
@@ -577,5 +639,12 @@ document.getElementById("doneDate").addEventListener("change",function(){
 		document.querySelector(".doneDate").style.display = "block";
 	}else{
 		document.querySelector(".doneDate").style.display = "none";
+	}
+})
+document.getElementById("doneCheck").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".done_check").style.display = "block";
+	}else{
+		document.querySelector(".done_check").style.display = "none";
 	}
 })

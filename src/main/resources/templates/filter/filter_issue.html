@@ -2,6 +2,7 @@
 
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue_table.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/issue_detail.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
@@ -34,7 +35,7 @@
 												</path>
 											</svg>
 										</div>
-										<input style="margin-left:4px;font-size: 14px; align-items: center;" placeholder="이슈 검색">
+										<input id="search_box"style="margin-left:4px;font-size: 14px; align-items: center;" placeholder="이슈 검색">
 									</div>
 										<div class="filter_menu">
 											<div class="filter_category_div" style="width: 98px; cursor: pointer;">
@@ -78,8 +79,8 @@
 															<label th:each="projectList : ${project}" th:for="${projectList.idx}" >
 															<div class="filter_issue_project_div_3" >
 																<div style="height: 13px; margin-left: 6px;">
-																	<input type="checkbox" th:id="${projectList.idx}" name="projectIdx" th:value="${projectList.idx}">
-																
+																	<input type="checkbox" th:id="${projectList.idx}" 
+																	name="projectIdx" th:value="${projectList.idx}">
 																</div>
 															<div style="height: 16px; margin-left: 12px;">
 																<img width="16" height="16"
@@ -388,6 +389,73 @@
 											</div>
 										</div>
 					<!----------------------------------display none으로 해놓고 체크박스 받아서 보여줄 필터 끝----------------------------------------->
+					<!---------------------------해결 박스----------------------------------------------->
+										<div class="done_check">
+											<div class="filter_menu">
+												<div class="filter_category_div" style="width: 70px; cursor: pointer;">
+													해결
+													<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+														<path fill="currentcolor" fill-rule="evenodd"
+														d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+														</path>
+													</svg>
+												</div>
+												<div class="filter_issue_box">
+													<div class="filter_issue_project_1">
+														<div class="filter_issue_project_div_1">
+															<div>해결 =(같음)</div>
+															<div style="height: 24px;"><svg width="24" height="24" viewBox="0 0 24 24"
+																	role="presentation">
+																	<path fill="currentcolor" fill-rule="evenodd"
+																		d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																	</path>
+																</svg>
+															</div>
+														</div>
+													</div>
+													<div class="filter_issue_project_div_2">
+														<div style="height: 24px;">
+															<input class="filter_search_in_box" placeholder="검색"></div>
+														<div style="height: 16px;">
+															<svg width="16" height="16" viewBox="0 0 24 24"
+																role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																	d="m16.436 15.085 3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406M10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11">
+																</path>
+															</svg>
+														</div>
+													</div>
+													<div style="padding: 8px 0px;">
+														<div style="padding: 8px 0px">
+															<div style="font-size: 11px;margin-bottom:2.75px;">
+																<label th:for="done1">
+																<div class="filter_issue_project_div_3" >
+																	<div style="height: 13px; margin-left: 6px;">
+																		<input type="checkbox" th:id="done1" name="donecheck1" value="3">
+																	</div>
+																	<div style="margin-left: 8px; font-size: 14px;">
+																		해결됨
+																	</div>
+																</div>
+																</label>
+																<label th:for="done2">
+																<div class="filter_issue_project_div_3" >
+																	<div style="height: 13px; margin-left: 6px;">
+																		<input type="checkbox" th:id="done2" name="donecheck2" value="3">
+																	</div>
+																	<div style="margin-left: 8px; font-size: 14px;">
+																		해결되지 않음
+																	</div>
+																</div>
+																</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+					<!----------------------------------display none으로 해놓고 체크박스 받아서 보여줄 필터 끝----------------------------------------->
 					<!---------------------------상태 범주 박스----------------------------------------------->
 										<div class="updateDate">
 											<div class="filter_menu">
@@ -556,6 +624,13 @@
 															<div style="margin-left: 8px; font-size: 14px;">해결 날짜</div>
 														</div>
 														</label>
+														<label for="doneCheck">
+														<div class="filter_issue_project_div_3">
+															<div style="height: 13px; margin-left: 6px;">
+																<input type="checkbox" id="doneCheck" value="doneCheck"></div>
+															<div style="margin-left: 8px; font-size: 14px;">해결</div>
+														</div>
+														</label>
 														<label for="updateDate">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
@@ -667,26 +742,26 @@
 					</div>
 					<div class="issue_box">
 <!--여기서 부터 이슈ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-					<div class="issueListFilter">
-						<div class="issue_box_choice" th:each="issueList, loop: ${issue}">
-							<a th:href="${issueList.key}" id="default-link">
-							<div class="issue_title">
-								<span th:text="${issueList.name}"></span>
-							</div>
-							<div class="issue_category">
-								<div style="display: flex; align-items: center;">
-									<img style="margin-right: 4px;" width="16" height="16"
-										th:src="@{|/images/${issueList.issueType.iconFilename}|}"
-										alt="작업" class="_1bsb7vkz _4t3i7vkz _2hwx1b66 _2rkoyh40">
-									<span th:text="${issueList.key}"></span>
+						<div class="issueListFilter">
+							<div class="issue_box_choice" th:each="issueList, loop: ${issue}">
+								  <a th:href="${issueList.key}" id="default-link">
+								<div class="issue_title">
+									<span th:text="${issueList.name}"></span>
 								</div>
-								<img width="24" height="24"
-									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
-									alt="프로필이미지" style="border-radius: 50%;">
+								<div class="issue_category">
+									<div style="display: flex; align-items: center;">
+										<img style="margin-right: 4px;" width="16" height="16"
+											th:src="@{|/images/${issueList.issueType.iconFilename}|}"
+											alt="작업" class="_1bsb7vkz _4t3i7vkz _2hwx1b66 _2rkoyh40">
+										<span th:text="${issueList.key}"></span>
+									</div>
+									<img width="24" height="24"
+										th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+										alt="프로필이미지" style="border-radius: 50%;">
+								</div>
+								</a>
 							</div>
-							</a>
 						</div>
-					</div>
 <!--여기서 부터 이슈끝ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 					</div>
 					<div class="issue_box_end">

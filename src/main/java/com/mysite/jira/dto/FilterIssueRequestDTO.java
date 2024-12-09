@@ -22,4 +22,7 @@ public class FilterIssueRequestDTO {
 	private LocalDateTime doneStartDate;
 	private LocalDateTime doneLastDate;
 	private LocalDateTime doneBeforeDate;
+	private String searchContent;
+	private Integer doneCheck;
+	private Integer notDoneCheck;
 }

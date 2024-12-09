@@ -18,6 +18,7 @@ import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.BoardMainService;
@@ -151,7 +152,12 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/profile")
-	public String profile() {
+	public String profile(Model model) {
+		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+		model.addAttribute("issue", issueList);
+		
+		List<Project> projectList = projectService.getProjectByJiraIdx(1);
+		model.addAttribute("projectList", projectList);
 		return "account/profile.html";
 	}
 

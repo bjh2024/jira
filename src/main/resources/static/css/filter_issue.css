@@ -64,9 +64,11 @@
 	width: 83px;
 	height: 26px;
 	font-size: 13px;
+	font-weight: normal;
 	border-radius: 3px;
 	padding: 0 12px;
 	cursor: pointer;
+	line-height: 26px;
 	color:#505258;
 }
 .category_1:hover {
@@ -77,10 +79,12 @@
 .category_2 {
 	width: 113.31px;
 	height: 26px;
+	line-height: 26px;
 	font-size: 13px;
 	border-radius: 3px;
 	padding: 0 12px;
 	cursor: pointer;
+	font-weight: normal;
 	color:#505258;
 }
 .category_2:hover {

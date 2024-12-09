@@ -2,11 +2,14 @@ package com.mysite.jira.controller;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.LikeContentDTO;
+import com.mysite.jira.entity.Filter;
+import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.LikeService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AsideAPIController {
 
 	private final LikeService likeService;
+	private final FilterService filterService;
 	
 	@GetMapping("/like/filter")
 	public List<LikeContentDTO> getLikeFilter(){
@@ -38,5 +42,6 @@ public class AsideAPIController {
 		Integer jiraIdx = 1;
 		return likeService.getProjectLikeList(accountIdx, jiraIdx);
 	}
+	
 	
 }

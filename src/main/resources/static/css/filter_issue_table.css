@@ -108,3 +108,6 @@
 	padding: 20px 26px 16px 23px;
 	height: 100%;
 }
+.done_check {
+	display: none;
+}

@@ -58,7 +58,10 @@ public class FilterIssueTableAPIController {
         LocalDateTime doneStartDate = filterRequest.getDoneStartDate();
         LocalDateTime doneLastDate = filterRequest.getDoneLastDate();
         LocalDateTime doneBeforeDate = filterRequest.getDoneBeforeDate();
-       
+        String searchContent = filterRequest.getSearchContent();
+        Integer doneCheck = filterRequest.getDoneCheck();
+        Integer notDoneCheck = filterRequest.getNotDoneCheck();
+ 
         List<Issue> issueByProjectIdx = filterIssueService.getIssueByProjectIdxIn(projectIdx);
         List<Issue> issueByIssueTypeName = issueService.getIssuesByIssueTypeName(issueTypes);
         List<Issue> issueByIssueStatusName = issueService.getIssuesByIssueStatusName(issueStatus);
@@ -77,6 +80,10 @@ public class FilterIssueTableAPIController {
         List<Issue> doneStartDateOver = issueService.getfinishStartDateGreaterThanEqual(doneStartDate);
         List<Issue> doneLastDateOver = issueService.getfinishLastDateLessThanEqual(doneLastDate);
         List<Issue> doneBeforeDateOver = issueService.getfinishStartDateGreaterThanEqual(doneBeforeDate);
+        
+        List<Issue> searchIssue = issueService.getIssueByNameLike(searchContent);
+        List<Issue> doneCheck1 = issueService.getIssueByStatus(doneCheck);
+        List<Issue> notDoneCheck2 = issueService.getIssueByStatusNot(notDoneCheck);
         // 두 리스트에서 공통된 아이템만 필터링
         if(managerName.length > 0) {
         	issueList.retainAll(issueByManagerName);
@@ -97,6 +104,16 @@ public class FilterIssueTableAPIController {
         	issueList.retainAll(updateBeforeDateOver);
         }
         // 업데이트 필터 끝
+        // 해결
+        if(!(notDoneCheck != null && doneCheck != null)) {
+        	if(notDoneCheck != null) {
+        		issueList.retainAll(notDoneCheck2);
+        	}
+        	if(doneCheck != null) {
+        		issueList.retainAll(doneCheck1);
+        	}
+        }
+        // 해결 끝
         // 생성 날짜 필터
         if(createStartDate != null) {
         	issueList.retainAll(createStartDateOver);
@@ -135,6 +152,9 @@ public class FilterIssueTableAPIController {
         	issueList.retainAll(issueByissuePriority);
         }
         
+        if(searchContent != null) {
+        	issueList.retainAll(searchIssue);
+    	}
         // FilterIssueDTO로 변환하여 반환
         List<FilterIssueDTO> filterIssue = new ArrayList<>();
         for (Issue issue : issueList) {

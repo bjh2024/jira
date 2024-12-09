@@ -39,12 +39,23 @@ public class FilterController {
 	private final AccountService accountService;
 	private final BoardMainService boardMainService;
 
+	@GetMapping("filter_issue")
+	public String filterIssueMain(Model model) {
+	    // Jira에서 문제 목록을 가져옴
+	    List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+	    // 첫 번째 이슈의 Key를 사용하여 리다이렉트
+	    String issueKey = issueList.get(0).getKey();
+	    // 리다이렉트
+	    return "redirect:filter_issue/" + issueKey;
+	}
+	 
 	@GetMapping("/filter_issue/{issueKey}")
-	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issueKey,Model model) {
+	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issuekey,Model model) {
+		
 		Integer jiraIdx = 1;
-
 		try {
-			model.addAttribute("projectKey", issueKey);
+			
+			model.addAttribute("projectKey", issuekey);
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
