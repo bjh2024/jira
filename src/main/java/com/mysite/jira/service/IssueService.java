@@ -97,119 +97,59 @@ public class IssueService {
 	public List<Issue> getIssueByQuery(String text){
 		return issueRepository.findByQuery(text);
 				}
+	public List<Issue> getIssueByBetweenCreateDateDesc(Integer jiraIdx, LocalDateTime startDate, LocalDateTime endDate){
+		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,endDate);
+		// ProjectLogData의 중복값 제거
+		for (int i = 0; i < issues.size(); i++) {
+			Set<Integer> setIconFiles = new HashSet<>();
+			List<ProjectLogData> logDataList = new ArrayList<>();
+			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
+				if (setIconFiles.add(logData.getAccount().getIdx())) {
+					logDataList.add(logData);
+				}
+			}
+			if(logDataList.size() != 0) {
+				issues.get(i).updateProjectLogDataList(logDataList);
+			}
+		}
+		return issues;
+	}
 	
 	// kdw 오늘
 	public List<Issue> getTodayIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.now();
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			issues.get(i).updateProjectLogDataList(logDataList);
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 어제
 	public List<Issue> getYesterdayIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MAX);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 지난주
 	public List<Issue> getWeekIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MAX);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 지난달
 	public List<Issue> getMonthIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(30), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(8), LocalTime.MIDNIGHT);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 한달이상
 	public List<Issue> getMonthGreaterIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(365 * 2), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(31), LocalTime.MIDNIGHT);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
+	
 	// kdw 보류
 	public List<Issue> getManagerByIssueStatusIn(Integer jiraIdx, Integer managerIdx){
 		// 할일 = 1, 진행중 = 2

@@ -1,15 +1,16 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
-import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
@@ -49,9 +50,12 @@ public class MainController {
 	
 	
 	@GetMapping("/{jiraName}")
-	public String filter(Model model) {
-		Integer jiraIdx = 1;
-		Integer accountIdx = 1;
+	public String filter(Model model, Principal principal, @PathVariable("jiraName") String jiraName) {
+		Account account = accountService.getAccountByEmail(principal.getName());
+		Integer accountIdx = account.getIdx();
+		
+		Jira jira = jiraService.getByNameJira(jiraName);
+		Integer jiraIdx = jira.getIdx();
 		model.addAttribute("projectList", projectService.getProjectList(accountIdx, jiraIdx));
 		
 		// 작업
@@ -77,5 +81,9 @@ public class MainController {
 		
 		return "my_work";
 	}
-	
+	// /favicon.ico GlobalModelAdvice에 들어갈때 오류
+	@GetMapping("/favicon.ico")
+    public ResponseEntity<Void> favicon() {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

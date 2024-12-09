@@ -9,5 +9,7 @@ import com.mysite.jira.entity.ProjectLikeMembers;
 
 public interface ProjectLikeMembersRepository extends JpaRepository<ProjectLikeMembers, Integer>{
 
-	List<ProjectLikeMembers> findByProject_jiraIdxAndAccountIdx(@Param("accountIdx") Integer accountIdx,@Param("jiraIdx") Integer jiraIdx);
+	List<ProjectLikeMembers> findByAccountIdxAndProject_jiraIdx(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
+	
+	ProjectLikeMembers findByAccountIdxAndProjectIdx(@Param("accountIdx") Integer accountIdx, @Param("projectIdx") Integer projectIdx);
 }

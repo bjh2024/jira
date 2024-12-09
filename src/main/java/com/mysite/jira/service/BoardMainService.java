@@ -1,11 +1,13 @@
 package com.mysite.jira.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
@@ -17,6 +19,7 @@ import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
+import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
@@ -46,6 +49,7 @@ public class BoardMainService {
 	private final TeamRepository teamRepository;
 	private final IssueFileRepository issueFileRepository;
 	private final ProjectMembersRepository projectMembersRepository;
+	private final AccountRepository accountRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -74,8 +78,13 @@ public class BoardMainService {
 		return this.issueStatusRepository.findGroupByIssueStatusWithJPQL(idx);
 	}
 	
-	public Optional<IssueStatus> getOnceIssueStatus(Integer idx) {
-		return this.issueStatusRepository.findById(idx);
+	public IssueStatus getOnceIssueStatus(Integer idx) {
+		Optional<IssueStatus> issueStatus = this.issueStatusRepository.findById(idx);
+		if(issueStatus.isPresent()) {
+			return issueStatus.get();
+		}
+		
+		return null;
 	}
 	
 	public List<IssueStatus> getIssueStatusByProjectIdxOrderByStatusAsc(Integer idx){
@@ -102,8 +111,26 @@ public class BoardMainService {
 		return this.issueReplyRepository.findAll();
 	}
 	
+	public IssuePriority getOnceIssuePriority(Integer idx) {
+		Optional<IssuePriority> optPriority = this.issuePriorityRepository.findById(idx);
+		IssuePriority priority = null;
+		if(optPriority.isPresent()) {
+			priority = optPriority.get();
+		}
+		return priority;
+	}
+	
 	public List<IssuePriority> getIssuePriority(){
 		return this.issuePriorityRepository.findAllByOrderByIdxDesc();
+	}
+	
+	public List<IssuePriority> getAlterIssuePriority(Integer idx){
+		return this.issuePriorityRepository.findAllByIdxNotOrderByIdxDesc(idx);
+	}
+	
+	public Team getOnceTeam(Integer idx) {
+		Optional<Team> optTeam = this.teamRepository.findById(idx);
+		return optTeam.get();
 	}
 	
 	public List<Team> getTeamList(){
@@ -118,24 +145,53 @@ public class BoardMainService {
 		return this.projectMembersRepository.findAllByProjectIdx(idx);
 	}
 	
-//	@Transactional
-//	public void updateIssueStatus(Integer projectIdx, Integer issueIdx, IssueStatus issueStatus){
-//		Issue updatedIssue = issueRepository.findById(issueIdx).orElse(null);
-//		
-//		 if (issueStatus == null) {
-//			 throw new IllegalArgumentException("IssueStatus cannot be null");
-//		 }
-//		 
-//		 if(updatedIssue != null) {
-//			 updatedIssue.updateIssueStatus(issueStatus);
-//			 issueRepository.save(updatedIssue);
-//		 }
-//		
-//	}
-//	
-//	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
-//		List<IssueStatus> updatedStatusList = issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
-//		
-//		return updatedStatusList;
-//	}
+	public void updateStatus(Issue issue, IssueStatus issueStatus) {
+		issue.updateIssueStatus(issueStatus);
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateStartDate(Issue issue, LocalDateTime date) {
+		issue.updateStartDate(date);
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateDeadlineDate(Issue issue, LocalDateTime date) {
+		issue.updateDeadlineDate(date);
+		this.issueRepository.save(issue);
+	}
+
+	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
+		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
+		return updatedStatusList;
+	}
+	
+	public void updatePriority(Issue issue, IssuePriority priority) {
+		issue.updatePriority(priority);
+		this.issueRepository.save(issue);
+	}
+	
+	public List<Team> getJiraTeamList(Integer jiraIdx){
+		List<Team> teamList = this.teamRepository.findByJiraIdx(jiraIdx);
+		return teamList;
+	}
+	
+	public void updateTeam(Issue issue, Team team) {
+		issue.updateTeam(team);
+		this.issueRepository.save(issue);
+	}
+	
+	public List<ProjectMembers> getReporterList(Integer projectIdx, Integer accountIdx){
+		List<ProjectMembers> membersList = this.projectMembersRepository.findAllByProjectIdxAndAccountIdxNot(projectIdx, accountIdx);
+		return membersList;
+	}
+	
+	public Account getAccountById(Integer idx) {
+		Optional<Account> account = this.accountRepository.findById(idx);
+		return account.get();
+	}
+	
+	public void updateReporter(Issue issue, Account reporter) {
+		issue.updateReporter(reporter);
+		this.issueRepository.save(issue);
+	}
 }

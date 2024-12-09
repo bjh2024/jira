@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,8 @@ public class AccountService {
 		Account account = null;
 		if(optAccount.isPresent()) {
 			account = optAccount.get();
+		}else {
+			throw new NoSuchElementException("Account not found");
 		}
 		return account;
 	}

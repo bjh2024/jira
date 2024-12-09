@@ -7,6 +7,7 @@ pageNumArr.forEach(function(page){
 	});
 });
 
+// 즐겨찾기 추가, 제거
 const likeBtnImgs = document.querySelectorAll(".project_list_main td:first-of-type button img");
 
 likeBtnImgs.forEach(function(img){
@@ -16,5 +17,8 @@ likeBtnImgs.forEach(function(img){
 		}else{
 			e.target.setAttribute("src", "/images/star_icon_empty.svg");
 		}
+		let idx = e.target.getAttribute("idx-data");
+		let isLike = e.target.getAttribute("src") === "/images/star_icon_empty.svg" ? false : true;
+		likeFetch("project", idx, isLike);
 	});
 });

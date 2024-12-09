@@ -134,7 +134,8 @@
 								최근에 조회
 							</h5>
 							<div>
-								<a th:href="@{#}" class="input_recent_content" th:each="issue: ${issuesRecentList}">
+								<a th:href="@{#}" class="input_recent_content" 
+								   th:each="issue: ${issuesRecentList}">
 									<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="16"
 										height="16">
 									<div>
@@ -142,9 +143,14 @@
 										<span th:text="${issue.name}"></span>
 									</div>
 								</a>
+							</div>							
+							<div class="no_search_box"
+								 th:if="${#lists.size(issuesRecentList) == 0}">
+								<img src="/images/no_search_icon_light.svg">
+								<p>원하는 항목을 찾을 수 없습니다.</p>
 							</div>
-
 						</div>
+						
 						<div class="input_recent_dynamic">
 
 						</div>

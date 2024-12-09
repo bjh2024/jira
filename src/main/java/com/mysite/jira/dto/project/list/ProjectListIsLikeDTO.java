@@ -1,4 +1,4 @@
-package com.mysite.jira.dto.project.create;
+package com.mysite.jira.dto.project.list;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class ProjectListIsLikeDTO {
 
+	private Integer projectIdx;
 	private String projectName;
 	private String projectIconFilename;
 	private String projectKey;
@@ -14,9 +15,9 @@ public class ProjectListIsLikeDTO {
 	private boolean isLike;
 	
 	@Builder
-	public ProjectListIsLikeDTO(String projectName, String projectIconFilename, String projectKey, String accountName,
+	public ProjectListIsLikeDTO(Integer projectIdx, String jiraName, String projectName, String projectIconFilename, String projectKey, String accountName,
 			String accountIconFilename, boolean isLike) {
-		super();
+		this.projectIdx = projectIdx;
 		this.projectName = projectName;
 		this.projectIconFilename = projectIconFilename;
 		this.projectKey = projectKey;

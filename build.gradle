@@ -33,38 +33,40 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-   testImplementation 'org.springframework.boot:spring-boot-starter-test'
-   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
    
-   // lombok
-   compileOnly 'org.projectlombok:lombok'
-   annotationProcessor 'org.projectlombok:lombok'
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
    
-   // DB Oracle
-   implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
+	// DB Oracle
+	implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
    
-   // JPA
-   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
    
-   //JUnit
-   testImplementation 'org.junit.jupiter:junit-jupiter'
-   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	//JUnit
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
    
-   // thymeleaf => html + java코드
-   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	// thymeleaf => html + java코드
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
    
 
-   // validation
-   implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
    
-   // Spring Security
-   implementation 'org.springframework.boot:spring-boot-starter-security'
-   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	// email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
+	implementation group: 'org.json', name: 'json', version: '20240303'
 }
 
 
