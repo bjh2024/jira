@@ -3,13 +3,16 @@ package com.mysite.jira.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.board.AIQuestionDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.GetPriorityDTO;
@@ -26,6 +29,7 @@ import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
+import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
 	private final BoardMainService boardMainService;
+	
+	private final AiService aiService;
 	
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
@@ -188,6 +194,15 @@ public class BoardMainAPTIController {
 											.build();
 
 		return newReporter;
+	}
+	
+	@PostMapping("/get_ai_answer")
+	public AIQuestionDTO getAiAnswer(@RequestBody AIQuestionDTO aiQuestionDTO) {
+		String answer = aiService.send(aiQuestionDTO.getQuestion());
+		AIQuestionDTO answerDTO = AIQuestionDTO.builder()
+									.answer(answer)
+									.build();
+		return answerDTO;
 	}
 
 }
