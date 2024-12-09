@@ -1,394 +1,410 @@
 <html layout:decorate="~{layout}">
+
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/my_work.css}">
 </head>
-<div layout:fragment="content" class="my_work_container">
-	<h1>내 작업</h1>
-	<div class="work_section1">
-		<div class="section1_title">
-			<h2>최근 프로젝트</h2>
-			<a th:href="@{/project/list}">모든 프로젝트 보기</a>
-		</div>
-		<div class="section1_content">
-			<div class="project_recent_box" th:style="|border-left: 20px solid ${project.color};|"
-				th:each=" project : ${projectList}">
-				<a th:href="@{|/${currentJira}/project/${project.key}/summation|}" class="recent_header">
-					<img th:src="@{|/images/${project.iconFilename}|}" width="24px" height="24px" alt=""
-						draggable="false" style="border-radius: 4px;">
-					<div>
-						<h3 th:text="${project.name}"></h3>
-						<p>팀에서 관리하는 비즈니스</p>
-					</div>
-				</a>
-				<div class="recent_content">
-					<div><b>빠른 연결</b></div>
-					<a href="#" class="unresolved_issue">
-						<div>나의 미해결 이슈</div>
-						<div class="num" th:text="${project.issueCount}"></div>
+<div layout:fragment="content">
+	<div class="my_work_container">
+		<h1>내 작업</h1>
+		<div class="work_section1">
+			<div class="section1_title">
+				<h2>최근 프로젝트</h2>
+				<a th:href="@{|/${currentJira}/project/list|}">모든 프로젝트 보기</a>
+			</div>
+			<div class="section1_content" th:style="'min-width:'+${#lists.size(projectList) * 240}+'px'">
+				<div class="project_recent_box" th:style="|border-left: 20px solid ${project.color};|"
+					th:each=" project : ${projectList}">
+					<a th:href="@{|/${currentJira}/project/${project.key}/summation|}" class="recent_header">
+						<img th:src="@{|/images/${project.iconFilename}|}" width="24px" height="24px" alt=""
+							draggable="false" style="border-radius: 4px;">
+						<div>
+							<h3 th:text="${project.name}"></h3>
+							<p>팀에서 관리하는 비즈니스</p>
+						</div>
 					</a>
-					<a href="#">완료된 이슈</a>
+					<div class="recent_content">
+						<div><b>빠른 연결</b></div>
+						<a href="#" class="unresolved_issue">
+							<div>나의 미해결 이슈</div>
+							<div class="num" th:text="${project.issueCount}"></div>
+						</a>
+						<a href="#">완료된 이슈</a>
+					</div>
+					<div class="recent_foot">
+						<div>
+							<div>1개 보드</div>
+							<img src="images/list_down_icon.svg" width="16" height="16" />
+						</div>
+					</div>
 				</div>
-				<div class="recent_foot">
-					<div>
-						<div>1개 보드</div>
-						<img src="images/list_down_icon.svg" width="16" height="16" />
-					</div>
+			</div>
+		</div>
+		<div class="my_work_gnb">
+			<div class="active">작업</div>
+			<div>확인</div>
+			<div class="my_issue">
+				<span>나에게 할당</span>
+				<span th:text="${managerByIssueCount}"></span>
+			</div>
+			<div>별표 표시됨</div>
+		</div>
+		<!-- 작업 -->
+		<div class="my_work_content task show">
+			<div th:if="${#lists.size(issueLogDateTodayList) != 0}">
+				<h3>오늘</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each="issue : ${issueLogDateTodayList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<span th:text="${issue.key}"></span>
+									<span th:text="${issue.project.name}"></span>
+								</p>
+							</div>
+						</div>
+						<div class="item_foot">
+							<div class="img_list">
+								<span th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' 
+									           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
+										       : '업데이트' }"></span>
+								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
+									            +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
+										style="border-radius: 50%;" width="32" height="32">
+									<div class="name_hover_box" th:text="${logData.account.name}"></div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div th:if="${#lists.size(issueLogDateYesterdayList) != 0}">
+				<h3>어제</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each="issue : ${issueLogDateYesterdayList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<span th:text="${issue.key}"></span>
+									<span th:text="${issue.project.name}"></span>
+								</p>
+							</div>
+						</div>
+						<div class="item_foot">
+							<div class="img_list">
+								<span th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' 
+																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
+																	       : '업데이트' }"></span>
+								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
+								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
+										style="border-radius: 50%;" width="32" height="32">
+									<div class="name_hover_box" th:text="${logData.account.name}"></div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div th:if="${#lists.size(issueLogDateWeekList) != 0}">
+				<h3>지난주</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each="issue : ${issueLogDateWeekList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<span th:text="${issue.key}"></span>
+									<span th:text="${issue.project.name}"></span>
+								</p>
+							</div>
+						</div>
+						<div class="item_foot">
+							<div class="img_list">
+								<span th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' 
+																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
+																	       : '업데이트' }"></span>
+								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
+																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+								    <img th:src="@{|/images/${logData.account.iconFilename}|}" alt="" style="border-radius: 50%;" width="32" height="32">
+									<div class="name_hover_box" th:text="${logData.account.name}"></div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div th:if="${#lists.size(issueLogDateMonthList) != 0}">
+				<h3>지난달</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each="issue : ${issueLogDateMonthList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<span th:text="${issue.key}"></span>
+									<span th:text="${issue.project.name}"></span>
+								</p>
+							</div>
+						</div>
+						<div class="item_foot">
+							<div class="img_list">
+								<span th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' 
+																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
+																	       : '업데이트' }"></span>
+								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
+																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
+										style="border-radius: 50%;" width="32" height="32">
+									<div class="name_hover_box" th:text="${logData.account.name}"></div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div th:if="${#lists.size(issueLogDateMonthGreaterList) != 0}">
+				<h3>1개월보다 오래됨</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each="issue : ${issueLogDateMonthGreaterList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<span th:text="${issue.key}"></span>
+									<span th:text="${issue.project.name}"></span>
+								</p>
+							</div>
+						</div>
+						<div class="item_foot">
+							<div class="img_list">
+								<span th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' 
+																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
+																	       : '업데이트' }"></span>
+								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
+																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
+										style="border-radius: 50%;" width="32" height="32">
+									<div class="name_hover_box" th:text="${logData.account.name}"></div>
+								</div>
+							</div>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="my_work_gnb">
-		<div class="active">작업</div>
-		<div>확인</div>
-		<div class="my_issue">
-			<span>나에게 할당</span>
-			<span th:text="${managerByIssueCount}"></span>
-		</div>
-		<div>별표 표시됨</div>
-	</div>
-	<!-- 작업 -->
-	<div class="my_work_content task show">
-		<div th:if="${#lists.size(issueLogDateTodayList) != 0}">
-			<h3>오늘</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each="issue : ${issueLogDateTodayList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<span th:text="${issue.key}"></span>
-								<span th:text="${issue.project.name}"></span>
-							</p>
-						</div>
-					</div>
-					<div class="item_foot">
-						<div class="img_list">
-							<span
-								th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' : '업데이트'}">업데이트</span>
-							<img th:each="logData, loop : ${issue.projectLogDataList}" th:if="${loop.index < 3}"
-								th:src="@{|/images/${logData.account.iconFilename}|}" alt="" aria-hidden="true"
-								data-vc="avatar-image" data-ssr-placeholder-ignored="true" style="border-radius: 50%;"
-								width="32" height="32">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div th:if="${#lists.size(issueLogDateYesterdayList) != 0}">
-			<h3>어제</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each="issue : ${issueLogDateYesterdayList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<span th:text="${issue.key}"></span>
-								<span th:text="${issue.project.name}"></span>
-							</p>
-						</div>
-					</div>
-					<div class="item_foot">
-						<div class="img_list">
-							<span
-								th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' : '업데이트'}">업데이트</span>
-							<img th:each="logData, loop : ${issue.projectLogDataList}" th:if="${loop.index < 3}"
-								th:src="@{|/images/${logData.account.iconFilename}|}" alt="" aria-hidden="true"
-								data-vc="avatar-image" data-ssr-placeholder-ignored="true" style="border-radius: 50%;"
-								width="32" height="32">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div th:if="${#lists.size(issueLogDateWeekList) != 0}">
-			<h3>지난주</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each="issue : ${issueLogDateWeekList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<span th:text="${issue.key}"></span>
-								<span th:text="${issue.project.name}"></span>
-							</p>
-						</div>
-					</div>
-					<div class="item_foot">
-						<div class="img_list">
-							<span
-								th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' : '업데이트'}"></span>
-							<img th:each="logData, loop : ${issue.projectLogDataList}" th:if="${loop.index < 3}"
-								th:src="@{|/images/${logData.account.iconFilename}|}" alt="" aria-hidden="true"
-								data-vc="avatar-image" data-ssr-placeholder-ignored="true" style="border-radius: 50%;"
-								width="32" height="32">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div th:if="${#lists.size(issueLogDateMonthList) != 0}">
-			<h3>지난달</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each="issue : ${issueLogDateMonthList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<span th:text="${issue.key}"></span>
-								<span th:text="${issue.project.name}"></span>
-							</p>
-						</div>
-					</div>
-					<div class="item_foot">
-						<div class="img_list">
-							<span
-								th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' : '업데이트'}">업데이트</span>
-							<img th:each="logData, loop : ${issue.projectLogDataList}" th:if="${loop.index < 3}"
-								th:src="@{|/images/${logData.account.iconFilename}|}" alt="" style="border-radius: 50%;"
-								width="32" height="32">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div th:if="${#lists.size(issueLogDateMonthGreaterList) != 0}">
-			<h3>1개월보다 오래됨</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each="issue : ${issueLogDateMonthGreaterList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="comment" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<span th:text="${issue.key}"></span>
-								<span th:text="${issue.project.name}"></span>
-							</p>
-						</div>
-					</div>
-					<div class="item_foot">
-						<div class="img_list">
-							<span
-								th:text="${issue.projectLogDataList[0].projectLogStatus.idx == 11 ? '만듦' : '업데이트'}">업데이트</span>
-							<img th:each="logData, loop : ${issue.projectLogDataList}" th:if="${loop.index < 3}"
-								th:src="@{|/images/${logData.account.iconFilename}|}" alt="" aria-hidden="true"
-								data-vc="avatar-image" data-ssr-placeholder-ignored="true" style="border-radius: 50%;"
-								width="32" height="32">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-	<!-- 확인 -->
-	<div class="my_work_content check">
-		<div th:if="${#lists.size(recentTodayList) != 0}">
-			<h3>오늘</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each=" item : ${recentTodayList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
-						<div>
-							<h4 th:text="${item.name}"></h4>
-							<p>
-								<th:block
-									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
-									<span th:case="'dashboard'">대시보드</span>
-									<span th:case="'filter'">필터</span>
-									<th:block th:case="'issue'">
-										<span th:text="${item.key}"></span>
-										<span style="margin: 0 4px;">·</span>
-										<span th:text="${item.projectName}"></span>
+		<!-- 확인 -->
+		<div class="my_work_content check">
+			<div th:if="${#lists.size(recentTodayList) != 0}">
+				<h3>오늘</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each=" item : ${recentTodayList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
+							<div>
+								<h4 th:text="${item.name}"></h4>
+								<p>
+									<th:block
+										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+										<span th:case="'dashboard'">대시보드</span>
+										<span th:case="'filter'">필터</span>
+										<th:block th:case="'issue'">
+											<span th:text="${item.key}"></span>
+											<span style="margin: 0 4px;">·</span>
+											<span th:text="${item.projectName}"></span>
+										</th:block>
+										<span th:case="*">알 수 없음</span>
 									</th:block>
-									<span th:case="*">알 수 없음</span>
-								</th:block>
-							</p>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
-		</div>
-		<div th:if="${#lists.size(recentYesterdayList) != 0}">
-			<h3>어제</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each=" item : ${recentYesterdayList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
-						<div>
-							<h4 th:text="${item.name}"></h4>
-							<p>
-								<th:block
-									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
-									<span th:case="'dashboard'">대시보드</span>
-									<span th:case="'filter'">필터</span>
-									<th:block th:case="'issue'">
-										<span th:text="${item.key}"></span>
-										<span style="margin: 0 4px;">·</span>
-										<span th:text="${item.projectName}"></span>
+			<div th:if="${#lists.size(recentYesterdayList) != 0}">
+				<h3>어제</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each=" item : ${recentYesterdayList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
+							<div>
+								<h4 th:text="${item.name}"></h4>
+								<p>
+									<th:block
+										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+										<span th:case="'dashboard'">대시보드</span>
+										<span th:case="'filter'">필터</span>
+										<th:block th:case="'issue'">
+											<span th:text="${item.key}"></span>
+											<span style="margin: 0 4px;">·</span>
+											<span th:text="${item.projectName}"></span>
+										</th:block>
+										<span th:case="*">알 수 없음</span>
 									</th:block>
-									<span th:case="*">알 수 없음</span>
-								</th:block>
-							</p>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
-		</div>
-		<div th:if="${#lists.size(recentWeekList) != 0}">
-			<h3>지난주</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each=" item : ${recentWeekList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
-						<div>
-							<h4 th:text="${item.name}"></h4>
-							<p>
-								<th:block
-									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
-									<span th:case="'dashboard'">대시보드</span>
-									<span th:case="'filter'">필터</span>
-									<th:block th:case="'issue'">
-										<span th:text="${item.key}"></span>
-										<span style="margin: 0 4px;">·</span>
-										<span th:text="${item.projectName}"></span>
+			<div th:if="${#lists.size(recentWeekList) != 0}">
+				<h3>지난주</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each=" item : ${recentWeekList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
+							<div>
+								<h4 th:text="${item.name}"></h4>
+								<p>
+									<th:block
+										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+										<span th:case="'dashboard'">대시보드</span>
+										<span th:case="'filter'">필터</span>
+										<th:block th:case="'issue'">
+											<span th:text="${item.key}"></span>
+											<span style="margin: 0 4px;">·</span>
+											<span th:text="${item.projectName}"></span>
+										</th:block>
+										<span th:case="*">알 수 없음</span>
 									</th:block>
-									<span th:case="*">알 수 없음</span>
-								</th:block>
-							</p>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
-		</div>
-		<div th:if="${#lists.size(recentMonthList) != 0}">
-			<h3>지난달</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each=" item : ${recentMonthList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
-						<div>
-							<h4 th:text="${item.name}"></h4>
-							<p>
-								<th:block
-									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
-									<span th:case="'dashboard'">대시보드</span>
-									<span th:case="'filter'">필터</span>
-									<th:block th:case="'issue'">
-										<span th:text="${item.key}"></span>
-										<span style="margin: 0 4px;">·</span>
-										<span th:text="${item.projectName}"></span>
+			<div th:if="${#lists.size(recentMonthList) != 0}">
+				<h3>지난달</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each=" item : ${recentMonthList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
+							<div>
+								<h4 th:text="${item.name}"></h4>
+								<p>
+									<th:block
+										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+										<span th:case="'dashboard'">대시보드</span>
+										<span th:case="'filter'">필터</span>
+										<th:block th:case="'issue'">
+											<span th:text="${item.key}"></span>
+											<span style="margin: 0 4px;">·</span>
+											<span th:text="${item.projectName}"></span>
+										</th:block>
+										<span th:case="*">알 수 없음</span>
 									</th:block>
-									<span th:case="*">알 수 없음</span>
-								</th:block>
-							</p>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
-		</div>
-		<div th:if="${#lists.size(recentMonthGreaterList) != 0}">
-			<h3>1개월보다 오래됨</h3>
-			<div class="content_list">
-				<a href="#" class="list_item" th:each=" item : ${recentMonthGreaterList}">
-					<div class="item_header">
-						<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
-						<div>
-							<h4 th:text="${item.name}"></h4>
-							<p>
-								<th:block
-									th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-									<span th:case="'project'">팀에서 관리하는 비즈니스</span>
-									<span th:case="'dashboard'">대시보드</span>
-									<span th:case="'filter'">필터</span>
-									<th:block th:case="'issue'">
-										<span th:text="${item.key}"></span>
-										<span style="margin: 0 4px;">·</span>
-										<span th:text="${item.projectName}"></span>
+			<div th:if="${#lists.size(recentMonthGreaterList) != 0}">
+				<h3>1개월보다 오래됨</h3>
+				<div class="content_list">
+					<a href="#" class="list_item" th:each=" item : ${recentMonthGreaterList}">
+						<div class="item_header">
+							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
+							<div>
+								<h4 th:text="${item.name}"></h4>
+								<p>
+									<th:block
+										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
+										<span th:case="'dashboard'">대시보드</span>
+										<span th:case="'filter'">필터</span>
+										<th:block th:case="'issue'">
+											<span th:text="${item.key}"></span>
+											<span style="margin: 0 4px;">·</span>
+											<span th:text="${item.projectName}"></span>
+										</th:block>
+										<span th:case="*">알 수 없음</span>
 									</th:block>
-									<span th:case="*">알 수 없음</span>
-								</th:block>
-							</p>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-	<!-- 나에게 할당 -->
-	<div class="my_work_content my_issue">
-		<div th:each="issue, loop : ${managerByIssue}">
-			<th:block th:switch="${loop.index}">
-				<h3 th:case="0" th:text="${issue.issueStatus.name}"></h3>
-				<h3 th:case="*" th:if="${issue.issueStatus.name != managerByIssue[loop.index - 1].issueStatus.name}"
-					th:text="${issue.issueStatus.name}">
-				</h3>
-			</th:block>
-			<div class="content_list">
-				<a href="#" class="list_item">
-					<div class="item_header">
-						<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="issue" width="24" height="24">
-						<div>
-							<h4 th:text="${issue.name}"></h4>
-							<p>
-								<sapn th:text="${issue.key}"></sapn>
-								<sapn>·</sapn>
-								<sapn th:text="${issue.project.name}"></sapn>
-							</p>
+		<!-- 나에게 할당 -->
+		<div class="my_work_content my_issue">
+			<div th:each="issue, loop : ${managerByIssue}">
+				<th:block th:switch="${loop.index}">
+					<h3 th:case="0" th:text="${issue.issueStatus.name}"></h3>
+					<h3 th:case="*" th:if="${issue.issueStatus.name != managerByIssue[loop.index - 1].issueStatus.name}"
+						th:text="${issue.issueStatus.name}">
+					</h3>
+				</th:block>
+				<div class="content_list">
+					<a href="#" class="list_item">
+						<div class="item_header">
+							<img th:src="@{|/images/${issue.issueType.iconFilename}|}" alt="issue" width="24"
+								height="24">
+							<div>
+								<h4 th:text="${issue.name}"></h4>
+								<p>
+									<sapn th:text="${issue.key}"></sapn>
+									<sapn>·</sapn>
+									<sapn th:text="${issue.project.name}"></sapn>
+								</p>
+							</div>
 						</div>
-					</div>
-					<div class="item_foot">
-						<span th:text="${issue.issueStatus.name}"></span>
-					</div>
-				</a>
+						<div class="item_foot">
+							<span th:text="${issue.issueStatus.name}"></span>
+						</div>
+					</a>
+				</div>
 			</div>
-		</div>
 
-	</div>
-	<!-- 별표 표시됨 -->
-	<div class="my_work_content like">
-		<a href="#" class="list_item" th:each="item : ${allLikeList}">
-			<div class="item_header">
-				<div class="like_star_box">
-					<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
-					<div class="star_img_box">
-						<img th:src="@{/images/star_icon_yellow.svg}" width="12" height="12" />
+		</div>
+		<!-- 별표 표시됨 -->
+		<div class="my_work_content like">
+			<a href="#" class="list_item" th:each="item : ${allLikeList}">
+				<div class="item_header">
+					<div class="like_star_box">
+						<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
+						<div class="star_img_box">
+							<img th:src="@{/images/star_icon_yellow.svg}" th:type-data="${item.iconFilename == 'dashboard_icon.svg' ? 'dashboard' : 
+						 					 item.iconFilename == 'filter_icon.svg' ? 'filter' : 'project'}" th:idx-data="${item.idx}" width="12"
+								height="12" />
+						</div>
+					</div>
+					<img th:src="@{|/images/${item.iconFilename}|}" width="24" height="24" />
+					<div class="like_header">
+						<h4 th:text="${item.key != '' ? item.name + ' (' + item.key + ')' : item.name}"></h4>
+						<th:block
+							th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+							<p th:case="'project'">팀에서 관리하는 비즈니스</p>
+							<p th:case="'dashboard'">대시보드</p>
+							<p th:case="'filter'">필터</p>
+							<p th:case="*">알 수 없음</p>
+						</th:block>
 					</div>
 				</div>
-				<img th:src="@{|/images/${item.iconFilename}|}" width="24" height="24" />
-				<div class="like_header">
-					<h4 th:text="${item.projectKey != '' ? item.name + ' (' + item.projectKey + ')' : item.name}"></h4>
-					<th:block
-						th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
-						<p th:case="'project'">팀에서 관리하는 비즈니스</p>
-						<p th:case="'dashboard'">대시보드</p>
-						<p th:case="'filter'">필터</p>
-						<p th:case="*">알 수 없음</p>
-					</th:block>
-				</div>
-			</div>
-		</a>
-		<a href="#" class="list_item">
-			<div class="item_header">
-				<div class="like_star_box">
-					<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
-					<div class="star_img_box">
-						<img th:src="@{/images/star_icon_yellow.svg}" width="12" height="12" />
-					</div>
-				</div>
-				<img src="images/dashboard_icon.svg" width="24" height="24" />
-				<div>
-					<h4>하이 대시보드</h4>
-					<p>대시보드</p>
-				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 	</div>
 	<script th:src="@{js/my_work.js}"></script>
 </div>

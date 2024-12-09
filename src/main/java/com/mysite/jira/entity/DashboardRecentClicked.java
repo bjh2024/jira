@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,4 +36,15 @@ public class DashboardRecentClicked {
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;
+
+	@Builder
+	public DashboardRecentClicked(Integer idx, Account account, Dashboard dashboard, Jira jira,
+			LocalDateTime clickedDate) {
+		this.account = account;
+		this.dashboard = dashboard;
+		this.jira = jira;
+		this.clickedDate = LocalDateTime.now();
+	}
+	
+	
 }

@@ -973,6 +973,54 @@ body{
 	margin-bottom: 4px;
 }
 
+/*flatpickr*/
+.datepicker{
+	background-color: transparent;
+	border: none;
+	width: 232px;
+	height: 32px;
+	color: #6B6E76;
+}
+
+.datepicker.dead{
+	z-index: 2;
+}
+
+.datepicker.deadline-end{
+	color: #AE2E24 !important;
+}
+
+.flatpickr-calendar {
+    font-size: 14px !important; /* 텍스트 크기 변경 */
+    width: 250px !important;    /* 달력 넓이 */
+	margin-left: -8px !important;
+}
+
+.dayContainer{
+	max-width: 250px !important;
+	min-width: 250px !important;
+}
+
+.flatpickr-weekdays{
+	width: 250px !important;
+}
+
+.flatpickr-days{
+	width: 250px !important;
+}
+
+.flatpickr-day {
+    height: 35.7px !important;
+    max-width: 35.7px !important;
+    line-height: 35.7px !important; /* 텍스트 가운데 정렬 */
+}
+
+.flatpickr-month {
+    font-size: 13px !important; /* 헤더 글자 크기 */
+    padding-top: 4px !important;   /* 여백 조정 */
+}
+
+
 .issue-deadline{
 	display: flex;
 	align-items: center;
@@ -1835,7 +1883,7 @@ body{
 	color: #505258;
 }
 
-.issuedetail-graphval{
+.issuedetail-graphval, .issuedetail-graphval-date{
 	width: 249px;
 	height: 32px;
 	display: flex;
@@ -1847,6 +1895,19 @@ body{
 	padding: 0px 8px;
 	border-radius: 3px;
 	position: relative;
+}
+
+.deadline-bg-box{
+	position: absolute; 
+	z-index: 1; 
+	height: 24px; 
+	width: 70px;
+	margin-left: -2px;
+	border-radius: 3px;
+}
+
+.deadline-bg-box.graphval-dead:hover{
+	background-color: #FFD5D2;
 }
 
 .graphval-selectwindow{
@@ -1933,7 +1994,7 @@ body{
 	display: none;
 }
 
-.issuedetail-graphval:hover{
+.issuedetail-graphval:hover, .issuedetail-graphval-date:hover{
 	background-color: #F0F1F2;
 }
 

@@ -75,11 +75,13 @@
 				<tr th:each="project : ${projectListIsLike}">
 					<td>
 						<button>
-							<img th:src="@{|/images/${project.isLike ? 'star_icon_yellow.svg' : 'star_icon_empty.svg'}|}" alt="" width="16" height="16" />
+							<img th:src="@{|/images/${project.isLike ? 'star_icon_yellow.svg' : 'star_icon_empty.svg'}|}" 
+							     th:idx-data="${project.projectIdx}"
+								 alt="" width="16" height="16" />
 						</button>
 					</td>
 					<td>
-						<a href="#">
+						<a th:href="@{|/${currentJira}/project/${project.projectKey}/summation|}">
 							<img th:src="@{|/images/${project.projectIconFilename}|}"
 								alt="" width="24" height="24" />
 							<span th:text="${project.projectName}"></span>

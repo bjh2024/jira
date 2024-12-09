@@ -3,9 +3,6 @@ document.querySelector("body").addEventListener("click", function(e) {
     const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
     const menuBoxWithActive = document.querySelector(".filter_category_div.active");  // 활성화된 메뉴 찾기
 
-    console.log(e.target.closest(".filter_menu"));
-    console.log(menuWithShow);
-
     // 이미 열린 .filter_issue_box를 클릭한 경우 아무 작업도 하지 않음
     if (menuWithShow && menuWithShow.contains(e.target)) {
         return;
@@ -36,13 +33,226 @@ document.querySelector("body").addEventListener("click", function(e) {
     }
 });
 
+document.querySelectorAll("input").forEach(function(input){
+	input.addEventListener("keydown",function(){
+		if(event.key==="Enter"){
+			event.preventDefault()
+		}
+	})
+})
+
 let filterDatas = {
-		"projecIdxArr" : [],
-		"issueTypeArr" : [],
-		"issueStatusArr" : [],
-		"issueManagersArr" : []
-	}
-	
+			"projecIdxArr" : [],
+			"issueTypeArr" : [],
+			"issueStatusArr" : [],
+			"issueManagersArr" : [],
+			"issueReporterArr" : [],
+			"issuePriorityArr" : [],
+			"updateStartDate" : null,
+			"updateLastDate" : null,
+			"updateBeforeDate": null,
+			"createStartDate" : null,
+			"createLastDate" : null,
+			"createBeforeDate": null,
+			"doneStartDate" : null,
+			"doneLastDate" : null,
+			"doneBeforeDate": null,
+			"searchBox" : null,
+			"doneCheck" : null,
+			"notDoneCheck" : null
+		}
+// 업데이트 날짜 필터 -------------------------------------------------------------------
+	document.getElementById("radio_days").addEventListener("change", function() {
+	   // '몇일 전'을 선택했을 때
+	   if (this.checked) {
+		document.querySelector(".update_date_box_2").classList.remove("show");
+		document.querySelector(".update_date_box_1").classList.add("show");
+	   }
+	 });
+	 document.getElementById("radio_range").addEventListener("change", function() {
+	   // '사이'를 선택했을 때
+	   if (this.checked) {
+	     document.querySelector(".update_date_box_2").classList.add("show");
+	     document.querySelector(".update_date_box_1").classList.remove("show");
+	   }
+	 });
+	 document.getElementById("update_date_save_button").addEventListener("click", function() {
+		let value = document.getElementById("update_before_date").value;
+		if (!/^\d+$/.test(value) || value < 0 || value > 365) {
+			          alert("유효한 숫자만 입력해주세요 (0 ~ 365).");
+			          value = '';  // 잘못된 입력은 지워줍니다.
+					  return;
+			      }
+	     let date = new Date();
+	     // this.value는 입력받은 일수만큼 빼기
+	     date.setDate(date.getDate() - value);
+	     // date 객체를 그대로 사용
+	     alert(date); // Date 객체를 그대로 출력 (ISO 8601 형식으로)
+	     filterDatas.updateBeforeDate = date; // 필터에 Date 객체를 저장
+	     fetchInput(); // API 호출 또는 함수 실행
+		 fetchInputIssue();
+	 });
+	 document.getElementById("update_start_date").addEventListener("change", function(){
+			filterDatas.updateStartDate = new Date(this.value);
+			if(filterDatas.updateLastDate != null){
+				document.getElementById("update_last_date").value = null;
+				filterDatas.updateLastDate = null;
+			}
+			fetchInput();
+			fetchInputIssue();
+	 })
+	 document.getElementById("update_last_date").addEventListener("change", function(){
+		if(filterDatas.updateStartDate == null){
+			alert("시작날짜 먼저 입력해주세요!");
+			this.value = null;
+		}else if(filterDatas.updateStartDate > new Date(this.value)){
+			alert("마지막 날짜는 시작날짜보다 최근이여야 합니다");
+			this.value = null;
+		}else if(filterDatas.updateStartDate < new Date(this.value)){
+			filterDatas.updateLastDate = new Date(this.value);
+		}
+		fetchInput();
+		fetchInputIssue();
+	 })
+	 document.getElementById("update_date_reset").addEventListener("click",function(){
+		filterDatas = {
+			"updateStartDate" : null,
+			"updateLastDate" : null,
+			"updateBeforeDate": null
+		}
+		document.querySelector(".update_date_box_1").classList.remove("show");
+		document.querySelector(".update_date_box_2").classList.remove("show");
+	 })
+// 업데이트 날짜 필터 끝 --------------------------------------------------------------------
+// 생성 날짜 필터 시작 ------------------------------------------------------------------------
+	document.getElementById("create_date").addEventListener("change", function() {
+	   // '몇일 전'을 선택했을 때
+	   if (this.checked) {
+		document.querySelector(".create_date_box_2").classList.remove("show");
+		document.querySelector(".create_date_box_1").classList.add("show");
+	   }
+	 });
+
+	 document.getElementById("create_between").addEventListener("change", function() {
+	   // '사이'를 선택했을 때
+	   if (this.checked) {
+	     document.querySelector(".create_date_box_2").classList.add("show");
+	     document.querySelector(".create_date_box_1").classList.remove("show");
+	   }
+	 });
+	 document.getElementById("create_date_save_button").addEventListener("click", function() {
+	 		let value = document.getElementById("create_before_date").value;
+	 		if (!/^\d+$/.test(value) || value < 0 || value > 365) {
+	 			          alert("유효한 숫자만 입력해주세요 (0 ~ 365).");
+	 			          value = '';  // 잘못된 입력은 지워줍니다.
+	 					  return;
+	 			      }
+	 	     let date = new Date();
+	 	     // this.value는 입력받은 일수만큼 빼기
+	 	     date.setDate(date.getDate() - value);
+	 	     // date 객체를 그대로 사용
+	 	     filterDatas.createBeforeDate = date; // 필터에 Date 객체를 저장
+	 	     fetchInput(); // API 호출 또는 함수 실행
+			 fetchInputIssue();
+	 	 });
+	 	 document.getElementById("create_start_date").addEventListener("change", function(){
+	 			filterDatas.createStartDate = new Date(this.value);
+	 			if(filterDatas.createLastDate != null){
+	 				document.getElementById("create_last_date").value = null;
+	 				filterDatas.createLastDate = null;
+	 			}
+	 			fetchInput();
+				fetchInputIssue();
+	 	 })
+	 	 document.getElementById("create_last_date").addEventListener("change", function(){
+	 		if(filterDatas.createStartDate == null){
+	 			alert("시작날짜 먼저 입력해주세요!");
+	 			this.value = null;
+	 		}else if(filterDatas.createStartDate > new Date(this.value)){
+	 			alert("마지막 날짜는 시작날짜보다 최근이여야 합니다");
+	 			this.value = null;
+	 		}else if(filterDatas.createStartDate < new Date(this.value)){
+	 			filterDatas.createLastDate = new Date(this.value);
+	 		}
+	 		fetchInput();
+			fetchInputIssue();
+	 	 })
+	 	 document.getElementById("create_date_reset").addEventListener("click",function(){
+	 		filterDatas = {
+	 			"createStartDate" : null,
+	 			"createLastDate" : null,
+	 			"createBeforeDate": null
+	 		}
+	 		document.querySelector(".create_date_box_1").classList.remove("show");
+	 		document.querySelector(".create_date_box_2").classList.remove("show");
+	 	 })
+// 생성 날짜 필터 끝 =========================================================================================
+// 해결 필터 시작 ------------------------------------------------------------------------
+	document.getElementById("done_date").addEventListener("change", function() {
+	   // '몇일 전'을 선택했을 때
+	   if (this.checked) {
+		document.querySelector(".done_date_box_2").classList.remove("show");
+		document.querySelector(".done_date_box_1").classList.add("show");
+	   }
+	 });
+
+	 document.getElementById("done_between").addEventListener("change", function() {
+	   // '사이'를 선택했을 때
+	   if (this.checked) {
+	     document.querySelector(".done_date_box_2").classList.add("show");
+	     document.querySelector(".done_date_box_1").classList.remove("show");
+	   }
+	 });
+	 document.getElementById("done_date_save_button").addEventListener("click", function() {
+	 		let value = document.getElementById("done_before_date").value;
+	 		if (!/^\d+$/.test(value) || value < 0 || value > 365) {
+	 			          alert("유효한 숫자만 입력해주세요 (0 ~ 365).");
+	 			          value = '';  // 잘못된 입력은 지워줍니다.
+	 					  return;
+	 			      }
+	 	     let date = new Date();
+	 	     // this.value는 입력받은 일수만큼 빼기
+	 	     date.setDate(date.getDate() - value);
+	 	     // date 객체를 그대로 사용
+	 	     filterDatas.doneBeforeDate = date; // 필터에 Date 객체를 저장
+	 	     fetchInput(); // API 호출 또는 함수 실행
+			 fetchInputIssue();
+	 	 });
+	 	 document.getElementById("done_start_date").addEventListener("change", function(){
+	 			filterDatas.doneStartDate = new Date(this.value);
+	 			if(filterDatas.doneLastDate != null){
+	 				document.getElementById("done_last_date").value = null;
+	 				filterDatas.doneLastDate = null;
+	 			}
+	 			fetchInput();
+				fetchInputIssue();
+	 	 })
+	 	 document.getElementById("done_last_date").addEventListener("change", function(){
+	 		if(filterDatas.doneStartDate == null){
+	 			alert("시작날짜 먼저 입력해주세요!");
+	 			this.value = null;
+	 		}else if(filterDatas.doneStartDate > new Date(this.value)){
+	 			alert("마지막 날짜는 시작날짜보다 최근이여야 합니다");
+	 			this.value = null;
+	 		}else if(filterDatas.doneStartDate < new Date(this.value)){
+	 			filterDatas.doneLastDate = new Date(this.value);
+	 		}
+			fetchInput(); // API 호출 또는 함수 실행
+			fetchInputIssue();	
+	 	 })
+	 	 document.getElementById("done_date_reset").addEventListener("click",function(){
+	 		filterDatas = {
+	 			"doneStartDate" : null,
+	 			"doneLastDate" : null,
+	 			"doneBeforeDate": null
+	 		}
+	 		document.querySelector(".done_date_box_1").classList.remove("show");
+	 		document.querySelector(".done_date_box_2").classList.remove("show");
+			fetchInput(); // API 호출 또는 함수 실행
+			fetchInputIssue();	
+	 	 })
+// 해결 필터 끝 =========================================================================================
+// 프로젝트 필터 시작 ========================================================================================
 document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
@@ -51,47 +261,133 @@ document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(
 		}else{
 		filterDatas.projecIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
 		}
+		fetchInputIssue();
 		fetchInput();
 		});
 })
-
+// 프로젝트 필터 끝 ========================================================================================
+// 해결 필터 시작 ========================================================================================
+document.querySelectorAll(".filter_issue_box input[name='donecheck1']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.doneCheck = this.value;
+		}else{
+		filterDatas.doneCheck = null;
+		}
+		fetchInputIssue();
+		fetchInput();
+		});
+})
+document.querySelectorAll(".filter_issue_box input[name='donecheck2']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.notDoneCheck = this.value;
+		}else{
+		filterDatas.notDoneCheck = null;
+		}
+		fetchInputIssue();
+		fetchInput();
+		});
+})
+// 해결 필터 끝 ========================================================================================
+// 이슈 타입 필터 시작 ========================================================================================
 document.querySelectorAll(".filter_issue_box input[name='issueTypeIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
 		filterDatas.issueTypeArr.push(this.value); 
-		console.log(this.value);
 		}else{
 		filterDatas.issueTypeArr.splice(filterDatas.issueTypeArr.indexOf(this.value), 1);
 		}
 		fetchInput();
+		fetchInputIssue();
 		});
 })
-
+// 이슈타입 필터 끝 ========================================================================================
+// 이슈상태 시작 ========================================================================================
 document.querySelectorAll(".filter_issue_box input[name='issueStatus']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
 		filterDatas.issueStatusArr.push(this.value); 
-		console.log(this.value);
 		}else{
 		filterDatas.issueStatusArr.splice(filterDatas.issueStatusArr.indexOf(this.value), 1);
 		}
 		fetchInput();
+		fetchInputIssue();
 		});
 })
-
+// 이슈상태 끝 ========================================================================================
+// 이슈 담당자 시작 ========================================================================================
 document.querySelectorAll(".filter_issue_box input[name='issueManager']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
 		filterDatas.issueManagersArr.push(this.value); 
-		console.log(this.value);
 		}else{
 		filterDatas.issueManagersArr.splice(filterDatas.issueManagersArr.indexOf(this.value), 1);
 		}
 		fetchInput();
+		fetchInputIssue();
 		});
 })
+// 이슈 담당자 끝 ========================================================================================
+// 이슈 보고자 시작 ========================================================================================
+document.querySelectorAll(".filter_issue_box input[name='issueReporter']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.issueReporterArr.push(this.value); 
+		}else{
+		filterDatas.issueReporterArr.splice(filterDatas.issueReporterArr.indexOf(this.value), 1);
+		}
+		fetchInput();
+		fetchInputIssue();
+		});
+})
+// 이슈 보고자 끝 ========================================================================================
+// 이슈 우선순위 시작 ========================================================================================
+document.querySelectorAll(".filter_issue_box input[name='issuePriority']").forEach(function(input){
+	input.addEventListener("click", function(e) {
+		if(this.checked){
+		filterDatas.issuePriorityArr.push(this.value); 
+		}else{
+		filterDatas.issuePriorityArr.splice(filterDatas.issuePriorityArr.indexOf(this.value), 1);
+		}
+		fetchInput();
+		fetchInputIssue();
+		});
+})
+// 이슈 우선순위 끝 ========================================================================================
+document.getElementById("search_box").addEventListener("input",function(item){
+		filterDatas.searchBox = item.target.value;
+		fetchInput();
+		fetchInputIssue();
+})
+// 전체리셋버튼 ========================================================================================
+document.querySelector("#all_reset").addEventListener("click",function(){
+	filterDatas = {
+		"projecIdxArr" : [],
+		"issueTypeArr" : [],
+		"issueStatusArr" : [],
+		"issueManagersArr" : [],
+		"issueReporterArr" : [],
+		"issuePriorityArr" : [],
+		"updateStartDate" : null,
+		"updateLastDate" : null,
+		"updateBeforeDate": null,
+		"createStartDate" : null,
+		"createLastDate" : null,
+		"createBeforeDate": null,
+		"doneStartDate" : null,
+		"doneLastDate" : null,
+		"doneBeforeDate": null,
+		"searchBox" : null,
+		"doneCheck" : null,
+		"notDoneCheck" : null
+		}
+		fetchInput();
+		fetchInputIssue();
+})
 
-
+// 전체리셋버튼 끝 ========================================================================================
+// ajex 데이터 보내기 ========================================================================================
 function fetchInput() {
 	// fetch()를 사용하여 AJAX 요청
 	let url = "/api/filter_issue_table/project_filter";
@@ -105,11 +401,26 @@ function fetchInput() {
 			projectIdx: filterDatas.projecIdxArr, 
 			issueTypes: filterDatas.issueTypeArr,
 			issueStatus: filterDatas.issueStatusArr,
-			issueManager: filterDatas.issueManagersArr
+			issueManager: filterDatas.issueManagersArr,
+			issueReporter: filterDatas.issueReporterArr,
+			issuePriority: filterDatas.issuePriorityArr,
+			updatestartDate: filterDatas.updateStartDate,
+			updatelastDate: filterDatas.updateLastDate,
+			updateBeforeDate: filterDatas.updateBeforeDate,
+			createStartDate : filterDatas.createStartDate,
+			createLastDate : filterDatas.createLastDate,
+			createBeforeDate: filterDatas.createBeforeDate,
+			doneStartDate : filterDatas.doneStartDate,
+ 			doneLastDate : filterDatas.doneLastDate,
+ 			doneBeforeDate: filterDatas.doneBeforeDate,
+			searchContent : filterDatas.searchBox,
+			doneCheck : filterDatas.doneCheck,
+			notDoneCheck : filterDatas.notDoneCheck
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueListByProjectKey => {
+			if(document.querySelector("tbody") == null) return;
 			document.querySelector("tbody").innerHTML = ""
 			
 			issueListByProjectKey.forEach(function(item){
@@ -171,16 +482,16 @@ function fetchInput() {
 						</button>
 					</td>
 					<td>
-
+						<div> ${item.finishDate != null ? new Date(item.finishDate).toLocaleDateString('ko-KR',{ year: 'numeric', month: 'long', day: 'numeric' }):""}</div>
 					</td>
 					<td>
-						<div>${item.createDate != null ? item.createDate : ""}</div>
+						<div> ${item.createDate != null ? new Date(item.createDate).toLocaleDateString('ko-KR',{ year: 'numeric', month: 'long', day: 'numeric' }):""}</div>
 					</td>
 					<td>
-						<div>${item.editDate != null ? item.editDate : ""}</div>
+						<div> ${item.editDate != null ? new Date(item.editDate).toLocaleDateString('ko-KR',{ year: 'numeric', month: 'long', day: 'numeric' }) : ""}</div>
 					</td>
 					<td>
-						<div>${item.deadlineDate != null ? item.deadlineDate : ""}</div>
+						<div> ${item.deadlineDate != null ? new Date(item.deadlineDate).toLocaleDateString('ko-KR',{ year: 'numeric', month: 'long', day: 'numeric' }) : ""}</div>
 					</td>
 					<td>
 
@@ -192,7 +503,89 @@ function fetchInput() {
 			console.error("Fetch error:", error);
 		});
 }
+// ajex 데이터 보내기 ========================================================================================
+function fetchInputIssue() {
+	// fetch()를 사용하여 AJAX 요청
+	let url = "/api/filter_issue_table/project_filter";
 
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify({
+			projectIdx: filterDatas.projecIdxArr, 
+			issueTypes: filterDatas.issueTypeArr,
+			issueStatus: filterDatas.issueStatusArr,
+			issueManager: filterDatas.issueManagersArr,
+			issueReporter: filterDatas.issueReporterArr,
+			issuePriority: filterDatas.issuePriorityArr,
+			updatestartDate: filterDatas.updateStartDate,
+			updatelastDate: filterDatas.updateLastDate,
+			updateBeforeDate: filterDatas.updateBeforeDate,
+			createStartDate : filterDatas.createStartDate,
+			createLastDate : filterDatas.createLastDate,
+			createBeforeDate: filterDatas.createBeforeDate,
+			doneStartDate : filterDatas.doneStartDate,
+ 			doneLastDate : filterDatas.doneLastDate,
+ 			doneBeforeDate: filterDatas.doneBeforeDate,
+			searchContent : filterDatas.searchBox,
+			doneCheck : filterDatas.doneCheck,
+			notDoneCheck : filterDatas.notDoneCheck
+		})
+	})
+		.then(response => response.json())  // JSON 형태로 응답 받기
+		.then(issueList => {
+			if(document.querySelector(".issueListFilter") == null) return;
+			
+			document.querySelector(".issueListFilter").innerHTML = ""
+			
+			issueList.forEach(function(item){
+				document.querySelector(".issueListFilter").innerHTML += 
+				`<div class="issue_box_choice">
+					<a href="${item.issueKey}" id="default-link">
+						<div class="issue_title">
+							<span>${item.issueName}</span>
+						</div>
+					<div class="issue_category">
+						<div style="display: flex; align-items: center;">
+							<img style="margin-right: 4px;" width="16" height="16"
+							src="/images/${item.issueIconFilename}"
+							alt="작업" class="_1bsb7vkz _4t3i7vkz _2hwx1b66 _2rkoyh40">
+							<span>${item.issueKey}</span>
+						</div>
+							<img width="24" height="24"
+								src="/images/${item.issueReporterIconFilename}"
+								alt="프로필이미지" style="border-radius: 50%;">
+						</div>
+					</a>
+				</div>`;
+			})
+		})
+		.catch(error => {
+			console.error("Fetch error:", error);
+		});
+}
+// ajex 데이터 보내기 끝========================================================================================
+    window.onload = function() {
+        // 이미 리다이렉트가 수행되었는지 로컬 스토리지를 확인합니다.
+        if (!localStorage.getItem("redirected")) {
+            // 첫 번째 a 태그를 찾습니다.
+            let firstLink = document.querySelector("a#default-link");
+
+            // 첫 번째 링크의 href 값을 가져옵니다.
+            let href = firstLink ? firstLink.getAttribute("href") : "";
+
+            // href 값이 있다면 해당 URL로 리다이렉트합니다.
+            if (href) {
+                // 리다이렉트가 발생했음을 로컬 스토리지에 기록합니다.
+                localStorage.setItem("redirected", "true");
+
+                // 해당 URL로 리다이렉트
+                window.location.href = href;
+            }
+        }
+    };
 document.querySelector("body").addEventListener("click", function(e) {
 	const account = e.target.closest(".filter_save_button");
 	const modal = document.querySelector(".modal");
@@ -212,3 +605,46 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 		
 });
+
+document.getElementById("issueReporter").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".issueReporter").style.display = "block";
+	}else{
+		document.querySelector(".issueReporter").style.display = "none";
+	}
+})
+document.getElementById("issuePriority").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".issuePriority").style.display = "block";
+	}else{
+		document.querySelector(".issuePriority").style.display = "none";
+	}
+})
+document.getElementById("updateDate").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".updateDate").style.display = "block";
+	}else{
+		document.querySelector(".updateDate").style.display = "none";
+	}
+})
+document.getElementById("createDate").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".createDate").style.display = "block";
+	}else{
+		document.querySelector(".createDate").style.display = "none";
+	}
+})
+document.getElementById("doneDate").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".doneDate").style.display = "block";
+	}else{
+		document.querySelector(".doneDate").style.display = "none";
+	}
+})
+document.getElementById("doneCheck").addEventListener("change",function(){
+	if(this.checked){
+		document.querySelector(".done_check").style.display = "block";
+	}else{
+		document.querySelector(".done_check").style.display = "none";
+	}
+})

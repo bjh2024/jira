@@ -12,8 +12,7 @@ projectDetailBtn.addEventListener("click", function(e) {
 // 도넛차트 원안에 퍼센트 표시
 function updateChartRatio(data, num, comment, color) {
 	const total = data.reduce((prev, cur) => prev + cur, 0);
-	const ratio = Math.round((num / total) * 100);
-
+	const ratio = total != 0 ? Math.round((num / total) * 100) : 0;
 	const doughnutChartRatio = document.querySelector(
 		".doughnut_chart_ratio"
 	);
@@ -31,9 +30,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 	async function getStatusDTO() {
 	        try {
 				const url = "/api/summation/status_chart";
-	            const res = await fetch(url, { method: "get" });
+	            const res = await fetch(url, {method: "POST", 
+											  headers:{'Content-Type':'application/json'},
+											  body: JSON.stringify({"uri" : window.location.pathname})
+										  }
+									  );
 	            const statusChartDTO = await res.json();
-	            console.log(statusChartDTO);
 	            
 	            statusChartDTO.forEach(function(item) {
 	                statuslabelArr.push(item.name);
@@ -44,7 +46,36 @@ document.addEventListener('DOMContentLoaded', async function() {
 	        }
 	    }
 	await getStatusDTO();
-	const doughnutChart = new Chart(doughnutChartTag, {
+	let doughnutChatSum = statusNumArr.reduce((acc, cur) => {return acc + cur});
+	const doughnutChart = doughnutChatSum == 0 ?
+	// 모든 값(issueType)이 없을경우
+	new Chart(doughnutChartTag, {
+			type: "doughnut",
+			data: {
+				labels: [""],
+				datasets: [
+					{
+						data: [1],
+						borderWidth: 0,
+						backgroundColor: ["#DFE1E6"],
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				rotation: Math.PI,
+				plugins: {
+					tooltip: {
+						enabled: false, // 툴팁 활성화
+					},
+					legend: {
+						display: false,
+					},
+				},
+			},
+		})
+	: new Chart(doughnutChartTag, {
 		type: "doughnut",
 		data: {
 			labels: statuslabelArr,
@@ -84,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 	});
 	
 	// chartList 그리기
-	let sum = 0;
+	let chartListSum = 0;
 	const chartListBox = document.querySelector(".doughnut_chart_list");
 	statuslabelArr.forEach(function(label, idx){
 		const aElement = document.createElement("a");
@@ -96,14 +127,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 				<span class="doughnut_chart_number">${statusNumArr[idx]}</span>
 		`
 		chartListBox.appendChild(aElement);
-		sum += statusNumArr[idx];
+		chartListSum += statusNumArr[idx];
 	});
 	// 합계 그리기
 	const sumDiv = document.createElement("div");
 	sumDiv.classList.add("doughnut_chart_sum");
 	sumDiv.innerHTML = `
 			<div class="doughnut_chart_header sum">합계</div>
-			<span>${sum}</span>
+			<span>${chartListSum}</span>
 	`
 	chartListBox.appendChild(sumDiv);
 	// 도넛차트 리스트 hover시 이벤트
@@ -145,7 +176,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 	const priorityColor = ["#DE350B", "#FF7452", "#FFAB00", "#4C9AFF", "#0065FF"];
 	async function getPriorityCharDTO(){
 		const url = "/api/summation/priority_chart";
-		const res = await fetch(url, { method: "get" });
+		const res = await fetch(url, { method: "POST", 
+									   headers:{"Content-Type" : "application/json"}, 
+									   body:JSON.stringify({"uri":window.location.pathname}) 
+		});
         const priorityCharDTO = await res.json();
 		console.log(priorityCharDTO);
 		
@@ -194,6 +228,5 @@ document.addEventListener('DOMContentLoaded', async function() {
 			},
 		},
 	});
-	
 });
 

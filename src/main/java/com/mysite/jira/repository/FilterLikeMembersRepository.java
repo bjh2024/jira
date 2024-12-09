@@ -10,4 +10,6 @@ import com.mysite.jira.entity.FilterLikeMembers;
 public interface FilterLikeMembersRepository extends JpaRepository<FilterLikeMembers, Integer>{
 	// kdw
 	List<FilterLikeMembers> findByFilter_jiraIdxAndAccountIdx(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
+	// kdw
+	FilterLikeMembers findByAccountIdxAndFilterIdx(@Param("accountIdx") Integer accountIdx, @Param("filterIdx") Integer filterIdx);
 }

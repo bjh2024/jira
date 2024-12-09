@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
@@ -18,13 +21,18 @@ import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
+import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LogDataService;
 import com.mysite.jira.service.ProjectService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -40,11 +48,23 @@ public class ProjectController {
 	
 	private final LogDataService logDataService;
 	
+	private final AccountService accountService;
+	
+	private final JiraService jiraService;
+	
 	@GetMapping("/{projectKey}/summation")
-	public String summationPage(Model model) {
-		Integer accountIdx = 1;
-		Integer jiraIdx = 1;
-		Integer projectIdx = 1;
+	public String summationPage(Model model, HttpServletRequest request, Principal principal, 
+								@PathVariable("jiraName") String jiraName,
+								@PathVariable("projectKey") String projectKey) {
+		Account account = accountService.getAccountByEmail(principal.getName());
+		Integer accountIdx = account.getIdx();
+		
+		Jira jira = jiraService.getByNameJira(jiraName);
+		Integer jiraIdx = jira.getIdx();
+		
+		Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
+		Integer projectIdx = project.getIdx();
+		
 		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
 		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
 		model.addAttribute("updateIssueCount", issueService.getSevenDayUpdateIssueCount(projectIdx));
@@ -60,21 +80,29 @@ public class ProjectController {
 		model.addAttribute("managerCountData", issueService.getManagerIssueCount(projectIdx));
 		// 관련 프로젝트
 		model.addAttribute("relevantProjectList", projectService.getProjectByJiraIdx(jiraIdx));
-		
 		return "project/summation";
 	}
 	
 	@GetMapping("/list")
-	public String listPage(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
-		Integer accountIdx = 1;
-		Integer jiraIdx = 1;
+	public String listPage(Model model, 
+						   Principal principal, 
+						   HttpServletRequest request, 
+						   @RequestParam(value="page", defaultValue = "0") int page) {
+		// 현재 로그인 계정
+		Account account = accountService.getAccountByEmail(principal.getName());
+		Integer accountIdx = account.getIdx();
+		// 현재 위치한 지라 페이지
+		String uri = request.getRequestURI();
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Integer jiraIdx = jira.getIdx();
 		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
 		
 		return "project/project_list";
 	}
 	
 	@GetMapping("/create")
-	public String createPage() {
+	public String createPage(Model model, Principal principal) {
+		model.addAttribute("account", accountService.getAccountByEmail(principal.getName()));
 		return "project/project_create";
 	}
 	
@@ -151,7 +179,12 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/profile")
-	public String profile() {
+	public String profile(Model model) {
+		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+		model.addAttribute("issue", issueList);
+		
+		List<Project> projectList = projectService.getProjectByJiraIdx(1);
+		model.addAttribute("projectList", projectList);
 		return "account/profile.html";
 	}
 

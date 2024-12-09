@@ -16,9 +16,9 @@
 }
 
 .head_category {
-	height: 40px;
 	margin-left: 4px;
 	margin-bottom: 12px;
+	flex-wrap: wrap;
 }
 
 .filter_issue_list {
@@ -64,9 +64,11 @@
 	width: 83px;
 	height: 26px;
 	font-size: 13px;
+	font-weight: normal;
 	border-radius: 3px;
 	padding: 0 12px;
 	cursor: pointer;
+	line-height: 26px;
 	color:#505258;
 }
 .category_1:hover {
@@ -77,10 +79,12 @@
 .category_2 {
 	width: 113.31px;
 	height: 26px;
+	line-height: 26px;
 	font-size: 13px;
 	border-radius: 3px;
 	padding: 0 12px;
 	cursor: pointer;
+	font-weight: normal;
 	color:#505258;
 }
 .category_2:hover {
@@ -121,6 +125,7 @@
 	position: relative;
 }
 
+
 .filter_category_div {
 	border-radius: 3px;
 	line-height: 32px;
@@ -152,6 +157,91 @@
 	display: none;
 }
 
+.update_date {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+}
+.update_date_box_1 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.update_date_box_1.show {
+	display: flex;
+}
+.update_date_box_2 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.update_date_box_2.show {
+	display: block;
+}
+.create_date {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+}
+.create_date_box_1 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.create_date_box_1.show{
+	display: flex;
+}
+.create_date_box_2 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.create_date_box_2.show{
+	display: block;
+}
+.done_date {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+}
+.done_date_box_1 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.done_date_box_1.show{
+	display: flex;
+}
+.done_date_box_2 {
+	margin: 16px 16px;
+	display: flex;
+	align-items: center;
+	display: none;
+}
+.done_date_box_2.show{
+	display: block;
+}
+.date_button_box {
+	padding: 10px;
+	border-top: 1px solid  #091e424f;
+}
+.reset_button {
+	height: 32px;
+	width: 80px;
+	background-color: #1868DB;
+	color: white;
+	font-size: 14px;
+	border: none;
+	border-radius: 5px;
+}
+#all_reset:hover {
+	text-decoration: underline;
+}
 .filter_issue_box.show {
 	left: 0px;
 	display: block;
@@ -529,4 +619,19 @@ div::-webkit-scrollbar {
 
 .cancle_button:hover{
 text-decoration: underline; 
+}
+.issuePriority{
+	display: none;
+}
+.issueReporter{
+	display: none;
+}
+.updateDate{
+	display: none;
+}
+.createDate{
+	display: none;
+}
+.doneDate{
+	display: none;
 }

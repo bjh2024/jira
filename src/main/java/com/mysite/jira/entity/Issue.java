@@ -142,7 +142,31 @@ public class Issue {
 		this.projectLogDataList = projectLogDataList;
 	}
 	
-//	public void updateIssueStatus(IssueStatus newStatus) {
-//		this.issueStatus = newStatus;
-//	}
+	public void updateIssueStatus(IssueStatus newStatus) {
+		this.issueStatus = newStatus;
+	}
+	
+	public void updateStartDate(LocalDateTime date) {
+		this.startDate = date;
+	}
+	
+	public void updateDeadlineDate(LocalDateTime date) {
+		this.deadlineDate = date;
+	}
+	
+	public void updatePriority(IssuePriority priority) {
+		this.issuePriority = priority;
+	}
+	
+	public void updateTeam(Team team) {
+		this.team = team;
+	}
+	
+	public void updateReporter(Account reporter) {
+		this.reporter = reporter;
+	}
+	
+	public void updateManager(Account manager) {
+		this.manager = manager;
+	}
 }

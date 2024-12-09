@@ -18,6 +18,7 @@ import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.dto.project.summation.PercentTableDTO;
 import com.mysite.jira.dto.project.summation.chartDTO;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
@@ -45,119 +46,110 @@ public class IssueService {
 	public List<Issue> getIssuesByJiraIdx(Integer jiraIdx) {
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
+	
+	public List<IssuePriority> getIssuePriority(){
+		return issuePriorityRepository.findAll();
+	}
+	
+	public List<Issue> getReporterNameIn(String[] name){
+		return issueRepository.findByReporterNameIn(name);
+	}
+	
+	public List<Issue> getIssuePriorityNameIn(String[] name){
+		return issueRepository.findByIssuePriorityNameIn(name);
+	}
+	
+	public List<Issue> getStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByStartDate(startDate);
+	}
+	
+	public List<Issue> getLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByLastDate(lastDate);
+	}
+	
+	public List<Issue> getcreateStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesBycreateStartDate(startDate);
+	}
+	
+	public List<Issue> getcreateLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesBycreateLastDate(lastDate);
+	}
+	public List<Issue> getfinishStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByfinishStartDate(startDate);
+	}
+	
+	public List<Issue> getfinishLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByfinishLastDate(lastDate);
+	}
 
+	public List<Issue> getIssueByNameLike(String text){
+		return issueRepository.findByNameLike("%" + text + "%");
+	}
+	
+	public List<Issue> getIssueByStatus(Integer number){
+		return issueRepository.findByIssueStatus_Status(number);
+	}
+	
+	public List<Issue> getIssueByStatusNot(Integer number){
+		return issueRepository.findByIssueStatus_StatusNot(number);
+	}
+	
+	public List<Issue> getIssueByQuery(String text){
+		return issueRepository.findByQuery(text);
+				}
+	public List<Issue> getIssueByBetweenCreateDateDesc(Integer jiraIdx, LocalDateTime startDate, LocalDateTime endDate){
+		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,endDate);
+		// ProjectLogData의 중복값 제거
+		for (int i = 0; i < issues.size(); i++) {
+			Set<Integer> setIconFiles = new HashSet<>();
+			List<ProjectLogData> logDataList = new ArrayList<>();
+			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
+				if (setIconFiles.add(logData.getAccount().getIdx())) {
+					logDataList.add(logData);
+				}
+			}
+			if(logDataList.size() != 0) {
+				issues.get(i).updateProjectLogDataList(logDataList);
+			}
+		}
+		return issues;
+	}
+	
 	// kdw 오늘
 	public List<Issue> getTodayIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.now();
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			issues.get(i).updateProjectLogDataList(logDataList);
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 어제
 	public List<Issue> getYesterdayIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MAX);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 지난주
 	public List<Issue> getWeekIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MAX);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 지난달
 	public List<Issue> getMonthIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(30), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(8), LocalTime.MIDNIGHT);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 
 	// kdw 한달이상
 	public List<Issue> getMonthGreaterIssueByBetweenCreateDateDesc(Integer jiraIdx) {
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(365 * 2), LocalTime.MIDNIGHT);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().minusDays(31), LocalTime.MIDNIGHT);
-		
-		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,
-				endDate);
-		// ProjectLogData의 중복값 제거
-		for (int i = 0; i < issues.size(); i++) {
-			Set<String> setIconFiles = new HashSet<>();
-			List<ProjectLogData> logDataList = new ArrayList<>();
-			for (ProjectLogData logData : issues.get(i).getProjectLogDataList()) {
-				if (setIconFiles.add(logData.getAccount().getIconFilename())) {
-					logDataList.add(logData);
-				}
-			}
-			if(logDataList.size() != 0) {
-				issues.get(i).updateProjectLogDataList(logDataList);
-			}
-		}
-		return issues;
+		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
+	
 	// kdw 보류
 	public List<Issue> getManagerByIssueStatusIn(Integer jiraIdx, Integer managerIdx){
 		// 할일 = 1, 진행중 = 2

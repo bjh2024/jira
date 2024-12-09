@@ -3,15 +3,23 @@ package com.mysite.jira.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.LikeContentDTO;
+import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.DashboardLikeMembers;
+import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.FilterLikeMembers;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectLikeMembers;
+import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.DashboardLikeMembersRepository;
+import com.mysite.jira.repository.DashboardRepository;
 import com.mysite.jira.repository.FilterLikeMembersRepository;
+import com.mysite.jira.repository.FilterRepository;
 import com.mysite.jira.repository.ProjectLikeMembersRepository;
 import com.mysite.jira.repository.ProjectRepository;
 
@@ -21,12 +29,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LikeService {
 	
-	private final ProjectRepository projectRepository;
+	private final AccountRepository accountRepository;
 	
+	private final ProjectRepository projectRepository;
 	private final ProjectLikeMembersRepository projectLikeMembersRepository;
 	
+	private final DashboardRepository dashboardRepository;
 	private final DashboardLikeMembersRepository dashboardLikeMembersRepository;
 	
+	private final FilterRepository filterRepository;
 	private final FilterLikeMembersRepository filterLikeMembersRepository;
 	
 	// 별표 표시한 프로젝트, 대시보드, 필터 kdw
@@ -35,9 +46,13 @@ public class LikeService {
 		List<Map<String, Object>> allLikeList = projectRepository.findLikeMembers(accountIdx, jiraIdx);
 		try {
 			for(int i = 0; i < allLikeList.size(); i++) {
+				Integer idx = 0;
 				String name = "";
 				String iconFilename = "";
 				String projectKey = "";
+				if(allLikeList.get(i).get("idx") instanceof Integer) {
+					idx = (Integer)allLikeList.get(i).get("idx");
+				}
 				if(allLikeList.get(i).get("name") != null) {
 					name = allLikeList.get(i).get("name").toString();
 				}
@@ -48,10 +63,11 @@ public class LikeService {
 					projectKey = allLikeList.get(i).get("projectKey").toString();
 				}
 				LikeContentDTO dto = LikeContentDTO.builder()
-						   .name(name)
-						   .iconFilename(iconFilename)
-						   .projectKey(projectKey)
-						   .build();
+												   .idx(idx)
+												   .name(name)
+												   .iconFilename(iconFilename)
+												   .key(projectKey)
+												   .build();
 				result.add(dto);
 			}
 		}catch(Exception e) {
@@ -63,16 +79,21 @@ public class LikeService {
 	// 별표 표시한 프로젝트 kdw
 	public List<LikeContentDTO> getProjectLikeList(Integer accountIdx, Integer jiraIdx){
 		List<LikeContentDTO> result = new ArrayList<>();
-		List<ProjectLikeMembers> projectLikeList = projectLikeMembersRepository.findByProject_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
+		List<ProjectLikeMembers> projectLikeList = projectLikeMembersRepository.findByAccountIdxAndProject_jiraIdx(accountIdx, jiraIdx);
 		
 		for(int i = 0; i < projectLikeList.size(); i++) {
+			String jiraName = projectLikeList.get(i).getProject().getJira().getName();
+			Integer idx = projectLikeList.get(i).getProject().getIdx();
 			String projectName = projectLikeList.get(i).getProject().getName();
 			String iconFileName = projectLikeList.get(i).getProject().getIconFilename();
-			
+			String projectKey = projectLikeList.get(i).getProject().getKey();
 			LikeContentDTO dto = LikeContentDTO.builder()
-											 .name(projectName)
-											 .iconFilename(iconFileName)
-											 .build();
+											   .jiraName(jiraName)
+											   .idx(idx)
+											   .name(projectName)
+											   .iconFilename(iconFileName)
+											   .key(projectKey)
+											   .build();
 			result.add(dto);
 		}
 				
@@ -85,11 +106,13 @@ public class LikeService {
 		List<DashboardLikeMembers> dashboardLikeList = dashboardLikeMembersRepository.findByDashboard_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
 		
 		for(int i = 0; i < dashboardLikeList.size(); i++) {
-			String projectName = dashboardLikeList.get(i).getDashboard().getName();
+			Integer idx = dashboardLikeList.get(i).getDashboard().getIdx();
+			String dashboardName = dashboardLikeList.get(i).getDashboard().getName();
 			String iconFileName = "dashboard_icon.svg";
 			
 			LikeContentDTO dto = LikeContentDTO.builder()
-											 .name(projectName)
+											 .idx(idx)
+											 .name(dashboardName)
 											 .iconFilename(iconFileName)
 											 .build();
 			result.add(dto);
@@ -103,15 +126,74 @@ public class LikeService {
 			List<FilterLikeMembers> filterLikeList = filterLikeMembersRepository.findByFilter_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
 
 			for(int i = 0; i < filterLikeList.size(); i++) {
+				Integer idx = filterLikeList.get(i).getFilter().getIdx();
 				String projectName = filterLikeList.get(i).getFilter().getName();
 				String iconFileName = "filter_icon.svg";
 				LikeContentDTO dto = LikeContentDTO.builder()
+												 .idx(idx)
 												 .name(projectName)
 												 .iconFilename(iconFileName)
 												 .build();
 				result.add(dto);
 			}
-					
 			return result;
+	}
+	
+	// project 즐겨찾기 멤버 update
+	public void updateLikeProjectMember(Integer accountIdx, Integer projectIdx, Boolean isLike) {
+		ProjectLikeMembers projectLikeMember = null;
+		if(isLike) {
+			Optional<Account> account = accountRepository.findById(accountIdx);
+			Optional<Project> project = projectRepository.findById(projectIdx);
+			if(!account.isEmpty() && !project.isEmpty()) {
+				projectLikeMember = ProjectLikeMembers.builder()
+													  .account(account.get())
+													  .project(project.get())
+													  .build();
+			}
+			projectLikeMembersRepository.save(projectLikeMember);
+		}else {
+			projectLikeMember = projectLikeMembersRepository.findByAccountIdxAndProjectIdx(accountIdx, projectIdx);
+			projectLikeMembersRepository.deleteById(projectLikeMember.getIdx());
 		}
+	}
+	
+	// dashboard 즐겨찾기 멤버 update
+	public void updateLikeDashboardMember(Integer accountIdx, Integer dashboardIdx, Boolean isLike) {
+		DashboardLikeMembers dashboardLikeMembers = null;
+		if(isLike) {
+			Optional<Account> account = accountRepository.findById(accountIdx);
+			Optional<Dashboard> dashboard = dashboardRepository.findById(dashboardIdx);
+			if(!account.isEmpty() && !dashboard.isEmpty()) {
+				dashboardLikeMembers = DashboardLikeMembers.builder()
+													  .account(account.get())
+													  .dashboard(dashboard.get())
+													  .build();
+			}
+			dashboardLikeMembersRepository.save(dashboardLikeMembers);
+		}else {
+			dashboardLikeMembers = dashboardLikeMembersRepository.findByAccountIdxAndDashboardIdx(accountIdx, dashboardIdx);
+			dashboardLikeMembersRepository.deleteById(dashboardLikeMembers.getIdx());
+		}
+	}
+		
+	// filter 즐겨찾기 멤버 update
+	public void updateLikeFilterMember(Integer accountIdx, Integer filterIdx, Boolean isLike) {
+		FilterLikeMembers filterLikeMembers = null;
+		if(isLike) {
+			Optional<Account> account = accountRepository.findById(accountIdx);
+			Optional<Filter> filter = filterRepository.findById(filterIdx);
+			if(!account.isEmpty() && !filter.isEmpty()) {
+				filterLikeMembers = FilterLikeMembers.builder()
+													 .account(account.get())
+													 .filter(filter.get())
+													 .build();
+			}
+			filterLikeMembersRepository.save(filterLikeMembers);
+		}else {
+			filterLikeMembers = filterLikeMembersRepository.findByAccountIdxAndFilterIdx(accountIdx, filterIdx);
+			filterLikeMembersRepository.deleteById(filterLikeMembers.getIdx());
+		}
+	}
+	
 }

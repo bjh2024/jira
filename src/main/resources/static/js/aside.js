@@ -1,3 +1,28 @@
+// aside 어디 페이지인지 표시
+document.addEventListener("DOMContentLoaded", function(){
+	document.querySelector(".my_work").classList.remove("active2");
+	let url = new URL(window.location.href);
+	if(url.pathname.split("/").length == 2){
+		document.querySelector(".my_work").classList.add("active2");
+		return;
+	};
+	if(url.pathname.includes("/team")){
+		document.querySelector(".team").classList.add("active2");
+		return;
+	}
+});
+
+// 별표 표시 추가 제거(즐겨찾기)
+document.querySelectorAll(".more_sub_item.star").forEach(function(btn){
+	btn.addEventListener("click",function(){
+		let img = this.querySelector("img");		
+		let type = img.getAttribute("type-data");
+		let idx = img.getAttribute("idx-data");
+		let isLike = img.getAttribute("src") === "/images/star_icon_empty.svg" ? true : false ;
+		likeFetch(type, idx, isLike);
+	});
+})
+
 // filterBox reset
 function filterBoxReset() {
   document
@@ -61,6 +86,22 @@ document.querySelector("body").addEventListener("click", function (e) {
   prevRightBtn = rightBoxBtn;
 });
 
+document.querySelectorAll(".like_content_list .img_box").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		e.preventDefault();
+		let img = this.querySelector("img");
+		if(img.getAttribute("src") === "/images/star_icon_yellow.svg"){
+			img.setAttribute("src", "/images/star_icon_empty.svg");
+		}else{
+			img.setAttribute("src", "/images/star_icon_yellow.svg");
+		}
+		let type = img.getAttribute("type-data");
+		let idx = img.getAttribute("idx-data");
+		let isLike = img.getAttribute("src") === "/images/star_icon_empty.svg" ? false : true;
+		likeFetch(type, idx, isLike);
+	});
+})
+
 // 별표 표시됨 필터박스
 document
   .querySelectorAll(".like_filter_box > button")
@@ -87,11 +128,11 @@ document
 			document.querySelector(".like_content_dynamic.show")?.classList.remove("show");
 			return;
 		  }else if(this.querySelector("span").innerText == "필터"){
-		  	url = "/api/aside/like/filter"
+		  	url = `/api/aside/like/filter?uri=${window.location.pathname}`
 		  }else if(this.querySelector("span").innerText == "대시보드"){
-		    url = "/api/aside/like/dashboard"
+		    url = `/api/aside/like/dashboard?uri=${window.location.pathname}`
 		  }else if(this.querySelector("span").innerText == "프로젝트"){
-			url = "/api/aside/like/project"
+			url = `/api/aside/like/project?uri=${window.location.pathname}`
 		  }
 		  
 		  fetch(url,{method: "GET"})
@@ -102,6 +143,13 @@ document
 				
 				const dynamicContainer = document.querySelector(".like_content_dynamic");
 				dynamicContainer.innerHTML = "";
+				if(res.length === 0){
+					dynamicContainer.innerHTML = `<div class="no_search_box">
+													<img src="/images/no_search_icon_light.svg">
+													<p>원하는 항목을 찾을 수 없습니다.</p>
+												  </div>`;
+					return;
+				}
 				res.forEach(function(item){
 					const aElement = document.createElement("a");
 					aElement.classList.add("like_item_box", "accent_btn");
@@ -128,7 +176,7 @@ document
 // project/create 이동
 function goProjectCreatePage(element){
 	let jiraName = element.getAttribute("data-jira-name");
-	location.href = `${jiraName}/project/create`;
+	location.href = `/${jiraName}/project/create`;
 }
   
 // 프로젝트, 필터, 대시보드
@@ -169,13 +217,13 @@ document.querySelector("body").addEventListener("click", function (e) {
     imgContainer?.classList.toggle("show");
     imgBox?.classList.toggle("active");
     viewMoreBox?.classList.toggle("active");
-    if (imgBox.className.includes("more")) {
+    if (imgBox.className.includes("aside_more")) {
       moreItemContainer
-        .querySelector(".more_sub_box.more")
+        .querySelector(".more_sub_box.aside_more")
         .classList.toggle("show");
-    } else if (imgBox.className.includes("plus")) {
+    } else if (imgBox?.className.includes("aside_plus")) {
       moreItemContainer
-        .querySelector(".more_sub_box.plus")
+        .querySelector(".more_sub_box.aside_plus")
         .classList.toggle("show");
     }
   } else {
@@ -189,13 +237,13 @@ document.querySelector("body").addEventListener("click", function (e) {
       imgContainer.classList.add("show");
       imgBox.classList.add("active");
       viewMoreBox.classList.add("active");
-      if (imgBox.className.includes("more")) {
+      if (imgBox.className.includes("aside_more")) {
         moreItemContainer
-          .querySelector(".more_sub_box.more")
+          .querySelector(".more_sub_box.aside_more")
           .classList.add("show");
-      } else if (imgBox.className.includes("plus")) {
+      } else if (imgBox.className.includes("aside_plus")) {
         moreItemContainer
-          .querySelector(".more_sub_box.plus")
+          .querySelector(".more_sub_box.aside_plus")
           .classList.add("show");
       }
     }
@@ -223,3 +271,9 @@ document
     }
     this.nextElementSibling.classList.toggle("show");
   });
+
+  let urlPartss = window.location.pathname.split('/');
+  let usernames = urlPartss[1];  // 경로의 첫 번째 부분이 'dahyun0521'
+
+  // 추출한 username을 사용하여 동적으로 링크 생성
+  document.getElementById("filter_move").href = "/" + usernames + "/filter/filter_issue";

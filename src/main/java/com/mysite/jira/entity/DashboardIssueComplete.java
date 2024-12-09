@@ -25,9 +25,13 @@ public class DashboardIssueComplete {
 	@NotNull
 	private Integer viewDate;
 	
-	@Column(columnDefinition = "VARCHAR2(20)")
+	@Column
 	@NotNull
-	private String divOrder;
+	private Integer divOrderX;
+	
+	@Column
+	@NotNull
+	private Integer divOrderY;
 	
 	@Column
 	@NotNull
@@ -43,10 +47,11 @@ public class DashboardIssueComplete {
 	@ManyToOne
 	private Project project;
 	
-	public DashboardIssueComplete(Integer viewDate, String divOrder, Dashboard dashboard,
+	public DashboardIssueComplete(Integer viewDate, Integer divOrderX, Integer divOrderY, Dashboard dashboard,
 			Project project, Integer isSave, String unitPeriod) {
 		this.viewDate = viewDate;
-		this.divOrder = divOrder;
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
 		this.dashboard = dashboard;
 		this.project = project;
 		this.isSave = isSave;

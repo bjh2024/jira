@@ -1,5 +1,6 @@
 package com.mysite.jira.repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,40 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	
 	List<Issue> findByManagerNameIn(String[] name);
 	
+	List<Issue> findByReporterNameIn(String[] name);
+	
+	List<Issue> findByIssuePriorityNameIn(String[] name);
+	
 	List<Issue> findByManagerIsNull();
+	
+	List<Issue> findByNameLike(String text);
+	
+	List<Issue> findByIssueStatus_Status(Integer number);
+	
+	List<Issue> findByIssueStatus_StatusNot(Integer number);
+	
+	@Query("""
+			SELECT :query
+			""")
+	List<Issue> findByQuery(@Param("query") String text);
+	
+	@Query("SELECT i FROM Issue i WHERE i.editDate >= :startDate")
+    List<Issue> findIssuesByStartDate(@Param("startDate") LocalDateTime startDate);
+	
+	@Query("SELECT i FROM Issue i WHERE i.editDate <= :lastDate")
+	List<Issue> findIssuesByLastDate(@Param("lastDate") LocalDateTime LastDate);
+	 
+	@Query("SELECT i FROM Issue i WHERE i.createDate >= :startDate")
+	List<Issue> findIssuesBycreateStartDate(@Param("startDate") LocalDateTime startDate);
+	 
+	@Query("SELECT i FROM Issue i WHERE i.createDate <= :lastDate")
+	List<Issue> findIssuesBycreateLastDate(@Param("lastDate") LocalDateTime LastDate);
+	
+	@Query("SELECT i FROM Issue i WHERE i.finishDate >= :startDate")
+	List<Issue> findIssuesByfinishStartDate(@Param("startDate") LocalDateTime startDate);
+	
+	@Query("SELECT i FROM Issue i WHERE i.finishDate <= :lastDate")
+	List<Issue> findIssuesByfinishLastDate(@Param("lastDate") LocalDateTime LastDate);
 	
 	// bjh
 	List<Issue> findByIssueTypeNameIn(String[] name);
