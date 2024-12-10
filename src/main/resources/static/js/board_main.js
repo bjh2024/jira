@@ -1,3 +1,29 @@
+let updateExareaDatas = {
+	"issueIdx": "",
+	"content": ""
+}
+
+function updateIssueContent(value){
+	let url = "/api/project/update_issue_content";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateExareaDatas)
+	})
+	.then(response => {
+        if (response.ok) {
+            value.innerText = updateExareaDatas.content;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
 document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 	const contentEditor = new toastui.Editor({
 	    el: editor,
@@ -5,8 +31,22 @@ document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 		minHeight: '74px',
 	    initialEditType: 'wysiwyg',
 	    initialValue: editor.dataset.content,
-	    previewStyle: 'vertical',
+	    previewStyle: 'vertical'
 	  });
+	const submitbtn = editor.parentElement.querySelector(".editarea-save");
+	submitbtn.addEventListener("click", function(e){
+		updateExareaDatas.issueIdx = editor.dataset.idx;
+		updateExareaDatas.content = contentEditor.getMarkdown();
+		
+		contentEditor.initialValue = updateExareaDatas.content;
+		updateIssueContent(editor.parentElement.nextElementSibling);
+		
+		const editorContainer = editor.parentElement;
+		editorContainer.style.display = "none";
+		editorContainer.nextElementSibling.style.display = "block";
+		editorContainer.parentElement.style.padding = "6px 8px";
+
+	});
 });
 
 document.querySelectorAll(".editor.newreply").forEach(function(editor, index){
@@ -136,7 +176,7 @@ document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
 
 document.querySelectorAll(".subissues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
-		const lblItem = btn.querySelector(".issuedetail-graphval.label-def-sub");
+		const lblItem = btn.querySelector(".issuedetail-graphval.label-def.sub");
 		
 		if(lblItem.children.length < 3){
 			lblItem.querySelector(".graphval-label-def").classList.remove("none");
@@ -250,6 +290,26 @@ function createissuefetch(){
 	});
 }
 
+document.querySelectorAll(".create-issuekey").forEach(function(input){
+	input.addEventListener("keyup", function(e){
+		if(window.event.keyCode == 13){
+			const btnBoxItem = input.nextElementSibling;
+			
+			issueDatas.jiraName = btnBoxItem.dataset.jiraname;
+			issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
+			issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
+			issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
+			issueDatas.statusIdx = btnBoxItem.dataset.statusidx;
+			issueDatas.issueName = input.value;
+			if(issueDatas.issueTypeIdx == 0){
+				alert("반드시 이슈 유형을 지정해야 합니다.")
+				return;
+			}
+			createissuefetch();
+		}
+	});
+});
+
 document.querySelectorAll(".createissuebtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const btnBoxItem = btn.parentElement;
@@ -261,6 +321,11 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 		issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
 		issueDatas.statusIdx = btnBoxItem.dataset.statusidx;
 		issueDatas.issueName = inputItem.value;
+		
+		if(issueDatas.issueTypeIdx == 0){
+			alert("반드시 이슈 유형을 지정해야 합니다.")
+			return;
+		}
 		createissuefetch();
 	});
 });
@@ -364,11 +429,12 @@ function getStatusSubmit(){
 document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
-			|| e.target.closest(".subissuebox") !== null){
+			|| e.target.closest(".subissuebox") !== null || e.target.closest(".issue-menuwindow") !== null
+			|| e.target.closest(".menuwindow-option") !== null){
 			return;
 		}
 		
-		const lblItem = btn.querySelector(".issuedetail-graphval.label-def");
+		const lblItem = btn.querySelector(".issuedetail-graphval.label-def.main");
 		if(lblItem?.children.length < 3){
 			lblItem.querySelector(".graphval-label-def").classList.remove("none");
 		}else{
@@ -379,7 +445,106 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			btn.querySelector(".issuedetail-container").classList.add("show");
 		}
 	});
+	
+	/*btn.addEventListener("mouseover", function(e){
+		const menubox = btn.querySelector(".issue-menubtnbox");
+		menubox.style.visibility = "visible";
+	});
+	
+	btn.addEventListener("mouseout", function(e){
+		const menubox = btn.querySelector(".issue-menubtnbox");
+		
+	    if (e.target.closest(".issue-menubtnbox") == null) {
+	      menubox.style.visibility = "hidden";
+	      menubox.children[0].classList.remove("show");
+	    }
+		  
+	});*/
 });
+
+document.querySelectorAll(".issue-menubtnbox").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if(btn.style.visibility == "hidden"){
+			window.classList.remove("show");
+		}
+		const myWindow = btn.children[0];
+		const xy = btn.getBoundingClientRect();
+		myWindow.style.top = `${xy.top - 4}px`;
+		if(window.innerWidth - xy.right < 240){
+			myWindow.style.left = `${xy.right - 254}px`;
+		}else{
+			myWindow.style.left = `${xy.left + 40}px`;
+		}
+		myWindow.classList.toggle("show");
+	});
+});
+
+let deleteIssueData = {
+	"issueIdx": ""
+}
+
+function deleteIssue(){
+	let url = "/api/project/delete_issue_data";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(deleteIssueData)
+	})
+	.then(response => {
+        if (response.ok) {
+			console.log("삭제 성공");
+			location.reload();
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".menuwindow-option").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const container = document.querySelector(".issue-delete-alert-container");
+		container.classList.add("show");
+		container.children[0].children[0].children[1].innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
+		deleteIssueData.issueIdx = btn.dataset.issueidx;
+		/*deleteIssueData.issueIdx = btn.dataset.issueidx;
+		console.log(deleteIssueData);
+		deleteIssue();*/
+	});
+});
+/*
+document.querySelector(".delete-aleret-submitbtn").addEventListener("click", function(e){
+	if(e.target.closest(".delete-aleret-submitbtn") !== null){
+		console.log(deleteIssueData);
+		deleteIssue();
+	}
+});*/
+
+document.querySelector(".issue-delete-alert-container").addEventListener("mousedown", function(e) {
+	document.querySelector(".issue-delete-alert-container")?.classList.remove("show");
+	
+	const bgItem = e.target.closest(".delete-aleret-cancelbtn");
+	const subIssueItem = e.target.closest(".subissue-list");
+	const issueDetailItem = e.target.closest(".delete-alert-box");
+	
+	const submitItem = e.target.closest(".delete-aleret-submitbtn");
+	if(submitItem !== null){
+		console.log(deleteIssueData);
+		deleteIssue();
+	}
+	
+	if(bgItem == null && issueDetailItem !== null){
+		document.querySelector(".issue-delete-alert-container").classList.add("show");
+	}else{
+		document.querySelector(".issue-delete-alert-container").classList.remove("show");
+	}
+});
+
 
 document.querySelectorAll(".issuedetail-container").forEach(function(container, index){
 	container.addEventListener("mousedown", function(e) {
@@ -394,10 +559,6 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 			container.classList.add("show");
 		}else{
 			container.classList.remove("show");
-			// location.reload(true);
-			/*if(e.target.closest(".subissue-list-rightdetail") !== null){
-				container.classList.add("show");	
-			}*/
 		}
 	});
 });
@@ -417,13 +578,86 @@ document.querySelectorAll(".subissuedetail-container").forEach(function(containe
 	});
 });
 
+document.querySelectorAll(".issuedetail-title").forEach(function(area){
+	area.addEventListener("click", function(e){
+		area.style.display = "none";
+		area.previousElementSibling.classList.add("show");
+		area.previousElementSibling.children[0].focus();
+	});
+});
+
+document.querySelectorAll(".edit-detailtitlebtn.cancel").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		btn.parentElement.classList.remove("show");
+		btn.parentElement.nextElementSibling.style.display = "block";
+	});
+});
+
+let updateIssueNameData = {
+	"issueIdx": "",
+	"name": ""
+}
+
+function updateIssueNameFetch(title, input){
+	let url = "/api/project/update_issue_name";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateIssueNameData)
+	}).then(response => {
+        if (response.ok) {
+			console.log("업데이트 성공");
+            input.value = updateIssueNameData.name;
+			title.innerText = updateIssueNameData.name;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".edit-issuedetail-title-input").forEach(function(input){
+	input.addEventListener("keyup", function(e){
+		if(window.event.keyCode == 13){
+			updateIssueNameData.issueIdx = input.dataset.idx;
+			updateIssueNameData.name = input.value;
+			
+			const title = input.parentElement.nextElementSibling;
+			
+			updateIssueNameFetch(title, input);
+			input.parentElement.classList.remove("show");
+			title.style.display = "block";
+		}
+	});
+});
+
+
+
+document.querySelectorAll(".edit-detailtitlebtn.submit").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const input = btn.previousElementSibling;
+		updateIssueNameData.issueIdx = input.dataset.idx;
+		updateIssueNameData.name = input.value;
+		
+		const title = btn.parentElement.nextElementSibling;
+		
+		updateIssueNameFetch(title, input);
+		btn.parentElement.classList.remove("show");
+		title.style.display = "block";
+	});
+});
+
 document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
 	area.addEventListener("click", function(e) {
 		const areaItem = e.target.closest(".issuedetail-exarea");
-		const editorItem = areaItem.children[0];
-		const valItem = areaItem.children[1];
+		const editorItem = area.children[0];
+		const valItem = area.children[1];
 		const btnItem = e.target.closest(".editarea-cancel");
-		
+		const submitItem = e.target.closest(".editarea-save");
 	
 		if(btnItem !== null && editorItem !== null){
 			editorItem.style.display = "none";
@@ -432,7 +666,7 @@ document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
 			return;
 		}
 		
-		if(areaItem !== null){
+		if(areaItem !== null && submitItem == null){
 			editorItem.style.display = "block";
 			valItem.style.display = "none";
 			areaItem.style.padding = "0px";
@@ -441,6 +675,8 @@ document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
 	});
 
 });
+
+
 
 document.querySelectorAll(".writereplybox").forEach(function(box, index){
 	box.addEventListener("click", function(e) {
@@ -624,30 +860,15 @@ document.querySelector(".issuedetail-sortbtn").addEventListener("click", functio
 	btnItem.classList.toggle("active");
 });
 
-removeLabelDataValue = {
-	"labelDataIdx": ""
-}
-
 document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".graphval-selectwindow") !== null){
 			return;
 		}
-		btn.querySelector(".graphval-selectwindow").classList.toggle("show");
-
-		/*if(e.target.closest(".issuedetail-graphval.label-def") !== null){
-			const labelList = e.target.closest(".issuedetail-graphval.label-def").querySelectorAll(".graphval-label");
-			labelList.forEach(function(label){
-				const cancelIcon = label.children[1];
-				cancelIcon.classList.toggle("show-labelicon");
-				cancelIcon.addEventListener("click", function(e){
-					// removeLabelDataValue.labelDataIdx = cancelIcon.parentElement.dataset.labeldataidx;
-					// removeIssueLabelDatas();
-					cancelIcon.classList.remove("show-labelicon");
-					cancelIcon.parentElement.remove();
-				});	
-			});
-		}*/
+		const xyItem = btn.getBoundingClientRect();
+		const window = btn.querySelector(".graphval-selectwindow");
+		window.style.top = `${xyItem.height + 8}px`;
+		window.classList.toggle("show");
 	});
 });
 
@@ -661,7 +882,7 @@ let newLabelData = {
 	"labelIdx": ""
 }
 
-function createLabelData(){
+function createLabelData(graphval){
 	let url = "/api/project/create_label_data";
 	fetch(url, {
 		method: 'POST',
@@ -671,8 +892,14 @@ function createLabelData(){
 		body: JSON.stringify(newLabelData)
 	})
 	.then(response => response.json())
-	.then(priority => {
-		console.log("hihihhihi");
+	.then(labelData => {
+		const label = document.createElement("span");
+		label.classList.add("graphval-label");
+		label.innerHTML = `<a>${labelData.name}</a>
+					<img src="/images/cancel_icon.svg" style="width: 16px; height: 16px; margin-top: 2px; display: none;">`;
+		label.setAttribute("data-idx", labelData.labelIdx);
+		label.setAttribute("data-labeldataidx", labelData.labelDataIdx);
+		graphval.appendChild(label);
 	}).catch(error => {
 			console.error("Fetch error:", error);
 	});
@@ -705,11 +932,11 @@ function fetchInput(){
 				labelValue.setAttribute("data-issueidx", labelDatas.issueIdx);
 				labelValue.setAttribute("data-labelidx", value.labelIdx);
 				labelValue.addEventListener("click", function(e){
-					console.log(labelValue);
+					console.log(label.parentElement);
 					newLabelData.issueIdx = labelValue.dataset.issueidx;
 					newLabelData.labelIdx = labelValue.dataset.labelidx;
 					label.classList.remove("show");
-					createLabelData();
+					createLabelData(label.parentElement);
 				});
 				label.appendChild(labelValue);
 			});
@@ -724,12 +951,54 @@ document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(bt
 		if(e.target.closest(".graphval-selectwindow") !== null){
 			return;
 		}
+		const labelList = btn.querySelectorAll(".graphval-label");
+
+		for(let i = 0; i < labelList.length; i++){
+			const deleteLabelBtn = labelList[i].children[1];
+			deleteLabelBtn.classList.toggle("show-labelicon");
+		}
+		
 		let label = [...btn.querySelectorAll(".graphval-label")].map(input => input.dataset.idx);
 		label = label.length > 0 ? label : [-1];
 		labelDatas.idx = label;
 		labelDatas.issueIdx = btn.dataset.issueidx;
 		fetchInput();
 		
+	});
+});
+
+removeLabelDataValue = {
+	"labelDataIdx": ""
+}
+
+function deleteLabelData(){
+	let url = "/api/project/delete_label_data";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(removeLabelDataValue)
+	})
+	.then(response => {
+        if (response.ok) {
+			console.log("삭제 성공");
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".graphval-delete-labelbtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		removeLabelDataValue.labelDataIdx = btn.parentElement.dataset.labeldataidx;
+		console.log(removeLabelDataValue);
+		btn.parentElement.remove();
+		deleteLabelData();
 	});
 });
 
@@ -985,24 +1254,6 @@ document.querySelectorAll(".issuedetail-graphval.manager").forEach(function(btn)
 	});
 });
 
-/*document.querySelectorAll(".issue-container").forEach(function(box, index){
-	box.addEventListener("click", function(e){
-		if(e.target.closest(".issuebox-moveicon") !== null){
-			return;
-		}
-		
-		const defItem = document.querySelectorAll(".issue-container");
-		for(let i = 0; i < defItem.length; i++){
-			
-		}
-		
-		const boxItem = e.target.closest(".issue-container");
-		if(boxItem !== null){
-			boxItem.draggable = "false";
-		}
-	});
-});*/
-
 const columns = document.querySelectorAll(".issuebox-issues");
 
 draggedIssueDatas = {
@@ -1054,6 +1305,8 @@ columns.forEach((column) => {
         group: "shared",
         animation: 150,
         ghostClass: "blue-background-class",
+		filter: ".subissuebtn, .issue-menubtn",
+		preventOnFilter: true,
 		onStart: function (evt) {
 	        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
 			draggedIssueDatas.oldStatusIdx = evt.item.parentElement.dataset.statusidx;
@@ -1103,7 +1356,8 @@ const containers = document.querySelector(".board-body-container");
 new Sortable(containers, {
 	haldle: ".issuebox-moveicon",
 	animation: 150,
-	filter: ".create-status-btn",
+	filter: ".create-status-btn, .issuebox-issues, .createissue-container",
+	preventOnFilter: true,
 	// 드래그 시작 시 요소의 초기 인덱스를 저장
 	    onStart: function (evt) {
 	        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
@@ -1115,7 +1369,6 @@ new Sortable(containers, {
 			issueBoxOrderDatas.oldIdx = originalIndex;
 			issueBoxOrderDatas.newIdx = newIndex;
 			issueBoxOrderDatas.projectIdx = evt.item.dataset.projectidx;
-			console.log(issueBoxOrderDatas);
 			updateIssueBoxOrderFetch();
 	    }
 });

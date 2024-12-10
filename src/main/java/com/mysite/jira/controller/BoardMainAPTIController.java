@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysite.jira.dto.board.AIQuestionDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
+import com.mysite.jira.dto.board.DeleteIssueDTO;
+import com.mysite.jira.dto.board.DeleteLabelDataDTO;
 import com.mysite.jira.dto.board.DragIssueBoxDTO;
 import com.mysite.jira.dto.board.DragIssueDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
@@ -25,6 +27,8 @@ import com.mysite.jira.dto.board.LabelListDTO;
 import com.mysite.jira.dto.board.ReporterDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
+import com.mysite.jira.dto.board.UpdateIssueExareaDTO;
+import com.mysite.jira.dto.board.UpdateIssueNameDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabel;
@@ -90,8 +94,14 @@ public class BoardMainAPTIController {
 				.name(newLabelData.getIssueLabel().getName())
 				.issueIdx(newLabelData.getIssue().getIdx())
 				.labelIdx(newLabelData.getIssueLabel().getIdx())
+				.labelDataIdx(newLabelData.getIdx())
 				.build();
 		return dto;
+	}
+	
+	@PostMapping("/delete_label_data")
+	public void deleteLabelData(@RequestBody DeleteLabelDataDTO deleteLabelDataDTO) {
+		boardMainService.deleteIssueLabelData(deleteLabelDataDTO.getLabelDataIdx());
 	}
 	
 	@PostMapping("/update_current_status")
@@ -275,6 +285,27 @@ public class BoardMainAPTIController {
 			boardMainService.updatePrevIssueOrder(currentIssueIdx, oldIdx, oldStatusIdx);
 		}
 		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
+	}
+	
+	@PostMapping("/delete_issue_data")
+	public void deleteIssueData(@RequestBody DeleteIssueDTO deleteIssueDTO) {
+		boardMainService.deleteIssueData(deleteIssueDTO.getIssueIdx());
+	}
+	
+	@PostMapping("/update_issue_name")
+	public void updateIssueName(@RequestBody UpdateIssueNameDTO updateIssueNameDTO) {
+		Integer idx = updateIssueNameDTO.getIssueIdx();
+		String name = updateIssueNameDTO.getName();
+		Issue issue = boardMainService.getIssueByIdx(idx);
+		boardMainService.updateIssueName(issue, name);
+	}
+	
+	@PostMapping("/update_issue_content")
+	public void updateIssueExarea(@RequestBody UpdateIssueExareaDTO updateIssueExareaDTO) {
+		Integer idx = updateIssueExareaDTO.getIssueIdx();
+		String content = updateIssueExareaDTO.getContent();
+		Issue issue = boardMainService.getIssueByIdx(idx);
+		boardMainService.updateIssueContent(issue, content);
 	}
 
 }

@@ -139,6 +139,14 @@ public class Issue {
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
 	private List<IssueRecentClicked> issueClickedList;
 	
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
+	public void updatecontent(String content) {
+		this.content = content;
+	}
+	
 	public void updateProjectLogDataList(List<ProjectLogData> projectLogDataList) {
 		this.projectLogDataList = projectLogDataList;
 	}

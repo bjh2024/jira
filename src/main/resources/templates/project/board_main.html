@@ -343,6 +343,11 @@
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
+									<div class="issue-menuwindow">
+										<div class="menuwindow-option" th:attr="data-issueidx=${issueList.idx}, data-issuekey=${issueList.key}">
+											<span>삭제</span>
+										</div>
+									</div>
 									<button class="issue-menubtn">
 										<span style="margin-top: 3px;">
 											<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
@@ -492,20 +497,6 @@
 								 											th:src="@{/images/sub_issue_icon.svg}"
 								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
 								 									<span style="margin-bottom: 4px;">하위 이슈</span>
-								 								</button>
-								 								<button class="insertwindow-btn">
-								 									<span
-								 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
-								 											th:src="@{/images/project_issue_icon.svg}"
-								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-								 									<span style="margin-bottom: 4px; margin-left: 4px;">연결한
-								 										이슈</span>
-								 								</button>
-								 								<button class="insertwindow-btn">
-								 									<span style="height: 24px; margin-bottom: 2px;"><img
-								 											th:src="@{/images/web_icon.svg}"
-								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-								 									<span style="margin-bottom: 4px;">웹 링크</span>
 								 								</button>
 								 							</div>
 								 							<span style="height: 16px;">
@@ -775,12 +766,13 @@
 								 								<div class="issuedetail-graphtype">
 								 									<span>레이블</span>
 								 								</div>
-								 								<div class="issuedetail-graphval label-def-sub">
+								 								<div class="issuedetail-graphval label-def sub" th:attr="data-issueidx=${issueList.idx}" style="height: auto; min-height: 32px;">
 							 										<div class="graphval-selectwindow label">
 							 										</div>
-								 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == extendsList.child.idx}">
-								 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}">
+								 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
+								 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}, data-labeldataidx=${labelValList.idx}">
 								 											<a th:text="${labelValList.issueLabel.name}"></a>
+																			<img src="/images/cancel_icon.svg" class="graphval-delete-labelbtn">
 								 										</span>
 								 									</th:block>
 								 									<span class="graphval-label-def none">
@@ -950,7 +942,18 @@
 						 			<div class="issuedetailbody-container">
 						 				<div class="issuedetailviewbox">
 						 					<div style="padding-left: 24px;">
-						 						<h1 class="issuedetail-title" th:text="${issueList.name}"></h1>
+												<div class="issuedetail-titlebox">
+													<div class="edit-issuedetail-title">
+														<input class="edit-issuedetail-title-input" th:value="${issueList.name}" th:attr="data-idx=${issueList.idx}">
+														<button class="edit-detailtitlebtn submit">
+															<img src="/images/status_complete_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+														</button>
+														<button class="edit-detailtitlebtn cancel">
+															<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+														</button>
+													</div>
+							 						<h1 class="issuedetail-title" th:text="${issueList.name}"></h1>
+												</div>
 						 						<div class="issuedetail-insertbtn">
 						 							<div class="issuedetail-insertwindow">
 						 								<button class="insertwindow-btn">
@@ -967,20 +970,6 @@
 						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
 						 									<span style="margin-bottom: 4px;">하위 이슈</span>
 						 								</button>
-						 								<button class="insertwindow-btn">
-						 									<span
-						 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
-						 											th:src="@{/images/project_issue_icon.svg}"
-						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-						 									<span style="margin-bottom: 4px; margin-left: 4px;">연결한
-						 										이슈</span>
-						 								</button>
-						 								<button class="insertwindow-btn">
-						 									<span style="height: 24px; margin-bottom: 2px;"><img
-						 											th:src="@{/images/web_icon.svg}"
-						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-						 									<span style="margin-bottom: 4px;">웹 링크</span>
-						 								</button>
 						 							</div>
 						 							<span style="height: 16px;">
 						 								<img class="insertbtn-icon"
@@ -994,7 +983,7 @@
 						 					</div>
 						 					<div class="issuedetail-exarea">
 						 						<div class="editor-container" draggable="false">
-						 							<div class="editor exarea" style="width: 738px;" draggable="false" th:attr="data-content=${issueList.content}">
+						 							<div class="editor exarea" style="width: 738px;" draggable="false" th:attr="data-content=${issueList.content}, data-idx = ${issueList.idx}">
 						 								<p draggable="false"></p>
 						 							</div>
 						 							<div class="editareabtns">
@@ -1224,13 +1213,13 @@
 						 								<div class="issuedetail-graphtype">
 						 									<span>레이블</span>
 						 								</div>
-						 								<div class="issuedetail-graphval label-def" th:attr="data-issueidx=${issueList.idx}">
+						 								<div class="issuedetail-graphval label-def main" th:attr="data-issueidx=${issueList.idx}" style="height: auto; min-height: 32px;">
 					 										<div class="graphval-selectwindow label">
 					 										</div>
 						 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
 						 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}, data-labeldataidx=${labelValList.idx}">
 						 											<a th:text="${labelValList.issueLabel.name}"></a>
-																	<img src="/images/cancel_icon.svg" style="width: 16px; height: 16px; margin-top: 2px; display: none;">
+																	<img src="/images/cancel_icon.svg" class="graphval-delete-labelbtn">
 						 										</span>
 						 									</th:block>
 						 									<span class="graphval-label-def none">
@@ -1420,7 +1409,28 @@
 			</button>
 		</div>
 	</div>
-	
+	<div class="issue-delete-alert-container">
+		<div class="delete-alert-box">
+			<div class="delete-alert-title">
+				<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+				<span th:text="'을(를) 삭제하시겠습니까?'" class="delete-alert-titletext"></span>
+			</div>
+			<div class="delete-alert-body">
+				<span>
+					이 항목과 관련 댓글, 첨부 파일 및 모든 데이터를 영구적으로 삭제하려고 합니다.<br>
+					삭제하지 않으려면 대신에 해결하거나 닫을 수 있습니다.
+				</span>
+			</div>
+			<div class="delete-alert-btnbar">
+				<button class="delete-aleret-cancelbtn">
+					<span>취소</span>
+				</button>
+				<button class="delete-aleret-submitbtn">
+					<span>삭제</span>
+				</button>
+			</div>
+		</div>
+	</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>

@@ -346,4 +346,22 @@ public class BoardMainService {
 		this.issueLabelDataRepository.save(newLabelData);
 		return newLabelData;
 	}
+	
+	public void deleteIssueLabelData(Integer idx) {
+		this.issueLabelDataRepository.deleteById(idx);
+	}
+	
+	public void deleteIssueData(Integer idx) {
+		this.issueRepository.deleteById(idx);
+	}
+	
+	public void updateIssueName(Issue issue, String name) {
+		issue.updateName(name);
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateIssueContent(Issue issue, String content) {
+		issue.updatecontent(content);
+		this.issueRepository.save(issue);
+	}
 }
