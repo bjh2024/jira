@@ -34,7 +34,6 @@ import com.mysite.jira.repository.ProjectMembersRepository;
 import com.mysite.jira.repository.ProjectRepository;
 import com.mysite.jira.repository.TeamRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
