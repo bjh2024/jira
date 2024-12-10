@@ -10,7 +10,9 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
-
+	
+	// 프로젝트 이름으로 프로젝트 조회
+	Project findByJira_idxAndName(Integer jiraIdx, String name);
 	// 프로젝트 키로 프로젝트 조회
 	Project findByJira_IdxAndKey(Integer jiraIdx, String key);
 	
@@ -28,17 +30,36 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 		List<Project> findByKey(String keys); 
 		
 	// kdw
-	List<Project> findByProjectClickedList_AccountIdxAndJiraIdxOrderByProjectClickedList_ClickedDateDesc(
-			@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
+	@Query(value="""
+			SELECT  p.*
+			FROM    project_recent_clicked prc
+			JOIN    project p
+			ON  p.idx = prc.project_idx
+			WHERE   prc.account_idx = :accountIdx
+			AND p.jira_idx = :jiraIdx
+			    
+			minus
+			
+			SELECT  p.*
+			FROM    project_like_members plm
+			JOIN    project p
+			ON  p.idx = plm.project_idx
+			WHERE   plm.account_idx = :accountIdx
+			AND p.jira_idx = :jiraIdx
+			""", nativeQuery=true)
+	List<Project> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
+															 @Param("jiraIdx") Integer jiraIdx);
 	// kdw
 	List<Project> findByJiraIdxOrderByProjectClickedList_ClickedDateDesc(@Param("jiraIdx") Integer jiraIdx);
 
 	// kdw
 	@Query(value = """
-			SELECT  name,
+			SELECT  idx,
+					name,
 			        icon_filename,
 			        project_key
 			FROM(SELECT  p.jira_idx,
+						 p.idx,
 				         p.name,
 				         plm.account_idx,
 				         p.icon_filename,
@@ -48,6 +69,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 				 ON  p.idx = plm.project_idx
 				 UNION
 				 SELECT  d.jira_idx,
+				 		 d.idx,
 				         d.name,
 				         dlm.account_idx,
 				         'dashboard_icon.svg' as icon_filename,
@@ -57,6 +79,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 				 ON  d.idx = dlm.dashboard_idx
 				 UNION
 				 SELECT  f.jira_idx,
+				 		 f.idx,
 				         f.name,
 				         flm.account_idx,
 				         'filter_icon.svg' as icon_filename,
@@ -67,27 +90,26 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			WHERE   jira_idx = :jiraIdx
 			AND     account_idx = :accountIdx
 			""", nativeQuery = true)
-	List<Map<String, Object>> findLikeMembers(@Param("jiraIdx") Integer jiraIdx,
-			@Param("accountIdx") Integer accountIdx);
+	List<Map<String, Object>> findLikeMembers(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 
 	// kdw
 	@Query(value = """
 			SELECT  p.name,
-				    p.color,
+			        p.color,
 			        p.icon_filename,
 			        p.key,
 			        count(i.idx) AS issue_count
 			FROM    project p
 			JOIN    project_recent_clicked prc
 			ON      p.idx = prc.project_idx
-			JOIN    issue i
+			LEFT JOIN issue i
 			ON      p.idx = i.project_idx
-			JOIN    issue_status ist
+			LEFT JOIN issue_status ist
 			ON      ist.idx = i.issue_status_idx
-			WHERE   ist.status BETWEEN 1 AND 2
-			AND     prc.account_idx = :accountIdx
+			WHERE   prc.account_idx = :accountIdx
 			AND     p.jira_idx = :jiraIdx
-			GROUP BY p.name, p.color, p.icon_filename, p.key, prc.clicked_date
+			AND     ist.status BETWEEN 1 AND 2 OR i.idx IS NULL
+			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date, p.key
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
 	
@@ -95,24 +117,31 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			@Param("jiraIdx") Integer jiraIdx);
 	
 	// kdw 프로젝트 리스트(즐겨찾기 유무 => 별표가 위로)
-	@Query(value = """
-			SELECT *
+	@Query("""
+			SELECT projectIdx as projectIdx,
+				   projectName as projectName,
+				   projectIconFilename as projectIconFilename,
+				   projectKey as projectKey,
+				   accountName as accountName,
+				   accountIconFilename as accountIconFilename,
+				   isLike as isLike
 			FROM (
-			    SELECT p.name AS project_name,
-			           p.icon_filename AS project_icon_filename,
-			           p.key AS project_key,
-			           p.account.name AS account_name,
-			           p.account.icon_filename AS account_icon_filename,
-			           CASE WHEN plm.idx IS NULL THEN 'false' ELSE 'true' END AS is_like,
-			           ROWNUM AS rownum
-			    FROM project p
-			    LEFT JOIN project_like_members plm
-			        ON p.idx = plm.project_idx AND plm.account_idx = :accountIdx
-			    WHERE p.jira_idx = :jiraIdx
-			    ORDER BY is_like DESC
-			) all
-			WHERE rownum BETWEEN :startRow AND :endRow
-			""", nativeQuery = true)
+			    SELECT p.idx as projectIdx,
+			           p.name AS projectName,
+			           p.iconFilename AS projectIconFilename,
+			           p.key AS projectKey,
+			           p.account.name AS accountName,
+			           p.account.iconFilename AS accountIconFilename,
+			           CASE WHEN plm.idx IS NULL THEN 'false' ELSE 'true' END AS isLike,
+			           ROWNUM AS rnum
+			    FROM Project p
+			    LEFT JOIN ProjectLikeMembers plm
+			        ON p.idx = plm.project.idx AND plm.account.idx = :accountIdx
+			    WHERE p.jira.idx = :jiraIdx
+			    ORDER BY isLike DESC
+			) al
+			WHERE al.rnum BETWEEN :startRow AND :endRow
+			""")
 	List<Map<String, Object>> findByProjectListIsLike(@Param("accountIdx") Integer accountIdx,
 													  @Param("jiraIdx") Integer jiraIdx, 
 													  @Param("startRow") int startRow, 

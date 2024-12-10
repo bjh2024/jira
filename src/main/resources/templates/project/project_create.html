@@ -13,7 +13,7 @@
 	<div layout:fragment="content">
 		<div class="project_create_header">
 			<img th:src="@{/images/arrow_tail_left_icon.svg}" alt="" />
-			<a th:href="@{/project/summation}">Jira 페이지로 돌아가기</a>
+			<a th:href="@{|/${currentJira}|}">Jira 페이지로 돌아가기</a>
 		</div>
 		<div class="project_create_main">
 			<div class="project_create_main_container">
@@ -31,8 +31,13 @@
 							</p>
 						</div>
 						<div class="project_name_input_box">
-							<label for="">이름<span class="not_null_check">*</span></label>
-							<input type="text" placeholder="팀 이름, 프로젝트 목표, 마일스톤 등을 사용해보기기" />
+							<label for="projectName">이름<span class="not_null_check">*</span></label>
+							<input type="text" id="projectName" name="projectName"
+								placeholder="팀 이름, 프로젝트 목표, 마일스톤 등을 사용해보기기" />
+							<div class="alret_project_create_box">
+								<img src="/images/alaret_icon.svg" width="12" height="12" />
+								<div class="comment"></div>
+							</div>
 						</div>
 						<div class="template_choice_box">
 							<div class="template_choice_list">
@@ -53,19 +58,23 @@
 									<img th:src="@{/images/arrow_right_icon.svg}" alt="" width="12" height="12" />
 								</div>
 							</div>
+							<div class="key_name_input_box">
+								<label for="key">
+									<span>키</span><img th:src="@{/images/exclamation_mark_icon_purple.svg}" alt=""
+										width="16" height="16" /><span class="not_null_check">*</span></label>
+								<input type="text" id="key" />
+								<div class="alret_project_create_box">
+									<img src="/images/alaret_icon.svg" width="12" height="12" />
+									<div class="comment"></div>
+								</div>
+							</div>
 							<div class="more_btn_box">
 								<div class="more_btn">
-									<img th:src="@{/images/arrow_right_icon.svg}" alt="" width="12" height="12"/>
+									<img th:src="@{/images/arrow_right_icon.svg}" alt="" width="12" height="12" />
 									<button>더 보기</button>
 								</div>
 							</div>
 							<div class="more_box">
-								<div>
-									<label for="key">
-										<span>키</span><img th:src="@{/images/exclamation_mark_icon_purple.svg}" alt=""
-											width="16" height="16" /><span class="not_null_check">*</span></label>
-									<input type="text" id="key" />
-								</div>
 								<div>
 									<h3>프로젝트에 사용자 초대</h3>
 									<label for="username">이름, 이메일 또는 그룹</label>
@@ -95,8 +104,7 @@
 					</div>
 				</div>
 				<div class="project_create_main_box2">
-					<image th:src="@{/images/project_create_main_img.svg}"
-						href="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png" />
+					<image th:src="@{/images/project_create_main_img.svg}" />
 					<div class="table_containter">
 						<div class="table_box1">
 							<div>
@@ -140,8 +148,8 @@
 						<div class="table_box2">
 							<div class="header">
 								<div></div>
-								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" style="border-radius: 50%" width="24" height="24" />
+								<img th:src="@{|/images/${account.iconFilename}|}" alt="" style="border-radius: 50%"
+									width="24" height="24" />
 							</div>
 							<table>
 								<colgroup>

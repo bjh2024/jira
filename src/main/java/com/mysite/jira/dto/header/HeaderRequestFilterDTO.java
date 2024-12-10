@@ -11,6 +11,7 @@ public class HeaderRequestFilterDTO {
 	private LocalDateTime endDate;
 	private Integer[] projectIdxArr;
 	private Integer[] managerIdxArr;
-	private Integer reporterIdx;
+	private Boolean isReporter;
 	private Integer[] statusArr;
+	private String currentUrl;
 }

@@ -40,7 +40,7 @@ document.querySelectorAll(".dashboard_list_item_box > .star_box").forEach(functi
 		const starImg = this.children[0];
 
 		if (starImg.getAttribute("src") === "/images/star_icon_yellow.svg") {
-			starImg.setAttribute("src", "/images/empty_star_icon.svg");
+			starImg.setAttribute("src", "/images/star_icon_empty.svg");
 		} else {
 			starImg.setAttribute("src", "/images/star_icon_yellow.svg")
 		}

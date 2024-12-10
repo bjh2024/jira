@@ -25,9 +25,11 @@ public class DashboardIssueStatistics {
 	@NotNull
 	private Integer viewNum;
 	
-	@Column(columnDefinition = "VARCHAR2(20)")
 	@NotNull
-	private String divOrder;
+	private Integer divOrderX;
+	
+	@NotNull
+	private Integer divOrderY;
 	
 	@Column
 	@NotNull
@@ -43,10 +45,11 @@ public class DashboardIssueStatistics {
 	private DashboardCol dashboardCol;
 	
 	@Builder
-	public DashboardIssueStatistics(Integer viewNum,String divOrder,
+	public DashboardIssueStatistics(Integer viewNum, Integer divOrderX, Integer divOrderY, 
 			Dashboard dashboard, Project project, DashboardCol dashboardCol, Integer isSave) {
 		this.viewNum = viewNum;
-		this.divOrder = divOrder;
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
 		this.dashboard = dashboard;
 		this.project = project;
 		this.dashboardCol = dashboardCol;

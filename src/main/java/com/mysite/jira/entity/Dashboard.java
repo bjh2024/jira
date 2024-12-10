@@ -35,10 +35,6 @@ public class Dashboard {
 	@Column(columnDefinition = "VARCHAR2(4000)")
 	private String explain;
 	
-	@Column
-	@ColumnDefault("sysdate")
-	private LocalDateTime clickedDate;
-	
 	@ManyToOne
 	private Jira jira;
 	
@@ -46,10 +42,9 @@ public class Dashboard {
 	private Account account;
 	
 	@Builder
-	public Dashboard(String name, String explain, LocalDateTime clickedDate, Jira jira, Account account) {
+	public Dashboard(String name, String explain, Jira jira, Account account) {
 		this.name = name;
 		this.explain = explain;
-		this.clickedDate = clickedDate;
 		this.jira = jira;
 		this.account = account;
 	}

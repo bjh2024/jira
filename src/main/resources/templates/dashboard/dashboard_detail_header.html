@@ -2,12 +2,12 @@
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_header.css}">
 	</head>
-	<h2>html 연습용</h2>
+	<h2 th:text="${currentDashboard.name}"></h2>
 	<div class="gnb">
 		<button class="gnb_btn1">
-			<img th:src="@{/images/star_icon_empty.svg}" />
+			<img th:src="@{/images/star_icon_empty.svg}" width="16" height="16" />
 		</button>
-		<th:block th:if="${url} == '/dashboard/detail'">
+		<th:block th:if="${isDetail}">
 			<button class="gnb_btn1">
 				<img th:src="@{/images/link_copy_icon.svg}" />
 			</button>
@@ -15,19 +15,19 @@
 				<span class="bold">Refresh</span>
 				<img th:src="@{/images/refresh_icon.svg}" width="16" height="16" />
 			</button>
-			<a th:href="@{/dashboard/detail/edit}" class="gnb_btn2">
+			<a th:href="@{|/${currentJira}/dashboard/edit/${currentDashboard.idx}|}" class="gnb_btn2">
 				<span>편집</span>
 				<img th:src="@{/images/pencil_icon.svg}" width="16" height="16" />
 			</a>
 		</th:block>
-		<th:block th:unless="${url} == '/dashboard/detail'">
-			<button class="gnb_btn2">
+		<th:block th:unless="${isDetail}">
+			<button class="gnb_btn2 gadget_add_btn">
 				가젯 추가
 			</button>
 			<button class="gnb_btn2">
 				레이아웃 변경
 			</button>
-			<a th:href="@{/dashboard/detail}" class="gnb_btn2 complete">
+			<a th:href="@{|/${currentJira}/dashboard/detail/${currentDashboard.idx}|}" class="gnb_btn2 complete">
 				<span>완료</span>
 			</a>
 		</th:block>

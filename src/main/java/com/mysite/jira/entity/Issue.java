@@ -88,7 +88,7 @@ public class Issue {
 	public Issue(String key, String name, String content, LocalDateTime createDate, LocalDateTime editDate,
 			LocalDateTime finishDate, LocalDateTime deadlineDate, Integer divOrder,
 			Project project, IssueType issueType, IssueStatus issueStatus, Account manager, Account reporter,
-			IssuePriority issuePriority, Team team, LocalDateTime startDate) {
+			IssuePriority issuePriority, Team team, LocalDateTime startDate, Jira jira) {
 		this.key = key;
 		this.name = name;
 		this.content = content;
@@ -105,6 +105,7 @@ public class Issue {
 		this.issuePriority = issuePriority;
 		this.team = team;
 		this.startDate = startDate;
+		this.jira = jira;
 	}
 	
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE) 
@@ -168,5 +169,9 @@ public class Issue {
 	
 	public void updateManager(Account manager) {
 		this.manager = manager;
+	}
+	
+	public void updateDivOrder(Integer idx) {
+		this.divOrder = idx;
 	}
 }

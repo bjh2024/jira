@@ -109,8 +109,8 @@
 								<div class="recent_work_list">
 									<div th:each="logData, loop : ${projectLogData}">
 										<th:block th:switch="${loop.index}">
-											<h3 th:case="0"
-												th:text="${#temporals.format(logData.createDate, 'yyyy년 MM월 dd일 EE') + '요일'}">
+											<h3 th:case="0" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd') == #temporals.format(logData.createDate, 'yyyy-MM-dd')
+															? '오늘' : #temporals.format(logData.createDate, 'yyyy년 MM월 dd일 EE') + '요일'}">
 											</h3>
 											<h3 th:case="*"
 												th:if="${#temporals.format(logData.createDate, 'yyyy-MM-dd EE') != #temporals.format(projectLogData[loop.index - 1].createDate, 'yyyy-MM-dd EE')}"
@@ -128,13 +128,16 @@
 														<img th:src="@{|/images/${logData.issue.issueType.iconFilename}|}"
 															alt="">
 														<span
-															th:text="${logData.issue.key} +'-'+ ${logData.issue.name}"></span>
+															th:text="${logData.issue.key} +' - '+ ${logData.issue.name}"></span>
 													</a>
 												</p>
 												<span class="date"
 													th:text="${#temporals.format(logData.createDate, 'hh시 mm분')}"></span>
 											</div>
 										</div>
+									</div>
+									<div class="project_log_empty_box" th:if="${#lists.size(projectLogData) == 0}">
+										<img src="/images/recent_log_empty_icon.svg">
 									</div>
 								</div>
 							</div>
@@ -214,11 +217,11 @@
 											<div class="distribution_box">
 												<div class="total_distribution_bar">
 													<div class="item_distribution_bar"
-														th:style="'width:'+${(item.count * 1.0) / sumTaskTypeData * 100}+'%'">
+														th:style="'width:'+${sumTaskTypeData != 0 ? ((item.count * 1.0) / sumTaskTypeData * 100) : 0}+'%'">
 													</div>
 												</div>
 												<span
-													th:text="${#numbers.formatDecimal((item.count*1.0) / sumTaskTypeData * 100, 1, 0) + '%'}"></span>
+													th:text="${sumTaskTypeData != 0 ? #numbers.formatDecimal((item.count*1.0) / sumTaskTypeData * 100, 1, 0)+'%' : 0+'%'}"></span>
 											</div>
 										</td>
 										<td>
@@ -279,6 +282,27 @@
 											<a href="#" th:text="${item.count}"></a>
 										</td>
 									</tr>
+									<tr th:if="${#lists.size(managerCountData) == 0}">
+										<td>
+											<div>
+												<img src="/images/default_icon_file.png"
+													alt="" width="32" height="32" style="border-radius: 16px;">
+												<span>할당되지 않음</span>
+										</td>
+										<td>
+											<div class="distribution_box">
+												<div class="total_distribution_bar">
+													<div class="item_distribution_bar"
+														style="width: 0%;">
+													</div>
+												</div>
+												<span>0%</span>
+											</div>
+										</td>
+										<td>
+											<a href="#">0</a>
+										</td>
+									</tr>
 								</tbody>
 							</table>
 
@@ -297,14 +321,14 @@
 							종속성에 정렬하세요.
 						</p>
 						<div class="relation_project_box">
-							<a th:href="@{#}">
+							<a th:href="@{|/${currentJira}/project/create|}">
 								<div class="create_project_box">
 									<img th:src="@{/images/plus_icon2.svg}" width="24" height="24" />
 								</div>
 								<span>프로젝트 만들기</span>
 							</a>
-							<a th:href="@{#}" th:each="item : ${relevantProjectList}"
-								th:if="${item.name != project.name}">
+							<a th:href="@{|/${currentJira}/project/${item.key}/summation|}"
+								th:each="item : ${relevantProjectList}" th:if="${item.name != project.name}">
 								<div class="img_box">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="48" height="48">
 								</div>
@@ -314,7 +338,7 @@
 								</p>
 							</a>
 						</div>
-						<a th:href="@{/project/list}" class="go_project_create_btn">모든 프로젝트 보기</a>
+						<a th:href="@{|/${currentJira}/project/list|}" class="go_project_create_btn">모든 프로젝트 보기</a>
 					</div>
 				</section>
 			</div>

@@ -29,8 +29,11 @@ public class DashboardAllot {
 	@NotNull
 	private Integer pageNum;
 	
-	@Column(columnDefinition = "VARCHAR2(20)")
-	private String divOrder;
+	@NotNull
+	private Integer divOrderX;
+	
+	@NotNull
+	private Integer divOrderY;
 	
 	@Column
 	@NotNull
@@ -40,9 +43,10 @@ public class DashboardAllot {
 	private Dashboard dashboard;
 	
 	@Builder
-	public DashboardAllot(Integer pageNum, String divOrder, Dashboard dashboard, Integer isSave) {
+	public DashboardAllot(Integer pageNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Integer isSave) {
 		this.pageNum = pageNum;
-		this.divOrder = divOrder;
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
 		this.dashboard = dashboard;
 		this.isSave = isSave;
 	}

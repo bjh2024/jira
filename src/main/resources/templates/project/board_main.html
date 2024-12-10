@@ -311,7 +311,7 @@
 			</div>
 		</div>
 		<div class="board-body-container">
-			<div class="issue-container" th:each="statusList1 : ${statusList}">
+			<div class="issue-container" th:each="statusList1 : ${statusList}" th:attr="data-projectidx=${project.idx}">
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
@@ -336,10 +336,10 @@
 							</button>
 						</div>
 					</div>
-					<div class="issuebox-issues">
+					<div class="issuebox-issues" th:attr="data-statusidx=${statusList1[2]}">
 						<div class="issues" th:each="issueList : ${issueList}" draggable="true"
 							th:if="${issueList.issueStatus.idx == statusList1[2]}"
-							th:attr="data-id=${issueList.idx}">
+							th:attr="data-idx=${issueList.idx}, data-statusIdx=${issueList.issueStatus.idx}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
@@ -994,8 +994,8 @@
 						 					</div>
 						 					<div class="issuedetail-exarea">
 						 						<div class="editor-container" draggable="false">
-						 							<div class="editor" style="width: 738px;" draggable="false">
-						 								<p th:text="${issueList.content}" draggable="false"></p>
+						 							<div class="editor exarea" style="width: 738px;" draggable="false" th:attr="data-content=${issueList.content}">
+						 								<p draggable="false"></p>
 						 							</div>
 						 							<div class="editareabtns">
 						 								<button class="editarea-save">저장</button>
@@ -1086,10 +1086,10 @@
 						 					<div class="issuedetail-replybox">
 						 						<div class="writereplybox">
 						 							<span style="margin-top: 4px;"><img width="24" height="24"
-						 									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+						 									th:src="@{|/images/${currentUser.iconFilename}|}"
 						 									style="border-radius: 50%;"></span>
 						 							<div class="editor-container">
-						 								<div class="editor" style="width: 690px;">
+						 								<div class="editor newreply" style="width: 690px;">
 						 									<p></p>
 						 								</div>
 						 								<div class="editareabtns">
@@ -1123,8 +1123,8 @@
 						 							</div>
 						 							<div></div>
 						 							<div class="replydetail-managebar">
-						 								<span class="reply-geteditbtn">댓글</span><strong>·</strong>
-						 								<span class="reply-geteditbtn">편집</span><strong>·</strong>
+						 								<span class="reply-geteditbtn new">댓글</span><strong>·</strong>
+						 								<span class="reply-geteditbtn edit" th:if="${currentUser.idx == replyList.account.idx}" th:attr="data-content=${replyList.content}">편집</span><strong th:if="${currentUser.idx == replyList.account.idx}">·</strong>
 						 								<span>삭제</span><strong>·</strong>
 						 								<button class="replydetail-emojibtn">
 						 									<span style="height: 16px;">
@@ -1134,8 +1134,7 @@
 						 								</button>
 						 							</div>
 						 							<div class="editor-container">
-						 								<div class="editor" style="width: 676px;">
-						 									<p>뭐야!</p>
+						 								<div class="editor alterreply" style="width: 676px;">
 						 								</div>
 						 								<div class="editareabtns">
 						 									<button class="editarea-save">저장</button>
@@ -1202,36 +1201,11 @@
 						 									<span>담당자</span>
 						 								</div>
 						 								<div>
-						 									<div class="issuedetail-graphval manager" th:attr="data-reporteridx=${issueList.manager != null ? issueList.manager.idx : ''},
-															data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx},
-															data-name=${issueList.manager != null ? issueList.manager.name : ''}, data-iconFilename=${issueList.manager != null ? issueList.manager.iconFilename : ''}">
-						 										<div class="graphval-selectwindow">
-						 											<div class="graphvalwindow-value withimg">
-						 												<span>
-						 													<img th:src="@{/images/user_icon_file5.png}"
-						 													style="width: 32px; height: 32px; margin-left: 6px;">
-						 												</span>
-						 												<span>나에게 할당</span>
-						 											</div>
-						 											<div class="graphvalwindow-value withimg" 
-						 											th:each="managerList : ${prjMemberList}"
-						 											th:if="${issueList.manager != null && managerList.account.idx != issueList.manager.idx}">
-						 												<span>
-						 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
-						 													style="width: 32px; height: 32px; margin-left: 6px;">
-						 												</span>
-						 												<span th:text="${managerList.account.name}"></span>
-						 											</div>
-																	<div class="graphvalwindow-value withimg" 
-						 											th:each="managerList : ${prjMemberList}"
-						 											th:if="${issueList.manager == null}">
-						 												<span>
-						 													<img th:src="@{|/images/${managerList.account.iconFilename}|}"
-						 													style="width: 32px; height: 32px; margin-left: 6px;">
-						 												</span>
-						 												<span th:text="${managerList.account.name}"></span>
-						 											</div>
-						 										</div>
+						 									<div class="issuedetail-graphval manager" th:attr="data-manageridx=${issueList.manager != null ? issueList.manager.idx : currentUser.idx},
+															data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx}, data-name=${issueList.manager != null ? issueList.manager.name : ''}, 
+															data-iconFilename=${issueList.manager != null ? issueList.manager.iconFilename : currentUser.iconFilename}, data-currentuseridx=${currentUser.idx},
+															data-currentusericon=${currentUser.iconFilename}">
+						 										<div class="graphval-selectwindow"></div>
 							 										<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"
 																	th:if="${issueList.manager != null}"><img
 							 												th:src="@{|/images/${issueList.manager.iconFilename}|}"
@@ -1348,10 +1322,23 @@
 					<div class="createissue-container">
 						<div class="createissuebox">
 							<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-							<div class="createissue-btnbox">
+							<div class="createissue-btnbox" th:attr="data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-useridx=${currentUser.idx}, 
+							data-typeidx=0, data-statusidx=${statusList1[2]}">
 								<div class="createissue-typebtn">
-									<span style="width: 16px; height: 16px;"><img
-											th:src="@{/images/issue_bug.svg}"></span>
+									<div class="issuetypeselectbox">
+										<div class="issuetype-listbox">
+											<div class="issuetype" th:each="issueType : ${issueTypeList}" th:attr="data-typeidx=${issueType.idx}">
+												<div class="issuetypeline"></div>
+												<span class="issuetypeimg"><img width="16"
+														th:src="@{|/images/${issueType.iconFilename}|}"></span>
+												<span style="margin-bottom: 2px;" th:text="${issueType.name}"></span>
+											</div>
+										</div>
+										<div class="issuetype-set">
+											<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
+										</div>
+									</div>
+									<span style="height: 16px;">이슈 유형 선택</span>
 									<span style="margin-top: 1px;">
 										<img th:src="@{/images/arrow_under_icon.svg}"
 											style="width: 12px; filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
@@ -1368,26 +1355,68 @@
 							</span>
 							<span>만들기</span>
 						</div>
-						<div class="issuetypeselectbox">
-							<div class="issuetype-listbox">
-								<div class="issuetype" th:each="issueType : ${issueTypeList}">
-									<div class="issuetypeline"></div>
-									<span class="issuetypeimg"><img width="16"
-											th:src="@{|/images/${issueType.iconFilename}|}"></span>
-									<span style="margin-bottom: 2px;" th:text="${issueType.name}"></span>
-								</div>
-
-							</div>
-							<div class="issuetype-set">
-								<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				<div class="issue-content">
 					<div class="issuebox"></div>
 				</div>
 			</div>
+			<button class="create-status-btn">
+				<div class="create-status-container">
+					<div class="create-statusbox">
+						<div class="create-status-title">
+							<h1>상태 만들기</h1>
+						</div>
+						<form>
+							<div class="set-statusbox">
+								<div style="padding-bottom: 18px; display: flex; flex-wrap: wrap; justify-content: left;"> 
+									<div class="set-status-option">이름</div>
+									<div class="set-status-title" >
+										<input type="text" class="status-title-input">
+									</div>
+								</div>
+								<div class="set-status-option">범주</div>
+								<div class="set-status-status">
+									<div class="set-status-selectwindow">
+										<div class="set-status-left option" th:attr="data-idx=1">
+											<div class="this-status-color"></div>
+											<div class="this-status-type">할 일 상태</div>
+										</div>
+										<div class="set-status-left option" th:attr="data-idx=2">
+											<div class="this-status-color" style="background-color: #E9F2FF; border-color: #0C66E4;"></div>
+											<div class="this-status-type">진행 중 상태</div>
+										</div>
+										<div class="set-status-left option" th:attr="data-idx=3">
+											<div class="this-status-color" style="background-color: #EFFFD6; border-color: #6A9A23;"></div>
+											<div class="this-status-type">완료 상태</div>
+										</div>
+									</div>
+									<div class="set-status-left current" th:attr="data-idx=1">
+										<div class="this-status-color"></div>
+										<div class="this-status-type">할 일 상태</div>
+									</div>
+									<div class="set-status-right">
+										<img src="/images/arrow_under_icon.svg" style="filter: invert(30%) sepia(5%) saturate(593%) hue-rotate(187deg) brightness(97%) contrast(88%); 
+																						width: 12px; height: 12px;">
+									</div>
+								</div>
+								<div class="set-status-option" style="margin: 4px 0px 0px; color: #6B6E76; font-weight: normal;">
+									범주는 같은 종류의 여러 상태를 그룹화합니다.</div>
+							</div>
+							<div class="set-status-btnmenu">
+								<div class="status-cancel-btn">
+									<span>취소</span>
+								</div>
+								<div class="status-create-btn" th:attr="data-projectidx=${project.idx}">
+									<span>제출</span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<img th:src="@{/images/create_issue_icon.svg}" width="18px" height="18px">
+			</button>
 		</div>
 	</div>
 	

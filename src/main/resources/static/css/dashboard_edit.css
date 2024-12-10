@@ -1,13 +1,14 @@
 .dashboard_container {
-	margin-right: 10px;
-
-	display: flex;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: 1fr 400px;
+	
+	transition: 0.3s;
+	
+	overflow-x: hidden;
 }
 
 .dashboard_box {
-	width: calc(100% - 400px - 40px*2);
-	margin-left: 40px;
+	margin: 0 40px;
 }
 
 .edit_alaram_comment {
@@ -28,7 +29,7 @@
 	margin-top: 24px;
 
 	display: flex;
-	gap: 16px;
+	justify-content: space-between;
 }
 
 .dashboard_content_container>div {
@@ -76,11 +77,13 @@
 
 .dashboard_add_gadget {
 	width: 400px;
-	height: calc(100vh - 56px);
+	height: calc(100vh - 48px);
 	border-left: 3px solid #ddd;
 
+	transition: 0.3s;
+	
 	position: sticky;
-	top: 56px;
+	top: 0;
 
 	overflow-y: auto;
 }
@@ -107,6 +110,8 @@
 }
 
 .gadget_header .title .img_box {
+	width: 24px;
+	height: 24px;
 	padding: 3px 0;
 }
 
@@ -242,7 +247,7 @@
 	cursor: pointer;
 }
 
-.add_dashboard_content_header .img_box.more {
+.add_dashboard_content_header .img_box.dashboard_more {
 	position: relative;
 }
 
@@ -250,7 +255,11 @@
 	display: block;
 }
 
-.img_box.more .more_gadget_option {
+.img_box.dashboard_more .more_gadget_option.show{
+	display: block;
+}
+
+.img_box.dashboard_more .more_gadget_option {
 	display: none;
 	width: 310px;
 	background-color: white;
@@ -261,6 +270,7 @@
 	position: absolute;
 	top: 38px;
 	right: 0;
+	z-index: 998;
 }
 
 .more_gadget_option .color_box {
@@ -515,10 +525,16 @@
 }
 
 .doughnut_chart_ratio{
+	text-align: center;
+	
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.doughnut_chart_ratio p{
+	font-size: 48px;
 }
 
 .dashboard_pie_chart_box > div{

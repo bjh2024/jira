@@ -38,7 +38,6 @@ public class FilterIssueTableAPIController {
     
     @PostMapping("/project_filter")
     public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
-
     	List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
     	
         Integer[] projectIdx = filterRequest.getProjectIdx();

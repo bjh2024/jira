@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer>{
-	List<Issue> findIssuesByProjectIdx(Integer idx);
+	List<Issue> findIssuesByProjectIdxOrderByDivOrder(Integer idx);
 
 	// kdw
 	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(
@@ -88,4 +88,5 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	// kdw 프로젝트의 기간당 이슈 개수(기한 초과)
 	Integer countByProjectIdxAndDeadlineDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
 
+	List<Issue> findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(Integer newIdx, Integer statusIdx); 
 }

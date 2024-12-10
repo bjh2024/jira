@@ -1,12 +1,57 @@
-document.querySelectorAll(".editor").forEach(function(editor, index){
+document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 	const contentEditor = new toastui.Editor({
 	    el: editor,
 	    height: 'auto',
 		minHeight: '74px',
 	    initialEditType: 'wysiwyg',
-	    initialValue: 'markdown',
+	    initialValue: editor.dataset.content,
 	    previewStyle: 'vertical',
 	  });
+});
+
+document.querySelectorAll(".editor.newreply").forEach(function(editor, index){
+	const contentEditor = new toastui.Editor({
+	    el: editor,
+	    height: 'auto',
+		minHeight: '74px',
+	    initialEditType: 'wysiwyg',
+	    initialValue: '댓글 작성...',
+	    previewStyle: 'vertical',
+	  });
+});
+
+function initEditor(target, initialValue) {
+    return new toastui.Editor({
+        el: target,
+		width: '676px',
+        height: 'auto',
+        minHeight: '74px',
+        initialEditType: 'wysiwyg',
+        initialValue: initialValue, // 동적으로 설정된 기본값
+        previewStyle: 'vertical',
+    });
+}
+
+document.querySelectorAll(".reply-geteditbtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if (e.target.matches('.reply-geteditbtn')) {
+	        const isEdit = e.target.textContent === '편집'; // 편집 버튼인지 확인
+	        const editorContainer = e.target.closest('.replydetail-managebar').nextElementSibling; // 에디터 컨테이너 찾기
+	        const editorTarget = editorContainer.querySelector('.editor');
+	        const editContent = isEdit ? e.target.closest('.reply-geteditbtn').dataset.content : ''; // 편집: 기존 내용, 댓글: 빈 내용
+
+	        // 기존 에디터 제거 후 새로 초기화
+	        if (editorTarget._toastuiEditorInstance) {
+	            editorTarget._toastuiEditorInstance.destroy(); // 기존 에디터 인스턴스 제거
+	        }
+
+	        // 에디터 생성
+	        initEditor(editorTarget, editContent);
+
+	        // 에디터 표시
+	        editorContainer.style.display = 'block';
+	    }
+	});
 });
 
 let changeDate = {
@@ -127,43 +172,194 @@ document.querySelectorAll(".create-issuekey").forEach(function(form, index){
 		
 		const issueTitleItem = e.target.closest(".create-issuekey");
 		if(issueTitleItem.value != "" && issueTitleItem.value != null){
-			document.querySelectorAll(".createissuebtn")[index].style.backgroundColor = "#0C66E4";
-			document.querySelectorAll(".createissuebtn")[index].style.color = "white";
-			document.querySelectorAll(".createissuebtn")[index].style.cursor = "pointer";
+			form.nextElementSibling.children[1].classList.add("action");
 		}else{
-			document.querySelectorAll(".createissuebtn")[index].style.backgroundColor = "#091E4208";
-			document.querySelectorAll(".createissuebtn")[index].style.color = "#A5ADBA";
-			document.querySelectorAll(".createissuebtn")[index].style.cursor = "not-allowed";
+			form.nextElementSibling.children[1].classList.remove("action");
 		}
 	})
 });
 
 document.querySelectorAll(".createissue-typebtn").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".issuetype") !== null){
+			return;
+		}
 		
 		// document.querySelector(".issuetypeselectbox.show")[index].classList.remove("show");
 		e.target.closest(".issuetypeselectbox.show")?.classList.remove("show");
 		
-		const issueTypeBtn = document.querySelectorAll(".createissue-typebtn")[index];
-		const issueTypeList = document.querySelectorAll(".issuetypeselectbox")[index];
+		const issueTypeBtn = btn;
+		const issueTypeList = issueTypeBtn.children[0];
 		const xyItem = issueTypeBtn.getBoundingClientRect();
 		
  		if(issueTypeBtn !== null){
 			issueTypeList.classList.add("show");
 			if(xyItem.top >= 600){
-				issueTypeList.style.marginTop = "26px";
-				issueTypeList.style.marginLeft = "-242px";
+				issueTypeList.style.left = "0px";
+				issueTypeList.style.bottom = "30px";
 			}else{
-				issueTypeList.style.left = xyItem.left;
-				issueTypeList.style.top = xyItem.top;
-				issueTypeList.style.marginLeft = "16px";
-				issueTypeList.style.marginTop = "60px";
+				issueTypeList.style.left = "0px";
+				issueTypeList.style.top = "30px";
 			}
 		}else{
 			issueTypeList.classList.remove("show");
 		}
 	})
 });
+
+document.querySelectorAll(".issuetype").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		btn.parentElement.parentElement.nextElementSibling.innerHTML = btn.querySelector(".issuetypeimg").innerHTML;
+		const btnbox = btn.parentElement.parentElement.parentElement.parentElement;
+		btnbox.setAttribute("data-typeidx", btn.dataset.typeidx);
+		btn.parentElement.parentElement.classList.remove("show");
+	});
+});
+
+let issueDatas = {
+	"jiraName": "",
+	"projectIdx": "",
+	"issueTypeIdx": "",
+	"reporterIdx": "",
+	"statusIdx": "",
+	"issueName": ""
+}
+
+function createissuefetch(){
+	let url = "/api/project/create_issue";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(issueDatas)
+	})
+	.then(response => {
+        if (response.ok) {
+            // 응답 상태가 200~299 범위인 경우
+            console.log("성공");
+			location.reload();
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    })
+	.catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".createissuebtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const btnBoxItem = btn.parentElement;
+		const inputItem = btnBoxItem.previousElementSibling;
+		
+		issueDatas.jiraName = btnBoxItem.dataset.jiraname;
+		issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
+		issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
+		issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
+		issueDatas.statusIdx = btnBoxItem.dataset.statusidx;
+		issueDatas.issueName = inputItem.value;
+		createissuefetch();
+	});
+});
+
+document.querySelector(".create-status-btn").addEventListener("click", function(e){
+	const btnItem = e.target.closest(".create-status-btn");
+	if(btnItem !== null){
+		btnItem.children[0].classList.add("show");
+	}
+});
+
+document.querySelector(".create-status-container").addEventListener("mousedown", function(e){
+	document.querySelector(".create-status-container")?.classList.remove("show");
+	const container = document.querySelector(".create-status-container");
+	const detailItem = e.target.closest(".create-statusbox");
+	const bgItem = e.target.closest(".status-cancel-btn");
+	const submitItem = e.target.closest(".status-create-btn");
+	
+	if(bgItem == null && submitItem == null && detailItem !== null){
+		container.classList.add("show");
+	}else{
+		if(detailItem !== null){
+			getStatusSubmit();
+			return;
+		}
+		container.classList.remove("show");
+	}
+});
+
+let createStatusDatas = {
+	"name": "",
+	"status": "",
+	"projectIdx": ""
+}
+
+document.querySelector(".set-status-status").addEventListener("click", function(e){
+	const statusItem = document.querySelector(".set-status-status");
+	
+	if(e.target.closest(".set-status-left") !== null){
+		const option = e.target.closest(".set-status-left");
+		const currentStatus = statusItem.children[1];
+		switch(option.dataset.idx){
+			case "1":
+				currentStatus.children[0].style.backgroundColor = "#0515240F";
+				currentStatus.children[0].style.border = "1px solid #7D818A";
+				currentStatus.children[1].innerText = "할 일 상태";
+				currentStatus.dataset.idx = option.dataset.idx;
+				break;
+			case "2":
+				currentStatus.children[0].style.backgroundColor = "#E9F2FF";
+				currentStatus.children[0].style.border = "1px solid #0C66E4";
+				currentStatus.children[1].innerText = "진행 중 상태";
+				currentStatus.dataset.idx = option.dataset.idx;
+				break;
+			case "3":
+				currentStatus.children[0].style.backgroundColor = "#EFFFD6";
+				currentStatus.children[0].style.border = "1px solid #6A9A23";
+				currentStatus.children[1].innerText = "완료 상태";
+				currentStatus.dataset.idx = option.dataset.idx;
+				break;
+		}
+	}
+	
+	statusItem.children[0].classList.toggle("show");
+	statusItem.classList.toggle("focus");
+});
+
+document.querySelector(".status-title-input").addEventListener("keyup", function(e){
+	const inputItem = e.target.closest(".status-title-input");
+	const btnItem = document.querySelector(".status-create-btn");
+	if(inputItem.value != "" && inputItem.value != null){
+		btnItem.classList.add("action");
+	}else{
+		btnItem.classList.remove("action");
+	}
+});
+
+function createStatusFetch(){
+	let url = "/api/project/create_projects_status";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createStatusDatas)
+	})
+	.catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function getStatusSubmit(){
+	createStatusDatas.name = document.querySelector(".status-title-input").value;
+	createStatusDatas.status = document.querySelector(".set-status-left.current").dataset.idx;
+	createStatusDatas.projectIdx = document.querySelector(".status-create-btn").dataset.projectidx;
+	document.querySelector(".create-status-container").classList.remove("show");
+	createStatusFetch();
+	location.reload();
+}
 
 document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
@@ -651,23 +847,25 @@ document.querySelectorAll(".issuedetail-graphval.team").forEach(function(btn){
 	});
 });
 
-reporterDatas = {
-	"reporterIdx": "",
+detailUserDatas = {
+	"userIdx": "",
 	"projectIdx": "",
 	"issueIdx": "",
 	"type": "",
 	"name": "",
-	"iconFilename": ""
+	"iconFilename": "",
+	"currentUserIdx": "",
+	"currentUserIcon": ""
 }
 
-function updateReporterFetch(graphval){
-	let url = "/api/project/update_reporter";
+function updateUserFetch(graphval){
+	let url = "/api/project/update_user";
 			fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json' // JSON 데이터를 전송
 				},
-				body: JSON.stringify(reporterDatas)
+				body: JSON.stringify(detailUserDatas)
 			})
 			.then(response => response.json())
 			.then(reporter => {
@@ -683,18 +881,36 @@ function updateReporterFetch(graphval){
 }
 
 function getReporterListFetch(window){
-	let url = "/api/project/get_reporter_list";
+	let url = "/api/project/get_user_list";
 		fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json' // JSON 데이터를 전송
 			},
-			body: JSON.stringify(reporterDatas)
+			body: JSON.stringify(detailUserDatas)
 		})
 		.then(response => response.json())
 		.then(reporterList => {
 			console.log(reporterList);
 			window.innerHTML = "";
+			
+			if(detailUserDatas.type == "manager"){
+				const myValue = document.createElement("div");
+				myValue.classList.add("graphvalwindow-value");
+				myValue.classList.add("withimg");
+				myValue.innerHTML = `<span>
+										<img src="/images/${detailUserDatas.currentUserIcon}"
+										style="width: 32px; height: 32px; margin-left: 6px;">
+										</span>
+									<span>나에게 할당</span>`;
+				window.appendChild(myValue);
+				myValue.addEventListener("click", function(e){
+					detailUserDatas.userIdx = detailUserDatas.currentUserIdx;
+					updateUserFetch(window.parentElement);
+					window.classList.remove("show");
+				});
+			}
+			
 			reporterList.forEach(function(item){
 				const value = document.createElement("div");
 				value.classList.add("graphvalwindow-value");
@@ -707,8 +923,8 @@ function getReporterListFetch(window){
 									</div>`;
 				window.appendChild(value);
 				value.addEventListener("click", function(e){
-					reporterDatas.reporterIdx = item.reporterIdx;	
-					updateReporterFetch(window.parentElement);
+					detailUserDatas.userIdx = item.userIdx;	
+					updateUserFetch(window.parentElement);
 					window.classList.remove("show");
 				});
 			});
@@ -719,22 +935,25 @@ function getReporterListFetch(window){
 
 document.querySelectorAll(".issuedetail-graphval.reporter").forEach(function(btn){
 	btn.addEventListener("click", function(e){
-		reporterDatas.reporterIdx = btn.dataset.reporteridx;
-		reporterDatas.projectIdx = btn.dataset.projectidx;
-		reporterDatas.issueIdx = btn.dataset.issueidx;
-		reporterDatas.type = "reporter";
-		console.log(reporterDatas);
+		detailUserDatas.userIdx = btn.dataset.reporteridx;
+		detailUserDatas.projectIdx = btn.dataset.projectidx;
+		detailUserDatas.issueIdx = btn.dataset.issueidx;
+		detailUserDatas.currentUserIdx = btn.dataset.currentuseridx;
+		detailUserDatas.currentUserIcon = btn.dataset.currentusericon;
+		detailUserDatas.type = "reporter";
 		getReporterListFetch(btn.children[0]);
 	});
 });
 
-document.querySelectorAll(".issuedetail-graphval.reporter").forEach(function(btn){
+document.querySelectorAll(".issuedetail-graphval.manager").forEach(function(btn){
 	btn.addEventListener("click", function(e){
-		reporterDatas.reporterIdx = btn.dataset.reporteridx;
-		reporterDatas.projectIdx = btn.dataset.projectidx;
-		reporterDatas.issueIdx = btn.dataset.issueidx;
-		reporterDatas.type = "manager";
-		console.log(reporterDatas);
+		detailUserDatas.userIdx = btn.dataset.manageridx;
+		detailUserDatas.projectIdx = btn.dataset.projectidx;
+		detailUserDatas.issueIdx = btn.dataset.issueidx;
+		detailUserDatas.iconFilename = btn.dataset.iconfilename;
+		detailUserDatas.currentUserIdx = btn.dataset.currentuseridx;
+		detailUserDatas.currentUserIcon = btn.dataset.currentusericon;
+		detailUserDatas.type = "manager";
 		getReporterListFetch(btn.children[0]);
 	});
 });
@@ -759,47 +978,117 @@ document.querySelectorAll(".issuedetail-graphval.reporter").forEach(function(btn
 
 const columns = document.querySelectorAll(".issuebox-issues");
 
+draggedIssueDatas = {
+	"issueIdx": "",
+	"statusIdx": "",
+	"oldIdx": "",
+	"newIdx": "",
+	"oldStatusIdx": ""
+}
+
+function updateDraggedIssueOrder(){
+	let url = "/api/project/update_issue_order";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(draggedIssueDatas)
+	})
+	.catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function updateDraggedIssue(){
+	let url = "/api/project/update_current_status";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(draggedIssueDatas)
+	})
+	.then(response => {
+        if (response.ok) {
+			updateDraggedIssueOrder();
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
 columns.forEach((column) => {
     new Sortable(column, {
         group: "shared",
         animation: 150,
-        ghostClass: "blue-background-class"
+        ghostClass: "blue-background-class",
+		onStart: function (evt) {
+	        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
+			draggedIssueDatas.oldStatusIdx = evt.item.parentElement.dataset.statusidx;
+	    },
+		
+		// Element dragging ended  
+		onEnd: function (e) {  
+			//드롭했을때 이벤트 실행  	
+			const issueItem = e.item;
+			const issueBoxItem = e.item.parentElement;
+			console.log(issueItem);  
+			
+			const newIndex = e.newIndex; // 드래그 종료 후의 인덱스
+			draggedIssueDatas.issueIdx = issueItem.dataset.idx;
+			draggedIssueDatas.statusIdx = issueBoxItem.dataset.statusidx;
+			draggedIssueDatas.oldIdx = originalIndex;
+			draggedIssueDatas.newIdx = newIndex;
+			console.log(draggedIssueDatas);
+			
+			updateDraggedIssue();
+		}
     });
 });
 
-/*document.querySelectorAll(".issuebox-issues").forEach(function(box, index){
-	box.addEventListener("dragover", function(e){
-		e.preventDefault();
-	    const afterElement = getDragAfterElement(box, e.clientX);
-	    const draggable = document.querySelector(".dragging");
-	    if (afterElement === undefined) {
-	      box.appendChild(draggable);
-	    } else {
-	      box.insertBefore(draggable, afterElement);
+let issueBoxOrderDatas = {
+	"oldIdx": "",
+	"newIdx": "",
+	"projectIdx": ""
+}
+
+function updateIssueBoxOrderFetch(){
+	let url = "/api/project/update_issue_box_order";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // JSON 데이터를 전송
+			},
+			body: JSON.stringify(issueBoxOrderDatas)
+		})
+		.catch(error => {
+			console.error("Fetch error:", error);
+		});
+}
+
+const containers = document.querySelector(".board-body-container");
+
+new Sortable(containers, {
+	haldle: ".issuebox-moveicon",
+	animation: 150,
+	filter: ".create-status-btn",
+	// 드래그 시작 시 요소의 초기 인덱스를 저장
+	    onStart: function (evt) {
+	        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
+	    },
+
+	    // 드래그 종료 후 새로운 위치를 확인
+	    onEnd: function (evt) {
+	        const newIndex = evt.newIndex; // 드래그 종료 후의 인덱스
+			issueBoxOrderDatas.oldIdx = originalIndex;
+			issueBoxOrderDatas.newIdx = newIndex;
+			issueBoxOrderDatas.projectIdx = evt.item.dataset.projectidx;
+			console.log(issueBoxOrderDatas);
+			updateIssueBoxOrderFetch();
 	    }
-	});
-	
-	box.addEventListener("drop", function(e){
-			
-	});
-});*/
-
-/*function getDragAfterElement(box, x) {
-  const draggableElements = [
-    ...box.querySelectorAll(".draggable:not(.dragging)"),
-];
-
-  return draggableElements.reduce(
-    (closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = x - box.left - box.width / 2;
-      // console.log(offset);
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY },
-  ).element;
-}*/
+});

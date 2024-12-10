@@ -19,7 +19,7 @@ public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {
 			FROM    IssueType it
 			LEFT JOIN   Issue i
 			ON  it.idx = i.issueType.idx
-			WHERE   it.project.idx = 1
+			WHERE   it.project.idx = :projectIdx
 			GROUP BY it.name, it.iconFilename, it.idx
 			ORDER BY CASE WHEN count(i.idx) = 0 THEN 1 ELSE 0 END,
 			count(i.idx) DESC

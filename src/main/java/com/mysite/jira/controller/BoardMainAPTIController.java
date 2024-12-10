@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.AIQuestionDTO;
+import com.mysite.jira.dto.board.CreateIssueDTO;
+import com.mysite.jira.dto.board.CreateStatusDTO;
+import com.mysite.jira.dto.board.DragIssueBoxDTO;
+import com.mysite.jira.dto.board.DragIssueDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.GetPriorityDTO;
@@ -27,10 +31,15 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,12 +48,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
 	private final BoardMainService boardMainService;
-	
 	private final AiService aiService;
+	private final JiraService jiraService;
+	private final ProjectService projectService;
 	
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
-		System.out.println(labelListDTO.getIdx()[0]);
 		List<IssueLabelData> labelList = new ArrayList<>();
 		if(labelListDTO.getIdx()[0] == -1) {
 			labelList = boardMainService.getLabelData();
@@ -163,15 +172,15 @@ public class BoardMainAPTIController {
 		return newTeam;
 	}
 	
-	@PostMapping("/get_reporter_list")
+	@PostMapping("/get_user_list")
 	public List<ReporterDTO> getReporterList(@RequestBody ReporterDTO reporterDTO){
-		List<ProjectMembers> arrList = boardMainService.getReporterList(reporterDTO.getProjectIdx(), reporterDTO.getReporterIdx());
+		List<ProjectMembers> arrList = boardMainService.getReporterList(reporterDTO.getProjectIdx(), reporterDTO.getUserIdx());
 		List<ReporterDTO> reporterList = new ArrayList<>();
 		for(int i = 0; i < arrList.size(); i++) {
 			ReporterDTO dto = ReporterDTO.builder()
 										.projectIdx(reporterDTO.getProjectIdx())
 										.issueIdx(reporterDTO.getIssueIdx())
-										.reporterIdx(arrList.get(i).getAccount().getIdx())
+										.userIdx(arrList.get(i).getAccount().getIdx())
 										.name(arrList.get(i).getAccount().getName())
 										.iconFilename(arrList.get(i).getAccount().getIconFilename())
 										.build();
@@ -180,15 +189,20 @@ public class BoardMainAPTIController {
 		return reporterList;
 	}
 	
-	@PostMapping("/update_reporter")
+	@PostMapping("/update_user")
 	public ReporterDTO updateReporter(@RequestBody ReporterDTO reporterDTO) {
-		Account account = boardMainService.getAccountById(reporterDTO.getReporterIdx());
+		Account account = boardMainService.getAccountById(reporterDTO.getUserIdx());
 		Issue currentIssue = boardMainService.getIssueByIdx(reporterDTO.getIssueIdx());
-		boardMainService.updateReporter(currentIssue, account);
+		if(reporterDTO.getType().equals("reporter")) {
+			boardMainService.updateReporter(currentIssue, account);
+		}else {
+			boardMainService.updateManager(currentIssue, account);
+		}
+		
 		ReporterDTO newReporter = ReporterDTO.builder()
 											.projectIdx(currentIssue.getProject().getIdx())
 											.issueIdx(currentIssue.getIdx())
-											.reporterIdx(account.getIdx())
+											.userIdx(account.getIdx())
 											.name(account.getName())
 											.iconFilename(account.getIconFilename())
 											.build();
@@ -203,6 +217,54 @@ public class BoardMainAPTIController {
 									.answer(answer)
 									.build();
 		return answerDTO;
+	}
+	
+	@PostMapping("/create_projects_status")
+	public void createStatus(@RequestBody CreateStatusDTO createStatusDTO) {
+		String name = createStatusDTO.getName();
+		Integer status = createStatusDTO.getStatus();
+		Integer projectIdx = createStatusDTO.getProjectIdx();
+		
+		boardMainService.createIssueStatus(name, status, projectIdx);
+	}
+	
+	@PostMapping("/create_issue")
+	public void createissue(@RequestBody CreateIssueDTO createIssueDTO) {
+		String issueName = createIssueDTO.getIssueName();
+		String jiraName = createIssueDTO.getJiraName();
+		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
+		Integer projectIdx = createIssueDTO.getProjectIdx();
+		Integer reporterIdx = createIssueDTO.getReporterIdx();
+		Integer StatusIdx = createIssueDTO.getStatusIdx();
+//		System.out.println(createIssueDTO.getIssueName() + " " + createIssueDTO.getJiraName() + " " + 
+//				createIssueDTO.getIssueTypeIdx() + " " + createIssueDTO.getProjectIdx() + " " + 
+//				createIssueDTO.getReporterIdx() + " " + createIssueDTO.getStatusIdx());
+		boardMainService.createIssue(issueName, jiraName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+	}
+	
+	@PostMapping("/update_issue_box_order")
+	public void updateIssueBoxOrder(@RequestBody DragIssueBoxDTO dragIssueBoxDTO) {
+		Integer oldIdx = dragIssueBoxDTO.getOldIdx();
+		Integer newIdx = dragIssueBoxDTO.getNewIdx();
+		Integer projectIdx = dragIssueBoxDTO.getProjectIdx();
+		if(oldIdx > newIdx) {
+			boardMainService.updateIssueBoxOrder(newIdx, oldIdx, projectIdx, true);
+		}else {
+			boardMainService.updateIssueBoxOrder(oldIdx, newIdx, projectIdx, false);
+		}
+	}
+	
+	@PostMapping("/update_issue_order")
+	public void updateIssueOrder(@RequestBody DragIssueDTO dragIssueDTO) {
+		Integer newIdx = dragIssueDTO.getNewIdx();
+		Integer oldIdx = dragIssueDTO.getOldIdx();
+		Integer currentIssueIdx = dragIssueDTO.getIssueIdx();
+		Integer oldStatusIdx = dragIssueDTO.getOldStatusIdx();
+		Integer issueStatusIdx = dragIssueDTO.getStatusIdx();
+		if(oldStatusIdx != issueStatusIdx) {
+			boardMainService.updatePrevIssueOrder(currentIssueIdx, oldIdx, oldStatusIdx);
+		}
+		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
 	}
 
 }

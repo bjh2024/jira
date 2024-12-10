@@ -223,6 +223,7 @@ main {
 
 .summation_content_box1>.item>p>span:nth-of-type(2) {
 	font-size: 20px;
+	font-weight: bold;
 }
 
 .summation_content_box1 .complete_number {
@@ -383,6 +384,18 @@ main {
 	color: #6b6e76;
 	font-size: 12px;
 	font-weight: normal;
+}
+
+.recent_work_list .project_log_empty_box{
+	height: 288px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.recent_work_list .project_log_empty_box img{
+	height: 180px;
 }
 
 .recent_work_list .item {

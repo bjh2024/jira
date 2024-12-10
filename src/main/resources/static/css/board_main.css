@@ -242,6 +242,7 @@ body{
 	right: 0px;
 	border-radius: 3px;
 	display: none;
+	z-index: 100;
 }
 
 .btnwindow.show{
@@ -619,6 +620,200 @@ body{
 	display: flex !important;
 	gap: 12px;
 	align-items: top;
+	overflow: auto;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.create-status-btn{
+	width: 32px;
+	height: 32px;
+	background-color: #F7F8F9;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.create-status-container{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color:  #050c1f75;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	user-select: none;
+	display: none;
+}
+
+.create-status-container.show{
+	display: block;
+}
+
+.create-statusbox{
+	width: 400px;
+	height: 296px;
+	background-color: white;
+	margin: 60px auto;
+	border-radius: 3px;
+}
+
+.create-status-title{
+	height: 64px;
+	padding: 23px 24px 16px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+}
+
+.create-status-title > h1{
+	font-size: 20px;
+	color: #292A2E;
+}
+
+.set-statusbox{
+	padding: 2px 24px;
+	color: #505258;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: left;
+}
+
+.set-status-option{
+	font-size: 12px;
+	margin-bottom: 4px;
+	font-weight: bold;
+}
+
+.set-status-title{
+	width: 352px;
+	height: 40px;
+	border: 1px solid #8C8F97;
+}
+
+.status-title-input{
+	width: 348px;
+	height: 36px;
+	outline: none;
+	border: none;
+	font-size: 14px;
+	padding: 8px 6px;
+}
+
+.set-status-title:focus-within{
+	border: 2px solid #1D7AFC;
+}
+
+.set-status-status{
+	width: 352px;
+	height: 40px;
+	border: 1px solid #8C8F97;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+}
+
+.set-status-status.focus{
+	border: 2px solid #1D7AFC;
+}
+
+.set-status-left{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 2px 8px;
+	justify-content: space-between;
+}
+
+.this-status-color{
+	width: 16px;
+	height: 16px;
+	background-color: #0515240F;
+	border: 1px solid #7D818A;
+}
+
+.this-status-type{
+	font-size: 14px;
+	margin-bottom: 2px;
+	color: #292A2E;
+}
+
+.set-status-right{
+	padding: 8px 12px 6px 2px;
+}
+
+.set-status-selectwindow{
+	position: absolute;
+	left: 0px;
+	top: 48px;
+	width: 352px;
+	padding: 8px 0px;
+	background-color: white;
+	box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.13), 0 4px 11px rgba(9, 30, 66, 0.13);
+	display: none;
+}
+
+.set-status-selectwindow.show{
+	display: block;
+}
+
+.set-status-left.option{
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 12px 4px 12px;
+	color: #292A2E;
+	justify-content: flex-start;
+}
+
+.set-status-left.option:hover{
+	background-color: #091E420F;
+	border-left: 2px solid #0C66E4;
+	padding-left: 10px;
+}
+
+.set-status-btnmenu{
+	height: 72px;
+	padding: 16px 24px 24px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	gap: 8px;
+}
+
+.set-status-btnmenu > div{
+	width: 52px;
+	height: 32px;
+	padding: 0px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+}
+
+.status-cancel-btn{
+	color: #505258;
+}
+
+.status-cancel-btn:hover{
+	background-color: #0515240F;
+}
+
+.status-create-btn{
+	color: #080F214A;
+	background-color: #17171708;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.status-create-btn.action{
+	background-color: #1D7AFC;
+	color: white;
+	cursor: pointer;
+	pointer-events: auto;
 }
 
 .issue-menubox{
@@ -771,12 +966,12 @@ body{
 	align-items: center;
 	justify-content: center;
 	gap: 5px;
-	width: 58px;
 	height: 24px;
 	border-radius: 3px;
 	font-size: 14px;
 	padding: 0px 8px;
 	cursor: pointer;
+	position: relative;
 }
 
 .createissue-typebtn:hover{
@@ -789,12 +984,20 @@ body{
 	justify-content: center;
 	width: 24px;
 	height: 24px;
-	color: #080F214A;
-	background-color: #17171708;
+	color: #A5ADBA;
+	background-color: #091E4208;
 	border-radius: 3px;
 	cursor: not-allowed;
+	pointer-events: none;
 	padding: 0px 8px;
 	font-size: 14px;
+}
+
+.createissuebtn.action{
+	background-color: #0C66E4;
+	color: white;
+	cursor: pointer;
+	pointer-events: auto;
 }
 
 .issuetypeselectbox{
