@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AsideAPIController {
 
 	private final LikeService likeService;
+	
 	private final FilterService filterService;
 	
 	private final AccountService accountService;

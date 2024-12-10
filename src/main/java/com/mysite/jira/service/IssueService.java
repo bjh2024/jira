@@ -150,7 +150,7 @@ public class IssueService {
 		return this.getIssueByBetweenCreateDateDesc(jiraIdx, startDate, endDate);
 	}
 	
-	// kdw 보류
+	// kdw 완료된 이슈를 제외한 나에게 할당된 이슈목록
 	public List<Issue> getManagerByIssueStatusIn(Integer jiraIdx, Integer managerIdx){
 		// 할일 = 1, 진행중 = 2
 		Integer[] statusArr = {1, 2};

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
@@ -41,7 +40,7 @@ public class DashboardController {
 	@GetMapping("detail/{dashboardIdx}")
 	public String detailPage(HttpServletRequest request, Model model, @PathVariable("dashboardIdx") Integer dashboardIdx) {
 	
-		
+		model.addAttribute("dashboardItemList", dashboardService.getDashboardDetail(dashboardIdx));
 		return "dashboard/dashboard_detail";
 	}
 	@GetMapping("edit/{dashboardIdx}")

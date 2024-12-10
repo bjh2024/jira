@@ -160,6 +160,7 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
 		String uri = request.getRequestURI();
+		if (uri.contains("/api")) return;
 		if(uri.contains("/dashboard") && 
 		  !uri.contains("/list")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;

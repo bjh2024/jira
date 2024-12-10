@@ -49,5 +49,57 @@ public interface DashboardRepository extends JpaRepository<Dashboard,Integer>{
 			""")
 	List<Map<String, Object>> findByDashboardList(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 	
+	// kdw
+	@Query(value="""
+			SELECT  type as type,
+					idx as idx,
+					div_orderx as div_orderx,
+					div_ordery as div_ordery
+			FROM (SELECT  
+			        'pie_chart' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_pie_chart dpc
+			UNION ALL
+			SELECT  'allot' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_allot
+			UNION ALL
+			SELECT  'issue_complete' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_issue_complete
+			UNION ALL
+			SELECT  'issue_recent' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_issue_recent
+			UNION ALL
+			SELECT  'issue_statistics' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_issue_statistics
+			UNION ALL
+			SELECT  'issue_filter' as type,
+			        idx,
+			        dashboard_idx,
+			        div_orderx,
+			        div_ordery
+			FROM    dashboard_issue_filter) al
+			WHERE al.dashboard_idx = :dashboardIdx
+			ORDER BY al.div_orderx, al.div_ordery
+			""", nativeQuery=true)
+	List<Map<String, Object>> findByDashboardDetail(@Param("dashboardIdx") Integer dashboardIdx); 
 	
 }

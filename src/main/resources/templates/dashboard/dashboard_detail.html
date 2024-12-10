@@ -2,13 +2,189 @@
 
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_all.css}">
 </head>
 <div layout:fragment="content">
 	<div class="dashboard_container">
 		<div th:replace="~{/dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
-		<div></div>
+		<div class="dashboard_content_container">
+			<div class="box1">
+				<div class="add_dashboard_content" th:each="item : ${dashboardItemList[0]}">
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|파이 차트: ${item.project.name}|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dashboard_allot"
+						th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardAllot))}"
+						th:col-data="${item.pageNum}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|나에게 할당됨: ${currentUser.name}|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+						<div class="dynamic_box">
+							<table>
+								<colgroup>
+									<col style="width: 5%;">
+									<col style="width: 9%;">
+									<col style="width: 65%;">
+									<col style="width: 20%;">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>화</th>
+										<th>키</th>
+										<th>요약</th>
+										<th>p</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueComplete))}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|만듦 대비 해결됨 차트: ${item.project.name}|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueRecent))}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|최근에 만듦 차트: ${item.project.name}|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueStatistics))}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|이슈 통계: ${item.project.name} (${item.dashboardCol.content})|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}">
+						<div class="add_dashboard_content_header">
+							<h2>
+								<span th:text="|결과 필터: ${item.filter.name}|"></span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg">
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg">
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box2">
+				<div class="add_dashboard_content" th:each="item : ${dashboardItemList[1]}">
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
+						<p>파이 차트</p>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardAllot))}">
+						<p>나에게 할당됨</p>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueComplete))}">
+						<p>만듦 대비 해결됨 차트</p>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueRecent))}">
+						<p>최근에 만듦 차트</p>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueStatistics))}">
+						<p>이슈 통계</p>
+					</div>
+					<div th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}">
+						<p>결과 필터</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="/js/dashboard_detail.js"></script>
 </div>
 
 </html>
