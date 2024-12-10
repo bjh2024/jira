@@ -2,6 +2,18 @@ body{
 	overflow:hidden;
 }
 
+.show-labelicon{
+	display: block !important;
+}
+
+.show-labelicon:hover{
+	background-color: #0515240F;
+}
+
+.graphval-label:hover .issuedetail-graphval.label-def {
+  background-color: white !important;
+}
+
 .header-container {
 	width: 100%;
 	background-color: white;
@@ -2187,6 +2199,9 @@ body{
 	height: 20px;
 	border: 1px solid #B7B9BE;
 	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	gap: 2px;
 }
 
 .graphval-def{

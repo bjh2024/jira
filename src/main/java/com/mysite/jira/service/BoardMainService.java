@@ -11,6 +11,7 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
+import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
@@ -24,6 +25,7 @@ import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
+import com.mysite.jira.repository.IssueLabelRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
@@ -44,6 +46,7 @@ public class BoardMainService {
 	private final IssueStatusRepository issueStatusRepository;
 	private final IssueExtendsRepository issueExtendsRepository;
 	private final IssueTypeRepository issueTypeRepository;
+	private final IssueLabelRepository issueLabelRepository;
 	private final IssueLabelDataRepository issueLabelDataRepository;
 	private final IssueReplyRepository issueReplyRepository;
 	private final IssuePriorityRepository issuePriorityRepository;
@@ -328,5 +331,19 @@ public class BoardMainService {
 			issue.updateDivOrder(newOrder);
 			this.issueRepository.save(issue);
 		}
+	}
+	
+	public IssueLabel getIssueLabelByIdx(Integer idx) {
+		Optional<IssueLabel> optLabel = this.issueLabelRepository.findById(idx);
+		return optLabel.get();
+	}
+	
+	public IssueLabelData createIssueLabelData(Issue issue, IssueLabel issueLabel) {
+		IssueLabelData newLabelData = IssueLabelData.builder()
+												.issue(issue)
+												.issueLabel(issueLabel)
+												.build();
+		this.issueLabelDataRepository.save(newLabelData);
+		return newLabelData;
 	}
 }

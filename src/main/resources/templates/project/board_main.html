@@ -1224,12 +1224,13 @@
 						 								<div class="issuedetail-graphtype">
 						 									<span>레이블</span>
 						 								</div>
-						 								<div class="issuedetail-graphval label-def">
+						 								<div class="issuedetail-graphval label-def" th:attr="data-issueidx=${issueList.idx}">
 					 										<div class="graphval-selectwindow label">
 					 										</div>
 						 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
-						 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}">
+						 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}, data-labeldataidx=${labelValList.idx}">
 						 											<a th:text="${labelValList.issueLabel.name}"></a>
+																	<img src="/images/cancel_icon.svg" style="width: 16px; height: 16px; margin-top: 2px; display: none;">
 						 										</span>
 						 									</th:block>
 						 									<span class="graphval-label-def none">

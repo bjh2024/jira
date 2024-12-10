@@ -3,9 +3,7 @@ package com.mysite.jira.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +17,7 @@ import com.mysite.jira.dto.board.DragIssueBoxDTO;
 import com.mysite.jira.dto.board.DragIssueDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
+import com.mysite.jira.dto.board.GetNewLabelDataDTO;
 import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.GetTeamDTO;
@@ -28,18 +27,14 @@ import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
-import com.mysite.jira.entity.IssueType;
-import com.mysite.jira.entity.Jira;
-import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
-import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,8 +44,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardMainAPTIController {
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
-	private final JiraService jiraService;
-	private final ProjectService projectService;
 	
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
@@ -62,7 +55,11 @@ public class BoardMainAPTIController {
 		}
 		List<LabelListDTO> alterLabelList = new ArrayList<>();
 		for(int i = 0; i < labelList.size(); i++) {
-			LabelListDTO dto = LabelListDTO.builder().name(labelList.get(i).getIssueLabel().getName()).build();
+			LabelListDTO dto = LabelListDTO.builder()
+									.name(labelList.get(i).getIssueLabel().getName())
+									.issueIdx(labelList.get(i).getIssue().getIdx())
+									.labelIdx(labelList.get(i).getIssueLabel().getIdx())
+									.build();
 			alterLabelList.add(dto);
 		}
 		return alterLabelList;
@@ -82,6 +79,19 @@ public class BoardMainAPTIController {
 			alterStatusList.add(dto);
 		}
 		return alterStatusList;
+	}
+	
+	@PostMapping("/create_label_data")
+	public LabelListDTO addLabelData(@RequestBody GetNewLabelDataDTO getNewLabelDataDTO) {
+		Issue currentIssue = boardMainService.getIssueByIdx(getNewLabelDataDTO.getIssueIdx());
+		IssueLabel label = boardMainService.getIssueLabelByIdx(getNewLabelDataDTO.getLabelIdx());
+		IssueLabelData newLabelData =  boardMainService.createIssueLabelData(currentIssue, label);
+		LabelListDTO dto = LabelListDTO.builder()
+				.name(newLabelData.getIssueLabel().getName())
+				.issueIdx(newLabelData.getIssue().getIdx())
+				.labelIdx(newLabelData.getIssueLabel().getIdx())
+				.build();
+		return dto;
 	}
 	
 	@PostMapping("/update_current_status")

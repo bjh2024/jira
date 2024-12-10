@@ -624,19 +624,9 @@ document.querySelector(".issuedetail-sortbtn").addEventListener("click", functio
 	btnItem.classList.toggle("active");
 });
 
-document.querySelectorAll(".issues").forEach(function(box, index){
-	box.addEventListener("dragstart", function(e){
-		if(e.target.closest(".subissuebtn") !== null){
-			return;
-		}
-		box.classList.add("dragging");
-	});
-	box.addEventListener("dragend", function(e){
-		box.classList.remove("dragging");
-	});
-});
-
-
+removeLabelDataValue = {
+	"labelDataIdx": ""
+}
 
 document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
@@ -645,19 +635,47 @@ document.querySelectorAll(".issuedetail-graphval").forEach(function(btn, index){
 		}
 		btn.querySelector(".graphval-selectwindow").classList.toggle("show");
 
+		/*if(e.target.closest(".issuedetail-graphval.label-def") !== null){
+			const labelList = e.target.closest(".issuedetail-graphval.label-def").querySelectorAll(".graphval-label");
+			labelList.forEach(function(label){
+				const cancelIcon = label.children[1];
+				cancelIcon.classList.toggle("show-labelicon");
+				cancelIcon.addEventListener("click", function(e){
+					// removeLabelDataValue.labelDataIdx = cancelIcon.parentElement.dataset.labeldataidx;
+					// removeIssueLabelDatas();
+					cancelIcon.classList.remove("show-labelicon");
+					cancelIcon.parentElement.remove();
+				});	
+			});
+		}*/
 	});
-	
-	/*btn.addEventListener("mouseover", function(e){
-		
-	});
-	
-	btn.addEventListener("mouseout", function(e){
-		
-	});*/
 });
 
 let labelDatas = {
-	"idx": []
+	"idx": [],
+	"issueIdx": ""
+}
+
+let newLabelData = {
+	"issueIdx": "",
+	"labelIdx": ""
+}
+
+function createLabelData(){
+	let url = "/api/project/create_label_data";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(newLabelData)
+	})
+	.then(response => response.json())
+	.then(priority => {
+		console.log("hihihhihi");
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
 }
 
 function fetchInput(){
@@ -684,6 +702,15 @@ function fetchInput(){
 				const labelValue = document.createElement("div");
 				labelValue.classList.add("graphvalwindow-value");
 				labelValue.innerHTML = `<span>${value.name}</span>`;
+				labelValue.setAttribute("data-issueidx", labelDatas.issueIdx);
+				labelValue.setAttribute("data-labelidx", value.labelIdx);
+				labelValue.addEventListener("click", function(e){
+					console.log(labelValue);
+					newLabelData.issueIdx = labelValue.dataset.issueidx;
+					newLabelData.labelIdx = labelValue.dataset.labelidx;
+					label.classList.remove("show");
+					createLabelData();
+				});
 				label.appendChild(labelValue);
 			});
 		});
@@ -697,11 +724,12 @@ document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(bt
 		if(e.target.closest(".graphval-selectwindow") !== null){
 			return;
 		}
-		
 		let label = [...btn.querySelectorAll(".graphval-label")].map(input => input.dataset.idx);
 		label = label.length > 0 ? label : [-1];
 		labelDatas.idx = label;
+		labelDatas.issueIdx = btn.dataset.issueidx;
 		fetchInput();
+		
 	});
 });
 
@@ -714,22 +742,22 @@ let priorityDatas = {
 
 function updatePriorityFetch(graphval){
 	let url = "/api/project/update_priority";
-			fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json' // JSON 데이터를 전송
-				},
-				body: JSON.stringify(priorityDatas)
-			})
-			.then(response => response.json())
-			.then(priority => {
-				graphval.dataset.priorityidx = priority.priorityIdx;
-				graphval.dataset.iconFilename = priority.iconFilename;
-				graphval.children[1].children[0].src = `/images/${priority.iconFilename}`;
-				graphval.children[2].innerHTML = `${priority.name}`;
-			}).catch(error => {
-					console.error("Fetch error:", error);
-			});
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(priorityDatas)
+	})
+	.then(response => response.json())
+	.then(priority => {
+		graphval.dataset.priorityidx = priority.priorityIdx;
+		graphval.dataset.iconFilename = priority.iconFilename;
+		graphval.children[1].children[0].src = `/images/${priority.iconFilename}`;
+		graphval.children[2].innerHTML = `${priority.name}`;
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
 }
 
 function getPriorityListFetch(window){
@@ -891,7 +919,6 @@ function getReporterListFetch(window){
 		})
 		.then(response => response.json())
 		.then(reporterList => {
-			console.log(reporterList);
 			window.innerHTML = "";
 			
 			if(detailUserDatas.type == "manager"){
