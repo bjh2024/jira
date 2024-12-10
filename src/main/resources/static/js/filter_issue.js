@@ -70,10 +70,32 @@ document.querySelector(".button_div").addEventListener("click", function(e) {
 		
 });
 
+document.querySelectorAll(".viewer_div_1").forEach(function(item){
+  item.addEventListener("click", function(e){
+    let view = e.target;  // 클릭된 요소를 바로 가져옵니다.
 
+    let view1 = view.querySelector(".viewer_div_1_category");
+    let view2 = view.querySelector(".viewer_div_2_category");
+   
 
-
-
-	
+    if (view1) {
+      let view1Category = view.querySelector(".viewer_div_1_category");
+      let style = window.getComputedStyle(view1Category);
+      if (style.display === "block") {
+        view1Category.style.display = "none";
+      } else {
+        view1Category.style.display = "block";
+      }
+    } else if (view2) {
+      let view2Category = view.querySelector(".viewer_div_2_category");
+      let style = window.getComputedStyle(view2Category);
+      if (style.display === "block") {
+        view2Category.style.display = "none";
+      } else {
+        view2Category.style.display = "block";
+      }
+    }
+  });
+});
 
 

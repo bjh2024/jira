@@ -18,5 +18,8 @@ public class FilterService {
 	public List<Filter> getByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx){
 		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 	}
-		
+	public List<Filter> getByJiraIdx(Integer idx){
+		System.out.println(filterRepository.findByJiraIdx(idx).size());
+		return filterRepository.findByJiraIdx(idx);
+	}
 }

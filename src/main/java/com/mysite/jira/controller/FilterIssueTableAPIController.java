@@ -60,6 +60,7 @@ public class FilterIssueTableAPIController {
         String searchContent = filterRequest.getSearchContent();
         Integer doneCheck = filterRequest.getDoneCheck();
         Integer notDoneCheck = filterRequest.getNotDoneCheck();
+        Integer filterIdx = filterRequest.getFilterIdx();
  
         List<Issue> issueByProjectIdx = filterIssueService.getIssueByProjectIdxIn(projectIdx);
         List<Issue> issueByIssueTypeName = issueService.getIssuesByIssueTypeName(issueTypes);

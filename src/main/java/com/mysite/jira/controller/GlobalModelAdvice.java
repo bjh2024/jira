@@ -2,6 +2,8 @@ package com.mysite.jira.controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -55,11 +57,7 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
-		if (principal == null)
-			return;
-		if (uri.contains("/api"))
-			return;
-		System.out.println("globalModelAdvice "+uri);
+		System.out.println(uri);
 		if(principal == null ||
 		   uri.length() == 0 ||
 		   uri.equals("/") ||

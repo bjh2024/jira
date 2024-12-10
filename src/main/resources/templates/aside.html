@@ -474,7 +474,7 @@
 					</button>
 					<div class="more_item_list default_filter_box">
 						<div class="more_item_container" th:each="filter, loop : ${filterList}" th:if="${loop.index} < 8">
-							<a th:href="@{|?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />

@@ -15,6 +15,8 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 																							@Param("jiraIdx") Integer jiraIdx);
 	List<Filter> findByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx);
 	
+	List<Filter> findByJiraIdx(Integer idx); 
+	
 	@Query(value="""
 			SELECT  f.*
 			FROM    filter_recent_clicked frc

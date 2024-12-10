@@ -59,8 +59,63 @@ let filterDatas = {
 			"doneBeforeDate": null,
 			"searchBox" : null,
 			"doneCheck" : null,
-			"notDoneCheck" : null
+			"notDoneCheck" : null,
+			"filterIdx" : null
 		}
+		
+		let issueKey = "";
+		document.querySelector(".issueListFilter").addEventListener("click", function(event) {
+		    // 클릭된 요소가 .issue_box_choice인 경우에만 처리
+		    if (event.target.closest(".issue_box_choice")) {
+		        let item = event.target.closest(".issue_box_choice");  // 클릭한 .issue_box_choice 요소
+		        issueKey = item.dataset.issueKey;  // 데이터 속성에서 issueKey 값을 가져옴
+
+		        // issueKey로 세부 정보를 가져오는 함수 호출
+		        fetchIssueDetail();
+		    }
+		});
+
+		function fetchIssueDetail() {
+		    // fetch()를 사용하여 AJAX 요청
+		    let url = "/api/filter_issue/issue_detail"; 
+
+		    fetch(url, {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json' // JSON 데이터를 전송
+		        },
+		        body: JSON.stringify({
+		            "issueKey": issueKey  // issueKey 값을 JSON으로 전달
+		        })
+		    })
+		    .then(response => response.json())  // JSON 형태로 응답 받기
+			.then(issueDetail => {
+			    // issueDetail의 첫 번째 항목에서 issueKey를 가져옵니다.
+			    let issueKey = issueDetail[0].issueKey;
+
+			    // 모든 .issue_middle_right 요소를 가져와서 확인합니다.
+			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
+			        // 각 div의 data-key 값을 가져옵니다.
+			        let itemKey = item.getAttribute("data-key");
+
+			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
+			        if (itemKey === issueKey) {
+			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
+			        } else {
+			            item.style.display = "none";   // 나머지 div는 숨깁니다.
+			        }
+			    });
+			})
+		    .catch(error => {
+		        console.error("Fetch error:", error);  // 에러 처리
+		    });
+		}
+		// 현재 URL에서 쿼리 문자열을 가져옴
+	/*	let urlParams = new URLSearchParams(window.location.search);
+		// 쿼리 문자열에서 'filter' 값 추출
+		let filterValue = urlParams.get('filter');  // '21'
+		console.log(filterValue);
+		filterDatas.filterIdx = filterValue;*/
 // 업데이트 날짜 필터 -------------------------------------------------------------------
 	document.getElementById("radio_days").addEventListener("change", function() {
 	   // '몇일 전'을 선택했을 때
@@ -380,7 +435,8 @@ document.querySelector("#all_reset").addEventListener("click",function(){
 		"doneBeforeDate": null,
 		"searchBox" : null,
 		"doneCheck" : null,
-		"notDoneCheck" : null
+		"notDoneCheck" : null,
+		"filterIdx": null
 		}
 		fetchInput();
 		fetchInputIssue();
@@ -415,7 +471,8 @@ function fetchInput() {
  			doneBeforeDate: filterDatas.doneBeforeDate,
 			searchContent : filterDatas.searchBox,
 			doneCheck : filterDatas.doneCheck,
-			notDoneCheck : filterDatas.notDoneCheck
+			notDoneCheck : filterDatas.notDoneCheck,
+			filterIdx : filterDatas.filterIdx
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
@@ -531,7 +588,8 @@ function fetchInputIssue() {
  			doneBeforeDate: filterDatas.doneBeforeDate,
 			searchContent : filterDatas.searchBox,
 			doneCheck : filterDatas.doneCheck,
-			notDoneCheck : filterDatas.notDoneCheck
+			notDoneCheck : filterDatas.notDoneCheck,
+			filterIdx : filterDatas.filterIdx
 		})
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
@@ -542,8 +600,7 @@ function fetchInputIssue() {
 			
 			issueList.forEach(function(item){
 				document.querySelector(".issueListFilter").innerHTML += 
-				`<div class="issue_box_choice">
-					<a href="${item.issueKey}" id="default-link">
+				`<div class="issue_box_choice" data-issue-key="${item.issueKey}">
 						<div class="issue_title">
 							<span>${item.issueName}</span>
 						</div>
@@ -558,7 +615,6 @@ function fetchInputIssue() {
 								src="/images/${item.issueReporterIconFilename}"
 								alt="프로필이미지" style="border-radius: 50%;">
 						</div>
-					</a>
 				</div>`;
 			})
 		})

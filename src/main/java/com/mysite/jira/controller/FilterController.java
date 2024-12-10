@@ -1,31 +1,27 @@
 package com.mysite.jira.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
-import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
-import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.ProjectService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -39,23 +35,31 @@ public class FilterController {
 	private final AccountService accountService;
 	private final BoardMainService boardMainService;
 
+//	@GetMapping("filter_issue")
+//	public String filterIssueMain(Model model, HttpServletRequest request) {
+//	    // Jira에서 문제 목록을 가져옴
+//	    List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+//	    // 첫 번째 이슈의 Key를 사용하여 리다이렉트
+//	    String issueKey = issueList.get(0).getKey();
+//
+//	    String requestUrl = request.getRequestURL().toString();
+//	    String queryString = request.getQueryString();
+//
+//	    // 쿼리 스트링이 있으면, issueKey를 그 사이에 추가
+//	    if (queryString != null) {
+//	        // URL의 끝에 '?'가 포함되어 있는지 확인하고 issueKey를 추가
+//	        return "redirect:" + requestUrl + "/" + issueKey + "?" + queryString;
+//	    }
+//
+//	    // 쿼리 스트링이 없으면, 그냥 issueKey만 추가
+//	    return "redirect:" + requestUrl + "/" + issueKey;
+//	}
 	@GetMapping("filter_issue")
-	public String filterIssueMain(Model model) {
-	    // Jira에서 문제 목록을 가져옴
-	    List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
-	    // 첫 번째 이슈의 Key를 사용하여 리다이렉트
-	    String issueKey = issueList.get(0).getKey();
-	    // 리다이렉트
-	    return "redirect:filter_issue/" + issueKey;
-	}
-	 
-	@GetMapping("/filter_issue/{issueKey}")
-	public String filterIssue(@PathVariable(name = "issueKey", required = false) String issuekey,Model model) {
+	public String filterIssue(Model model) {
 		
 		Integer jiraIdx = 1;
 		try {
 			
-			model.addAttribute("projectKey", issuekey);
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
