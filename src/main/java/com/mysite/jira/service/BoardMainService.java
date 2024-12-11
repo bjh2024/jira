@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.board.ObserverListDTO;
@@ -121,7 +120,7 @@ public class BoardMainService {
 	}
 	
 	public List<IssueReply> getIssueReply(){
-		return this.issueReplyRepository.findAll();
+		return this.issueReplyRepository.findAllByOrderByCreateDateDesc();
 	}
 	
 	public IssuePriority getOnceIssuePriority(Integer idx) {
@@ -386,9 +385,9 @@ public class BoardMainService {
 	public List<ProjectLogData> getLogDataList(Integer issueIdx, String order){
 		List<ProjectLogData> logList = new ArrayList<>();
 		if(order.equals("ASC")) {
-			logList = this.projectLogDataRepository.findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateAsc(issueIdx, 1);
+			logList = this.projectLogDataRepository.findByIssueIdxOrderByCreateDateAsc(issueIdx);
 		}else {
-			logList = this.projectLogDataRepository.findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateDesc(issueIdx, 1);
+			logList = this.projectLogDataRepository.findByIssueIdxOrderByCreateDateDesc(issueIdx);
 		}
 		return logList;
 	}
@@ -415,5 +414,17 @@ public class BoardMainService {
 	
 	public void deleteIssueStatus(Integer idx) {
 		this.issueStatusRepository.deleteById(idx);
+	}
+	
+	public IssueReply createReply(Issue issue, Account writer, String content) {
+		IssueReply reply = IssueReply.builder()
+									.content(content)
+									.createDate(LocalDateTime.now())
+									.editDate(null)
+									.issue(issue)
+									.account(writer)
+									.build();
+		this.issueReplyRepository.save(reply);
+		return reply;
 	}
 }

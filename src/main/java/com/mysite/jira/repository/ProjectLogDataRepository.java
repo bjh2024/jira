@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.ProjectLogData;
 
 public interface ProjectLogDataRepository extends JpaRepository<ProjectLogData, Integer> {
@@ -20,9 +18,6 @@ public interface ProjectLogDataRepository extends JpaRepository<ProjectLogData, 
 	
 	List<ProjectLogData> findByIssueIdxOrderByCreateDateAsc(Integer idx);
 	
-	List<ProjectLogData> findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateAsc(Integer idx, Integer replyIdx);
-	
 	List<ProjectLogData> findByIssueIdxOrderByCreateDateDesc(Integer idx);
 	
-	List<ProjectLogData> findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateDesc(Integer idx, Integer replyIdx);
 }

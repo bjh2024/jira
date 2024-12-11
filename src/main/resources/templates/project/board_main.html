@@ -507,12 +507,6 @@
 								 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
 								 										파일</span>
 								 								</button>
-								 								<button class="insertwindow-btn" style="display: none;">
-								 									<span style="height: 24px; margin-bottom: 2px;"><img
-								 											th:src="@{/images/sub_issue_icon.svg}"
-								 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
-								 									<span style="margin-bottom: 4px;">하위 이슈</span>
-								 								</button>
 								 							</div>
 								 							<span style="height: 16px;">
 								 								<img class="insertbtn-icon"
@@ -526,7 +520,7 @@
 								 					</div>
 								 					<div class="issuedetail-exarea">
 								 						<div class="editor-container" draggable="false">
-								 							<div class="editor" style="width: 738px;" draggable="false">
+								 							<div class="editor exarea" style="width: 738px;" draggable="false">
 								 								<p th:text="${extendsList.child.content}" draggable="false"></p>
 								 							</div>
 								 							<div class="editareabtns">
@@ -617,7 +611,7 @@
 								 									th:src="@{|/images/${issueList.reporter.iconFilename}|}"
 								 									style="border-radius: 50%;"></span>
 								 							<div class="editor-container">
-								 								<div class="editor" style="width: 690px;">
+								 								<div class="editor newreply" style="width: 690px;">
 								 									<p></p>
 								 								</div>
 								 								<div class="editareabtns">
@@ -977,7 +971,7 @@
 						 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
 						 										파일</span>
 						 								</button>
-						 								<button class="insertwindow-btn">
+						 								<button class="insertwindow-btn subissue">
 						 									<span style="height: 24px; margin-bottom: 2px;"><img
 						 											th:src="@{/images/sub_issue_icon.svg}"
 						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
@@ -1087,7 +1081,7 @@
 						 									th:src="@{|/images/${currentUser.iconFilename}|}"
 						 									style="border-radius: 50%;"></span>
 						 							<div class="editor-container">
-						 								<div class="editor newreply" style="width: 690px;">
+						 								<div class="editor newreply" style="width: 690px;" th:attr="data-useridx=${currentUser.idx}, data-issueidx=${issueList.idx}">
 						 									<p></p>
 						 								</div>
 						 								<div class="editareabtns">

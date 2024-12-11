@@ -37,7 +37,6 @@ document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 	submitbtn.addEventListener("click", function(e){
 		updateExareaDatas.issueIdx = editor.dataset.idx;
 		updateExareaDatas.content = contentEditor.getMarkdown();
-		
 		contentEditor.initialValue = updateExareaDatas.content;
 		updateIssueContent(editor.parentElement.nextElementSibling);
 		
@@ -49,17 +48,97 @@ document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 	});
 });
 
+let createReplyData = {
+	"issueIdx": "",
+	"content": "",
+	"writerIdx": ""
+}
+
+function createReply(replybox){
+	let url = "/api/project/create_reply";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createReplyData)
+	})
+	.then(response => response.json())
+	.then(reply => {
+		console.log(reply);
+		const newReply = document.createElement("div");
+		newReply.classList.add("issuedetail-reply");
+		newReply.innerHTML = `
+			<div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+				<img class="issue-managerimg" src="/images/${reply.iconFilename}">
+			</div>
+			<div class="issuedetail-replydetailbox">
+				<div class="replydetail-name-date">
+					<span>${reply.name}</span>
+					<span style="letter-spacing: -0.2px; margin-top: 2px;">${reply.date}</span>
+				</div>
+				<div class="replydetail-content">${reply.content}</div>
+			</div>
+			<div></div>
+			<div class="replydetail-managebar">
+				<span class="reply-geteditbtn">댓글</span><strong>·</strong>
+				<span class="reply-geteditbtn">편집</span><strong>·</strong>
+				<span>삭제</span><strong>·</strong>
+				<button class="replydetail-emojibtn">
+					<span style="height: 16px;">
+						<img src="/images/reply_emoji_icon.svg"
+							style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+					</span>
+				</button>
+			</div>
+			<div class="editor-container">
+				<div class="editor" style="width: 676px;"></div>
+				<div class="editareabtns">
+					<button class="editarea-save">저장</button>
+					<button class="editarea-cancel">취소</button>
+				</div>
+			</div>
+		`;
+		replybox.prepend(newReply);
+		
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
 document.querySelectorAll(".editor.newreply").forEach(function(editor, index){
 	const contentEditor = new toastui.Editor({
-	    el: editor,
-	    height: 'auto',
+		el: editor,
+		height: 'auto',
 		minHeight: '74px',
-	    initialEditType: 'wysiwyg',
-	    initialValue: '댓글 작성...',
-	    previewStyle: 'vertical',
-	  });
+		initialEditType: 'wysiwyg',
+		initialValue: '',
+		previewStyle: 'vertical',
+	});
+	const editorContainer = editor.parentElement;
+	  
+	const submitbtn = editor.nextElementSibling.children[0];
+	submitbtn.addEventListener("click", function(e){
+		createReplyData.issueIdx = editor.dataset.issueidx;
+		createReplyData.writerIdx = editor.dataset.useridx;
+		createReplyData.content = contentEditor.getMarkdown();
+		if(createReplyData.content.length < 1){
+			return;
+		}
+		const replybox = editor.parentElement.parentElement.parentElement.nextElementSibling;
+		createReply(replybox);
+		console.log(editorContainer);
+		editorContainer.classList.remove("show");
+		editorContainer.nextElementSibling.style.display = "block";
+	});
+	const cancelbtn = editor.nextElementSibling.children[1];
+	cancelbtn.addEventListener("click", function(e){
+		editorContainer.classList.remove("show");
+		editorContainer.nextElementSibling.style.display = "block";
+	});
 });
 
+// 답글 편집
 function initEditor(target, initialValue) {
     return new toastui.Editor({
         el: target,
@@ -529,7 +608,6 @@ document.querySelector(".create-status-container").addEventListener("click", fun
 	const bgItem = e.target.closest(".status-cancel-btn");
 	const submitItem = e.target.closest(".status-submit-btn");
 	if(submitItem !== null){
-		console.log("여기");
 		getStatusSubmit();
 	}
 	
@@ -1010,18 +1088,16 @@ document.querySelectorAll(".writereplybox").forEach(function(box, index){
 		const areaItem = e.target.closest(".writereplybox");
 		const editorItem = areaItem.children[1];
 		const btnItem = e.target.closest(".editarea-cancel");
-		
+		const saveItem = e.target.closest(".editarea-save");
 	
 		if(btnItem !== null && editorItem !== null){
-			editorItem.style.display = "none";
-			areaItem.style.padding = "6px 8px";
+			editorItem.classList.remove("show");
 			return;
 		}
 		
-		if(areaItem !== null){
-			editorItem.style.display = "block";
-			areaItem.style.padding = "0px";
-			editorItem.style.marginLeft = "8px";
+		if(areaItem !== null && saveItem == null){
+			editorItem.classList.add("show");
+			editorItem.style.marginLeft = "0px";
 		}
 	});
 
@@ -1173,6 +1249,10 @@ document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index)
 			btnItem.classList.toggle("active");
 			windowItem.classList.toggle("show");
 	});
+});
+
+document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, index){
+	
 });
 
 document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, index){
@@ -1674,16 +1754,16 @@ let issueBoxOrderDatas = {
 
 function updateIssueBoxOrderFetch(){
 	let url = "/api/project/update_issue_box_order";
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json' // JSON 데이터를 전송
-			},
-			body: JSON.stringify(issueBoxOrderDatas)
-		})
-		.catch(error => {
-			console.error("Fetch error:", error);
-		});
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(issueBoxOrderDatas)
+	})
+	.catch(error => {
+		console.error("Fetch error:", error);
+	});
 }
 
 const containers = document.querySelector(".board-body-container");
@@ -1694,16 +1774,16 @@ new Sortable(containers, {
 	filter: ".create-status-btn, .issuebox-issues, .createissue-container",
 	preventOnFilter: true,
 	// 드래그 시작 시 요소의 초기 인덱스를 저장
-	    onStart: function (evt) {
-	        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
-	    },
+    onStart: function (evt) {
+        originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
+    },
 
-	    // 드래그 종료 후 새로운 위치를 확인
-	    onEnd: function (evt) {
-	        const newIndex = evt.newIndex; // 드래그 종료 후의 인덱스
-			issueBoxOrderDatas.oldIdx = originalIndex;
-			issueBoxOrderDatas.newIdx = newIndex;
-			issueBoxOrderDatas.projectIdx = evt.item.dataset.projectidx;
-			updateIssueBoxOrderFetch();
-	    }
+    // 드래그 종료 후 새로운 위치를 확인
+    onEnd: function (evt) {
+        const newIndex = evt.newIndex; // 드래그 종료 후의 인덱스
+		issueBoxOrderDatas.oldIdx = originalIndex;
+		issueBoxOrderDatas.newIdx = newIndex;
+		issueBoxOrderDatas.projectIdx = evt.item.dataset.projectidx;
+		updateIssueBoxOrderFetch();
+    }
 });

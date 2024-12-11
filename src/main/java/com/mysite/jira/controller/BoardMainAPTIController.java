@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.AIQuestionDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
+import com.mysite.jira.dto.board.CreateReplyDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
 import com.mysite.jira.dto.board.DeleteIssueDTO;
 import com.mysite.jira.dto.board.DeleteLabelDataDTO;
@@ -38,6 +39,7 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.entity.ProjectMembers;
@@ -380,5 +382,24 @@ public class BoardMainAPTIController {
 			boardMainService.updateStatus(issueList.get(i), newStatus);
 		}
 		boardMainService.deleteIssueStatus(oldIdx);
+	}
+	
+	@PostMapping("/create_reply")
+	public CreateReplyDTO createReply(@RequestBody CreateReplyDTO createReplyDTO) {
+		Issue issue = boardMainService.getIssueByIdx(createReplyDTO.getIssueIdx());
+		Account writer = boardMainService.getAccountById(createReplyDTO.getWriterIdx());
+		String content = createReplyDTO.getContent();
+		IssueReply reply = boardMainService.createReply(issue, writer, content);
+		LocalDateTime dateTime = reply.getCreateDate();
+		String date = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		CreateReplyDTO result = CreateReplyDTO.builder()
+											.replyIdx(reply.getIdx())
+											.name(reply.getAccount().getName())
+											.iconFilename(reply.getAccount().getIconFilename())
+											.content(reply.getContent())
+											.date(date)
+											.build();
+											
+		return result;
 	}
 }
