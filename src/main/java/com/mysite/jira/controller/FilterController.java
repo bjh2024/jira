@@ -15,11 +15,13 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class FilterController {
 	private final IssueTypeService issueTypeService;
 	private final AccountService accountService;
 	private final BoardMainService boardMainService;
+	private final TeamService teamService;
 
 //	@GetMapping("filter_issue")
 //	public String filterIssueMain(Model model, HttpServletRequest request) {
@@ -60,7 +63,6 @@ public class FilterController {
 		Integer jiraIdx = 1;
 		try {
 			
-			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
 			
@@ -81,6 +83,9 @@ public class FilterController {
 			
 			List<Account> jiraMembers = accountService.getAccountList(jiraIdx);
 			model.addAttribute("jiraMembers", jiraMembers);
+			
+			List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
+			model.addAttribute("teamList", teamList);
 			
 			
 		}catch(Exception e){
