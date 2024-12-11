@@ -814,14 +814,14 @@ body{
 	background-color: #0515240F;
 }
 
-.status-create-btn{
+.status-submit-btn{
 	color: #080F214A;
 	background-color: #17171708;
 	cursor: not-allowed;
 	pointer-events: none;
 }
 
-.status-create-btn.action{
+.status-submit-btn.action{
 	background-color: #1D7AFC;
 	color: white;
 	cursor: pointer;
@@ -853,10 +853,208 @@ body{
 	cursor: grab;
 }
 
+.statusname-inputbox{
+	width: 170px;
+	height: 40px;
+	padding: 0px 6px;
+	margin-right: 25px;
+    border: 2px solid #0C66E4;
+    border-radius: 3px;
+	display: flex;
+	align-items: center;
+	position: relative;
+	display: none;
+}
+
+.statusname-inputbox.show{
+	display: block;
+}
+
+.statusname-input{
+	width: 160px;
+	height: 34px;
+	font-size: 14px;
+	outline: none;
+	border: none;
+	color: #505258;
+}
+
+.edit-statustitlebtn{
+	position: absolute;
+	top: 44px;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+}
+
+.edit-statustitlebtn.submit{
+	right: 36px;
+}
+
+.edit-statustitlebtn.cancel{
+	right: 0px;
+}
+
+.status-delete-alert-container{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #050C1F75;
+	z-index: 100;
+	display: none;
+}
+
+.status-delete-alert-container.show{
+	display: block;
+}
+
+.status-delete-alert-box{
+	width: 600px;
+	background-color: white;
+	border-radius: 3px;
+	margin: 60px auto 0px auto;
+}
+
+.change-delete-status-box{
+	margin-top: 26px;
+}
+
+.change-delete-status-notify{
+	color: #505258;
+	font-size: 12px;
+	font-weight: bold;
+	width: 441px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 4px;
+}
+
+.change-delete-status-bar{
+	height: 40px;
+	display: flex;
+	align-items: center;
+}
+
+.old-status-box{
+	width: 256px;
+}
+
+.old-status{
+	height: 18px;
+	padding: 2px 4px;
+	color: #292A2E;
+	border: 1px solid #B7B9BE;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: line-through;
+}
+
+.status-arrow-box{
+	width: 24px;
+	height: 24px;
+	margin: 4px 8px;
+	display: flex;
+	align-items: center;
+	padding-left: 3px;
+}
+
+.new-status-box{
+	width: 256px;
+	height: 40px;
+	border: 1px solid #8C8F97;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 8px;
+	padding-right: 5px;
+	font-size: 11px;
+	font-weight: bold;
+	color: #292A2E;
+	cursor: pointer;
+	position: relative;
+}
+
+.new-status{
+	height: 18px;
+	padding: 0px 4px;
+	border: 1px solid #B7B9BE;
+	border-radius: 3px;
+	margin-top: 1px;
+}
+
+.new-status.grade2{
+	border-color: #1D7AFC !important;
+}
+
+.new-status.grade3{
+	border-color: #B3DF72 !important;
+}
+
+.new-status-selectwindow{
+	position: absolute;
+	top: 48px;
+	left: 0px;
+	width: 256px;
+	padding: 8px 0px;
+	color: #292A2E;
+	background-color: white;
+	font-size: 11px;
+	font-weight: bold;
+	border-radius: 3px;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	display: none;
+}
+
+.new-status-selectwindow.show{
+	display: block;
+}
+
+.new-status-btn{
+	background-color: white;
+	height: 30px;
+	padding: 0px 8px;
+	display: flex;
+	align-items: center;
+}
+
+.new-status-btn:hover{
+	background-color: #0515240F;
+	border-left: 2px solid #0C66E4;
+	padding: 0px 6px;
+}
+
+.new-status-item{
+	height: 18px;
+	padding: 0px 4px;
+	border: 1px solid #B7B9BE;
+	border-radius: 3px;
+	margin-top: 1px;
+}
+
+.new-status-item.grade2{
+	border-color: #1D7AFC !important;
+}
+
+.new-status-item.grade3{
+	border-color: #B3DF72 !important;
+}
+
 .issue-status{
 	width: 195px;
 	display: flex;
 	align-items: center;
+}
+
+.issue-status.none{
+	display: none;
 }
 
 .status-menubtnbox{
@@ -897,6 +1095,7 @@ body{
 	align-items: center;
 	justify-content: center;
 }
+
 .status-menubtn{
 	border-radius: 3px; 
 	background-color: #F7F8F9; 
@@ -906,11 +1105,59 @@ body{
 	margin-top: 1px;
 	margin-left: 6px;
 	padding-top: 2px;
+	position: relative;
 }
 
 .status-menubtn:hover{
 	background-color: #091E420F;
 	margin-top: 0px;
+}
+
+.status-menubtn:hover .status-menuwindow{
+	top: 41px;
+}
+
+.status-menuwindow{
+	position: absolute;
+	top: 40px;
+	right: 0px;
+	width: 106px;
+	color: #505258;
+	background-color: white;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	font-size: 12px;
+	z-index: 100;
+	display: none;
+}
+
+.status-menuwindow.show{
+	display: block;
+}
+
+.status-menuwindow-title{
+	margin-top: 10px;
+	margin-bottom: 6px;
+	padding: 0px 17px;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	font-weight: bold;
+}
+
+.status-menuwindow-btn{
+	font-size: 14px !important;
+	padding: 8px 16px;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+}
+
+.status-menuwindow-btn.del{
+	margin-bottom: 6px;
+}
+
+.status-menuwindow-btn:hover{
+	background-color: #0515240F;
 }
 
 .issuebox-create{
@@ -1174,6 +1421,7 @@ body{
 	background-color: white;
 	display: none;
 	padding: 6px 0px;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 }
 
 .issue-menuwindow.show{
@@ -1218,7 +1466,6 @@ body{
 }
 
 .delete-alert-title{
-	width: 400px;
 	padding: 22px 24px 16px 28px;
 	display: flex;
 	align-items: center;
@@ -1232,7 +1479,6 @@ body{
 }
 
 .delete-alert-body{
-	width: 400px;
 	padding: 2px 24px;
 	font-size: 14px;
 	color: #292A2E;
@@ -1240,7 +1486,6 @@ body{
 }
 
 .delete-alert-btnbar{
-	width: 400px;
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -1248,7 +1493,7 @@ body{
 	padding: 16px 24px 24px 24px;
 }
 
-.delete-aleret-cancelbtn, .delete-aleret-submitbtn{
+.delete-alert-cancelbtn, .delete-alert-submitbtn{
 	width: 52px;
 	height: 32px;
 	padding: 0px 10px;
@@ -1259,16 +1504,16 @@ body{
 	border-radius: 3px;
 }
 
-.delete-aleret-submitbtn{
+.delete-alert-submitbtn{
 	background-color: #C9372C;
 	color: white;
 }
 
-.delete-aleret-cancelbtn:hover{
+.delete-alert-cancelbtn:hover{
 	background-color: #0515240F;
 }
 
-.delete-aleret-submitbtn:hover{
+.delete-alert-submitbtn:hover{
 	background-color: #AE2E24;
 }
 
@@ -1839,7 +2084,7 @@ body{
 	height: 24px;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 8px;
 	margin: 8px 0px;
 	
 }
@@ -1854,13 +2099,15 @@ body{
 	height: 24px;
 	display: flex;
 	align-items: center;
+	margin-top: 4px;
 }
 
-.subissue-list-btnbar > button{
+.subissue-list-addbtn{
 	border-radius: 3px;
+	padding: 2px 0px;
 }
 
-.subissue-list-btnbar > button:hover{
+.subissue-list-addbtn:hover{
 	background-color: #0515240F;
 }
 
@@ -1951,6 +2198,7 @@ body{
 	color: #172B4D;
 	font-size: 14px;
 	margin-top: 3px;
+	margin-bottom: 24px;
 }
 
 .issuedetail-activebtns{
@@ -1961,6 +2209,7 @@ body{
 
 .issuedetail-atvbtn{
 	margin-top: 2px;
+	color: #292A2E;
 	background-color: #091E420F;
 	width: 40px;
 	height: 24px;
@@ -1969,6 +2218,13 @@ body{
 	border-radius: 3px;
 	font-size: 14px;
 	text-align: center;
+	cursor: pointer;
+}
+
+.issuedetail-atvbtn.active{
+	color: #0C66E4;
+	background-color: #E9F2FF;
+	pointer-events: none;
 }
 
 .issuedetail-sortbtn{
@@ -1994,7 +2250,6 @@ body{
 
 .issuedetail-replybox{
 	padding-left: 26px;
-	padding-top: 29px;
 }
 
 .writereplybox{
@@ -2028,6 +2283,27 @@ body{
 	padding: 0px 4px; 
 	border: 1px solid #B7B9BE;
 	border-radius: 3px;
+}
+
+.issuedetail-loglist-all{
+	padding-left: 8px;
+}
+
+.issuedetail-loglist{
+	padding-left: 8px;
+}
+
+.issuedetail-log{
+	padding-left: 26px;
+	padding-bottom: 10px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 8px;
+	margin-bottom: 32px;
+	font-size: 14px;
+	color: #292A2E;
 }
 
 .issuedetail-replylist{

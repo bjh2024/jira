@@ -52,6 +52,10 @@ public class IssueStatus {
 		this.project = project;
 	}
 
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
 	public void updateStatus(Integer status) {
 		this.status = status;
 	}

@@ -89,4 +89,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	Integer countByProjectIdxAndDeadlineDateBetween(Integer projectIdx, LocalDateTime startDate, LocalDateTime endDate);
 
 	List<Issue> findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(Integer newIdx, Integer statusIdx); 
+	
+	List<Issue> findByProjectIdxAndIssueStatusIdx(Integer projectIdx, Integer issueIdx);
 }

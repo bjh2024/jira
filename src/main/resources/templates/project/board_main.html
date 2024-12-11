@@ -38,7 +38,7 @@
 							style="margin: 0px auto; filter: invert(29%) sepia(6%) saturate(2629%) hue-rotate(180deg) brightness(98%) contrast(89%);">
 					</div>
 				</div>
-				<div type="button" class="sidebarbtn-filter">
+				<!-- <div type="button" class="sidebarbtn-filter">
 					<div class="btnwindow-filter">
 						<div class="filterwindow-title">필터</div>
 						<div class="filterwindow-body">
@@ -188,9 +188,9 @@
 							<img th:src="@{/images/arrow_under_icon.svg}" class="sidebarbtnicon-filter">
 						</span>
 					</div>
-				</div>
+				</div> -->
 			</div>
-			<div class="board-sidebar">
+			<!--<div class="board-sidebar">
 				<div type="button" class="sidebarbtn-group">
 					<div class="btnwindow" style="width: 182px; height: 208px;">
 						<div class="btnwindow-title">그룹화 기준</div>
@@ -308,13 +308,22 @@
 						</span>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<div class="board-body-container">
 			<div class="issue-container" th:each="statusList1 : ${statusList}" th:attr="data-projectidx=${project.idx}">
 				<div class="issue-menubox">
 					<div class="issue-menubar">
 						<div class="issuebox-moveicon">⠿</div>
+						<div class="statusname-inputbox">
+							<input type="text" class="statusname-input" th:value="${statusList1[3]}" th:attr="data-idx=${statusList1[2]}">
+							<button class="edit-statustitlebtn submit">
+								<img src="/images/status_complete_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+							</button>
+							<button class="edit-statustitlebtn cancel">
+								<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+							</button>
+						</div>
 						<div class="issue-status">
 							<div class="status-titlebox">
 								<div class="status-title" th:text="${statusList1[3]}"></div>
@@ -329,6 +338,17 @@
 						</div>
 						<div class="status-menubtnbox">
 							<button class="status-menubtn">
+								<div class="status-menuwindow">
+									<div class="status-menuwindow-title">
+										<span>작업</span>
+									</div>
+									<div class="status-menuwindow-btn name">
+										<span>이름 바꾸기</span>
+									</div>
+									<div class="status-menuwindow-btn del" th:attr="data-statusidx=${statusList1[2]}, data-projectidx=${project.idx}, data-name=${statusList1[3]}">
+										<span>삭제</span>
+									</div>
+								</div>
 								<span>
 									<img th:src="@{/images/status_other_icon.svg}"
 										style="filter: invert(32%) sepia(10%) saturate(1618%) hue-rotate(179deg) brightness(90%) contrast(86%);">
@@ -337,9 +357,10 @@
 						</div>
 					</div>
 					<div class="issuebox-issues" th:attr="data-statusidx=${statusList1[2]}">
-						<div class="issues" th:each="issueList : ${issueList}" draggable="true"
+						<div class="issues" th:each="issueList, issueStat : ${issueList}" draggable="true"
 							th:if="${issueList.issueStatus.idx == statusList1[2]}"
-							th:attr="data-idx=${issueList.idx}, data-statusIdx=${issueList.issueStatus.idx}">
+							th:attr="data-idx=${issueList.idx}, data-statusIdx=${issueList.issueStatus.idx},
+							data-useridx=${currentUser.idx}">
 							<div class="issuename">
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
@@ -428,7 +449,7 @@
 											</span>
 										</div>
 									</div>
-									<div class="subissuedetail-container" draggable="false">
+									<div class="subissuedetail-container" draggable="false" th:attr="data-issueidx=${extendsList.child.idx}">
 								 		<div class="issuedetailbox">
 								 			<div class="issuedetail-headerbar">
 								 				<div class="issuekeypathbox">
@@ -451,13 +472,7 @@
 								 					</div>
 								 				</div>
 								 				<div class="issuedetail-menubar">
-								 					<div class="issuedetail-option-observ">
-								 						<span style="margin-top: 2px; color: #0C66E4;">
-								 							<img th:src="@{/images/eye_icon.svg}"
-								 								style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
-								 						</span>
-								 						<span style="color: #0C66E4; margin-left: 4px;">2</span>
-								 					</div>
+								 					<div class="issuedetail-option-observ"></div>
 								 					<div class="issuedetail-option">
 								 						<span style="margin-top: 2px;">
 								 							<img th:src="@{/images/thumbsup_icon.svg}"
@@ -578,14 +593,10 @@
 								 						<div class="issuedetail-activebar">
 								 							<div class="issuedetail-activebtns">
 								 								<span style="margin-right: 4px;">표시: </span>
-								 								<button class="issuedetail-atvbtn">
-								 									<span style="margin: auto 2px 2px 0px;">전체</span>
-								 								</button>
-								 								<button class="issuedetail-atvbtn"
-								 									style="background-color: #E9F2FF; color: #0C66E4;">
+								 								<button class="issuedetail-atvbtn reply active">
 								 									<span style="margin-right: 2px;">댓글</span>
 								 								</button>
-								 								<button class="issuedetail-atvbtn">
+								 								<button class="issuedetail-atvbtn log">
 								 									<span style="margin-right: 2px;">기록</span>
 								 								</button>
 								 							</div>
@@ -599,6 +610,7 @@
 								 							</div>
 								 						</div>
 								 					</div>
+													<div class="issuedetail-loglist-all"></div>
 								 					<div class="issuedetail-replybox">
 								 						<div class="writereplybox">
 								 							<span style="margin-top: 4px;"><img width="24" height="24"
@@ -660,6 +672,7 @@
 								 							</div>
 								 						</div>
 								 					</div>
+													<div class="issuedetail-loglist"></div>
 								 				</div>
 								 				<div class="issuedetailbar">
 								 					<div class="issuedetail-statusbar">
@@ -880,7 +893,7 @@
 								 	</div>
 								</div>
 							 </div>
-							 <div class="issuedetail-container" draggable="false">
+							 <div class="issuedetail-container" draggable="false" th:attr="data-issueidx=${issueList.idx}">
 						 		<div class="issuedetailbox">
 						 			<div class="issuedetail-headerbar">
 						 				<div class="issuekeypathbox">
@@ -999,10 +1012,6 @@
 						 						<div class="subissue-list-title">
 						 							<span>하위 이슈</span>
 						 							<div class="subissue-list-btnbar">
-						 								<button class="subissue-list-sortbtn">
-						 									<span style="margin-bottom: 2px; margin-left: 4px;">을(를) 기준으로 정렬</span>
-						 									<span style="height: 12px;"><img th:src="@{/images/arrow_under_icon.svg}"></span>
-						 								</button>
 						 								<button class="subissue-list-addbtn">
 						 									<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
 						 								</button>
@@ -1033,14 +1042,17 @@
 						 								<div th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
 						 												+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
 						 												+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"
-						 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
+						 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;"
+															 th:attr="data-projectidx=${extendsList.child.project.idx}, data-statusidx=${extendsList.child.issueStatus.idx},
+															 		  data-issueidx=${extendsList.child.idx}">
 						 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
 						 										<div class="statuswindow-menubox">
 						 											<!--서브이슈, input 태그나 부모 버튼 클래스명 수정해야 할 곳-->
 						 										</div>
 						 									</div>
 						 									<span th:text="${extendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
-						 									<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px"></div>
+						 									<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px">
+														</div>
 						 							</div>
 						 						</div>
 						 					</div>
@@ -1051,14 +1063,10 @@
 						 						<div class="issuedetail-activebar">
 						 							<div class="issuedetail-activebtns">
 						 								<span style="margin-right: 4px;">표시: </span>
-						 								<button class="issuedetail-atvbtn">
-						 									<span style="margin: auto 2px 2px 0px;">전체</span>
-						 								</button>
-						 								<button class="issuedetail-atvbtn"
-						 									style="background-color: #E9F2FF; color: #0C66E4;">
+						 								<button class="issuedetail-atvbtn reply active">
 						 									<span style="margin-right: 2px;">댓글</span>
 						 								</button>
-						 								<button class="issuedetail-atvbtn">
+						 								<button class="issuedetail-atvbtn log">
 						 									<span style="margin-right: 2px;">기록</span>
 						 								</button>
 						 							</div>
@@ -1072,6 +1080,7 @@
 						 							</div>
 						 						</div>
 						 					</div>
+											<div class="issuedetail-loglist-all"></div>
 						 					<div class="issuedetail-replybox">
 						 						<div class="writereplybox">
 						 							<span style="margin-top: 4px;"><img width="24" height="24"
@@ -1132,6 +1141,7 @@
 						 							</div>
 						 						</div>
 						 					</div>
+											<div class="issuedetail-loglist"></div>
 						 				</div>
 						 				<div class="issuedetailbar">
 						 					<div class="issuedetail-statusbar">
@@ -1352,7 +1362,7 @@
 					<div class="issuebox"></div>
 				</div>
 			</div>
-			<button class="create-status-btn">
+			<div class="create-status-btn">
 				<div class="create-status-container">
 					<div class="create-statusbox">
 						<div class="create-status-title">
@@ -1398,7 +1408,7 @@
 								<div class="status-cancel-btn">
 									<span>취소</span>
 								</div>
-								<div class="status-create-btn" th:attr="data-projectidx=${project.idx}">
+								<div class="status-submit-btn" th:attr="data-projectidx=${project.idx}">
 									<span>제출</span>
 								</div>
 							</div>
@@ -1406,7 +1416,7 @@
 					</div>
 				</div>
 				<img th:src="@{/images/create_issue_icon.svg}" width="18px" height="18px">
-			</button>
+			</div>
 		</div>
 	</div>
 	<div class="issue-delete-alert-container">
@@ -1422,10 +1432,54 @@
 				</span>
 			</div>
 			<div class="delete-alert-btnbar">
-				<button class="delete-aleret-cancelbtn">
+				<button class="delete-alert-cancelbtn">
 					<span>취소</span>
 				</button>
-				<button class="delete-aleret-submitbtn">
+				<button class="delete-alert-submitbtn">
+					<span>삭제</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="status-delete-alert-container">
+		<div class="status-delete-alert-box">
+			<div class="delete-alert-title">
+				<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+				<span th:text="'할일이 많다 열에서 작업 이동'" class="delete-alert-titletext"></span>
+			</div>
+			<div class="delete-alert-body">
+				<span>백로그의 작업을 포함하여 할일이 많다 상태의 모든 작업에 대해 새 홈을 선택합니다.</span>
+				<div class="change-delete-status-box">
+					<div class="change-delete-status-notify">
+						<span>이 상태를 삭제합니다:</span>
+						<span>기존 이슈를 다음으로 이동:</span>
+					</div>
+					<div class="change-delete-status-bar">
+						<div class="old-status-box">
+							<span class="old-status">할일이 많다</span>
+						</div>
+						<div class="status-arrow-box">
+							<img th:src="@{/images/arrow_tail_right_icon_big.svg}" width="20px" height="20px" style="filter: invert(10%) sepia(8%) saturate(770%) hue-rotate(191deg) brightness(93%) contrast(83%);">
+						</div>
+						<div class="new-status-box">
+							<div class="new-status-selectwindow">
+								<div class="new-status-btn">
+									<span class="new-status-item">hi</span>
+								</div>
+							</div>
+							<span class="new-status">상태 선택</span>
+							<div style="margin-top: 2px;">
+								<img th:src="@{/images/arrow_bottom_icon.svg}" width="26px" height="26px" style="filter: invert(32%) sepia(8%) saturate(361%) hue-rotate(187deg) brightness(94%) contrast(93%);">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="delete-alert-btnbar" style="padding-top: 14px;">
+				<button class="delete-alert-cancelbtn">
+					<span>취소</span>
+				</button>
+				<button class="delete-alert-submitbtn">
 					<span>삭제</span>
 				</button>
 			</div>

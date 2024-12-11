@@ -15,6 +15,7 @@ import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
 import com.mysite.jira.dto.board.DeleteIssueDTO;
 import com.mysite.jira.dto.board.DeleteLabelDataDTO;
+import com.mysite.jira.dto.board.DeleteStatusDTO;
 import com.mysite.jira.dto.board.DragIssueBoxDTO;
 import com.mysite.jira.dto.board.DragIssueDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
@@ -23,9 +24,12 @@ import com.mysite.jira.dto.board.GetNewLabelDataDTO;
 import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.GetTeamDTO;
+import com.mysite.jira.dto.board.IssueLogDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
+import com.mysite.jira.dto.board.ObserverListDTO;
 import com.mysite.jira.dto.board.ReporterDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
+import com.mysite.jira.dto.board.StatusTitleDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.dto.board.UpdateIssueExareaDTO;
 import com.mysite.jira.dto.board.UpdateIssueNameDTO;
@@ -35,6 +39,7 @@ import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
@@ -307,5 +312,73 @@ public class BoardMainAPTIController {
 		Issue issue = boardMainService.getIssueByIdx(idx);
 		boardMainService.updateIssueContent(issue, content);
 	}
+	
+	@PostMapping("/get_observer_list")
+	public ObserverListDTO getObserverList(@RequestBody ObserverListDTO observerListDTO) {
+		Integer issueIdx = observerListDTO.getIssueIdx();
+		Integer userIdx = observerListDTO.getUserIdx();
+		ObserverListDTO result = boardMainService.getObserverList(issueIdx, userIdx);
+		return result;
+	}
+	
+	@PostMapping("/get_issue_log_list")
+	public List<IssueLogDTO> getIssueLogList(@RequestBody IssueLogDTO issueLogDTO){
+		Integer issueIdx = issueLogDTO.getIssueIdx();
+		String order = issueLogDTO.getOrder();
+		List<ProjectLogData> getLogList = boardMainService.getLogDataList(issueIdx, order);
+		List<IssueLogDTO> logList = new ArrayList<>();
+		for(int i = 0; i < getLogList.size(); i++) {
+			LocalDateTime dateTime = getLogList.get(i).getCreateDate();
+			String date = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			IssueLogDTO dto = IssueLogDTO.builder()
+									.username(getLogList.get(i).getAccount().getName())
+									.iconFilename(getLogList.get(i).getAccount().getIconFilename())
+									.logType(getLogList.get(i).getProjectLogStatus().getContent())
+									.date(date)
+									.build();
+			logList.add(dto);
+		}
+		return logList;
+	}
+	
+	@PostMapping("/get_all_issue_log_list")
+	public List<IssueLogDTO> getAllIssueLogList(@RequestBody IssueLogDTO issueLogDTO){
+		Integer issueIdx = issueLogDTO.getIssueIdx();
+		String order = issueLogDTO.getOrder();
+		List<ProjectLogData> getLogList = boardMainService.getAllLogDataList(issueIdx, order);
+		List<IssueLogDTO> logList = new ArrayList<>();
+		for(int i = 0; i < getLogList.size(); i++) {
+			LocalDateTime dateTime = getLogList.get(i).getCreateDate();
+			String date = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			IssueLogDTO dto = IssueLogDTO.builder()
+									.username(getLogList.get(i).getAccount().getName())
+									.iconFilename(getLogList.get(i).getAccount().getIconFilename())
+									.logType(getLogList.get(i).getProjectLogStatus().getContent())
+									.date(date)
+									.build();
+			logList.add(dto);
+		}
+		return logList;
+	}
 
+	@PostMapping("/update_status_title")
+	public void updateStatusTitle(@RequestBody StatusTitleDTO statusTitleDTO) {
+		Integer idx = statusTitleDTO.getStatusIdx();
+		IssueStatus currentStatus = boardMainService.getOnceIssueStatus(idx);
+		String name = statusTitleDTO.getName();
+		boardMainService.updateStatusTitle(currentStatus, name);
+	}
+	
+	@PostMapping("/delete_issue_status")
+	public void deleteIssueStatus(@RequestBody DeleteStatusDTO deleteStatusDTO) {
+		Integer projectIdx = deleteStatusDTO.getProjectIdx();
+		Integer oldIdx = deleteStatusDTO.getStatusIdx();
+		Integer newIdx = deleteStatusDTO.getNewStatusIdx();
+		List<Issue> issueList = boardMainService.getIssueListByIssueStatus(projectIdx, oldIdx);
+		IssueStatus newStatus = boardMainService.getOnceIssueStatus(newIdx);
+		for(int i = 0; i < issueList.size(); i++) {
+			boardMainService.updateStatus(issueList.get(i), newStatus);
+		}
+		boardMainService.deleteIssueStatus(oldIdx);
+	}
 }

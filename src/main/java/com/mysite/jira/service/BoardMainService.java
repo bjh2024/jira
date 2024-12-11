@@ -1,24 +1,28 @@
 package com.mysite.jira.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.dto.board.ObserverListDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueObserverMembers;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.repository.AccountRepository;
@@ -26,12 +30,14 @@ import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
 import com.mysite.jira.repository.IssueLabelRepository;
+import com.mysite.jira.repository.IssueObserverMembersRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.repository.JiraRepository;
+import com.mysite.jira.repository.ProjectLogDataRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
 import com.mysite.jira.repository.ProjectRepository;
 import com.mysite.jira.repository.TeamRepository;
@@ -53,8 +59,10 @@ public class BoardMainService {
 	private final TeamRepository teamRepository;
 	private final IssueFileRepository issueFileRepository;
 	private final ProjectMembersRepository projectMembersRepository;
+	private final ProjectLogDataRepository projectLogDataRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
+	private final IssueObserverMembersRepository issueObserverMembersRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -224,7 +232,6 @@ public class BoardMainService {
 									.project(project)
 									.build();
 		this.issueStatusRepository.save(issueStatus);
-		System.out.println("생성이 잘 됨");
 	}
 	
 	public IssueType getIssueTypeByIdx(Integer idx) {
@@ -363,5 +370,50 @@ public class BoardMainService {
 	public void updateIssueContent(Issue issue, String content) {
 		issue.updatecontent(content);
 		this.issueRepository.save(issue);
+	}
+	
+	public ObserverListDTO getObserverList(Integer issueidx, Integer userIdx) {
+		List<IssueObserverMembers> memberList = this.issueObserverMembersRepository.findByIssueIdx(issueidx);
+		List<IssueObserverMembers> isIn = this.issueObserverMembersRepository.findByIssueIdxAndAccountIdx(issueidx, userIdx);
+		String in = isIn.size() > 0 ? "true" : "false";
+		ObserverListDTO dto = ObserverListDTO.builder()
+									.count(memberList.size())
+									.isIn(in)
+									.build();
+		return dto;
+	}
+	
+	public List<ProjectLogData> getLogDataList(Integer issueIdx, String order){
+		List<ProjectLogData> logList = new ArrayList<>();
+		if(order.equals("ASC")) {
+			logList = this.projectLogDataRepository.findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateAsc(issueIdx, 1);
+		}else {
+			logList = this.projectLogDataRepository.findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateDesc(issueIdx, 1);
+		}
+		return logList;
+	}
+	
+	public List<ProjectLogData> getAllLogDataList(Integer issueIdx, String order){
+		List<ProjectLogData> logList = new ArrayList<>();
+		if(order.equals("ASC")) {
+			logList = this.projectLogDataRepository.findByIssueIdxOrderByCreateDateAsc(issueIdx);
+		}else {
+			logList = this.projectLogDataRepository.findByIssueIdxOrderByCreateDateDesc(issueIdx);
+		}
+		return logList;
+	}
+	
+	public void updateStatusTitle(IssueStatus currentStatus, String name) {
+		currentStatus.updateName(name);
+		this.issueStatusRepository.save(currentStatus);
+	}
+	
+	public List<Issue> getIssueListByIssueStatus(Integer projectIdx, Integer statusIdx){
+		List<Issue> issueList = this.issueRepository.findByProjectIdxAndIssueStatusIdx(projectIdx, statusIdx);
+		return issueList;
+	}
+	
+	public void deleteIssueStatus(Integer idx) {
+		this.issueStatusRepository.deleteById(idx);
 	}
 }

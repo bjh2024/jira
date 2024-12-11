@@ -18,4 +18,11 @@ public interface ProjectLogDataRepository extends JpaRepository<ProjectLogData, 
 	// kdw
 	List<ProjectLogData> findByIssue_ProjectIdxAndCreateDateGreaterThanEqualOrderByCreateDateDesc(@Param("projectIdx") Integer projectIdx, @Param("CreateDate") LocalDateTime date);
 	
+	List<ProjectLogData> findByIssueIdxOrderByCreateDateAsc(Integer idx);
+	
+	List<ProjectLogData> findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateAsc(Integer idx, Integer replyIdx);
+	
+	List<ProjectLogData> findByIssueIdxOrderByCreateDateDesc(Integer idx);
+	
+	List<ProjectLogData> findByIssueIdxAndProjectLogStatusIdxNotOrderByCreateDateDesc(Integer idx, Integer replyIdx);
 }

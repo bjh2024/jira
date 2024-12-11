@@ -80,15 +80,12 @@ document.querySelectorAll(".reply-geteditbtn").forEach(function(btn){
 	        const editorTarget = editorContainer.querySelector('.editor');
 	        const editContent = isEdit ? e.target.closest('.reply-geteditbtn').dataset.content : ''; // 편집: 기존 내용, 댓글: 빈 내용
 
-	        // 기존 에디터 제거 후 새로 초기화
 	        if (editorTarget._toastuiEditorInstance) {
 	            editorTarget._toastuiEditorInstance.destroy(); // 기존 에디터 인스턴스 제거
 	        }
 
-	        // 에디터 생성
 	        initEditor(editorTarget, editContent);
 
-	        // 에디터 표시
 	        editorContainer.style.display = 'block';
 	    }
 	});
@@ -121,7 +118,7 @@ function loadDateData(issueIdx, date, type){
 	updateStartDateFetch();
 }
 
-document.querySelector("body").addEventListener("click", function(e) {
+/*document.querySelector("body").addEventListener("click", function(e) {
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
 	}
@@ -154,6 +151,198 @@ document.querySelector("body").addEventListener("click", function(e) {
 		sidebarOtherItem.children[0].classList.add("show");
 		document.querySelector(".sidebarbtnicon-other").style.filter = "invert(100%) sepia(1%) saturate(7498%) hue-rotate(57deg) brightness(102%) contrast(102%)";
 	}
+});*/
+
+document.querySelector("body").addEventListener("click", function(e){
+	if(e.target.closest(".status-menuwindow-title") !== null){
+		return;
+	}
+	document.querySelector(".status-menuwindow")?.classList.remove("show");
+	
+	const btn = e.target.closest(".status-menubtn");
+	
+	if(btn !== null){
+		btn.children[0].classList.toggle("show");
+		const menubtn = e.target.closest(".status-menuwindow-btn");
+		
+		if(menubtn !== null && menubtn.className.includes("name")){
+			const issueStatus = btn.parentElement.previousElementSibling;
+			console.log(issueStatus);
+			issueStatus.classList.add("none");
+			issueStatus.previousElementSibling.classList.add("show");
+			btn.children[0].classList.remove("show");
+		}else if(menubtn !== null && menubtn.className.includes("del")){
+			const container = document.querySelector(".status-delete-alert-container");
+			container.querySelector(".delete-alert-titletext").innerText = `${menubtn.dataset.name} 열에서 작업 이동`;
+			container.querySelector(".old-status").innerText = menubtn.dataset.name;	
+			container.querySelector(".delete-alert-body").children[0].innerText = `백로그의 작업을 포함하여 ${menubtn.dataset.name} 상태의 모든 작업에 대해 새 홈을 선택합니다.`;
+			container.classList.add("show");
+			
+			deleteStatusData.projectIdx = menubtn.dataset.projectidx;
+			deleteStatusData.statusIdx = menubtn.dataset.statusidx;
+		}
+	}
+});
+
+let deleteStatusData = {
+	"projectIdx": "",
+	"statusIdx": "",
+	"newStatusIdx": ""
+}
+
+function fetchnewStatusList(statusbox){
+	let url = "/api/project/get_status_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(deleteStatusData)
+	})
+	.then(response => response.json())
+	.then(statusList => {
+		statusbox.innerHTML = "";
+		
+		statusList.forEach(function(status){
+			const statusVal = document.createElement("div");
+			statusVal.classList.add("new-status-btn");
+			statusVal.setAttribute("data-statusidx", status.idx);
+			
+			const statusTitle = document.createElement("span");
+			statusTitle.classList.add("new-status-item");
+			statusTitle.innerHTML = `${status.name}`;
+			if(status.status == 1){
+				
+			}else if(status.status == 2){
+				statusTitle.classList.add("grade2");
+			}else if(status.status == 3){
+				statusTitle.classList.add("grade3");
+			}
+			statusVal.appendChild(statusTitle);
+			statusbox.appendChild(statusVal);
+			statusVal.addEventListener("click", function(e){
+				const newStatus = document.querySelector(".new-status");
+				deleteStatusData.newStatusIdx = `${status.idx}`;
+				newStatus.innerText = status.name;
+				if(status.status == 1){
+					
+				}else if(status.status == 2){
+					newStatus.classList.add("grade2");
+				}else if(status.status == 3){
+					newStatus.classList.add("grade3");
+				}
+			});
+		});
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+
+document.querySelector(".new-status-box").addEventListener("click", function(e){
+	const btn = e.target.closest(".new-status-box");
+	if(btn !== null){
+		fetchnewStatusList(btn.children[0]);
+		btn.children[0].classList.toggle("show");
+	}
+});
+
+function deleteAndUpdateIssueStatus(){
+	let url = "/api/project/delete_issue_status";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(deleteStatusData)
+	}).then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelector(".status-delete-alert-container").addEventListener("mousedown", function(e) {
+	document.querySelector(".status-delete-alert-container")?.classList.remove("show");
+	
+	const bgItem = e.target.closest(".delete-alert-cancelbtn");
+	const detailItem = e.target.closest(".status-delete-alert-box");
+	const boxItem = detailItem.querySelector(".new-status").innerText;
+	
+	const submitItem = e.target.closest(".delete-alert-submitbtn");
+	if(submitItem !== null){
+		if(boxItem == "상태 선택"){
+			alert("반드시 변경할 상태를 선택해야 합니다.");
+		}else{
+			console.log(deleteStatusData);
+			deleteAndUpdateIssueStatus();
+		}
+	}
+	
+	if(bgItem == null && detailItem !== null){
+		document.querySelector(".status-delete-alert-container").classList.add("show");
+	}else{
+		document.querySelector(".status-delete-alert-container").classList.remove("show");
+	}
+});
+
+document.querySelector("body").addEventListener("click", function(e) {
+	if(e.target.closest(".status-menubtn") !== null || e.target.closest(".statusname-inputbox") !== null){
+		return;
+	}
+	document.querySelector(".statusname-inputbox.show")?.classList.remove("show");
+	document.querySelector(".issue-status.none")?.classList.remove("none");
+});
+
+document.querySelectorAll(".edit-statustitlebtn.cancel").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		btn.parentElement.classList.remove("show");
+		btn.parentElement.nextElementSibling.classList.remove("none");
+	});
+});
+
+let updateStatusTitleData = {
+	"statusIdx": "",
+	"name": ""
+}
+
+function updateStatusTitle(box, input){
+	let url = "/api/project/update_status_title";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateStatusTitleData)
+	}).then(response => {
+        if (response.ok) {
+            // 응답 상태가 200~299 범위인 경우
+			input.value = updateStatusTitleData.statusIdx;
+			box.innerText = updateStatusTitleData.name;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".edit-statustitlebtn.submit").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		updateStatusTitleData.statusIdx = btn.previousElementSibling.dataset.idx;
+		updateStatusTitleData.name = btn.previousElementSibling.value;
+		console.log(updateStatusTitleData);
+		const titleItem = btn.parentElement.nextElementSibling.children[0].children[0];
+		updateStatusTitle(titleItem, btn.previousElementSibling);
+		btn.parentElement.classList.remove("show");
+		btn.parentElement.nextElementSibling.classList.remove("none");
+	});
 });
 
 document.querySelectorAll(".subissuebtn").forEach(function(btn, index){
@@ -203,6 +392,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const createIssueItem = e.target.closest(".issuebox-create");
 	if(createIssueItem !== null){
 		createIssueItem.previousElementSibling.classList.add("show");
+		createIssueItem.previousElementSibling.children[0].focus();
 	}
 });
 
@@ -330,27 +520,22 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 	});
 });
 
-document.querySelector(".create-status-btn").addEventListener("click", function(e){
-	const btnItem = e.target.closest(".create-status-btn");
-	if(btnItem !== null){
-		btnItem.children[0].classList.add("show");
-	}
-});
 
-document.querySelector(".create-status-container").addEventListener("mousedown", function(e){
+
+document.querySelector(".create-status-container").addEventListener("click", function(e){
 	document.querySelector(".create-status-container")?.classList.remove("show");
 	const container = document.querySelector(".create-status-container");
 	const detailItem = e.target.closest(".create-statusbox");
 	const bgItem = e.target.closest(".status-cancel-btn");
-	const submitItem = e.target.closest(".status-create-btn");
+	const submitItem = e.target.closest(".status-submit-btn");
+	if(submitItem !== null){
+		console.log("여기");
+		getStatusSubmit();
+	}
 	
-	if(bgItem == null && submitItem == null && detailItem !== null){
+	if(bgItem == null && detailItem !== null){
 		container.classList.add("show");
 	}else{
-		if(detailItem !== null){
-			getStatusSubmit();
-			return;
-		}
 		container.classList.remove("show");
 	}
 });
@@ -360,6 +545,17 @@ let createStatusDatas = {
 	"status": "",
 	"projectIdx": ""
 }
+
+document.querySelector(".create-status-btn").addEventListener("click", function(e){
+	if(e.target.closest(".create-status-container") !== null){
+		return;
+	}
+	const btnItem = e.target.closest(".create-status-btn");
+	if(btnItem !== null){
+		btnItem.children[0].classList.add("show");
+		btnItem.children[0].querySelector(".status-title-input").focus();
+	}
+});
 
 document.querySelector(".set-status-status").addEventListener("click", function(e){
 	const statusItem = document.querySelector(".set-status-status");
@@ -395,7 +591,7 @@ document.querySelector(".set-status-status").addEventListener("click", function(
 
 document.querySelector(".status-title-input").addEventListener("keyup", function(e){
 	const inputItem = e.target.closest(".status-title-input");
-	const btnItem = document.querySelector(".status-create-btn");
+	const btnItem = document.querySelector(".status-submit-btn");
 	if(inputItem.value != "" && inputItem.value != null){
 		btnItem.classList.add("action");
 	}else{
@@ -411,8 +607,16 @@ function createStatusFetch(){
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify(createStatusDatas)
-	})
-	.catch(error => {
+	}).then(response => {
+        if (response.ok) {
+			console.log("삭제 성공");
+			location.reload();
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
 		console.error("Fetch error:", error);
 	});
 }
@@ -420,10 +624,63 @@ function createStatusFetch(){
 function getStatusSubmit(){
 	createStatusDatas.name = document.querySelector(".status-title-input").value;
 	createStatusDatas.status = document.querySelector(".set-status-left.current").dataset.idx;
-	createStatusDatas.projectIdx = document.querySelector(".status-create-btn").dataset.projectidx;
+	createStatusDatas.projectIdx = document.querySelector(".status-submit-btn").dataset.projectidx;
 	document.querySelector(".create-status-container").classList.remove("show");
 	createStatusFetch();
 	location.reload();
+}
+
+let getObserverDatas = {
+	"issueIdx": "",
+	"userIdx": ""
+}
+
+function getObserverListFetch(btn){
+	let url = "/api/project/get_observer_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getObserverDatas)
+	})
+	.then(response => response.json())
+	.then(data => {
+		btn.innerHTML = `<span style="margin-top: 2px;">
+							<img src="/images/eye_icon.svg">
+						 </span>
+						 <span style="margin-left: 4px;">${data.count}</span>`;
+						 
+		if(data.isIn == "true"){
+			btn.children[0].style.color = "#0C66E4;";
+			btn.children[0].children[0].style.filter = "invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%)";
+			btn.children[1].style.color = "#0C66E4";
+			btn.style.borderColor = "#0C66E4";
+			btn.style.backgroundColor = "#E9F2FE";
+		}else{
+			btn.children[0].style.color = "#505258;";
+			btn.children[0].children[0].style.filter = "invert(34%) sepia(13%) saturate(242%) hue-rotate(187deg) brightness(87%) contrast(90%)";
+			btn.children[1].style.color = "#505258";
+			btn.style.borderColor = "#091E422F";
+			btn.style.backgroundColor = "white";
+		}
+		btn.addEventListener("mouseover", function(e){
+			if(data.isIn == "true"){
+				btn.style.backgroundColor = "#CFE1FD";
+			}else{
+				btn.style.backgroundColor = "#0515240F";
+			}
+		});
+		btn.addEventListener("mouseout", function(e){
+			if(data.isIn == "true"){
+				btn.style.backgroundColor = "#E9F2FE";
+			}else{
+				btn.style.backgroundColor = "white";
+			}
+		});
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
 }
 
 document.querySelectorAll(".issues").forEach(function(btn, index){
@@ -441,25 +698,17 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 			lblItem.querySelector(".graphval-label-def").classList.add("none");
 		}
 		
-		if(btn !== null){
-			btn.querySelector(".issuedetail-container").classList.add("show");
+		if(btn !== null){ 
+			const container = btn.querySelector(".issuedetail-container");
+			container.classList.add("show");
+			
+			getObserverDatas.issueIdx = btn.dataset.idx;
+			getObserverDatas.userIdx = btn.dataset.useridx;
+			const observBtn = container.querySelector(".issuedetail-option-observ");
+			getObserverListFetch(observBtn);
+			
 		}
 	});
-	
-	/*btn.addEventListener("mouseover", function(e){
-		const menubox = btn.querySelector(".issue-menubtnbox");
-		menubox.style.visibility = "visible";
-	});
-	
-	btn.addEventListener("mouseout", function(e){
-		const menubox = btn.querySelector(".issue-menubtnbox");
-		
-	    if (e.target.closest(".issue-menubtnbox") == null) {
-	      menubox.style.visibility = "hidden";
-	      menubox.children[0].classList.remove("show");
-	    }
-		  
-	});*/
 });
 
 document.querySelectorAll(".issue-menubtnbox").forEach(function(btn){
@@ -474,6 +723,7 @@ document.querySelectorAll(".issue-menubtnbox").forEach(function(btn){
 			myWindow.style.left = `${xy.right - 254}px`;
 		}else{
 			myWindow.style.left = `${xy.left + 40}px`;
+			
 		}
 		myWindow.classList.toggle("show");
 	});
@@ -512,39 +762,28 @@ document.querySelectorAll(".menuwindow-option").forEach(function(btn){
 		container.classList.add("show");
 		container.children[0].children[0].children[1].innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
 		deleteIssueData.issueIdx = btn.dataset.issueidx;
-		/*deleteIssueData.issueIdx = btn.dataset.issueidx;
-		console.log(deleteIssueData);
-		deleteIssue();*/
+		deleteIssueData.issueIdx = btn.dataset.issueidx;
 	});
 });
-/*
-document.querySelector(".delete-aleret-submitbtn").addEventListener("click", function(e){
-	if(e.target.closest(".delete-aleret-submitbtn") !== null){
-		console.log(deleteIssueData);
-		deleteIssue();
-	}
-});*/
 
 document.querySelector(".issue-delete-alert-container").addEventListener("mousedown", function(e) {
 	document.querySelector(".issue-delete-alert-container")?.classList.remove("show");
 	
-	const bgItem = e.target.closest(".delete-aleret-cancelbtn");
-	const subIssueItem = e.target.closest(".subissue-list");
-	const issueDetailItem = e.target.closest(".delete-alert-box");
+	const bgItem = e.target.closest(".delete-alert-cancelbtn");
+	const detailItem = e.target.closest(".delete-alert-box");
 	
-	const submitItem = e.target.closest(".delete-aleret-submitbtn");
+	const submitItem = e.target.closest(".delete-alert-submitbtn");
 	if(submitItem !== null){
 		console.log(deleteIssueData);
 		deleteIssue();
 	}
 	
-	if(bgItem == null && issueDetailItem !== null){
+	if(bgItem == null && detailItem !== null){
 		document.querySelector(".issue-delete-alert-container").classList.add("show");
 	}else{
 		document.querySelector(".issue-delete-alert-container").classList.remove("show");
 	}
 });
-
 
 document.querySelectorAll(".issuedetail-container").forEach(function(container, index){
 	container.addEventListener("mousedown", function(e) {
@@ -554,11 +793,99 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		const subIssueItem = e.target.closest(".subissue-list");
 		const issueDetailItem = e.target.closest(".issuedetailbox");
 		
+		const atvBtn = e.target.closest(".issuedetail-atvbtn");
+					
+		
+		
 		if(bgItem == null && issueDetailItem !== null){
 			
 			container.classList.add("show");
 		}else{
 			container.classList.remove("show");
+		}
+	});
+});
+
+let issueLogData = {
+	"issueIdx": "",
+	"order": "DESC"
+}
+
+function getIssueLogList(logbox){
+	let url = "/api/project/get_issue_log_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(issueLogData)
+	})
+	.then(response => response.json())
+		.then(logList => {
+			logbox.innerHTML = "";
+			logbox.previousElementSibling.style.display = "none";
+			logbox.previousElementSibling.previousElementSibling.style.display = "none";
+			logbox.previousElementSibling.previousElementSibling.previousElementSibling.style.display = "none";
+			logList.forEach(function(log){
+				const logItem = document.createElement("div");
+				logItem.classList.add("issuedetail-log");
+				logItem.innerHTML = `<img src="/images/${log.iconFilename}" width="32" height="32">
+										<span>${log.username} ${log.logType}</span>
+										<span>${log.date}</span>`;
+				logbox.appendChild(logItem);
+			});
+		}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+function getAllIssueLogList(logbox){
+	let url = "/api/project/get_all_issue_log_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(issueLogData)
+	})
+	.then(response => response.json())
+		.then(logList => {
+			logbox.innerHTML = "";
+			logbox.nextElementSibling.style.display = "none";
+			logbox.nextElementSibling.nextElementSibling.style.display = "none";
+			logbox.nextElementSibling.nextElementSibling.nextElementSibling.style.display = "none";
+			logList.forEach(function(log){
+				const logItem = document.createElement("div");
+				logItem.classList.add("issuedetail-log");
+				logItem.innerHTML = `<img src="/images/${log.iconFilename}" width="32" height="32">
+										<span>${log.username} ${log.logType}</span>
+										<span>${log.date}</span>`;
+				logbox.appendChild(logItem);
+			});
+		}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".issuedetail-atvbtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const container = e.target.closest(".issuedetail-container");
+		if(btn.className.includes("log")){
+			btn.previousElementSibling.classList.remove("active");
+			btn.classList.add("active");
+			
+			issueLogData.issueIdx = container.parentElement.dataset.idx;
+			const logbox = container.querySelector(".issuedetail-loglist");
+			logbox.style.display = "block";
+			
+			getIssueLogList(logbox);
+		}else if(btn.className.includes("reply")){
+			btn.classList.add("active");
+			btn.nextElementSibling.classList.remove("active");
+			
+			container.querySelector(".issuedetail-replybox").style.display = "block";
+			container.querySelector(".issuedetail-replylist").style.display = "block";
+			container.querySelector(".issuedetail-loglist").style.display = "none";
 		}
 	});
 });
@@ -757,8 +1084,15 @@ function updateStatusfetch(btn){
 	})
 	.then(response => response.json())
 	.then(newStatus => {
-		btn.className = '';
-		btn.classList.add("issuedetail-statusbtn");
+		console.log(btn);
+		if(btn.className.includes("issuedetail-statusbtn")){
+			btn.className = '';
+			btn.classList.add("issuedetail-statusbtn");
+		}else{
+			btn.className = '';
+			btn.classList.add("rightdetail-subissue-status");
+		}
+		
 		if(newStatus.status == 1){
 			btn.classList.add("status1");
 		}else if(newStatus.status == 2){
@@ -777,7 +1111,7 @@ let currentStatus = {
 	"statusIdx" : ""
 }
 
-function fetchStatusList(){
+function fetchStatusList(statusbox){
 	let url = "/api/project/get_status_list";
 	fetch(url, {
 		method: 'POST',
@@ -788,33 +1122,31 @@ function fetchStatusList(){
 	})
 	.then(response => response.json())
 	.then(statusList => {
-		document.querySelectorAll(".statuswindow-menubox").forEach(function(box){
-			box.innerHTML = "";
+		statusbox.innerHTML = "";
+		
+		statusList.forEach(function(status){
+			const statusVal = document.createElement("div");
+			statusVal.classList.add("statuswindow-status");
+			statusVal.setAttribute("data-statusidx", status.idx);
 			
-			statusList.forEach(function(status){
-				const statusVal = document.createElement("div");
-				statusVal.classList.add("statuswindow-status");
-				statusVal.setAttribute("data-statusidx", status.idx);
-				
-				const statusTitle = document.createElement("span");
-				statusTitle.classList.add("statuswindow-title");
-				statusTitle.innerHTML = `${status.name}`;
-				if(status.status == 1){
-					statusTitle.classList.add("status1");
-				}else if(status.status == 2){
-					statusTitle.classList.add("status2");
-				}else if(status.status = 3){
-					statusTitle.classList.add("status3");
-				}
-				statusVal.appendChild(statusTitle);
-				// statusVal.innerHTML += `<input type="hidden" class="send-status-value" value="${status.idx}">`;
-				box.appendChild(statusVal);
-				statusVal.addEventListener("click", function(e){
-					statusDatas.statusIdx = `${status.idx}`;
-					statusDatas.issueIdx = box.parentElement.parentElement.dataset.issueidx;
-					const btn = box.parentElement.parentElement;
-					updateStatusfetch(btn);
-				});
+			const statusTitle = document.createElement("span");
+			statusTitle.classList.add("statuswindow-title");
+			statusTitle.innerHTML = `${status.name}`;
+			if(status.status == 1){
+				statusTitle.classList.add("status1");
+			}else if(status.status == 2){
+				statusTitle.classList.add("status2");
+			}else if(status.status = 3){
+				statusTitle.classList.add("status3");
+			}
+			statusVal.appendChild(statusTitle);
+			statusbox.appendChild(statusVal);
+			statusVal.addEventListener("click", function(e){
+				statusDatas.statusIdx = `${status.idx}`;
+				statusDatas.issueIdx = statusbox.parentElement.parentElement.dataset.issueidx;
+				const btn = statusbox.parentElement.parentElement;
+				console.log(btn);
+				updateStatusfetch(btn);
 			});
 		});
 	}).catch(error => {
@@ -829,7 +1161,7 @@ document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index)
 		if(btn !== null && e.target.closest(".issuedetail-statuswindow") == null){
 			currentStatus.projectIdx = btn.dataset.projectidx;
 			currentStatus.statusIdx = btn.dataset.statusidx;
-			fetchStatusList();
+			fetchStatusList(btn.children[0].children[0]);
 		}
 	});
 });
@@ -849,7 +1181,10 @@ document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, 
 			return;
 		}
 		const windowItem = btn.children[0];
-		
+		console.log("hi");
+		currentStatus.projectIdx = btn.dataset.projectidx;
+		currentStatus.statusIdx = btn.dataset.statusidx;
+		fetchStatusList(windowItem.children[0]);
 		windowItem.classList.toggle("show");
 	});
 
@@ -1157,24 +1492,24 @@ detailUserDatas = {
 
 function updateUserFetch(graphval){
 	let url = "/api/project/update_user";
-			fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json' // JSON 데이터를 전송
-				},
-				body: JSON.stringify(detailUserDatas)
-			})
-			.then(response => response.json())
-			.then(reporter => {
-				console.log(reporter);
-				graphval.dataset.reporteridx = reporter.reporterIdx;
-				graphval.dataset.projectidx = reporter.projectIdx;
-				graphval.dataset.issueidx = reporter.issueIdx;
-				graphval.children[1].children[0].src = `/images/${reporter.iconFilename}`;
-				graphval.children[2].innerHTML = `${reporter.name}`;
-			}).catch(error => {
-					console.error("Fetch error:", error);
-			});
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(detailUserDatas)
+	})
+	.then(response => response.json())
+	.then(reporter => {
+		console.log(reporter);
+		graphval.dataset.reporteridx = reporter.reporterIdx;
+		graphval.dataset.projectidx = reporter.projectIdx;
+		graphval.dataset.issueidx = reporter.issueIdx;
+		graphval.children[1].children[0].src = `/images/${reporter.iconFilename}`;
+		graphval.children[2].innerHTML = `${reporter.name}`;
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
 }
 
 function getReporterListFetch(window){
