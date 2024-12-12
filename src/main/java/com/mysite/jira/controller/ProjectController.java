@@ -128,7 +128,7 @@ public class ProjectController {
 		model.addAttribute("issueList", issueList);
 		
 		// 프로젝트 별 서브 이슈 유형을 제외한 이슈 유형 리스트
-		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGrade(projectIdx, 1);
+		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGradeGreaterThan(projectIdx, 1);
 		model.addAttribute("issueTypeList", issueTypeList);
 		
 		// 전체 레이블 리스트

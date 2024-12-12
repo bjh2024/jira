@@ -107,8 +107,12 @@ public class BoardMainService {
 		return this.issueExtendsRepository.findAllByProjectIdx(projectIdx);
 	}
 	
-	public List<IssueType> getIssueTypesByProjectIdxAndGrade(Integer projectIdx, Integer grade){
+	public List<IssueType> getIssueTypesByProjectIdxAndGradeGreaterThan(Integer projectIdx, Integer grade){
 		return this.issueTypeRepository.findByProjectIdxAndGradeGreaterThan(projectIdx, grade);
+	}
+	
+	public List<IssueType> getIssueTypeByProjectIdxAndGrade(Integer projectIdx, Integer grade){
+		return this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, grade);
 	}
 	
 	public List<IssueLabelData> getLabelData(){
@@ -426,5 +430,21 @@ public class BoardMainService {
 									.build();
 		this.issueReplyRepository.save(reply);
 		return reply;
+	}
+	
+	public IssueReply getIssueReplyByIdx(Integer idx) {
+		Optional<IssueReply> reply = this.issueReplyRepository.findById(idx);
+		return reply.get();
+	}
+	
+	public void updateIssueReply(IssueReply reply, String content) {
+		LocalDateTime date = LocalDateTime.now();
+		reply.updateReplyContent(content);
+		reply.updateEditDate(date);
+		this.issueReplyRepository.save(reply);
+	}
+	
+	public void deleteIssueReply(Integer idx) {
+		this.issueReplyRepository.deleteById(idx);
 	}
 }

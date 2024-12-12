@@ -34,6 +34,7 @@ import com.mysite.jira.dto.board.StatusTitleDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.dto.board.UpdateIssueExareaDTO;
 import com.mysite.jira.dto.board.UpdateIssueNameDTO;
+import com.mysite.jira.dto.board.UpdateReplyDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueLabel;
@@ -401,5 +402,18 @@ public class BoardMainAPTIController {
 											.build();
 											
 		return result;
+	}
+	
+	@PostMapping("/update_reply")
+	public void updateReply(@RequestBody UpdateReplyDTO updateReplyDTO) {
+		IssueReply reply = boardMainService.getIssueReplyByIdx(updateReplyDTO.getReplyIdx());
+		String content = updateReplyDTO.getContent();
+		boardMainService.updateIssueReply(reply, content);
+	}
+	
+	@PostMapping("delete_reply")
+	public void deleteReply(@RequestBody UpdateReplyDTO updateReplyDTO) {
+		Integer replyIdx = updateReplyDTO.getReplyIdx();
+		boardMainService.deleteIssueReply(replyIdx);
 	}
 }

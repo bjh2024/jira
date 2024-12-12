@@ -1047,6 +1047,21 @@ body{
 	border-color: #B3DF72 !important;
 }
 
+.reply-delete-alert-container{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #050C1F75;
+	display: none;
+	z-index: 1000;
+}
+
+.reply-delete-alert-container.show{
+	display: block;
+}
+
 .issue-status{
 	width: 195px;
 	display: flex;
@@ -2076,7 +2091,12 @@ body{
 
 .subissue-list-box{
 	padding-left: 24px;
-	margin-top: 77px;
+	margin-top: 24px;
+	display: none;
+}
+
+.subissue-list-box.show{
+	display: block;
 }
 
 .subissue-list-title{
@@ -2183,6 +2203,145 @@ body{
 	font-size: 11px;
 	display: flex;
 	align-items: center;
+}
+
+.create-subissue-box{
+	width: 734px;
+	height: 80px;
+	display: none;
+}
+
+.create-subissue-box.show{
+	display: block;
+}
+
+.create-subissue-titlebox{
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.create-subissue-type{
+	min-width: 109px;
+	max-width: 133px;
+	height: 40px;
+	background-color: #0515240F;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	color: #080F214A;
+	font-size: 14px;
+	padding: 0px 10px;
+	cursor: not-allowed;
+	position: relative;
+}
+
+.create-subissue-type.active{
+	border: 1px solid #8C8F97;
+	background-color: white;
+	color: #292A2E;
+	cursor: pointer;
+}
+
+.create-subissue-typewindow{
+	position: absolute;
+	left: 0px;
+	top: 48px;
+	min-width: 109px;
+	width: inherit;
+	padding: 8px 0px;
+	background-color: white;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	z-index: 100;
+}
+
+.create-subissue-title{
+	width: 594px;
+	height: 40px;
+	border: 2px solid #1868DB;
+	border-radius: 3px;
+	padding: 0px 6px;
+	display: flex;
+	align-items: center;
+}
+
+.create-subissue-input{
+	width: 588px;
+	height: 36px;
+	border: none;
+	outline: none;
+}
+
+.create-subissue-underbox{
+	height: 32px;
+	margin-top: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.select-exist-subissuebtn{
+	width: 137px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 0px 10px;
+	color: #1868DB;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.select-exist-subissuebtn:hover .select-exist-subissuebtn > span{
+	text-decoration: underline;
+}
+
+.create-subissue-submitbar{
+	width: 134px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.create-subissue-submitbar{
+	height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.create-subissue{
+	height: 32px;
+	padding: 0px 10px;
+	margin-left: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	border-radius: 3px;
+}
+
+.create-subissue.submit{
+	width: 66px;
+	color: #080F214A;
+	background-color: #17171708;
+	cursor: not-allowed;
+}
+
+.create-subissue.submit.action{
+	color: white;
+	background-color: #1868DB;
+	cursor: pointer;
+}
+
+.create-subissue.cancel{
+	width: 52px;
+	color: #505258;
+	cursor: pointer;
+}
+
+.create-subissue.cancel:hover{
+	background-color: #0515240F;
 }
 
 .issuedetail-activebox{

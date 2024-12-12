@@ -645,15 +645,8 @@
 								 							</div>
 								 							<div></div>
 								 							<div class="replydetail-managebar">
-								 								<span class="reply-geteditbtn">댓글</span><strong>·</strong>
 								 								<span class="reply-geteditbtn">편집</span><strong>·</strong>
-								 								<span>삭제</span><strong>·</strong>
-								 								<button class="replydetail-emojibtn">
-								 									<span style="height: 16px;">
-								 										<img th:src="@{/images/reply_emoji_icon.svg}"
-								 											style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
-								 									</span>
-								 								</button>
+								 								<span class="reply-deletebtn" th:attr="data-replyidx=${replyList.idx}">삭제</span>
 								 							</div>
 								 							<div class="editor-container">
 								 								<div class="editor" style="width: 676px;">
@@ -971,7 +964,7 @@
 						 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
 						 										파일</span>
 						 								</button>
-						 								<button class="insertwindow-btn subissue">
+						 								<button class="insertwindow-btn subissue" th:attr="data-grade=${issueList.issueType.grade}">
 						 									<span style="height: 24px; margin-bottom: 2px;"><img
 						 											th:src="@{/images/sub_issue_icon.svg}"
 						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
@@ -1002,7 +995,7 @@
 						 							th:text="${#strings.defaultString(issueList.content, '설명 편집')}"
 						 							value></span>
 						 					</div>
-						 					<div class="subissue-list-box" th:if="${#lists.size(issueList.parentList) > 0}">
+						 					<div class="subissue-list-box main" >
 						 						<div class="subissue-list-title">
 						 							<span>하위 이슈</span>
 						 							<div class="subissue-list-btnbar">
@@ -1012,7 +1005,7 @@
 						 							</div>
 						 						</div>
 						 						<div class="subissue-list" th:each="extendsList : ${extendsList}"
-						 						th:if="${extendsList.parent.idx == issueList.idx}">
+						 						th:if="${extendsList.parent.idx == issueList.idx && #lists.size(issueList.parentList) > 0}">
 						 							<div class="subissue-list-leftdetail">
 						 								<span style="height: 16px;">
 						 									<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}">
@@ -1049,6 +1042,33 @@
 														</div>
 						 							</div>
 						 						</div>
+												<div class="create-subissue-box">
+													<div class="create-subissue-titlebox">
+														<div class="create-subissue-type">
+															<div class="create-subissue-typewindow"></div>
+															<img th:src="@{/images/issue_sub_task.svg}" style="margin-right: 10px;">
+															<span style="margin-right: 10px;">하위 작업</span>
+															<img th:src="@{/images/arrow_under_icon.svg}" style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);" draggable="false">
+														</div>
+														<div class="create-subissue-title">
+															<input type="text" class="create-subissue-input" placeholder="무엇을 완료해야 합니까?">
+														</div>
+													</div>
+													<div class="create-subissue-underbox">
+														<div class="select-exist-subissuebtn">
+															<img th:src="@{/images/search_icon.svg}" width="16" height="16" style="filter: invert(36%) sepia(64%) saturate(1801%) hue-rotate(200deg) brightness(83%) contrast(107%);">
+															<span>기존 이슈 선택</span>
+														</div>
+														<div class="create-subissue-submitbar">
+															<div class="create-subissue submit">
+																<span>만들기</span>
+															</div>
+															<div class="create-subissue cancel">
+																<span>취소</span>
+															</div>
+														</div>
+													</div>
+												</div>
 						 					</div>
 						 					<div class="issuedetail-activebox">
 						 						<div
@@ -1115,19 +1135,11 @@
 						 							</div>
 						 							<div></div>
 						 							<div class="replydetail-managebar">
-						 								<span class="reply-geteditbtn new">댓글</span><strong>·</strong>
 						 								<span class="reply-geteditbtn edit" th:if="${currentUser.idx == replyList.account.idx}" th:attr="data-content=${replyList.content}">편집</span><strong th:if="${currentUser.idx == replyList.account.idx}">·</strong>
-						 								<span>삭제</span><strong>·</strong>
-						 								<button class="replydetail-emojibtn">
-						 									<span style="height: 16px;">
-						 										<img th:src="@{/images/reply_emoji_icon.svg}"
-						 											style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
-						 									</span>
-						 								</button>
+						 								<span class="reply-deletebtn" th:attr="data-replyidx=${replyList.idx}">삭제</span>
 						 							</div>
 						 							<div class="editor-container">
-						 								<div class="editor alterreply" style="width: 676px;">
-						 								</div>
+						 								<div class="editor alterreply" th:attr="data-content=${replyList.content}, data-replyidx=${replyList.idx}" style="width: 676px;"></div>
 						 								<div class="editareabtns">
 						 									<button class="editarea-save">저장</button>
 						 									<button class="editarea-cancel">취소</button>
@@ -1474,6 +1486,27 @@
 					<span>취소</span>
 				</button>
 				<button class="delete-alert-submitbtn">
+					<span>삭제</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="reply-delete-alert-container">
+		<div class="delete-alert-box">
+			<div class="delete-alert-title">
+				<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+				<span class="delete-alert-titletext">이 댓글을 삭제하시겠습니까?</span>
+			</div>
+			<div class="delete-alert-body">
+				<span>
+					삭제하면 영구적으로 제거됩니다.
+				</span>
+			</div>
+			<div class="delete-alert-btnbar">
+				<button class="delete-alert-cancelbtn">
+					<span>취소</span>
+				</button>
+				<button class="delete-alert-submitbtn reply">
 					<span>삭제</span>
 				</button>
 			</div>

@@ -81,7 +81,6 @@ function createReply(replybox){
 			</div>
 			<div></div>
 			<div class="replydetail-managebar">
-				<span class="reply-geteditbtn">댓글</span><strong>·</strong>
 				<span class="reply-geteditbtn">편집</span><strong>·</strong>
 				<span>삭제</span><strong>·</strong>
 				<button class="replydetail-emojibtn">
@@ -151,22 +150,61 @@ function initEditor(target, initialValue) {
     });
 }
 
-document.querySelectorAll(".reply-geteditbtn").forEach(function(btn){
-	btn.addEventListener("click", function(e){
-		if (e.target.matches('.reply-geteditbtn')) {
-	        const isEdit = e.target.textContent === '편집'; // 편집 버튼인지 확인
-	        const editorContainer = e.target.closest('.replydetail-managebar').nextElementSibling; // 에디터 컨테이너 찾기
-	        const editorTarget = editorContainer.querySelector('.editor');
-	        const editContent = isEdit ? e.target.closest('.reply-geteditbtn').dataset.content : ''; // 편집: 기존 내용, 댓글: 빈 내용
+editReplyData = {
+	"replyIdx": "",
+	"content": ""
+}
 
-	        if (editorTarget._toastuiEditorInstance) {
-	            editorTarget._toastuiEditorInstance.destroy(); // 기존 에디터 인스턴스 제거
-	        }
+function updateReplyFetch(replybox){
+	let url = "/api/project/update_reply";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(editReplyData)
+	}).then(response => {
+        if (response.ok) {
+            const detail = replybox.children[0];
+			if(detail.children.length < 3){
+				const edited = document.createElement("div");
+				edited.innerText = "편집됨";
+				detail.appendChild(edited);
+			}
+			replybox.children[1].innerText = editReplyData.content;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
 
-	        initEditor(editorTarget, editContent);
-
-	        editorContainer.style.display = 'block';
-	    }
+document.querySelectorAll(".editor.alterreply").forEach(function(editor){
+	const contentEditor = new toastui.Editor({
+	    el: editor,
+	    height: 'auto',
+		minHeight: '74px',
+	    initialEditType: 'wysiwyg',
+	    initialValue: editor.dataset.content,
+	    previewStyle: 'vertical'
+	});
+	const editorContainer = editor.parentElement;
+		  
+	const submitbtn = editor.nextElementSibling.children[0];
+	submitbtn.addEventListener("click", function(e){
+		editReplyData.replyIdx = editor.dataset.replyidx;
+		editReplyData.content = contentEditor.getMarkdown();
+		if(editReplyData.content.length < 1){
+			return;
+		}
+		const barItem = editorContainer.previousElementSibling;
+		const contentItem = barItem.previousElementSibling.previousElementSibling;
+		updateReplyFetch(contentItem);
+		barItem.style.display = "flex";
+		contentItem.children[1].style.display = "block";
+		editorContainer.style.display = "none";
 	});
 });
 
@@ -765,8 +803,15 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
 			|| e.target.closest(".subissuebox") !== null || e.target.closest(".issue-menuwindow") !== null
-			|| e.target.closest(".menuwindow-option") !== null){
+			|| e.target.closest(".menuwindow-option") !== null || e.target.closest(".insertwindow-btn") !== null){
 			return;
+		}
+		
+		const subissuelist = btn.querySelector(".subissue-list-box.main");
+		if(subissuelist.children.length < 3){
+			subissuelist.classList.remove("show");
+		}else{
+			subissuelist.classList.add("show");
 		}
 		
 		const lblItem = btn.querySelector(".issuedetail-graphval.label-def.main");
@@ -868,15 +913,9 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		document.querySelectorAll(".issuedetail-container")[index]?.classList.remove("show");
 		
 		const bgItem = e.target.closest(".issuedetail-off");
-		const subIssueItem = e.target.closest(".subissue-list");
 		const issueDetailItem = e.target.closest(".issuedetailbox");
 		
-		const atvBtn = e.target.closest(".issuedetail-atvbtn");
-					
-		
-		
 		if(bgItem == null && issueDetailItem !== null){
-			
 			container.classList.add("show");
 		}else{
 			container.classList.remove("show");
@@ -1081,7 +1120,17 @@ document.querySelectorAll(".issuedetail-exarea").forEach(function(area, index){
 
 });
 
-
+document.querySelectorAll(".create-subissue-input").forEach(function(input){
+	input.addEventListener("keyup", function(e){
+		const issueTitleItem = e.target.closest(".create-subissue-input");
+		const submitbtn = input.parentElement.parentElement.nextElementSibling.children[1].children[0];
+		if(issueTitleItem.value != "" && issueTitleItem.value != null){
+			submitbtn.classList.add("action");
+		}else{
+			submitbtn.classList.remove("action");
+		}
+	});
+});
 
 document.querySelectorAll(".writereplybox").forEach(function(box, index){
 	box.addEventListener("click", function(e) {
@@ -1108,11 +1157,11 @@ document.querySelectorAll(".issuedetail-replylist").forEach(function(btn, index)
 		const areaItem = e.target.closest(".issuedetail-reply");
 		const editorItem = areaItem.querySelector(".editor-container");
 		const replyBtnItem = e.target.closest(".reply-geteditbtn");
+		const delBtnItem = e.target.closest(".reply-deletebtn");
 		const btnItem = e.target.closest(".editarea-cancel");
 		
 		const barItem = areaItem.querySelector(".replydetail-managebar");
 		const contentItem = areaItem.querySelector(".replydetail-content");
-		
 		
 		if(btnItem !== null && editorItem !== null){
 			editorItem.style.display = "none";
@@ -1128,8 +1177,64 @@ document.querySelectorAll(".issuedetail-replylist").forEach(function(btn, index)
 			barItem.style.display = "none";
 			contentItem.style.display = "none";
 		}
+		
+		if(delBtnItem !== null){
+			deleteReplyData.replyIdx = delBtnItem.dataset.replyidx;
+			document.querySelector(".reply-delete-alert-container").classList.add("show");
+			getReplyDetail(areaItem);
+		}
 	});
+});
 
+let deleteReplyData = {
+	"replyIdx": ""
+}
+
+function deleteIssueReply(){
+	let url = "/api/project/delete_reply";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(deleteReplyData)
+	})
+	.then(response => {
+        if (response.ok) {
+			console.log("삭제 성공");
+            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+function getReplyDetail(box){
+	const submitItem = document.querySelector(".delete-alert-submitbtn.reply");
+	submitItem.addEventListener("click", function(e){
+		console.log(box);
+		if(deleteReplyData.replyIdx != ""){
+			deleteIssueReply();
+			box.remove();
+			e.target.closest(".reply-delete-alert-container").classList.remove("show");
+		}
+	});
+}
+
+document.querySelector(".reply-delete-alert-container").addEventListener("mousedown", function(e) {
+	document.querySelector(".reply-delete-alert-container")?.classList.remove("show");
+	
+	const bgItem = e.target.closest(".delete-alert-cancelbtn");
+	const detailItem = e.target.closest(".delete-alert-box");
+	
+	if(bgItem == null && detailItem !== null){
+		document.querySelector(".reply-delete-alert-container").classList.add("show");
+	}else{
+		document.querySelector(".reply-delete-alert-container").classList.remove("show");
+	}
 });
 
 document.querySelectorAll(".subissue-list").forEach(function(list, index){
@@ -1252,7 +1357,26 @@ document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index)
 });
 
 document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, index){
-	
+	btn.addEventListener("click", function(e){
+		const listbox = btn.parentElement.parentElement.parentElement.parentElement.querySelector(".subissue-list-box");
+		const createbox = listbox.querySelector(".create-subissue-box");
+		listbox.classList.add("show");
+		
+		const grade = btn.dataset.grade;
+		if(grade == 3){
+			const typebtn = createbox.querySelector(".create-subissue-type");
+			
+			// 에픽 이슈에 유형 선택 권한 부여
+			typebtn.classList.add("active");
+			typebtn.children[2].innerText = "유형 선택";
+			typebtn.children[1].remove();
+			
+			// 이슈 유형 선택을 위한 selectwindow 생성
+			// const windowItem = document.createElement("div");
+		}
+		
+		createbox.classList.add("show");
+	});
 });
 
 document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, index){
