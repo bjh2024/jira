@@ -392,9 +392,6 @@ document.querySelectorAll(".viewer_div_1_category").forEach(function(item) {
 			 parentCategory.style.display = "none";
 		   }
  	  }
-    
-
-    
   });
 });
 document.querySelector(".project_div_category").addEventListener("click",function(e){

@@ -5,25 +5,25 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -35,7 +35,8 @@ public class FilterController {
 	private final ProjectService projectService;
 	private final IssueTypeService issueTypeService;
 	private final AccountService accountService;
-	private final BoardMainService boardMainService;
+	private final FilterService filterService;
+	private final BoardMainService boradMainService;
 	private final TeamService teamService;
 
 //	@GetMapping("filter_issue")
@@ -58,13 +59,16 @@ public class FilterController {
 //	    return "redirect:" + requestUrl + "/" + issueKey;
 //	}
 	@GetMapping("filter_issue")
-	public String filterIssue(Model model) {
-		
+	public String filterIssue(@RequestParam(name="filter") Integer filterIdx ,Model model) {
+			System.out.println(filterIdx);
 		Integer jiraIdx = 1;
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
+			
+			List<FilterProject> filterProject = filterService.getByFilterIdx(filterIdx);
+			model.addAttribute("filterProject", filterProject);
 			
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);

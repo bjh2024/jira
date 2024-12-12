@@ -36,5 +36,4 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 			""", nativeQuery=true)
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);
-	
 }

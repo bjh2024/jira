@@ -42,7 +42,7 @@ document.querySelectorAll("input").forEach(function(input){
 })
 
 let filterDatas = {
-			"projecIdxArr" : [],
+			"projectIdxArr" : [],
 			"issueTypeArr" : [],
 			"issueStatusArr" : [],
 			"issueManagersArr" : [],
@@ -116,6 +116,23 @@ let filterDatas = {
 		let filterValue = urlParams.get('filter');  // '21'
 		console.log(filterValue);
 		filterDatas.filterIdx = filterValue;*/
+		document.querySelectorAll(".filter_menu").forEach(function(item){
+			item.addEventListener("click",function(){
+		const filter_project_input = document.querySelectorAll(".project_input_list");
+		
+					for(let i = 0; i < filter_project_input.length; i+=2){
+						if(filter_project_input[i+1].checked){
+							if(filter_project_input[i+1].parentElement.children.length!==1){
+							filter_project_input[i].remove();
+							}
+						}else{
+							if(filter_project_input[i].parentElement.children.length!==1){
+							filter_project_input[i+1].remove();
+							}
+						}
+					}
+			})
+		})
 // 업데이트 날짜 필터 -------------------------------------------------------------------
 	document.getElementById("radio_days").addEventListener("change", function() {
 	   // '몇일 전'을 선택했을 때
@@ -311,10 +328,10 @@ let filterDatas = {
 document.querySelectorAll(".filter_issue_box input[name='projectIdx']").forEach(function(input){
 	input.addEventListener("click", function(e) {
 		if(this.checked){
-		filterDatas.projecIdxArr.push(this.value);
+		filterDatas.projectIdxArr.push(this.value);
 		console.log(this.value);
 		}else{
-		filterDatas.projecIdxArr.splice(filterDatas.projecIdxArr.indexOf(this.value), 1);
+		filterDatas.projectIdxArr.splice(filterDatas.projectIdxArr.indexOf(this.value), 1);
 		}
 		fetchInputIssue();
 		fetchInput();
@@ -418,7 +435,7 @@ document.getElementById("search_box").addEventListener("input",function(item){
 // 전체리셋버튼 ========================================================================================
 document.querySelector("#all_reset").addEventListener("click",function(){
 	filterDatas = {
-		"projecIdxArr" : [],
+		"projectIdxArr" : [],
 		"issueTypeArr" : [],
 		"issueStatusArr" : [],
 		"issueManagersArr" : [],
@@ -438,6 +455,12 @@ document.querySelector("#all_reset").addEventListener("click",function(){
 		"notDoneCheck" : null,
 		"filterIdx": null
 		}
+		document.querySelector(".createDate").style.display = "none";
+		document.querySelector(".done_check").style.display = "none";
+		document.querySelector(".doneDate").style.display = "none";
+		document.querySelector(".updateDate").style.display = "none";
+		document.querySelector(".issuePriority").style.display = "none";
+		document.querySelector(".issueReporter").style.display = "none";
 		fetchInput();
 		fetchInputIssue();
 })
@@ -454,7 +477,7 @@ function fetchInput() {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify({
-			projectIdx: filterDatas.projecIdxArr, 
+			projectIdx: filterDatas.projectIdxArr, 
 			issueTypes: filterDatas.issueTypeArr,
 			issueStatus: filterDatas.issueStatusArr,
 			issueManager: filterDatas.issueManagersArr,
@@ -571,7 +594,7 @@ function fetchInputIssue() {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify({
-			projectIdx: filterDatas.projecIdxArr, 
+			projectIdx: filterDatas.projectIdxArr, 
 			issueTypes: filterDatas.issueTypeArr,
 			issueStatus: filterDatas.issueStatusArr,
 			issueManager: filterDatas.issueManagersArr,
@@ -704,3 +727,4 @@ document.getElementById("doneCheck").addEventListener("change",function(){
 		document.querySelector(".done_check").style.display = "none";
 	}
 })
+
