@@ -472,7 +472,6 @@
 								 					</div>
 								 				</div>
 								 				<div class="issuedetail-menubar">
-								 					<div class="issuedetail-option-observ"></div>
 								 					<div class="issuedetail-option">
 								 						<span style="margin-top: 2px;">
 								 							<img th:src="@{/images/thumbsup_icon.svg}"
@@ -894,7 +893,8 @@
 						 						</th:block>
 						 					</div>
 						 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) < 1} and ${issueList.issueType.grade != 3}" style="gap: 0px;">
-						 						<button class="addissuepathbtn">
+						 						<button class="addissuepathbtn" th:attr="data-projectidx=${project.idx}, data-issueidx=${issueList.idx}">
+													<div class="addissuepath-window"></div>
 						 							<span style="height: 16px;">
 						 								<img th:src="@{/images/add_path_icon.svg}">
 						 							</span>
@@ -912,13 +912,6 @@
 						 					</div>
 						 				</div>
 						 				<div class="issuedetail-menubar">
-						 					<div class="issuedetail-option-observ">
-						 						<span style="margin-top: 2px; color: #0C66E4;">
-						 							<img th:src="@{/images/eye_icon.svg}"
-						 								style="filter: invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%);">
-						 						</span>
-						 						<span style="color: #0C66E4; margin-left: 4px;">2</span>
-						 					</div>
 						 					<div class="issuedetail-option">
 						 						<span style="margin-top: 2px;">
 						 							<img th:src="@{/images/thumbsup_icon.svg}"

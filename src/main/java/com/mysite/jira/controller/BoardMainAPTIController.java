@@ -20,6 +20,7 @@ import com.mysite.jira.dto.board.DeleteLabelDataDTO;
 import com.mysite.jira.dto.board.DeleteStatusDTO;
 import com.mysite.jira.dto.board.DragIssueBoxDTO;
 import com.mysite.jira.dto.board.DragIssueDTO;
+import com.mysite.jira.dto.board.EpikIssueDTO;
 import com.mysite.jira.dto.board.GetCurrentStatusDTO;
 import com.mysite.jira.dto.board.GetLabelDTO;
 import com.mysite.jira.dto.board.GetNewLabelDataDTO;
@@ -464,5 +465,37 @@ public class BoardMainAPTIController {
 												.status(childIssue.getIssueStatus().getStatus())
 												.build();
 		return dto;
+	}
+	
+	@PostMapping("/get_epik_issue_list")
+	public List<EpikIssueDTO> getEpikIssueList(@RequestBody EpikIssueDTO epikIssueDTO){
+		Integer projectIdx = epikIssueDTO.getProjectIdx();
+		List<Issue> list = boardMainService.getIssueByProjectIdxAndIssueTypeGrade(projectIdx, 3);
+		List<EpikIssueDTO> epikList = new ArrayList<>();
+		for(int i = 0; i < list.size(); i++) {
+			EpikIssueDTO dto = EpikIssueDTO.builder()
+										.issueIdx(list.get(i).getIdx())
+										.iconFilename(list.get(i).getIssueType().getIconFilename())
+										.name(list.get(i).getName())
+										.issueKey(list.get(i).getKey())
+										.build();
+			epikList.add(dto);
+		}
+		return epikList;
+	}
+	
+	@PostMapping("/create_issue_path")
+	public EpikIssueDTO createIssuePath(@RequestBody EpikIssueDTO epikIssueDTO) {
+		Project project = boardMainService.getProjectByIdx(epikIssueDTO.getProjectIdx());
+		Issue parent = boardMainService.getIssueByIdx(epikIssueDTO.getParentIdx());
+		Issue child = boardMainService.getIssueByIdx(epikIssueDTO.getChildIdx());
+		
+		boardMainService.createIssuePath(project, parent, child);
+		
+		EpikIssueDTO epik = EpikIssueDTO.builder()
+										.issueKey(parent.getKey())
+										.iconFilename(parent.getIssueType().getIconFilename())
+										.build();
+		return epik;
 	}
 }

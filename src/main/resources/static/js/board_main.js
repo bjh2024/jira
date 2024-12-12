@@ -746,59 +746,6 @@ function getStatusSubmit(){
 	location.reload();
 }
 
-let getObserverDatas = {
-	"issueIdx": "",
-	"userIdx": ""
-}
-
-function getObserverListFetch(btn){
-	let url = "/api/project/get_observer_list";
-	fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json' // JSON 데이터를 전송
-		},
-		body: JSON.stringify(getObserverDatas)
-	})
-	.then(response => response.json())
-	.then(data => {
-		btn.innerHTML = `<span style="margin-top: 2px;">
-							<img src="/images/eye_icon.svg">
-						 </span>
-						 <span style="margin-left: 4px;">${data.count}</span>`;
-						 
-		if(data.isIn == "true"){
-			btn.children[0].style.color = "#0C66E4;";
-			btn.children[0].children[0].style.filter = "invert(28%) sepia(70%) saturate(5006%) hue-rotate(209deg) brightness(95%) contrast(91%)";
-			btn.children[1].style.color = "#0C66E4";
-			btn.style.borderColor = "#0C66E4";
-			btn.style.backgroundColor = "#E9F2FE";
-		}else{
-			btn.children[0].style.color = "#505258;";
-			btn.children[0].children[0].style.filter = "invert(34%) sepia(13%) saturate(242%) hue-rotate(187deg) brightness(87%) contrast(90%)";
-			btn.children[1].style.color = "#505258";
-			btn.style.borderColor = "#091E422F";
-			btn.style.backgroundColor = "white";
-		}
-		btn.addEventListener("mouseover", function(e){
-			if(data.isIn == "true"){
-				btn.style.backgroundColor = "#CFE1FD";
-			}else{
-				btn.style.backgroundColor = "#0515240F";
-			}
-		});
-		btn.addEventListener("mouseout", function(e){
-			if(data.isIn == "true"){
-				btn.style.backgroundColor = "#E9F2FE";
-			}else{
-				btn.style.backgroundColor = "white";
-			}
-		});
-	}).catch(error => {
-			console.error("Fetch error:", error);
-	});
-}
-
 document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
@@ -824,12 +771,6 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 		if(btn !== null){ 
 			const container = btn.querySelector(".issuedetail-container");
 			container.classList.add("show");
-			
-			getObserverDatas.issueIdx = btn.dataset.idx;
-			getObserverDatas.userIdx = btn.dataset.useridx;
-			const observBtn = container.querySelector(".issuedetail-option-observ");
-			getObserverListFetch(observBtn);
-			
 		}
 	});
 });
@@ -920,6 +861,88 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		}else{
 			container.classList.remove("show");
 		}
+	});
+});
+
+let addIssuePathData = {
+	"parentIdx": "",
+	"childIdx": "",
+	"projectIdx": ""
+}
+
+function createIssuePath(btn){
+	let url = "/api/project/create_issue_path";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(addIssuePathData)
+	})
+	.then(response => response.json())
+	.then(epik => {
+		const path = document.createElement("div");
+		path.classList.add("issuekeypath");
+		path.innerHTML = `<span class="path-issuekeyicon"><img src="/images/${epik.iconFilename}" width="16px" height="16px"></span>
+						  <span style="margin-bottom: 2px; padding-right: 4px;">
+							  <a href="#">${epik.issueKey}</a>
+						  </span>
+						  <span style="font-size: 16px;">/</span>`;
+		btn.before(path);
+		btn.remove();
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+let getEpikIssueData = {
+	"projectIdx": ""
+}
+
+function getEpikIssueList(box){
+	let url = "/api/project/get_epik_issue_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getEpikIssueData)
+	})
+	.then(response => response.json())
+	.then(epikList => {
+		box.innerHTML = `<div class="pathwindow-title">
+							<span>에픽 이슈</span>
+						</div>`;
+		epikList.forEach(function(epik){
+			const item = document.createElement("div");
+			item.classList.add("pathwindow-option");
+			item.setAttribute("data-issueidx", epik.issueIdx);
+			item.innerHTML = `<img src="/images/${epik.iconFilename}">
+							  <span style="margin-bottom: 4px;">${epik.issueKey} ${epik.name}</span>`;
+			box.appendChild(item);
+			item.addEventListener("click", function(e){
+				addIssuePathData.projectIdx = item.parentElement.parentElement.dataset.projectidx;
+				addIssuePathData.childIdx = item.parentElement.parentElement.dataset.issueidx;
+				addIssuePathData.parentIdx = item.dataset.issueidx;
+				console.log(addIssuePathData);
+				createIssuePath(item.parentElement.parentElement.parentElement);
+			});
+		});
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".addissuepathbtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".pathwindow-option") !== null){
+			console.log("hi");
+			return;
+		}
+		getEpikIssueData.projectIdx = btn.dataset.projectidx;
+		getEpikIssueList(btn.children[0]);
+		btn.classList.toggle("active");
+		btn.children[0].classList.toggle("show");
 	});
 });
 

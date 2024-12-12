@@ -511,4 +511,18 @@ public class BoardMainService {
 												.build();
 		this.issueExtendsRepository.save(issueExtends);
 	}
+	
+	public List<Issue> getIssueByProjectIdxAndIssueTypeGrade(Integer projectIdx, Integer grade){
+		List<Issue> issueList = this.issueRepository.findByProjectIdxAndIssueTypeGrade(projectIdx, grade);
+		return issueList;
+	}
+	
+	public void createIssuePath(Project project, Issue parent, Issue child) {
+		IssueExtends path = IssueExtends.builder()
+										.project(project)
+										.parent(parent)
+										.child(child)
+										.build();
+		this.issueExtendsRepository.save(path);
+	}
 }
