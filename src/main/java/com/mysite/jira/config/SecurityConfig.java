@@ -33,8 +33,7 @@ public class SecurityConfig {
             .addHeaderWriter(new XFrameOptionsHeaderWriter(
                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
         )
-        .csrf((csrf) -> csrf.disable()
-		)
+        .csrf((csrf) -> csrf.disable())
         .formLogin((formLogin) -> formLogin
             .loginPage("/account/login")
             .successHandler(customAuthenticationSuccessHandler)

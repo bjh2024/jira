@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -155,5 +156,10 @@ public class ProjectService {
 
 	public Project getByJiraIdxAndNameProject(Integer jiraIdx, String name) {
 		return projectRepository.findByJira_idxAndName(jiraIdx, name);
+	}
+	
+	public Project getProjectByIdx(Integer idx) {
+		Optional<Project> optProject = this.projectRepository.findById(idx);
+		return optProject.get();
 	}
 }

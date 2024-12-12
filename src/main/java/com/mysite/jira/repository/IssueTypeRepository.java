@@ -38,5 +38,5 @@ public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {
 	
  	List<IssueType> findByProjectIdxAndGradeGreaterThan(Integer projectIdx, Integer grade);
  	
-	
+	List<IssueType> findByProjectIdxAndGrade(Integer projectIdx, Integer grade);
 }

@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 12" role="presentation" class="css-1bcm58u">
   <path fill="currentcolor" fill-rule="evenodd" d="M.384 5.116 5.116.384a1.25 1.25 0 0 1 1.768 0l4.732 4.732a1.25 1.25 0 0 1 0 1.768l-4.732 4.732a1.25 1.25 0 0 1-1.768 0L.384 6.884a1.25 1.25 0 0 1 0-1.768M6.75 2.5v4h-1.5v-4zM6 9.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2" clip-rule="evenodd"></path>
 </svg>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 12" role="presentation" class="css-1bcm58u">
+  <path fill="currentcolor" fill-rule="evenodd" d="M.384 5.116 5.116.384a1.25 1.25 0 0 1 1.768 0l4.732 4.732a1.25 1.25 0 0 1 0 1.768l-4.732 4.732a1.25 1.25 0 0 1-1.768 0L.384 6.884a1.25 1.25 0 0 1 0-1.768M6.75 2.5v4h-1.5v-4zM6 9.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2" clip-rule="evenodd"></path>
+</svg>
+>>>>>>> branch 'ndh' of https://github.com/bjh2024/jira.git

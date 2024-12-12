@@ -14,9 +14,6 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 																							@Param("accountIdx") Integer accountIdx, 
 																							@Param("jiraIdx") Integer jiraIdx);
 	List<Filter> findByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx);
-	
-	List<Filter> findByJiraIdx(Integer idx); 
-	
 	@Query(value="""
 			SELECT  f.*
 			FROM    filter_recent_clicked frc
@@ -36,4 +33,7 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 			""", nativeQuery=true)
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);
+	
+	List<Filter> findByJiraIdx(Integer idx); 
+	
 }
