@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +22,7 @@ import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
@@ -38,6 +40,7 @@ public class FilterController {
 	private final FilterService filterService;
 	private final BoardMainService boradMainService;
 	private final TeamService teamService;
+	private final JiraService jiraService;
 
 //	@GetMapping("filter_issue")
 //	public String filterIssueMain(Model model, HttpServletRequest request) {
@@ -59,12 +62,22 @@ public class FilterController {
 //	    return "redirect:" + requestUrl + "/" + issueKey;
 //	}
 	@GetMapping("filter_issue")
-	public String filterIssue(@RequestParam(name="filter") Integer filterIdx ,Model model) {
+	public String filterIssue(@RequestParam(name="filter") Integer filterIdx ,Model model,
+			@PathVariable("jiraName") String jiraName) {
+		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
 			System.out.println(filterIdx);
-		Integer jiraIdx = 1;
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
+			
+			List<Issue> projectFilterIssue = issueService.getIssueByProjectIdxAndFilterIdx(filterIdx);
+			if(projectFilterIssue.size() > 0) {
+				issue.retainAll(projectFilterIssue);
+			}
+			List<Issue> issueTypeFilterIssue = issueService.getIssueByIssueTypeAndFilterIdx(filterIdx);
+			if(issueTypeFilterIssue.size() > 0) {
+				issue.retainAll(issueTypeFilterIssue);
+			}
 			model.addAttribute("issue", issue);
 			
 			List<FilterProject> filterProject = filterService.getByFilterIdx(filterIdx);

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.dto.project.summation.PercentTableDTO;
 import com.mysite.jira.dto.project.summation.chartDTO;
+import com.mysite.jira.entity.FilterIssueType;
 import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
@@ -117,15 +118,28 @@ public class IssueService {
 		return issueRepository.findByQuery(text);
 				}
 	
-	public List<Issue> getIssueByFilterIdx(Integer filterIdx){
+	public List<Issue> getIssueByProjectIdxAndFilterIdx(Integer filterIdx){
 		List<FilterProject> issueProject = filterProjectRepository.findByFilterIdx(filterIdx);
-		for (int i = 0; i < issueProject.size(); i++) {
-			System.out.println(issueProject.size());
-//			List<Integer> projectNum = issueProject.get(i).getProject().getIdx();
-		}
-		List<Issue> list = new ArrayList<>();
-		return list;
 		
+		Integer[] projectIdxArr = new Integer[issueProject.size()];
+		
+		for (int i = 0; i < issueProject.size(); i++) {
+			System.out.println("프로젝트 필터링 이슈 사이즈" +issueProject.size());
+			projectIdxArr[i] = issueProject.get(i).getProject().getIdx();
+		}
+		
+		List<Issue> list = issueRepository.findByProjectIdxIn(projectIdxArr);
+		return list;
+	}
+	public List<Issue> getIssueByIssueTypeAndFilterIdx(Integer filterIdx){
+		List<FilterIssueType> issueType = filterIssueTypeRepository.findByFilterIdx(filterIdx);
+		String[] issueTypeArr = new String[issueType.size()];
+		for (int i = 0; i < issueType.size(); i++) {
+			System.out.println("이슈타입 필터링 사이즈" +issueType.size());
+			issueTypeArr[i] = issueType.get(i).getIssueType().getName();
+		}
+		List<Issue> list = issueRepository.findByIssueTypeNameIn(issueTypeArr);
+		return list;
 	}
 	
 	

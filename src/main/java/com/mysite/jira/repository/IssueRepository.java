@@ -125,4 +125,5 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(Integer newIdx, Integer statusIdx); 
 	
 	List<Issue> findByProjectIdxAndIssueStatusIdx(Integer projectIdx, Integer issueIdx);
+	
 }
