@@ -964,7 +964,7 @@
 						 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
 						 										파일</span>
 						 								</button>
-						 								<button class="insertwindow-btn subissue" th:attr="data-grade=${issueList.issueType.grade}">
+						 								<button class="insertwindow-btn subissue" th:attr="data-grade=${issueList.issueType.grade}, data-projectidx=${project.idx}">
 						 									<span style="height: 24px; margin-bottom: 2px;"><img
 						 											th:src="@{/images/sub_issue_icon.svg}"
 						 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
@@ -1042,12 +1042,13 @@
 														</div>
 						 							</div>
 						 						</div>
-												<div class="create-subissue-box">
+												<div class="create-subissue-box" th:attr="data-statusidx=${issueList.IssueStatus.idx}, data-useridx=${currentUser.idx}, 
+												data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-parentidx=${issueList.idx}">
 													<div class="create-subissue-titlebox">
 														<div class="create-subissue-type">
 															<div class="create-subissue-typewindow"></div>
-															<img th:src="@{/images/issue_sub_task.svg}" style="margin-right: 10px;">
-															<span style="margin-right: 10px;">하위 작업</span>
+															<img th:src="@{/images/issue_sub_task.svg}">
+															<span class="selected-sub-issue-type">하위 작업</span>
 															<img th:src="@{/images/arrow_under_icon.svg}" style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);" draggable="false">
 														</div>
 														<div class="create-subissue-title">

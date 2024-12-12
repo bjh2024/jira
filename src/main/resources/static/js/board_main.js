@@ -1132,6 +1132,92 @@ document.querySelectorAll(".create-subissue-input").forEach(function(input){
 	});
 });
 
+let createSubIssueData = {
+	"jiraName": "",
+	"projectIdx": "",
+	"parentIdx": "",
+	"reporterIdx": "",
+	"statusIdx": "",
+	"issueTypeIdx": "",
+	"name": ""
+}
+
+function createSubIssuefetch(afterbox){
+	let url = "/api/project/create_sub_issue";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createSubIssueData)
+	}).then(response => response.json())
+	.then(newIssue => {
+		const issueItem = document.createElement("div");
+		issueItem.classList.add("subissue-list");
+		//th:style="${newIssue.status == 3} ? 'text-decoration: line-through;' : ''"
+		issueItem.innerHTML = 
+		`<div class="subissue-list-leftdetail">
+			<span style="height: 16px;">
+				<img src="/images/${newIssue.issueTypeIconFilename}">
+			</span>
+			<span style="height: 13px;">${newIssue.issueKey}</span>
+			<span style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;">${newIssue.name}</span>
+		</div>
+		<div class="subissue-list-rightdetail">
+			<span style="height: 20px;">
+				<img src="/images/${newIssue.priorityIconFilename}" width="20px" height="20px">
+			</span>
+			<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;">
+				<img src="/images/${newIssue.reporterIconFilename}" class="issue-managerimg">
+			</span>
+			<div class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;">
+				<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
+					<div class="statuswindow-menubox"></div>
+				</div>
+				<span style="margin-right: 2px;">${newIssue.statusName}</span>
+				<img src="/images/arrow_under_icon.svg" width="10px" height="10px">
+			</div>
+		</div>`;
+		const status = issueItem.querySelector(".rightdetail-subissue-status");
+		if(newIssue.status == 1){
+			status.classList.add("status1");
+		}else if(newIssue.status == 2){
+			status.classList.add("status2");
+		}else if(newIssue.status == 3){
+			status.classList.add("status3");
+		}
+		status.setAttribute("data-projectidx", createSubIssueData.projectIdx);
+		status.setAttribute("data-statusidx", createSubIssueData.statusIdx);
+		status.setAttribute("data-issueidx", createSubIssueData.parentIdx);
+		
+		afterbox.before(issueItem);
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".create-subissue").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const submitbtn = e.target.closest(".create-subissue");
+		const createbox = btn.parentElement.parentElement.parentElement;
+		if(submitbtn !== null && submitbtn.className.includes("submit") && submitbtn.className.includes("action")){
+			const input = createbox.querySelector(".create-subissue-input");
+			createSubIssueData.jiraName = createbox.dataset.jiraname;
+			createSubIssueData.projectIdx = createbox.dataset.projectidx;
+			createSubIssueData.parentIdx = createbox.dataset.parentidx;
+			createSubIssueData.reporterIdx = createbox.dataset.useridx;
+			createSubIssueData.statusIdx = createbox.dataset.statusidx;
+			createSubIssueData.name = input.value;
+			createSubIssueData.issueTypeIdx = createbox.querySelector(".create-subissue-type").dataset.typeidx;
+			console.log(createSubIssueData);
+			
+			createSubIssuefetch(createbox);
+		}else if(submitbtn !== null && submitbtn.className.includes("cancel")){
+			popupItem.classList.remove("show");
+		}
+	});
+});
+
 document.querySelectorAll(".writereplybox").forEach(function(box, index){
 	box.addEventListener("click", function(e) {
 		const areaItem = e.target.closest(".writereplybox");
@@ -1356,6 +1442,48 @@ document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index)
 	});
 });
 
+let getSubIssueTypeData = {
+	"projectIdx": ""
+}
+
+function getSubIssueTypeFetch(btn, box){
+	let url = "/api/project/get_subissue_type";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getSubIssueTypeData)
+	})
+	.then(response => response.json())
+	.then(typeList => {
+		typeList.forEach(function(type, index){
+			if(index == 0){
+				btn.children[1].src = `/images/${type.iconFilename}`;
+				btn.children[2].innerText = type.name;
+				btn.setAttribute("data-typeidx", type.idx);
+				
+			}else{
+				const typebox = document.createElement("div");
+				typebox.classList.add("typewindow-type");
+				typebox.innerHTML = `<img src="/images/${type.iconFilename}">
+										<span class="create-subissue-type-title">${type.name}</span>`;
+				typebox.setAttribute("data-typeidx", type.idx);
+				typebox.addEventListener("click", function(e){
+					btn.children[1].src = `/images/${type.iconFilename}`;
+					btn.children[2].innerText = type.name;
+					btn.setAttribute("data-typeidx", type.idx);
+					box.classList.remove("show");
+				});
+				box.appendChild(typebox);
+			}
+		});
+		console.log(box);
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
 document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		const listbox = btn.parentElement.parentElement.parentElement.parentElement.querySelector(".subissue-list-box");
@@ -1365,17 +1493,22 @@ document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, in
 		const grade = btn.dataset.grade;
 		if(grade == 3){
 			const typebtn = createbox.querySelector(".create-subissue-type");
-			
-			// 에픽 이슈에 유형 선택 권한 부여
+			getSubIssueTypeData.projectIdx = btn.dataset.projectidx;
+			console.log(getSubIssueTypeData);
+			getSubIssueTypeFetch(typebtn, typebtn.children[0]);
 			typebtn.classList.add("active");
-			typebtn.children[2].innerText = "유형 선택";
-			typebtn.children[1].remove();
-			
-			// 이슈 유형 선택을 위한 selectwindow 생성
-			// const windowItem = document.createElement("div");
+			typebtn.style.border = "1px solid #8C8F97";
 		}
-		
 		createbox.classList.add("show");
+	});
+});
+
+document.querySelectorAll(".create-subissue-type").forEach(function(btn, index){
+	btn.addEventListener("click", function(e){
+		if(e.target.closest(".create-subissue-type.active") !== null){
+			btn.style.border = "2px solid #1868DB";
+			btn.children[0].classList.toggle("show");
+		}
 	});
 });
 

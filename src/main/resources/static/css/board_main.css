@@ -2223,13 +2223,13 @@ body{
 }
 
 .create-subissue-type{
-	min-width: 109px;
-	max-width: 133px;
+	width: 133px;
 	height: 40px;
 	background-color: #0515240F;
 	border-radius: 3px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	color: #080F214A;
 	font-size: 14px;
 	padding: 0px 10px;
@@ -2254,6 +2254,42 @@ body{
 	background-color: white;
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 	z-index: 100;
+	display: none;
+}
+
+.create-subissue-typewindow.show{
+	display: block;
+}
+
+.typewindow-type{
+	width: 133px;
+	height: 32px;
+	color: #292A2E;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 0px 10px;
+}
+
+.typewindow-type:hover{
+	background-color: #0515240F;
+	border-left: 2px solid #1868DB;
+	padding-left: 8px;
+}
+
+.create-subissue-type-title{
+	width: 89px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selected-sub-issue-type{
+	max-width: 70px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .create-subissue-title{

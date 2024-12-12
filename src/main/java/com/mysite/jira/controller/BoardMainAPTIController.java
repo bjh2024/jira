@@ -14,6 +14,7 @@ import com.mysite.jira.dto.board.AIQuestionDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateReplyDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
+import com.mysite.jira.dto.board.CreateSubIssueDTO;
 import com.mysite.jira.dto.board.DeleteIssueDTO;
 import com.mysite.jira.dto.board.DeleteLabelDataDTO;
 import com.mysite.jira.dto.board.DeleteStatusDTO;
@@ -26,6 +27,7 @@ import com.mysite.jira.dto.board.GetPriorityDTO;
 import com.mysite.jira.dto.board.GetStatusDataDTO;
 import com.mysite.jira.dto.board.GetTeamDTO;
 import com.mysite.jira.dto.board.IssueLogDTO;
+import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
 import com.mysite.jira.dto.board.ObserverListDTO;
 import com.mysite.jira.dto.board.ReporterDTO;
@@ -42,6 +44,9 @@ import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
@@ -411,9 +416,53 @@ public class BoardMainAPTIController {
 		boardMainService.updateIssueReply(reply, content);
 	}
 	
-	@PostMapping("delete_reply")
+	@PostMapping("/delete_reply")
 	public void deleteReply(@RequestBody UpdateReplyDTO updateReplyDTO) {
 		Integer replyIdx = updateReplyDTO.getReplyIdx();
 		boardMainService.deleteIssueReply(replyIdx);
+	}
+	
+	@PostMapping("/get_subissue_type")
+	public List<IssueTypeDTO> getSubissueTypeList(@RequestBody IssueTypeDTO issueTypeDTO){
+		Integer projectIdx = issueTypeDTO.getProjectIdx();
+		List<IssueType> typeList = boardMainService.getGeneralIssueTypeList(projectIdx);
+		List<IssueTypeDTO> dtoList = new ArrayList<>();
+		for(int i = 0; i < typeList.size(); i++) {
+			IssueTypeDTO dto = IssueTypeDTO.builder()
+										.projectIdx(projectIdx)
+										.idx(typeList.get(i).getIdx())
+										.name(typeList.get(i).getName())
+										.iconFilename(typeList.get(i).getIconFilename())
+										.build();
+			dtoList.add(dto);
+		}
+		return dtoList;
+	}
+	
+	@PostMapping("/create_sub_issue")
+	public CreateSubIssueDTO createSubIssue(@RequestBody CreateSubIssueDTO createSubIssueDTO) {
+		Project project = boardMainService.getProjectByIdx(createSubIssueDTO.getProjectIdx());
+		Jira jira = boardMainService.getJiraByJiraName(createSubIssueDTO.getJiraName());
+		IssueType issueType = boardMainService.getIssueTypeByIdx(createSubIssueDTO.getIssueTypeIdx());
+		IssueStatus issueStatus = boardMainService.getOnceIssueStatus(createSubIssueDTO.getStatusIdx());
+		IssuePriority issuePriority = boardMainService.getOnceIssuePriority(3);
+		Account user = boardMainService.getAccountById(createSubIssueDTO.getReporterIdx());
+		String issueName = createSubIssueDTO.getName();
+		
+		Issue childIssue = boardMainService.createSubIssue(jira, project, issueType, issueStatus, issuePriority, user, issueName);
+		Issue parentIssue = boardMainService.getIssueByIdx(createSubIssueDTO.getParentIdx());
+		boardMainService.createIssueExtends(parentIssue, childIssue, project);
+		
+		CreateSubIssueDTO dto = CreateSubIssueDTO.builder()
+												.name(issueName)
+												.statusIdx(childIssue.getIssueStatus().getIdx())
+												.reporterIconFilename(user.getIconFilename())
+												.priorityIconFilename(issuePriority.getIconFilename())
+												.issueTypeIconFilename(issueType.getIconFilename())
+												.statusName(childIssue.getIssueStatus().getName())
+												.issueKey(childIssue.getKey())
+												.status(childIssue.getIssueStatus().getStatus())
+												.build();
+		return dto;
 	}
 }

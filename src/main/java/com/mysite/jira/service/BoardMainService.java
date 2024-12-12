@@ -242,6 +242,16 @@ public class BoardMainService {
 		return type.get();
 	}
 	
+	public Jira getJiraByJiraName(String name) {
+		Optional<Jira> jira = this.jiraRepository.findByName(name);
+		return jira.get();
+	}
+	
+	public Project getProjectByIdx(Integer idx) {
+		Optional<Project> project = this.projectRepository.findById(idx);
+		return project.get();
+	}
+	
 	public void createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
 		Optional<Jira> optJira = this.jiraRepository.findByName(jiraName);
@@ -446,5 +456,59 @@ public class BoardMainService {
 	
 	public void deleteIssueReply(Integer idx) {
 		this.issueReplyRepository.deleteById(idx);
+	}
+	
+	public List<IssueType> getGeneralIssueTypeList(Integer projectIdx){
+		List<IssueType> list = this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, 2);
+		return list;
+	}
+	
+	public IssueType getSubIssueTypeList(Integer projectIdx) {
+		List<IssueType> type = this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, 3);
+		return type.get(0);
+	}
+	
+	public Issue createSubIssue(Jira jira, Project project, IssueType issueType, IssueStatus issueStatus,
+								IssuePriority issuePriority, Account user, String issueName) {
+		project.updateSeq(project.getSequence());
+		this.projectRepository.save(project);
+		String key = project.getKey() + "-" + project.getSequence();
+		
+		List<Issue> issueList = this.getIssuesByProjectIdx(project.getIdx());
+		Integer max = 0;
+		for(int i = 0; i < issueList.size(); i++) {
+			if(issueList.get(i).getIssueStatus().getIdx() == issueStatus.getIdx() &&
+					issueList.get(i).getDivOrder() > max) {
+				max = issueList.get(i).getDivOrder();
+			}
+		}
+		
+		Issue issue = Issue.builder()
+				.key(key)
+				.name(issueName)
+				.createDate(LocalDateTime.now())
+				.editDate(LocalDateTime.now())
+				.jira(jira)
+				.project(project)
+				.issueType(issueType)
+				.issueStatus(issueStatus)
+				.issuePriority(issuePriority)
+				.manager(user)
+				.reporter(user)
+				.divOrder(max + 1)
+				.build();
+
+		this.issueRepository.save(issue);
+		
+		return issue;
+	}
+	
+	public void createIssueExtends(Issue parent, Issue child, Project project) {
+		IssueExtends issueExtends = IssueExtends.builder()
+												.parent(parent)
+												.child(child)
+												.project(project)
+												.build();
+		this.issueExtendsRepository.save(issueExtends);
 	}
 }
