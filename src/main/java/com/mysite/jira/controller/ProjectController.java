@@ -107,8 +107,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/board_main")
-	public String boardMain(Model model) {
-		Integer projectIdx = 1;
+	public String boardMain(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+		Integer projectIdx = project.getIdx();
 		model.addAttribute("projectIdx", projectIdx);
 		
 		// 현재 시간용 변수

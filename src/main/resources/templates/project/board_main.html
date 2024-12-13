@@ -455,20 +455,16 @@
 								 				<div class="issuekeypathbox">
 								 					<div class="issuekeypath" th:if="${#lists.size(extendsList.child.childList) > 0}">
 								 						<th:block th:each="subchildList : ${extendsList.child.childList}">
-								 						<span class="path-issuekeyicon"><img th:src="@{|/images/${subchildList.parent.issueType.iconFilename}|}" width="16px" height="16px"></span>
-								 						<span style="margin-bottom: 2px; padding-right: 4px;">
-								 							<a th:href="@{#}" th:text="${subchildList.parent.key}"></a>
-								 						</span>
+								 						<div class="path-issuekeyicon"><img th:src="@{|/images/${subchildList.parent.issueType.iconFilename}|}" width="16px" height="16px"></div>
+								 						<span style="margin-bottom: 2px; padding-right: 4px;" th:text="${subchildList.parent.key}"></span>
 								 						<span style="font-size: 16px; ">/</span>
 								 						</th:block>
 								 					</div>
 								 					<div class="issuekeypath">
-								 						<span class="path-issuekeyicon" style="padding-left: 0px;"><img
+								 						<div class="path-issuekeyicon" style="padding-left: 0px;"><img
 								 								th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}"
-								 								width="16px" height="16px"></span>
-								 						<span style="margin-bottom: 2px;">
-								 							<a th:href="@{#}" th:text="${extendsList.child.key}"></a>
-								 						</span>
+								 								width="16px" height="16px"></div>
+								 						<span style="margin-bottom: 2px;" th:text="${extendsList.child.key}"></span>
 								 					</div>
 								 				</div>
 								 				<div class="issuedetail-menubar">
@@ -879,16 +875,21 @@
 								 	</div>
 								</div>
 							 </div>
-							 <div class="issuedetail-container" draggable="false" th:attr="data-issueidx=${issueList.idx}">
+							 <div class="issuedetail-container" draggable="false" th:attr="data-issueidx=${issueList.idx}, data-useridx=${currentUser.idx}">
 						 		<div class="issuedetailbox">
 						 			<div class="issuedetail-headerbar">
 						 				<div class="issuekeypathbox">
 						 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) > 0}">
 						 						<th:block th:each="childList : ${issueList.childList}">
-						 						<span class="path-issuekeyicon"><img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px"></span>
-						 						<span style="margin-bottom: 2px; padding-right: 4px;">
-						 							<a th:href="@{#}" th:text="${childList.parent.key}"></a>
-						 						</span>
+						 						<div class="path-issuekeyicon" th:attr="data-projectidx=${project.idx}, data-currentissue=${childList.parent.idx}">
+													<div class="update-issuepathwindow">
+														<div class="pathwindow-title">
+															<span>에픽 이슈</span>
+														</div>
+													</div>
+													<img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px">
+												</div>
+						 						<span style="margin-bottom: 2px; padding-right: 4px;" th:text="${childList.parent.key}"></span>
 						 						<span style="font-size: 16px; ">/</span>
 						 						</th:block>
 						 					</div>
@@ -902,13 +903,11 @@
 						 						</button>
 						 						<span style="font-size: 16px; ">/</span>
 						 					</div>
-						 					<div class="issuekeypath">
-						 						<span class="path-issuekeyicon" style="padding-left: 0px;"><img
+						 					<div class="issuekeypath" th:attr="data-issueIdx=${issueList.idx}">
+						 						<div class="path-issuekeyicon" style="padding-left: 0px;"><img
 						 								th:src="@{|/images/${issueList.issueType.iconFilename}|}"
-						 								width="16px" height="16px"></span>
-						 						<span style="margin-bottom: 2px;">
-						 							<a th:href="@{#}" th:text="${issueList.key}"></a>
-						 						</span>
+						 								width="16px" height="16px"></div>
+						 						<span style="margin-bottom: 2px;" th:text="${issueList.key}"></span>
 						 					</div>
 						 				</div>
 						 				<div class="issuedetail-menubar">

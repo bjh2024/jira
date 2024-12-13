@@ -1,3 +1,30 @@
+let createLogData = {
+	"userIdx": "",
+	"issueIdx": "",
+	"type": ""
+}
+
+function createProjectLog(){
+	let url = "/api/project/create_project_log";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createLogData)
+	})
+	.then(response => {
+        if (response.ok) {
+            console.log("로그 업데이트 성공");
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
 let updateExareaDatas = {
 	"issueIdx": "",
 	"content": ""
@@ -39,6 +66,12 @@ document.querySelectorAll(".editor.exarea").forEach(function(editor, index){
 		updateExareaDatas.content = contentEditor.getMarkdown();
 		contentEditor.initialValue = updateExareaDatas.content;
 		updateIssueContent(editor.parentElement.nextElementSibling);
+		
+		const container = e.target.closest(".issuedetail-container");
+		createLogData.userIdx = container.dataset.useridx;
+		createLogData.issueIdx = container.dataset.issueidx;
+		createLogData.type = 4;
+		createProjectLog();
 		
 		const editorContainer = editor.parentElement;
 		editorContainer.style.display = "none";
@@ -126,7 +159,13 @@ document.querySelectorAll(".editor.newreply").forEach(function(editor, index){
 		}
 		const replybox = editor.parentElement.parentElement.parentElement.nextElementSibling;
 		createReply(replybox);
-		console.log(editorContainer);
+		
+		const container = e.target.closest(".issuedetail-container");
+		createLogData.userIdx = container.dataset.useridx;
+		createLogData.issueIdx = container.dataset.issueidx;
+		createLogData.type = 1;
+		createProjectLog();
+		
 		editorContainer.classList.remove("show");
 		editorContainer.nextElementSibling.style.display = "block";
 	});
@@ -233,6 +272,16 @@ function loadDateData(issueIdx, date, type){
 	changeDate.date = date;
 	changeDate.type = type;
 	updateStartDateFetch();
+	
+	const container = e.target.closest(".issuedetail-container");
+	createLogData.userIdx = container.dataset.useridx;
+	createLogData.issueIdx = container.dataset.issueidx;
+	if(type == "start"){
+		createLogData.type = 13;
+	}else{
+		createLogData.type = 14;
+	}
+	createProjectLog();
 }
 
 /*document.querySelector("body").addEventListener("click", function(e) {
@@ -580,19 +629,11 @@ function createissuefetch(){
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify(issueDatas)
-	})
-	.then(response => {
-        if (response.ok) {
-            // 응답 상태가 200~299 범위인 경우
-            console.log("성공");
-			location.reload();
-            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
-        } else {
-            // 응답 상태가 성공 범위를 벗어나는 경우
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-    })
-	.catch(error => {
+	}).then(response => response.json())
+	.then(idx => {
+		location.reload();
+		return idx.issueIdx;
+	}).catch(error => {
 			console.error("Fetch error:", error);
 	});
 }
@@ -613,6 +654,12 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 				return;
 			}
 			createissuefetch();
+			
+			/*createLogData.userIdx = btnBoxItem.dataset.useridx;
+			createLogData.issueIdx = issueIdx;
+			createLogData.type = issueIdx;
+			createProjectLog();
+			location.reload();*/
 		}
 	});
 });
@@ -924,8 +971,13 @@ function getEpikIssueList(box){
 				addIssuePathData.projectIdx = item.parentElement.parentElement.dataset.projectidx;
 				addIssuePathData.childIdx = item.parentElement.parentElement.dataset.issueidx;
 				addIssuePathData.parentIdx = item.dataset.issueidx;
-				console.log(addIssuePathData);
 				createIssuePath(item.parentElement.parentElement.parentElement);
+				
+				const container = e.target.closest(".issuedetail-container");
+				createLogData.userIdx = container.dataset.useridx;
+				createLogData.issueIdx = container.dataset.issueidx;
+				createLogData.type = 2;
+				createProjectLog();
 			});
 		});
 	}).catch(error => {
@@ -936,13 +988,102 @@ function getEpikIssueList(box){
 document.querySelectorAll(".addissuepathbtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".pathwindow-option") !== null){
-			console.log("hi");
 			return;
 		}
 		getEpikIssueData.projectIdx = btn.dataset.projectidx;
 		getEpikIssueList(btn.children[0]);
 		btn.classList.toggle("active");
 		btn.children[0].classList.toggle("show");
+	});
+});
+
+// 업데이트할 수 있는 에픽 이슈들을 가져옴
+let updateEpikIssueData = {
+	"projectIdx": "",
+	"currentIssue": ""
+}
+
+// 업데이트해 줄 이슈 정보를 저장
+let newEpikIssueData = {
+	"projectIdx": "",
+	"childIdx": "",
+	"newParentIdx": "",
+	"oldParentIdx": ""
+}
+
+function updateEpikIssuePath(box){
+	let url = "/api/project/update_epik_issuepath";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(newEpikIssueData)
+	})
+	.then(response => response.json())
+	.then(epik => {
+		box.children[0].dataset.projectidx = epik.projectIdx;
+		box.children[0].dataset.currentissue = epik.currentIdx;
+		box.children[1].innerText = epik.issueKey;
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function getNewEpikIssueList(box){
+	let url = "/api/project/get_other_epik_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateEpikIssueData)
+	})
+	.then(response => response.json())
+	.then(epikList => {
+		if(epikList.length < 1){
+			box.innerHTML = `<div class="pathwindow-title">
+								<span>계속하려면 새로운 에픽 이슈를 추가하세요.</span>
+							</div>`;
+			return;
+		}
+		box.innerHTML = `<div class="pathwindow-title">
+							<span>에픽 이슈</span>
+						</div>`;
+		epikList.forEach(function(epik){
+			const item = document.createElement("div");
+			item.classList.add("pathwindow-option");
+			item.setAttribute("data-issueidx", epik.issueIdx);
+			item.innerHTML = `<img src="/images/${epik.iconFilename}">
+							  <span style="margin-bottom: 4px;">${epik.issueKey} ${epik.name}</span>`;
+			box.appendChild(item);
+			item.addEventListener("click", function(e){
+				newEpikIssueData.projectIdx = item.parentElement.parentElement.dataset.projectidx;
+				newEpikIssueData.childIdx = item.parentElement.parentElement.parentElement.nextElementSibling.dataset.issueidx;
+				newEpikIssueData.oldParentIdx = updateEpikIssueData.currentIssue;
+				newEpikIssueData.newParentIdx = item.dataset.issueidx;
+				console.log(newEpikIssueData);
+				updateEpikIssuePath(item.parentElement.parentElement.parentElement);
+				
+				const container = e.target.closest(".issuedetail-container");
+				createLogData.userIdx = container.dataset.useridx;
+				createLogData.issueIdx = container.dataset.issueidx;
+				createLogData.type = 2;
+				createProjectLog();
+			});
+		});
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".path-issuekeyicon").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		updateEpikIssueData.projectIdx = btn.dataset.projectidx;
+		updateEpikIssueData.currentIssue = btn.dataset.currentissue;
+		btn.classList.toggle("active");
+		btn.children[0].classList.toggle("show");
+		getNewEpikIssueList(btn.children[0]);
 	});
 });
 
@@ -1233,8 +1374,13 @@ document.querySelectorAll(".create-subissue").forEach(function(btn){
 			createSubIssueData.name = input.value;
 			createSubIssueData.issueTypeIdx = createbox.querySelector(".create-subissue-type").dataset.typeidx;
 			console.log(createSubIssueData);
-			
 			createSubIssuefetch(createbox);
+			
+			const container = e.target.closest(".issuedetail-container");
+			createLogData.userIdx = container.dataset.useridx;
+			createLogData.issueIdx = container.dataset.issueidx;
+			createLogData.type = 9;
+			createProjectLog();
 		}else if(submitbtn !== null && submitbtn.className.includes("cancel")){
 			popupItem.classList.remove("show");
 		}
@@ -1435,8 +1581,13 @@ function fetchStatusList(statusbox){
 				statusDatas.statusIdx = `${status.idx}`;
 				statusDatas.issueIdx = statusbox.parentElement.parentElement.dataset.issueidx;
 				const btn = statusbox.parentElement.parentElement;
-				console.log(btn);
 				updateStatusfetch(btn);
+				
+				const container = e.target.closest(".issuedetail-container");
+				createLogData.userIdx = container.dataset.useridx;
+				createLogData.issueIdx = container.dataset.issueidx;
+				createLogData.type = 8;
+				createProjectLog();
 			});
 		});
 	}).catch(error => {
@@ -1452,6 +1603,8 @@ document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index)
 			currentStatus.projectIdx = btn.dataset.projectidx;
 			currentStatus.statusIdx = btn.dataset.statusidx;
 			fetchStatusList(btn.children[0].children[0]);
+			
+			
 		}
 	});
 });
@@ -1743,11 +1896,16 @@ function getPriorityListFetch(window){
 								<span>${item.name}</span>`;
 				window.appendChild(value);
 				value.addEventListener("click", function(e){
-					console.log(priorityDatas.issueIdx);
 					priorityDatas.priorityIdx = item.priorityIdx;
 					priorityDatas.iconFilename = item.iconFilename;
 					priorityDatas.name = item.name;
 					updatePriorityFetch(window.parentElement);
+					
+					const container = e.target.closest(".issuedetail-container");
+					createLogData.userIdx = container.dataset.useridx;
+					createLogData.issueIdx = container.dataset.issueidx;
+					createLogData.type = 15;
+					createProjectLog();
 					window.classList.remove("show");
 				});
 			});
@@ -1822,6 +1980,13 @@ function getTeamListFetch(window){
 				value.addEventListener("click", function(e){
 					teamDatas.teamIdx = item.teamIdx;
 					updateTeamFetch(window.parentElement);
+					
+					const container = e.target.closest(".issuedetail-container");
+					createLogData.userIdx = container.dataset.useridx;
+					createLogData.issueIdx = container.dataset.issueidx;
+					createLogData.type = 12;
+					createProjectLog();
+					
 					window.classList.remove("show");
 				});
 			});
@@ -1898,6 +2063,13 @@ function getReporterListFetch(window){
 				myValue.addEventListener("click", function(e){
 					detailUserDatas.userIdx = detailUserDatas.currentUserIdx;
 					updateUserFetch(window.parentElement);
+					
+					const container = e.target.closest(".issuedetail-container");
+					createLogData.userIdx = container.dataset.useridx;
+					createLogData.issueIdx = container.dataset.issueidx;
+					createLogData.type = 16;
+					createProjectLog();
+					
 					window.classList.remove("show");
 				});
 			}
@@ -1916,6 +2088,17 @@ function getReporterListFetch(window){
 				value.addEventListener("click", function(e){
 					detailUserDatas.userIdx = item.userIdx;	
 					updateUserFetch(window.parentElement);
+					
+					const container = e.target.closest(".issuedetail-container");
+					createLogData.userIdx = container.dataset.useridx;
+					createLogData.issueIdx = container.dataset.issueidx;
+					if(detailUserDatas.type == "manager"){
+						createLogData.type = 16;
+					}else{
+						createLogData.type = 6;
+					}
+					createProjectLog();
+					
 					window.classList.remove("show");
 				});
 			});

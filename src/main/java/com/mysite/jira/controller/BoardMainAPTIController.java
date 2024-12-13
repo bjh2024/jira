@@ -30,16 +30,18 @@ import com.mysite.jira.dto.board.GetTeamDTO;
 import com.mysite.jira.dto.board.IssueLogDTO;
 import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.board.LabelListDTO;
-import com.mysite.jira.dto.board.ObserverListDTO;
+import com.mysite.jira.dto.board.ProjectLogDTO;
 import com.mysite.jira.dto.board.ReporterDTO;
 import com.mysite.jira.dto.board.StatusListDTO;
 import com.mysite.jira.dto.board.StatusTitleDTO;
 import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.dto.board.UpdateIssueExareaDTO;
 import com.mysite.jira.dto.board.UpdateIssueNameDTO;
+import com.mysite.jira.dto.board.UpdateIssuePathDTO;
 import com.mysite.jira.dto.board.UpdateReplyDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssuePriority;
@@ -49,6 +51,7 @@ import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectLogData;
+import com.mysite.jira.entity.ProjectLogStatus;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
@@ -263,7 +266,7 @@ public class BoardMainAPTIController {
 	}
 	
 	@PostMapping("/create_issue")
-	public void createissue(@RequestBody CreateIssueDTO createIssueDTO) {
+	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();
 		String jiraName = createIssueDTO.getJiraName();
 		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
@@ -273,7 +276,11 @@ public class BoardMainAPTIController {
 //		System.out.println(createIssueDTO.getIssueName() + " " + createIssueDTO.getJiraName() + " " + 
 //				createIssueDTO.getIssueTypeIdx() + " " + createIssueDTO.getProjectIdx() + " " + 
 //				createIssueDTO.getReporterIdx() + " " + createIssueDTO.getStatusIdx());
-		boardMainService.createIssue(issueName, jiraName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+		Integer idx = boardMainService.createIssue(issueName, jiraName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+		CreateIssueDTO dto = CreateIssueDTO.builder()
+										.issueIdx(idx)
+										.build();
+		return dto;
 	}
 	
 	@PostMapping("/update_issue_box_order")
@@ -320,14 +327,6 @@ public class BoardMainAPTIController {
 		String content = updateIssueExareaDTO.getContent();
 		Issue issue = boardMainService.getIssueByIdx(idx);
 		boardMainService.updateIssueContent(issue, content);
-	}
-	
-	@PostMapping("/get_observer_list")
-	public ObserverListDTO getObserverList(@RequestBody ObserverListDTO observerListDTO) {
-		Integer issueIdx = observerListDTO.getIssueIdx();
-		Integer userIdx = observerListDTO.getUserIdx();
-		ObserverListDTO result = boardMainService.getObserverList(issueIdx, userIdx);
-		return result;
 	}
 	
 	@PostMapping("/get_issue_log_list")
@@ -484,6 +483,42 @@ public class BoardMainAPTIController {
 		return epikList;
 	}
 	
+	@PostMapping("/get_other_epik_list")
+	public List<EpikIssueDTO> getUpdateEpikIssueList(@RequestBody EpikIssueDTO epikIssueDTO){
+		Integer projectIdx = epikIssueDTO.getProjectIdx();
+		Integer currentIssue = epikIssueDTO.getCurrentIssue();
+		List<Issue> list = boardMainService.getIssueByProjectIdxAndIssueTypeGradeAndIdxNot(projectIdx, 3, currentIssue);
+		List<EpikIssueDTO> epikList = new ArrayList<>();
+		for(int i = 0; i < list.size(); i++) {
+			EpikIssueDTO dto = EpikIssueDTO.builder()
+										.issueIdx(list.get(i).getIdx())
+										.iconFilename(list.get(i).getIssueType().getIconFilename())
+										.name(list.get(i).getName())
+										.issueKey(list.get(i).getKey())
+										.build();
+			epikList.add(dto);
+		}
+		return epikList;
+	}
+	
+	@PostMapping("/update_epik_issuepath")
+	public UpdateIssuePathDTO updateEpikIssuePath(@RequestBody UpdateIssuePathDTO updateIssuePathDTO) {
+		Integer projectIdx = updateIssuePathDTO.getProjectIdx();
+		Integer childIdx = updateIssuePathDTO.getChildIdx();
+		Integer oldParentIdx = updateIssuePathDTO.getOldParentIdx();
+		Integer newParentIdx = updateIssuePathDTO.getNewParentIdx();
+		Issue newParent = boardMainService.getIssueByIdx(newParentIdx);
+		IssueExtends extend = boardMainService.getOnceIssueExtends(projectIdx, childIdx, oldParentIdx);
+		boardMainService.updateEpikIssuePath(extend, newParent);
+		
+		UpdateIssuePathDTO dto = UpdateIssuePathDTO.builder()
+												.projectIdx(projectIdx)
+												.currentIdx(newParentIdx)
+												.issueKey(newParent.getKey())
+												.build();
+		return dto;
+	}
+	
 	@PostMapping("/create_issue_path")
 	public EpikIssueDTO createIssuePath(@RequestBody EpikIssueDTO epikIssueDTO) {
 		Project project = boardMainService.getProjectByIdx(epikIssueDTO.getProjectIdx());
@@ -497,5 +532,14 @@ public class BoardMainAPTIController {
 										.iconFilename(parent.getIssueType().getIconFilename())
 										.build();
 		return epik;
+	}
+	
+	@PostMapping("/create_project_log")
+	public void createProjectLog(@RequestBody ProjectLogDTO projectLogDTO) {
+		ProjectLogStatus status = boardMainService.getLogStatusByIdx(projectLogDTO.getType());
+		Account creator = boardMainService.getAccountById(projectLogDTO.getUserIdx());
+		Issue issue = boardMainService.getIssueByIdx(projectLogDTO.getIssueIdx());
+		
+		boardMainService.createProjectLogData(issue, creator, status);
 	}
 }

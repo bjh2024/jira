@@ -15,6 +15,9 @@ public class EpikIssueDTO {
 	private String name;
 	private String issueKey;
 	
+	// current issue type (update용)
+	private Integer currentIssue;
+	
 	// create issue path
 	private Integer parentIdx;
 	private Integer childIdx;

@@ -93,4 +93,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
 	List<Issue> findByProjectIdxAndIssueStatusIdx(Integer projectIdx, Integer issueIdx);
 	
 	List<Issue> findByProjectIdxAndIssueTypeGrade(Integer projectIdx, Integer grade);
+	
+	List<Issue> findByProjectIdxAndIssueTypeGradeAndIdxNot(Integer projectIdx, Integer grade, Integer idx);
 }

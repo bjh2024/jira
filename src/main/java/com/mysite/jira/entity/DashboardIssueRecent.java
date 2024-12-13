@@ -22,7 +22,6 @@ public class DashboardIssueRecent {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer viewDate;
 	
 	@NotNull
@@ -36,7 +35,6 @@ public class DashboardIssueRecent {
 	private Integer isSave;
 	
 	@Column(columnDefinition = "VARCHAR2(100)")
-	@NotNull
 	private String unitPeriod;
 	
 	@ManyToOne

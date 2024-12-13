@@ -22,7 +22,6 @@ public class DashboardIssueStatistics {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer viewNum;
 	
 	@NotNull

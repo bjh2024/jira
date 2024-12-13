@@ -7,14 +7,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.mysite.jira.dto.board.ObserverListDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
-import com.mysite.jira.entity.IssueObserverMembers;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
@@ -22,6 +20,7 @@ import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectLogData;
+import com.mysite.jira.entity.ProjectLogStatus;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.repository.AccountRepository;
@@ -29,7 +28,6 @@ import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
 import com.mysite.jira.repository.IssueLabelRepository;
-import com.mysite.jira.repository.IssueObserverMembersRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
@@ -37,6 +35,7 @@ import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.repository.JiraRepository;
 import com.mysite.jira.repository.ProjectLogDataRepository;
+import com.mysite.jira.repository.ProjectLogStatusRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
 import com.mysite.jira.repository.ProjectRepository;
 import com.mysite.jira.repository.TeamRepository;
@@ -59,9 +58,9 @@ public class BoardMainService {
 	private final IssueFileRepository issueFileRepository;
 	private final ProjectMembersRepository projectMembersRepository;
 	private final ProjectLogDataRepository projectLogDataRepository;
+	private final ProjectLogStatusRepository projectLogStatusRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
-	private final IssueObserverMembersRepository issueObserverMembersRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -252,7 +251,7 @@ public class BoardMainService {
 		return project.get();
 	}
 	
-	public void createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
+	public Integer createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
 		Optional<Jira> optJira = this.jiraRepository.findByName(jiraName);
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
@@ -296,6 +295,8 @@ public class BoardMainService {
 							.build();
 		
 		this.issueRepository.save(issue);
+		
+		return issue.getIdx();
 	}
 	
 	public void updateIssueBoxOrder(Integer oldIdx, Integer newIdx, Integer projectIdx, boolean reverse) {
@@ -383,17 +384,6 @@ public class BoardMainService {
 	public void updateIssueContent(Issue issue, String content) {
 		issue.updatecontent(content);
 		this.issueRepository.save(issue);
-	}
-	
-	public ObserverListDTO getObserverList(Integer issueidx, Integer userIdx) {
-		List<IssueObserverMembers> memberList = this.issueObserverMembersRepository.findByIssueIdx(issueidx);
-		List<IssueObserverMembers> isIn = this.issueObserverMembersRepository.findByIssueIdxAndAccountIdx(issueidx, userIdx);
-		String in = isIn.size() > 0 ? "true" : "false";
-		ObserverListDTO dto = ObserverListDTO.builder()
-									.count(memberList.size())
-									.isIn(in)
-									.build();
-		return dto;
 	}
 	
 	public List<ProjectLogData> getLogDataList(Integer issueIdx, String order){
@@ -517,6 +507,21 @@ public class BoardMainService {
 		return issueList;
 	}
 	
+	public List<Issue> getIssueByProjectIdxAndIssueTypeGradeAndIdxNot(Integer projcetIdx, Integer grade, Integer idx){
+		List<Issue> issueList = this.issueRepository.findByProjectIdxAndIssueTypeGradeAndIdxNot(projcetIdx, grade, idx);
+		return issueList;
+	}
+	
+	public IssueExtends getOnceIssueExtends(Integer projectIdx, Integer childIdx, Integer parentIdx) {
+		Optional<IssueExtends> extend = this.issueExtendsRepository.findByProjectIdxAndParentIdxAndChildIdx(projectIdx, parentIdx, childIdx);
+		return extend.get();
+	}
+	
+	public void updateEpikIssuePath(IssueExtends extend, Issue newParent) {
+		extend.updateParent(newParent);
+		this.issueExtendsRepository.save(extend);
+	}
+	
 	public void createIssuePath(Project project, Issue parent, Issue child) {
 		IssueExtends path = IssueExtends.builder()
 										.project(project)
@@ -524,5 +529,19 @@ public class BoardMainService {
 										.child(child)
 										.build();
 		this.issueExtendsRepository.save(path);
+	}
+	
+	public ProjectLogStatus getLogStatusByIdx(Integer idx) {
+		Optional<ProjectLogStatus> status = this.projectLogStatusRepository.findById(idx);
+		return status.get();
+	}
+	
+	public void createProjectLogData(Issue issue, Account creator, ProjectLogStatus status) {
+		ProjectLogData data = ProjectLogData.builder()
+											.issue(issue)
+											.account(creator)
+											.projectLogStatus(status)
+											.build();
+		this.projectLogDataRepository.save(data);
 	}
 }

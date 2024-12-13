@@ -52,7 +52,4 @@ public class ChatMessage {
 	
 	@OneToMany(mappedBy = "chatMessage", cascade = CascadeType.REMOVE) 
 	private List<ChatUnreadList> chatUnreadList;
-
-	@OneToMany(mappedBy = "chatMessage", cascade = CascadeType.REMOVE) 
-	private List<ChatEmojiRecord> chatEmojiList; 
 }

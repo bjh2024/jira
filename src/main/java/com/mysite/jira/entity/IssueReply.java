@@ -63,8 +63,4 @@ public class IssueReply {
 		this.editDate = editDate;
 	}
 	
-	// emojiList FK 생성
-	@OneToMany(mappedBy = "issueReply", cascade = CascadeType.REMOVE) 
-	private List<ReplyEmojiRecord> replyEmojiList;
-	
 }

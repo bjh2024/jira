@@ -26,7 +26,6 @@ public class DashboardAllot {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer pageNum;
 	
 	@NotNull
