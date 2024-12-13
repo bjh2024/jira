@@ -71,18 +71,36 @@ public class FilterController {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			
-			List<Issue> projectFilterIssue = issueService.getIssueByProjectIdxAndFilterIdx(filterIdx);
-			if(projectFilterIssue.size() > 0) {
-				issue.retainAll(projectFilterIssue);
-			}
-			List<Issue> issueTypeFilterIssue = issueService.getIssueByIssueTypeAndFilterIdx(filterIdx);
-			if(issueTypeFilterIssue.size() > 0) {
-				issue.retainAll(issueTypeFilterIssue);
-			}
+//			List<Issue> projectFilterIssue = issueService.getIssueByProjectIdxAndFilterIdx(filterIdx);
+//			if(projectFilterIssue.size() > 0) {
+//				issue.retainAll(projectFilterIssue);
+//			}
+//			List<Issue> issueTypeFilterIssue = issueService.getIssueByIssueTypeAndFilterIdx(filterIdx);
+//			if(issueTypeFilterIssue.size() > 0) {
+//				issue.retainAll(issueTypeFilterIssue);
+//			}
 			model.addAttribute("issue", issue);
 			
-			List<Integer> filterProjectIdxArr = filterService.getByFilterIdx(filterIdx);
+			List<Integer> filterProjectIdxArr = filterService.getProjectIdxArrByFilterIdx(filterIdx);
 			model.addAttribute("filterProject", filterProjectIdxArr);
+			
+			List<String> filterIssueTypeNameArr = filterService.getIssueTypeNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueTypeNameArr", filterIssueTypeNameArr);
+			
+			List<String> filterIssueStatusNameArr = filterService.getIssueStatusNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueStatusNameArr", filterIssueStatusNameArr);
+			
+			List<String> filterIssueManagerNameArr = filterService.getIssueManagerNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueManagerNameArr", filterIssueManagerNameArr);
+			
+			List<Integer> filterIssuePriorityIdxArr = filterService.getIssuePriorityIdxByFilterIdx(filterIdx);
+			model.addAttribute("filterIssuePriorityIdxArr", filterIssuePriorityIdxArr);
+			
+			List<String> filterReporterNameArr = filterService.getIssueReporterNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterReporterNameArr", filterReporterNameArr);
+			
+			List<Integer> filterDone = filterService.getIssueStatusIdxByFilterIdx(filterIdx);
+			model.addAttribute("filterDone", filterDone);
 			
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);

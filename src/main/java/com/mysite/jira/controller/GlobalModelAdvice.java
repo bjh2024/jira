@@ -106,6 +106,7 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
+			System.out.println(filterLikeMembers.size());
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);

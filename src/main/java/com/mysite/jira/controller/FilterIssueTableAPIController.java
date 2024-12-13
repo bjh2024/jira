@@ -80,8 +80,8 @@ public class FilterIssueTableAPIController {
         List<Issue> doneStartDateOver = issueService.getfinishStartDateGreaterThanEqual(doneStartDate);
         List<Issue> doneLastDateOver = issueService.getfinishLastDateLessThanEqual(doneLastDate);
         List<Issue> doneBeforeDateOver = issueService.getfinishStartDateGreaterThanEqual(doneBeforeDate);
-        
         List<Issue> searchIssue = issueService.getIssueByNameLike(searchContent);
+        
         List<Issue> doneCheck1 = issueService.getIssueByStatus(doneCheck);
         List<Issue> notDoneCheck2 = issueService.getIssueByStatusNot(notDoneCheck);
         // 두 리스트에서 공통된 아이템만 필터링

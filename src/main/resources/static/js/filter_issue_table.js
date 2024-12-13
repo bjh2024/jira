@@ -76,52 +76,52 @@ let filterDatas = {
 		        fetchIssueDetail();
 		    }
 		});
-		window.addEventListener("onload", function() {
-		  alert("fdf");
+		window.addEventListener("load", function() {
+			
+			document.querySelectorAll(".project_input_list").forEach(function(item) {
+			       if (item.checked) {
+			           filterDatas.projectIdxArr.push(item.value);  // 체크된 값 추가
+			       }
+			   });
+			document.querySelectorAll(".issue_type_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issueTypeArr.push(item.value);
+				}
+			})
+			document.querySelectorAll(".issue_status_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issueStatusArr.push(item.value);
+				}
+			})
+			document.querySelectorAll(".issue_manager_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issueManagersArr.push(item.value);
+				}
+			})
+			document.querySelectorAll(".filter_reporter_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issueReporterArr.push(item.value);
+					document.querySelector(".issueReporter").style.display = "block";
+				}
+			})
+			document.querySelectorAll(".done_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issueReporterArr.push(item.value);
+					document.querySelector(".done_check").style.display = "block";
+				}
+			})
+			document.querySelectorAll(".issue_priority_input_list").forEach(function(item){
+				if(item.checked){
+					filterDatas.issuePriorityArr.push(item.value);
+					document.querySelector(".issuePriority").style.display = "block";
+				}
+			})
+			fetchInput(); 
+			fetchInputIssue();	
 		});
 
 
-		function fetchIssueDetail() {
-		    // fetch()를 사용하여 AJAX 요청
-		    let url = "/api/filter_issue/issue_detail"; 
-
-		    fetch(url, {
-		        method: 'POST',
-		        headers: {
-		            'Content-Type': 'application/json' // JSON 데이터를 전송
-		        },
-		        body: JSON.stringify({
-		            "issueKey": issueKey  // issueKey 값을 JSON으로 전달
-		        })
-		    })
-		    .then(response => response.json())  // JSON 형태로 응답 받기
-			.then(issueDetail => {
-			    // issueDetail의 첫 번째 항목에서 issueKey를 가져옵니다.
-			    let issueKey = issueDetail[0].issueKey;
-
-			    // 모든 .issue_middle_right 요소를 가져와서 확인합니다.
-			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
-			        // 각 div의 data-key 값을 가져옵니다.
-			        let itemKey = item.getAttribute("data-key");
-
-			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
-			        if (itemKey === issueKey) {
-			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
-			        } else {
-			            item.style.display = "none";   // 나머지 div는 숨깁니다.
-			        }
-			    });
-			})
-		    .catch(error => {
-		        console.error("Fetch error:", error);  // 에러 처리
-		    });
-		}
-		// 현재 URL에서 쿼리 문자열을 가져옴
-	/*	let urlParams = new URLSearchParams(window.location.search);
-		// 쿼리 문자열에서 'filter' 값 추출
-		let filterValue = urlParams.get('filter');  // '21'
-		console.log(filterValue);
-		filterDatas.filterIdx = filterValue;*/
+	
 // 업데이트 날짜 필터 -------------------------------------------------------------------
 	document.getElementById("radio_days").addEventListener("change", function() {
 	   // '몇일 전'을 선택했을 때
@@ -254,7 +254,11 @@ let filterDatas = {
 	   if (this.checked) {
 		document.querySelector(".done_date_box_2").classList.remove("show");
 		document.querySelector(".done_date_box_1").classList.add("show");
+		filterDatas.doneStartDate = null;
+		filterDatas.doneLastDate = null;
 	   }
+	   fetchInput(); // API 호출 또는 함수 실행
+	   fetchInputIssue();
 	 });
 
 	 document.getElementById("done_between").addEventListener("change", function() {
@@ -262,7 +266,11 @@ let filterDatas = {
 	   if (this.checked) {
 	     document.querySelector(".done_date_box_2").classList.add("show");
 	     document.querySelector(".done_date_box_1").classList.remove("show");
+		 filterDatas.doneBeforeDate = null;
+		 document.getElementById("done_before_date").value = "";
 	   }
+	     fetchInput(); // API 호출 또는 함수 실행
+	   	 fetchInputIssue();
 	 });
 	 document.getElementById("done_date_save_button").addEventListener("click", function() {
 	 		let value = document.getElementById("done_before_date").value;
@@ -280,6 +288,7 @@ let filterDatas = {
 			 fetchInputIssue();
 	 	 });
 	 	 document.getElementById("done_start_date").addEventListener("change", function(){
+				alert("startDate 들어옴")
 	 			filterDatas.doneStartDate = new Date(this.value);
 	 			if(filterDatas.doneLastDate != null){
 	 				document.getElementById("done_last_date").value = null;
@@ -289,6 +298,7 @@ let filterDatas = {
 				fetchInputIssue();
 	 	 })
 	 	 document.getElementById("done_last_date").addEventListener("change", function(){
+				alert("lastDate 들어옴")
 	 		if(filterDatas.doneStartDate == null){
 	 			alert("시작날짜 먼저 입력해주세요!");
 	 			this.value = null;
@@ -303,13 +313,13 @@ let filterDatas = {
 	 	 })
 	 	 document.getElementById("done_date_reset").addEventListener("click",function(){
 	 		filterDatas = {
-	 			"doneStartDate" : null,
-	 			"doneLastDate" : null,
-	 			"doneBeforeDate": null
+				"doneStartDate" : null,
+				"doneLastDate" : null,
+				"doneBeforeDate": null
 	 		}
 	 		document.querySelector(".done_date_box_1").classList.remove("show");
 	 		document.querySelector(".done_date_box_2").classList.remove("show");
-			fetchInput(); // API 호출 또는 함수 실행
+			fetchInput();
 			fetchInputIssue();	
 	 	 })
 // 해결 필터 끝 =========================================================================================
@@ -607,7 +617,6 @@ function fetchInputIssue() {
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueList => {
 			if(document.querySelector(".issueListFilter") == null) return;
-			
 			document.querySelector(".issueListFilter").innerHTML = ""
 			
 			issueList.forEach(function(item){
@@ -654,6 +663,48 @@ function fetchInputIssue() {
             }
         }
     };
+	function fetchIssueDetail() {
+		    // fetch()를 사용하여 AJAX 요청
+		    let url = "/api/filter_issue/issue_detail"; 
+
+		    fetch(url, {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json' // JSON 데이터를 전송
+		        },
+		        body: JSON.stringify({
+		            "issueKey": issueKey  // issueKey 값을 JSON으로 전달
+		        })
+		    })
+		    .then(response => response.json())  // JSON 형태로 응답 받기
+			.then(issueDetail => {
+				if(issueDetail[0].issueKey == null) return;
+			    // issueDetail의 첫 번째 항목에서 issueKey를 가져옵니다.
+			    let issueKey = issueDetail[0].issueKey;
+
+			    // 모든 .issue_middle_right 요소를 가져와서 확인합니다.
+			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
+			        // 각 div의 data-key 값을 가져옵니다.
+			        let itemKey = item.getAttribute("data-key");
+
+			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
+			        if (itemKey === issueKey) {
+			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
+			        } else {
+			            item.style.display = "none";   // 나머지 div는 숨깁니다.
+			        }
+			    });
+			})
+		    .catch(error => {
+		        console.error("Fetch error:", error);  // 에러 처리
+		    });
+		}
+		// 현재 URL에서 쿼리 문자열을 가져옴
+	/*	let urlParams = new URLSearchParams(window.location.search);
+		// 쿼리 문자열에서 'filter' 값 추출
+		let filterValue = urlParams.get('filter');  // '21'
+		console.log(filterValue);
+		filterDatas.filterIdx = filterValue;*/
 document.querySelector("body").addEventListener("click", function(e) {
 	const account = e.target.closest(".filter_save_button");
 	const modal = document.querySelector(".modal");

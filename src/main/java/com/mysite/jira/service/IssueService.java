@@ -131,6 +131,7 @@ public class IssueService {
 		List<Issue> list = issueRepository.findByProjectIdxIn(projectIdxArr);
 		return list;
 	}
+	
 	public List<Issue> getIssueByIssueTypeAndFilterIdx(Integer filterIdx){
 		List<FilterIssueType> issueType = filterIssueTypeRepository.findByFilterIdx(filterIdx);
 		String[] issueTypeArr = new String[issueType.size()];
@@ -224,6 +225,7 @@ public class IssueService {
 		 for (Object[] result : managerListObject) {
 			 	Integer managerIdx=((BigDecimal)result[0]).intValue(); 
 	            String name = (String) result[1]; 
+	            System.out.println("매니저 이름은?"+name);
 	            String iconFilename = (String) result[2];
 	            // DTO 객체 생성
 	            ManagerDTO managerDTO = new ManagerDTO(managerIdx, name, iconFilename);

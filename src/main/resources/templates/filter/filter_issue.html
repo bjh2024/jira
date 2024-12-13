@@ -38,7 +38,7 @@
 							<input id="search_box"style="margin-left:4px;font-size: 14px; align-items: center;" placeholder="이슈 검색">
 						</div>
 							<div class="filter_menu" >
-								<div class="filter_category_div" style="width: 98px; cursor: pointer;">
+								<div class="filter_category_div" style="width: 98px; cursor: pointer;">                      
 									프로젝트
 									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 										<path fill="currentcolor" fill-rule="evenodd"
@@ -139,7 +139,12 @@
 											<label th:for="${issueTypeList.name}" th:each="issueTypeList, loop : ${issueType}">
 											<div class="filter_issue_project_div_3">
 												<div style="height: 13px; margin-left: 6px;">
-													<input type="checkbox" th:id="${issueTypeList.name}" name="issueTypeIdx" th:value="${issueTypeList.name}"></div>
+													<input class="issue_type_input_list" type="checkbox" 
+													th:id="${issueTypeList.name}" 
+													name="issueTypeIdx" 
+													th:value="${issueTypeList.name}"
+													th:checked="${#lists.contains(filterIssueTypeNameArr, issueTypeList.name)}">
+												</div>
 												<div style="height: 16px; margin-left: 12px;"><img width="16" height="16"
 														th:src="@{|/images/${issueTypeList.iconFilename}|}"
 														style="border-radius: 2px;">
@@ -193,7 +198,11 @@
 										<div style="height: 32px;" >
 											<div class="filter_issue_project_div_3">
 												<div style="height: 13px; margin-left: 6px;">
-													<input type="checkbox" th:id="@{|status${issueStatus[1]}|}" name="issueStatus" th:value="${issueStatus[1]}"></div>
+													<input class="issue_status_input_list" type="checkbox" 
+													th:id="@{|status${issueStatus[1]}|}" 
+													name="issueStatus" th:value="${issueStatus[1]}"
+													th:checked="${#lists.contains(filterIssueStatusNameArr, issueStatus[1])}">
+												</div>
 												<div class="issuestatus" th:text="${issueStatus[1]}" th:classappend="${issueStatus[0] == 2 ? 'first':''}
 																		+${issueStatus[0] == 1 ? 'second':''}"></div>
 											</div>
@@ -247,7 +256,11 @@
 												<label th:for="${account.managerName}" th:each="account : ${account}">
 												<div class="filter_issue_project_div_3" >
 													<div style="height: 13px; margin-left: 6px;">
-														<input type="checkbox" th:id="${account.managerName}" name="issueManager" th:value="${account.managerName}"></div>
+														<input class="issue_manager_input_list"type="checkbox" 
+														th:id="${account.managerName}" 
+														name="issueManager" 
+														th:value="${account.managerName}"
+														th:checked="${#lists.contains(filterIssueManagerNameArr, account.managerName)}"></div>
 													<div style="height: 16px; margin-left: 12px;">
 														<img width="16" height="16"
 															th:src="@{|/images/${account.managerIdx != 0 ? account.managerIconFilename : 'default_icon_file.png'}|}"
@@ -306,7 +319,11 @@
 																<label th:for="${issuePriority.name}" th:each="issuePriority : ${issuePriority}">
 																<div class="filter_issue_project_div_3" >
 																	<div style="height: 13px; margin-left: 6px;">
-																		<input type="checkbox" th:id="${issuePriority.name}" name="issuePriority" th:value="${issuePriority.name}"></div>
+																		<input class="issue_priority_input_list" type="checkbox" 
+																		th:id="${issuePriority.name}" 
+																		name="issuePriority" 
+																		th:value="${issuePriority.name}"
+																		th:checked="${#lists.contains(filterIssuePriorityIdxArr, issuePriority.idx)}"></div>
 																	<div style="height: 16px; margin-left: 12px;">
 																		<img width="16" height="16"
 																			th:src="@{|/images/${issuePriority.iconFilename}|}"
@@ -367,7 +384,10 @@
 																<label th:for="${jiraMembers.email}" th:each="jiraMembers : ${jiraMembers}">
 																<div class="filter_issue_project_div_3" >
 																	<div style="height: 13px; margin-left: 6px;">
-																		<input type="checkbox" th:id="${jiraMembers.email}" name="issueReporter" th:value="${jiraMembers.name}"></div>
+																		<input class="filter_reporter_input_list"
+																		type="checkbox" th:id="${jiraMembers.email}" 
+																		name="issueReporter" th:value="${jiraMembers.name}"
+																		th:checked="${#lists.contains(filterReporterNameArr, jiraMembers.name)}"></div>
 																	<div style="height: 16px; margin-left: 12px;">
 																		<img width="16" height="16"
 																			th:src="@{|/images/${jiraMembers.iconFilename}|}"
@@ -430,7 +450,10 @@
 																<label th:for="done1">
 																<div class="filter_issue_project_div_3" >
 																	<div style="height: 13px; margin-left: 6px;">
-																		<input type="checkbox" th:id="done1" name="donecheck1" value="3">
+																		<input type="checkbox"
+																		class="done_input_list" 
+																		th:id="done1" name="donecheck1" value="3"
+																		th:checked="${#lists.contains(filterDone, 1)}">
 																	</div>
 																	<div style="margin-left: 8px; font-size: 14px;">
 																		해결됨
@@ -440,7 +463,10 @@
 																<label th:for="done2">
 																<div class="filter_issue_project_div_3" >
 																	<div style="height: 13px; margin-left: 6px;">
-																		<input type="checkbox" th:id="done2" name="donecheck2" value="3">
+																		<input type="checkbox" 
+																		class="done_input_list"
+																		th:id="done2" name="donecheck2" value="3"
+																		th:checked="${#lists.contains(filterDone, 0)}">
 																	</div>
 																	<div style="margin-left: 8px; font-size: 14px;">
 																		해결되지 않음
@@ -472,7 +498,8 @@
 														<input type="radio" name="date" id="radio_days">&nbsp<b>몇일 전</b>
 													</div>
 													<div class="update_date_box_1">
-														<div><input type="text" placeholder="일 입력" id="update_before_date" style="height: 26px;"></div>
+														<div><input type="text" th:text="${}" placeholder="일 입력" id="update_before_date" style="height: 26px;"
+															></div>
 														&nbsp&nbsp
 														<div><input type="button" value="저장" id="update_date_save_button" style="height: 26px;"></div>
 													</div>
@@ -612,7 +639,8 @@
 														<label for="issuePriority">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="issuePriority" value="issuePriority"></div>
+																<input type="checkbox" id="issuePriority" value="issuePriority"
+																th:checked="${filterIssuePriorityIdxArr.size() != 0}"></div>
 															<div style="margin-left: 8px; font-size: 14px;">우선 순위</div>
 														</div>
 														</label>
@@ -626,8 +654,8 @@
 														<label for="doneCheck">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="doneCheck" value="doneCheck"></div>
-															<div style="margin-left: 8px; font-size: 14px;">해결</div>
+																<input type="checkbox" id="doneCheck" value="doneCheck"
+																th:checked="${filterDone.size() != 0}"></div>														<div style="margin-left: 8px; font-size: 14px;">해결</div>
 														</div>
 														</label>
 														<label for="updateDate">
@@ -647,7 +675,8 @@
 														<label for="issueReporter">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="issueReporter" value="issueReporter"></div>
+																<input type="checkbox" id="issueReporter" value="issueReporter"
+																th:checked="${filterReporterNameArr.size() != 0}"></div>
 															<div style="margin-left: 8px; font-size: 14px;">보고자</div>
 														</div>
 														</label>
@@ -718,7 +747,7 @@
 										<div style="width: 60px; font-size: 14px;">기한</div>
 									</div>
 									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">
-										<input type="radio" style="margin:0px 20px 0px 6px;">
+										<input type="radio" style="margin:0px 20px 0px 6px;" >
 										<div style="width: 60px; font-size: 14px;">보고자</div>
 									</div>
 									<div class="issue_list_small_filter"style="display: flex; height: 40px; align-items: center; padding: 8px 16px;">

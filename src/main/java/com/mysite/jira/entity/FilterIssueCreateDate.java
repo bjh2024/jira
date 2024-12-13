@@ -1,9 +1,12 @@
 package com.mysite.jira.entity;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.ColumnDefault;
 
 import groovy.transform.builder.Builder;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +33,12 @@ public class FilterIssueCreateDate {
 	@ColumnDefault("30")
 	@NotNull
 	private Integer deadline;
+	
+	@Column
+	private LocalDateTime startDate;
+	
+	@Column
+	private LocalDateTime endDate;
 
 	@Builder
 	public FilterIssueCreateDate(Filter filter, Integer deadline) {

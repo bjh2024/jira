@@ -1,5 +1,6 @@
 package com.mysite.jira.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,12 @@ public class FilterDoneDate {
 	@NotNull
 	private Integer deadline;
 
+	@Column
+	private LocalDateTime startDate;
+	
+	@Column
+	private LocalDateTime endDate;
+	
 	@Builder
 	public FilterDoneDate(Filter filter, Integer deadline) {
 		this.filter = filter;
