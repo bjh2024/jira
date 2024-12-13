@@ -22,7 +22,6 @@ public class DashboardIssueRecent {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer viewDate;
 	
 	@Column
@@ -33,12 +32,16 @@ public class DashboardIssueRecent {
 	@NotNull
 	private Integer divOrderY;
 	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
+	
 	@Column
 	@NotNull
 	private Integer isSave;
 	
 	@Column(columnDefinition = "VARCHAR2(100)")
-	@NotNull
 	private String unitPeriod;
 	
 	@ManyToOne
@@ -57,5 +60,12 @@ public class DashboardIssueRecent {
 		this.project = project;
 		this.isSave = isSave;
 		this.unitPeriod = unitPeriod;
+	}
+	
+	public void updateIssueRecent(Project project, Integer viewDate, String unitPeriod) {
+		this.project = project;
+		this.viewDate = viewDate;
+		this.unitPeriod = unitPeriod;
+		this.isSave = 1;
 	}
 }

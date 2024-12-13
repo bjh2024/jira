@@ -100,6 +100,7 @@ public interface DashboardRepository extends JpaRepository<Dashboard,Integer>{
 			WHERE al.dashboard_idx = :dashboardIdx
 			ORDER BY al.div_orderx, al.div_ordery
 			""", nativeQuery=true)
-	List<Map<String, Object>> findByDashboardDetail(@Param("dashboardIdx") Integer dashboardIdx); 
+	List<Map<String, Object>> findByDashboardDetail(@Param("dashboardIdx") Integer dashboardIdx);
+	
 	
 }

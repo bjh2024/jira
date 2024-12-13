@@ -28,18 +28,6 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 //	// kdw 보류
 //	List<IssueStatus> findByIssueList_JiraIdxAndIssueList_ManagerIdxAndStatusIn(Integer jiraIdx, Integer managerIdx, Integer[] statusArr);
 	
-	// kdw
-	@Query("""
-			SELECT  ist.name as name, 
-					count(i.idx) as count
-			FROM    IssueStatus ist
-			LEFT JOIN    Issue i
-			ON  ist.idx = i.issueStatus.idx
-			WHERE   ist.project.idx = :projectIdx
-			GROUP BY ist.name
-			""")
-	List<Map<String, Object>> findByStatusByIssueCount(@Param("projectIdx") Integer projectIdx);
-
 	List<IssueStatus> findAllByProjectIdxOrderByStatusAsc(Integer idx);
 	
 	List<IssueStatus> findAllByProjectIdxAndIdxNotOrderByStatusAsc(Integer projectIdx, Integer idx);

@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +22,6 @@ public class DashboardIssueComplete {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer viewDate;
 	
 	@Column
@@ -33,12 +32,16 @@ public class DashboardIssueComplete {
 	@NotNull
 	private Integer divOrderY;
 	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
+	
 	@Column
 	@NotNull
 	private Integer isSave;
 	
 	@Column(columnDefinition = "VARCHAR2(100)")
-	@NotNull
 	private String unitPeriod;
 	
 	@ManyToOne
@@ -47,6 +50,7 @@ public class DashboardIssueComplete {
 	@ManyToOne
 	private Project project;
 	
+	@Builder
 	public DashboardIssueComplete(Integer viewDate, Integer divOrderX, Integer divOrderY, Dashboard dashboard,
 			Project project, Integer isSave, String unitPeriod) {
 		this.viewDate = viewDate;
@@ -56,5 +60,12 @@ public class DashboardIssueComplete {
 		this.project = project;
 		this.isSave = isSave;
 		this.unitPeriod = unitPeriod;
+	}
+	
+	public void updateIssueComplete(Project project, Integer viewDate, String unitPeriod) {
+		this.project = project;
+		this.viewDate = viewDate;
+		this.unitPeriod = unitPeriod;
+		this.isSave = 1;
 	}
 }

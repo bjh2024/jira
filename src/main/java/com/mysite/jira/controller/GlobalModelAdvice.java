@@ -164,7 +164,7 @@ public class GlobalModelAdvice {
 		if(uri.contains("/dashboard") && 
 		  !uri.contains("/list")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;
-			Dashboard dashboard = dashboardService.getDashboard(dashboardIdx);
+			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
 		}

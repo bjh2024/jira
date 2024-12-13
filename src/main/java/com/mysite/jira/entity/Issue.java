@@ -123,14 +123,7 @@ public class Issue {
 	private List<IssueLikeMembers> issueLikeMembersList;
 	
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
-	private List<IssueObserverMembers> issueObserverList;
-	
-	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<IssueLabelData> issueLabelDataList;
-	
-	// emojiList FK 생성
-	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
-	private List<ReplyEmojiRecord> replyEmojiList;
 	
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE) 
 	private List<ProjectLogData> projectLogDataList;

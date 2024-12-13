@@ -1,6 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.project.ProjectSearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
 import com.mysite.jira.entity.Account;
@@ -74,5 +76,23 @@ public class ProjectAPIController {
 		projectService.createProject(name, key ,jira, account);
 		
 		return true;
+	}
+	
+	@GetMapping("idx")
+	public Integer getProjecIdx(@RequestParam("projectName") String projectName,
+								@RequestParam("uri") String uri) {
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName);
+		
+		return project.getIdx();
+	}
+	
+	// 프로젝트 이름으로 search
+	@GetMapping("search")
+	public List<ProjectSearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
+													@RequestParam("uri") String uri){
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		return projectService.getByJiraIdxAndNameLikeProject(jira.getIdx(), searchName);
+		
 	}
 }

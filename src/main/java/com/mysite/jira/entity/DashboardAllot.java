@@ -26,7 +26,6 @@ public class DashboardAllot {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer pageNum;
 	
 	@Column
@@ -36,6 +35,11 @@ public class DashboardAllot {
 	@Column
 	@NotNull
 	private Integer divOrderY;
+	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
 	
 	@Column
 	@NotNull
@@ -51,6 +55,11 @@ public class DashboardAllot {
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
 		this.isSave = isSave;
+	}
+	
+	public void updateAllot(Integer rowNum) {
+		this.pageNum = rowNum;
+		this.isSave = 1;
 	}
 	
 	@OneToMany(mappedBy = "dashboardAllot", cascade = CascadeType.REMOVE)

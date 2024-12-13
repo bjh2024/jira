@@ -15,15 +15,14 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	
 	// kdw (summation 팀 워크로드)
 	@Query("""
-			SELECT  a.name as name,
+			SELECT  NVL(a.name, '할당되지 않음') as name,
 			        a.iconFilename as iconFilename,
-			        count(i.idx) as count
+			        (SELECT count(si.idx) FROM Issue si WHERE NVL(i.manager.idx, 0) = NVL(si.manager.idx, 0) AND si.project.idx = :projectIdx) as count
 			FROM    Issue i
 			LEFT JOIN    Account a
 			ON  a.idx = i.manager.idx
-			WHERE   i.project.idx = :projectIdx
 			GROUP BY i.manager.idx, a.name, a.iconFilename
-			ORDER BY count(i.idx) DESC, i.manager.idx
+			ORDER BY count DESC, i.manager.idx
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
 

@@ -22,7 +22,6 @@ public class DashboardIssueStatistics {
 	private Integer idx;
 	
 	@Column
-	@NotNull
 	private Integer viewNum;
 	
 	@Column
@@ -32,6 +31,11 @@ public class DashboardIssueStatistics {
 	@Column
 	@NotNull
 	private Integer divOrderY;
+	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
 	
 	@Column
 	@NotNull
@@ -56,6 +60,13 @@ public class DashboardIssueStatistics {
 		this.project = project;
 		this.dashboardCol = dashboardCol;
 		this.isSave = isSave;
+	}
+	
+	public void updateIssueStatistics(Project project, DashboardCol dashboardCol, Integer rowNum) {
+		this.project = project;
+		this.dashboardCol = dashboardCol;
+		this.viewNum = rowNum;
+		this.isSave = 1;
 	}
 	
 }

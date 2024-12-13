@@ -29,12 +29,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 	// 동기처리로 fetch값 가져오기
 	async function getStatusDTO() {
 	        try {
-				const url = "/api/summation/status_chart";
-	            const res = await fetch(url, {method: "POST", 
-											  headers:{'Content-Type':'application/json'},
-											  body: JSON.stringify({"uri" : window.location.pathname})
-										  }
-									  );
+				const url = `/api/summation/status_chart?uri=${window.location.pathname}`;
+	            const res = await fetch(url, {method: "get"});
 	            const statusChartDTO = await res.json();
 	            
 	            statusChartDTO.forEach(function(item) {
@@ -175,11 +171,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 	const priorityNumArr = [];
 	const priorityColor = ["#DE350B", "#FF7452", "#FFAB00", "#4C9AFF", "#0065FF"];
 	async function getPriorityCharDTO(){
-		const url = "/api/summation/priority_chart";
-		const res = await fetch(url, { method: "POST", 
-									   headers:{"Content-Type" : "application/json"}, 
-									   body:JSON.stringify({"uri":window.location.pathname}) 
-		});
+		const url = `/api/summation/priority_chart?uri=${window.location.pathname}`;
+		const res = await fetch(url, { method: "get"});
         const priorityCharDTO = await res.json();
 		console.log(priorityCharDTO);
 		

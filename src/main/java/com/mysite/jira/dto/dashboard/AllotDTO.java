@@ -4,15 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class DashboardAllotDTO {
-	private String issueIconFilename;
+public class AllotDTO {
+	private String iconFilename;
 	private String key;
 	private String name;
 	private String priorityIconFilename;
 	
 	@Builder
-	public DashboardAllotDTO(String issueIconFilename, String key, String name, String priorityIconFilename) {
-		this.issueIconFilename = issueIconFilename;
+	public AllotDTO(String iconFilename, String key, String name, String priorityIconFilename) {
+		this.iconFilename = iconFilename;
 		this.key = key;
 		this.name = name;
 		this.priorityIconFilename = priorityIconFilename;

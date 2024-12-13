@@ -124,9 +124,6 @@ public class Account {
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueLikeMembers> issueLikeMembersList;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE) 
-	private List<IssueObserverMembers> issueObserverList;
-	
 	// filter FK 추가
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<Filter> filterList;

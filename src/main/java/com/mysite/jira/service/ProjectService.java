@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.mywork.RecentProjectDTO;
+import com.mysite.jira.dto.project.ProjectSearchDTO;
 import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.IssueStatus;
@@ -36,6 +38,14 @@ public class ProjectService {
 
 	private final UtilityService utilityService;
 
+	public Project getProjectByIdx(Integer idx) {
+		Optional<Project> project = projectRepository.findById(idx);
+		if(!project.isEmpty()) {
+			return project.get();
+		}
+		return null;
+	}
+	
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가!!!)
 	public void createProject(String name, String key, Jira jira, Account account) {
 		int idx = (int)(Math.random()*3);
@@ -155,5 +165,25 @@ public class ProjectService {
 
 	public Project getByJiraIdxAndNameProject(Integer jiraIdx, String name) {
 		return projectRepository.findByJira_idxAndName(jiraIdx, name);
+	}
+	
+	public List<ProjectSearchDTO> getByJiraIdxAndNameLikeProject(Integer jiraIdx, String searchName) {
+		searchName = searchName + "%";
+		if(searchName.equals("%")) searchName = "";
+		
+		List<Project> projectList = projectRepository.findByJira_idxAndNameLike(jiraIdx, searchName);
+		List<ProjectSearchDTO> result = new ArrayList<>();
+		for(int i = 0; i < projectList.size(); i++) {
+			String name = projectList.get(i).getName();
+			String iconFilename = projectList.get(i).getIconFilename();
+			String key = projectList.get(i).getKey();
+			ProjectSearchDTO dto = ProjectSearchDTO.builder()
+												   .name(name)
+												   .iconFilename(iconFilename)
+												   .key(key)
+												   .build();
+			result.add(dto);
+		}
+		return result;
 	}
 }

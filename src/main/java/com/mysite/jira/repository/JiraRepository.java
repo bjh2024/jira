@@ -15,23 +15,23 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 
 	// kdw
 	Optional<Jira> findByName(String name);
-	
-	// kdw account_idx로 name(jira 리더) 가져오기 
+
+	// kdw account_idx로 name(jira 리더) 가져오기
 	@Query("""
 			SELECT j.name FROM Jira j JOIN JiraMembers jm ON j.idx = jm.jira.idx
-		    WHERE jm.account.idx = :accountIdx
+			   WHERE jm.account.idx = :accountIdx
 			""")
 	List<String> findJiraAndMembersByAccountIdxName(@Param("accountIdx") Integer accountIdx);
 
 	// kdw jira로그인정보와 지라이름이 같은 지라의 개수
 	Integer countByNameAndJiraMembersList_AccountIdx(String name, Integer accountIdx);
-	
+
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
 			SELECT iconFilename as iconFilename,
 				   name as name,
-				   projectName as projectName, 
-				   key as key, 
+				   projectName as projectName,
+				   key as key,
 				   clickedDate as clickedDate
 			FROM(
 				SELECT  i.issueType.iconFilename as iconFilename, i.name as name, i.project.name as projectName, i.key as key, irc.clickedDate as clickedDate
@@ -66,15 +66,14 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 			ORDER BY clickedDate Desc
 					""")
 	List<Map<String, Object>> findClickedDataOrderByDateDesc(@Param("accountIdx") Integer accountIdx,
-															@Param("jiraIdx") Integer jiraIdx, 
-															@Param("startDate") LocalDateTime startDate,
-															@Param("endDate") LocalDateTime endDate);
-	
+			@Param("jiraIdx") Integer jiraIdx, @Param("startDate") LocalDateTime startDate,
+			@Param("endDate") LocalDateTime endDate);
+
 	// 가장 최근에 방문했던 지라
 	// rownum as rownum하면 오류가 남
 	@Query("""
 			SELECT  al.jira as jira
-			FROM 
+			FROM
 			(SELECT  jm.jira as jira,
 				     rownum as rnum
 			 FROM    JiraMembers jm

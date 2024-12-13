@@ -13,6 +13,10 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	
 	// 프로젝트 이름으로 프로젝트 조회
 	Project findByJira_idxAndName(Integer jiraIdx, String name);
+	
+	// 프로젝트 이름으로 프로젝트 조회
+	List<Project> findByJira_idxAndNameLike(Integer jiraIdx, String name);
+		
 	// 프로젝트 키로 프로젝트 조회
 	Project findByJira_IdxAndKey(Integer jiraIdx, String key);
 	
