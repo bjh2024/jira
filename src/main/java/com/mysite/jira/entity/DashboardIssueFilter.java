@@ -26,8 +26,7 @@ public class DashboardIssueFilter {
 	private Integer idx;
 	
 	@Column
-	@NotNull
-	private Integer pageNum;
+	private Integer rowNum;
 
 	@Column
 	@NotNull
@@ -51,9 +50,9 @@ public class DashboardIssueFilter {
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 	
 	@Builder
-	public DashboardIssueFilter(Integer pageNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Filter filter, Integer isSave) {
+	public DashboardIssueFilter(Integer rowNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Filter filter, Integer isSave) {
 		this.isSave = isSave;
-		this.pageNum = pageNum;
+		this.rowNum = rowNum;
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
 		this.isSave = isSave;
