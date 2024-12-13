@@ -468,7 +468,13 @@
 								 					</div>
 								 				</div>
 								 				<div class="issuedetail-menubar">
-								 					<div class="issuedetail-option">
+								 					<div class="issuedetail-option issuedetail-vote">
+														<div class="issuedetail-votewindow">
+															<div class="votewindow-votebtn">
+																<img src="/images/thumbsup_icon.svg" style="filter: invert(18%) sepia(93%) saturate(2545%) hue-rotate(205deg) brightness(99%) contrast(113%);">
+																<span>이 이슈에 투표합니다.</span>
+															</div>
+														</div>
 								 						<span style="margin-top: 2px;">
 								 							<img th:src="@{/images/thumbsup_icon.svg}"
 								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
@@ -908,11 +914,18 @@
 						 					</div>
 						 				</div>
 						 				<div class="issuedetail-menubar">
-						 					<div class="issuedetail-option">
+						 					<div class="issuedetail-option issuedetail-vote">
+												<div class="issuedetail-votewindow">
+													<div class="votewindow-votebtn">
+														<img src="/images/thumbsup_icon.svg" style="filter: invert(18%) sepia(93%) saturate(2545%) hue-rotate(205deg) brightness(99%) contrast(113%);">
+														<span>이 이슈에 투표합니다.</span>
+													</div>
+													<div class="votewindow-votedlist"></div>
+												</div>
 						 						<span style="margin-top: 2px;">
-						 							<img th:src="@{/images/thumbsup_icon.svg}"
-						 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						 							<img th:src="@{/images/thumbsup_icon.svg}" class="thumbsup-img">
 						 						</span>
+												<span class="issuedetail-vote-count">0</span>
 						 					</div>
 						 					<div class="issuedetail-option">
 						 						<span style="margin-top: 2.5px;">

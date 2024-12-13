@@ -1993,23 +1993,86 @@ body{
 	background-color: #0515240F;
 }
 
-.issuedetail-option-observ{
-	height: 32px;
-	display: flex;
-	align-items: center;
-	gap: 0px;
-	font-size: 13px;
-	padding: 6px 12px 6px 8px; 
-	gap: 4px;
-	cursor: pointer;
-	color: #0052CC;
-	background-color: #E9F2FE;
-	border: 1px solid #0052CC;
-	border-radius: 3px;
+.issuedetail-vote{
+	width: auto;
+	padding: 6px 12px 6px 8px;
+	position: relative;
+	gap: 6px;
+	font-weight: normal;
 }
 
-.issuedetail-option-observ:hover{
-	background-color: #CFE1FD;
+.issuedetail-vote.active{
+	background-color: #E9F2FE;
+	color: #1868DB;
+	border-color: #1868DB;
+}
+
+.thumbsup-img{
+	filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);
+}
+
+.thumbsup-img.active{
+	filter: invert(35%) sepia(91%) saturate(3934%) hue-rotate(207deg) brightness(90%) contrast(90%) !important;
+}
+
+.issuedetail-votewindow{
+	position: absolute;
+	top: 40px;
+    right: 0px;
+    width: 240px;
+    padding: 6px 0px;
+	font-size: 14px;
+	font-weight: normal;
+	color: #292A2E;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+    z-index: 10;
+	display: none;
+}
+
+.issuedetail-votewindow.show{
+	display: block;
+}
+
+.votewindow-votebtn{
+	height: 40px;
+	padding: 8px 12px 7px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	border-bottom: 1px solid #091E4224;
+}
+
+.votewindow-votebtn:hover{
+	background-color: #0515240F;
+}
+
+.votewindow-votedlist.none{
+	height: 87px;
+	margin: 18px 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.votewindow-votedlist.exist{
+	padding: 8px 0px;
+	font-size: 12px;
+	color: #505258;
+}
+
+.votedlist-voteuser{
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 16px;
+}
+
+.votedlist-voteuser:hover{
+	background-color: #0515240F;
 }
 
 .issuedetailbody-container{

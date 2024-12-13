@@ -13,6 +13,7 @@ import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueLikeMembers;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
@@ -28,6 +29,7 @@ import com.mysite.jira.repository.IssueExtendsRepository;
 import com.mysite.jira.repository.IssueFileRepository;
 import com.mysite.jira.repository.IssueLabelDataRepository;
 import com.mysite.jira.repository.IssueLabelRepository;
+import com.mysite.jira.repository.IssueLikeMembersRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
@@ -61,6 +63,7 @@ public class BoardMainService {
 	private final ProjectLogStatusRepository projectLogStatusRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
+	private final IssueLikeMembersRepository issueLikeMembersRepository;
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -553,5 +556,28 @@ public class BoardMainService {
 	public void updateIssueType(Issue issue, IssueType issueType) {
 		issue.updateIssueType(issueType);
 		this.issueRepository.save(issue);
+	}
+	
+	public List<IssueLikeMembers> getVoterListByIssueIdx(Integer issueIdx){
+		List<IssueLikeMembers> voterList = this.issueLikeMembersRepository.findByIssueIdx(issueIdx);
+		return voterList;
+	}
+	
+	public IssueLikeMembers getOnceVoteData(Integer userIdx, Integer issueIdx) {
+		Optional<IssueLikeMembers> voteData = this.issueLikeMembersRepository.findByAccountIdxAndIssueIdx(userIdx, issueIdx);
+		return voteData.get();
+	}
+	
+	public IssueLikeMembers createVoteData(Account account, Issue issue) {
+		IssueLikeMembers data = IssueLikeMembers.builder()
+												.account(account)
+												.issue(issue)
+												.build();
+		this.issueLikeMembersRepository.save(data);
+		return data;
+	}
+	
+	public void deleteVoteData(Integer idx) {
+		this.issueLikeMembersRepository.deleteById(idx);
 	}
 }

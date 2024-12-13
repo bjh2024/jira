@@ -40,11 +40,13 @@ import com.mysite.jira.dto.board.UpdateIssueNameDTO;
 import com.mysite.jira.dto.board.UpdateIssuePathDTO;
 import com.mysite.jira.dto.board.UpdateIssueTypeDTO;
 import com.mysite.jira.dto.board.UpdateReplyDTO;
+import com.mysite.jira.dto.board.VoterListDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
+import com.mysite.jira.entity.IssueLikeMembers;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
@@ -573,5 +575,34 @@ public class BoardMainAPTIController {
 												.iconFilename(issueType.getIconFilename())
 												.build();
 		return dto;
+	}
+	
+	@PostMapping("/get_voter_list")
+	public List<VoterListDTO> getVoterList(@RequestBody VoterListDTO voterListDTO){
+		Integer issueIdx = voterListDTO.getIssueIdx();
+		List<IssueLikeMembers> voterList = boardMainService.getVoterListByIssueIdx(issueIdx);
+		List<VoterListDTO> dtoList = new ArrayList<>();
+		for(int i = 0; i < voterList.size(); i++) {
+			VoterListDTO dto = VoterListDTO.builder()
+										.userIdx(voterList.get(i).getAccount().getIdx())
+										.name(voterList.get(i).getAccount().getName())
+										.iconFilename(voterList.get(i).getAccount().getIconFilename())
+										.build();
+			dtoList.add(dto);
+		}
+		return dtoList;
+	}
+	
+	@PostMapping("/create_vote_data")
+	public void createVoteData(@RequestBody VoterListDTO voterListDTO) {
+		Account user = boardMainService.getAccountById(voterListDTO.getUserIdx());
+		Issue issue = boardMainService.getIssueByIdx(voterListDTO.getIssueIdx());
+		boardMainService.createVoteData(user, issue);
+	}
+	
+	@PostMapping("/delete_vote_data")
+	public void deleteVoteData(@RequestBody VoterListDTO voterListDTO) {
+		IssueLikeMembers voteData = boardMainService.getOnceVoteData(voterListDTO.getUserIdx(), voterListDTO.getIssueIdx());
+		boardMainService.deleteVoteData(voteData.getIdx());
 	}
 }

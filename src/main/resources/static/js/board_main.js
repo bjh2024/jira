@@ -818,6 +818,14 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 		if(btn !== null){ 
 			const container = btn.querySelector(".issuedetail-container");
 			container.classList.add("show");
+			
+			if(e.target.closest(".issuedetail-container") == null || e.target.closest(".issuedetail-vote") !== null){
+				getVoterData.issueIdx = container.dataset.issueidx;
+				getVoterData.userIdx = container.dataset.useridx;
+				const voteBtn = container.querySelector(".issuedetail-option.issuedetail-vote");
+				getVoterListFetch(voteBtn);
+				
+			}
 		}
 	});
 });
@@ -1258,6 +1266,125 @@ document.querySelectorAll(".subissuedetail-container").forEach(function(containe
 			container.classList.add("show");
 		}else{
 			container.classList.remove("show");
+		}
+	});
+});
+
+let getVoterData = {
+	"issueIdx": "",
+	"userIdx": ""
+}
+
+function getVoterListFetch(btn){
+	let url = "/api/project/get_voter_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getVoterData)
+	}).then(response => response.json())
+	.then(voterList => {
+		const container = btn.children[0];
+		let isVoted = false;	
+				
+		const box = container.children[1];
+		box.classList.add("exist");
+		box.classList.remove("none");
+		box.innerHTML = `<div class="pathwindow-title">
+							<span>이 이슈에 투표함</span>
+						</div>`;
+		let count = 0;
+		voterList.forEach(function(vote){
+			const votedUser = document.createElement("div");
+			votedUser.classList.add("votedlist-voteuser");
+			votedUser.innerHTML = `<img src="/images/${vote.iconFilename}" style="width: 24px; height: 24px; border-radius: 50%;">
+									<span>${vote.name}</span>`;
+			if(vote.userIdx == getVoterData.userIdx){
+				isVoted = true;
+			}
+			box.appendChild(votedUser);
+			count += 1;
+		});
+		
+		if(isVoted){
+			container.children[0].children[1].innerText = "투표 제거";
+		}else{
+			container.children[0].children[1].innerText = "이 이슈에 투표합니다.";
+		}
+						
+		if(voterList.length < 1){
+			container.children[1].classList.remove("exist");
+			container.children[1].classList.add("none");
+			container.children[1].innerHTML = `<img src="/images/vote_icon.svg" width="70px">
+												<span>이 이슈에 투표한 사용자가 없습니다.</span>`;
+			return;
+		}	
+		
+		container.appendChild(box);
+		
+		const countItem = btn.querySelector(".issuedetail-vote-count");
+		countItem.innerText = count;
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".issuedetail-vote").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		btn.classList.toggle("active");
+		btn.children[0].classList.toggle("show");
+		btn.children[1].children[0].classList.toggle("active");
+	});
+});
+
+function createVoteData(btn){
+	let url = "/api/project/create_vote_data";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getVoterData)
+	}).then(response => {
+        if (response.ok) {
+			btn.children[2].innerText = Number(btn.children[2].innerText) + 1;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function deleteVoteData(btn){
+	let url = "/api/project/delete_vote_data";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getVoterData)
+	}).then(response => {
+        if (response.ok) {
+			console.log(btn);
+			btn.children[2].innerText = Number(btn.children[2].innerText) - 1;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".votewindow-votebtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		if(btn.children[1].innerText.includes("이슈에")){
+			createVoteData(btn.parentElement.parentElement);
+		}else{
+			deleteVoteData(btn.parentElement.parentElement);
 		}
 	});
 });

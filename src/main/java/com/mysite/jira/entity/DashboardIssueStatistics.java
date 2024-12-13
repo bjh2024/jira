@@ -22,7 +22,7 @@ public class DashboardIssueStatistics {
 	private Integer idx;
 	
 	@Column
-	private Integer viewNum;
+	private Integer rowNum;
 	
 	@NotNull
 	private Integer divOrderX;
@@ -44,9 +44,9 @@ public class DashboardIssueStatistics {
 	private DashboardCol dashboardCol;
 	
 	@Builder
-	public DashboardIssueStatistics(Integer viewNum, Integer divOrderX, Integer divOrderY, 
+	public DashboardIssueStatistics(Integer rowNum, Integer divOrderX, Integer divOrderY, 
 			Dashboard dashboard, Project project, DashboardCol dashboardCol, Integer isSave) {
-		this.viewNum = viewNum;
+		this.rowNum = rowNum;
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
 		this.dashboard = dashboard;
