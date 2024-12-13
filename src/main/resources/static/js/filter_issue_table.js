@@ -1,3 +1,5 @@
+
+
 document.querySelector("body").addEventListener("click", function(e) {
     const menu = e.target.closest(".filter_menu");  // 클릭된 메뉴 찾기
     const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
@@ -74,6 +76,10 @@ let filterDatas = {
 		        fetchIssueDetail();
 		    }
 		});
+		window.addEventListener("onload", function() {
+		  alert("fdf");
+		});
+
 
 		function fetchIssueDetail() {
 		    // fetch()를 사용하여 AJAX 요청
@@ -116,23 +122,6 @@ let filterDatas = {
 		let filterValue = urlParams.get('filter');  // '21'
 		console.log(filterValue);
 		filterDatas.filterIdx = filterValue;*/
-		document.querySelectorAll(".filter_menu").forEach(function(item){
-			item.addEventListener("click",function(){
-		const filter_project_input = document.querySelectorAll(".project_input_list");
-		
-					for(let i = 0; i < filter_project_input.length; i+=2){
-						if(filter_project_input[i+1].checked){
-							if(filter_project_input[i+1].parentElement.children.length!==1){
-							filter_project_input[i].remove();
-							}
-						}else{
-							if(filter_project_input[i].parentElement.children.length!==1){
-							filter_project_input[i+1].remove();
-							}
-						}
-					}
-			})
-		})
 // 업데이트 날짜 필터 -------------------------------------------------------------------
 	document.getElementById("radio_days").addEventListener("change", function() {
 	   // '몇일 전'을 선택했을 때

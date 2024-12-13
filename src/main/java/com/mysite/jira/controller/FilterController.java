@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -62,7 +63,7 @@ public class FilterController {
 //	    return "redirect:" + requestUrl + "/" + issueKey;
 //	}
 	@GetMapping("filter_issue")
-	public String filterIssue(@RequestParam(name="filter") Integer filterIdx ,Model model,
+	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
 			@PathVariable("jiraName") String jiraName) {
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
 			System.out.println(filterIdx);
@@ -80,8 +81,8 @@ public class FilterController {
 			}
 			model.addAttribute("issue", issue);
 			
-			List<FilterProject> filterProject = filterService.getByFilterIdx(filterIdx);
-			model.addAttribute("filterProject", filterProject);
+			List<Integer> filterProjectIdxArr = filterService.getByFilterIdx(filterIdx);
+			model.addAttribute("filterProject", filterProjectIdxArr);
 			
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);

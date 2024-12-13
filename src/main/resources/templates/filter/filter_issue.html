@@ -79,8 +79,7 @@
 													<div style="height: 13px; margin-left: 6px;">
 														<input class="project_input_list" type="checkbox" th:id="${projectList.idx}" 
 														name="projectIdx" th:value="${projectList.idx}"
-														th:each="filterProject : ${filterProject} "
-														th:checked="${filterProject.project.idx == projectList.idx}">
+														th:checked="${#lists.contains(filterProject, projectList.idx)}">
 													</div>
 												<div style="height: 16px; margin-left: 12px;">
 													<img width="16" height="16"

@@ -1,5 +1,6 @@
 package com.mysite.jira.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +26,13 @@ public class FilterService {
 		System.out.println(filterRepository.findByJiraIdx(idx).size());
 		return filterRepository.findByJiraIdx(idx);
 	}
-	public List<FilterProject> getByFilterIdx(Integer idx){
-		return filterProjectRepository.findByFilterIdx(idx);
+	public List<Integer> getByFilterIdx(Integer idx){
+		List<FilterProject> filterProject = filterProjectRepository.findByFilterIdx(idx);
+		System.out.println("gdgd");
+		List<Integer> projectIdxArr = new ArrayList<>();
+		for (int i = 0; i < filterProject.size(); i++) {
+			projectIdxArr.add(filterProject.get(i).getProject().getIdx());
+			}
+		return projectIdxArr;
 	}
 }
