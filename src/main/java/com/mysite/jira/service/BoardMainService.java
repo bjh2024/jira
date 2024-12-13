@@ -544,4 +544,14 @@ public class BoardMainService {
 											.build();
 		this.projectLogDataRepository.save(data);
 	}
+	
+	public List<IssueType> getUpdateIssueTypeList(Integer projectIdx, Integer typeIdx){
+		List<IssueType> list = this.issueTypeRepository.findByProjectIdxAndGradeAndIdxNot(projectIdx, 2, typeIdx);
+		return list;
+	}
+	
+	public void updateIssueType(Issue issue, IssueType issueType) {
+		issue.updateIssueType(issueType);
+		this.issueRepository.save(issue);
+	}
 }

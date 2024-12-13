@@ -881,12 +881,8 @@
 						 				<div class="issuekeypathbox">
 						 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) > 0}">
 						 						<th:block th:each="childList : ${issueList.childList}">
-						 						<div class="path-issuekeyicon" th:attr="data-projectidx=${project.idx}, data-currentissue=${childList.parent.idx}">
-													<div class="update-issuepathwindow">
-														<div class="pathwindow-title">
-															<span>에픽 이슈</span>
-														</div>
-													</div>
+						 						<div class="path-issuekeyicon epik" th:attr="data-projectidx=${project.idx}, data-currentissue=${childList.parent.idx}">
+													<div class="update-issuepathwindow"></div>
 													<img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px">
 												</div>
 						 						<span style="margin-bottom: 2px; padding-right: 4px;" th:text="${childList.parent.key}"></span>
@@ -904,9 +900,10 @@
 						 						<span style="font-size: 16px; ">/</span>
 						 					</div>
 						 					<div class="issuekeypath" th:attr="data-issueIdx=${issueList.idx}">
-						 						<div class="path-issuekeyicon" style="padding-left: 0px;"><img
-						 								th:src="@{|/images/${issueList.issueType.iconFilename}|}"
-						 								width="16px" height="16px"></div>
+						 						<div class="path-issuekeyicon general" style="padding-left: 0px;" th:attr="data-projectidx=${project.idx}, data-currenttype=${issueList.IssueType.idx}">
+													<div class="update-issuepathwindow"></div>
+													<img th:src="@{|/images/${issueList.issueType.iconFilename}|}" width="16px" height="16px">
+												</div>
 						 						<span style="margin-bottom: 2px;" th:text="${issueList.key}"></span>
 						 					</div>
 						 				</div>

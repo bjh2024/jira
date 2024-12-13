@@ -38,6 +38,7 @@ import com.mysite.jira.dto.board.UpdateDateDTO;
 import com.mysite.jira.dto.board.UpdateIssueExareaDTO;
 import com.mysite.jira.dto.board.UpdateIssueNameDTO;
 import com.mysite.jira.dto.board.UpdateIssuePathDTO;
+import com.mysite.jira.dto.board.UpdateIssueTypeDTO;
 import com.mysite.jira.dto.board.UpdateReplyDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
@@ -541,5 +542,36 @@ public class BoardMainAPTIController {
 		Issue issue = boardMainService.getIssueByIdx(projectLogDTO.getIssueIdx());
 		
 		boardMainService.createProjectLogData(issue, creator, status);
+	}
+	
+	@PostMapping("/get_issue_type_list")
+	public List<UpdateIssueTypeDTO> getIssueTypeList(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO){
+		Integer projectIdx = updateIssueTypeDTO.getProjectIdx();
+		Integer typeIdx = updateIssueTypeDTO.getIssueTypeIdx();
+		List<IssueType> typeList = boardMainService.getUpdateIssueTypeList(projectIdx, typeIdx);
+		List<UpdateIssueTypeDTO> dtoList = new ArrayList<>();
+		for(int i = 0; i < typeList.size(); i++) {
+			UpdateIssueTypeDTO dto = UpdateIssueTypeDTO.builder()
+													.issueTypeIdx(typeList.get(i).getIdx())
+													.name(typeList.get(i).getName())
+													.iconFilename(typeList.get(i).getIconFilename())
+													.build();
+			dtoList.add(dto);
+		}
+		return dtoList;
+	}
+	
+	@PostMapping("/update_issue_type")
+	public UpdateIssueTypeDTO updateIssueType(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO) {
+		Issue issue = boardMainService.getIssueByIdx(updateIssueTypeDTO.getIssueIdx());
+		IssueType issueType = boardMainService.getIssueTypeByIdx(updateIssueTypeDTO.getIssueTypeIdx());
+		boardMainService.updateIssueType(issue, issueType);
+		UpdateIssueTypeDTO dto = UpdateIssueTypeDTO.builder()
+												.projectIdx(updateIssueTypeDTO.getProjectIdx())
+												.issueIdx(updateIssueTypeDTO.getIssueIdx())
+												.issueTypeIdx(issueType.getIdx())
+												.iconFilename(issueType.getIconFilename())
+												.build();
+		return dto;
 	}
 }

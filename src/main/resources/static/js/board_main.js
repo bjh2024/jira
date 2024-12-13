@@ -1077,13 +1077,89 @@ function getNewEpikIssueList(box){
 	});
 }
 
-document.querySelectorAll(".path-issuekeyicon").forEach(function(btn){
+document.querySelectorAll(".path-issuekeyicon.epik").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		updateEpikIssueData.projectIdx = btn.dataset.projectidx;
 		updateEpikIssueData.currentIssue = btn.dataset.currentissue;
 		btn.classList.toggle("active");
 		btn.children[0].classList.toggle("show");
 		getNewEpikIssueList(btn.children[0]);
+	});
+});
+
+let updateIssueTypeData = {
+	"projectIdx": "",
+	"issueTypeIdx": "",
+	"issueIdx": ""
+}
+
+function updateIssueType(btn){
+	let url = "/api/project/update_issue_type";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateIssueTypeData)
+	})
+	.then(response => response.json())
+	.then(type => {
+		btn.dataset.issueidx = type.issueIdx;
+		btn.children[0].dataset.projectidx = type.projectIdx;
+		btn.children[0].dataset.currenttype = type.issueTypeIdx;
+		btn.children[0].children[1].src = `/images/${type.iconFilename}`;
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+function getIssueTypeList(box){
+	let url = "/api/project/get_issue_type_list";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateIssueTypeData)
+	})
+	.then(response => response.json())
+	.then(typeList => {
+		box.style.width = "130px";
+		box.innerHTML = `<div class="pathwindow-title">
+							<span>이슈 유형 변경</span>
+						</div>`;
+		typeList.forEach(function(type){
+			const item = document.createElement("div");
+			item.classList.add("pathwindow-option");
+			item.setAttribute("data-typeidx", type.issueTypeIdx);
+			item.innerHTML = `<img src="/images/${type.iconFilename}">
+							  <span style="margin-bottom: 4px;">${type.name}</span>`;
+			box.appendChild(item);
+			item.addEventListener("click", function(e){
+				updateIssueTypeData.issueTypeIdx = item.dataset.typeidx;
+				console.log(updateIssueTypeData);
+				updateIssueType(item.parentElement.parentElement.parentElement);
+				
+				const container = e.target.closest(".issuedetail-container");
+				createLogData.userIdx = container.dataset.useridx;
+				createLogData.issueIdx = container.dataset.issueidx;
+				createLogData.type = 10;
+				createProjectLog();
+			});
+		});
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".path-issuekeyicon.general").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		updateIssueTypeData.projectIdx = btn.dataset.projectidx;
+		updateIssueTypeData.issueTypeIdx = btn.dataset.currenttype;
+		updateIssueTypeData.issueIdx = btn.parentElement.dataset.issueidx;
+		btn.classList.toggle("active");
+		btn.children[0].classList.toggle("show");
+		getIssueTypeList(btn.children[0]);
 	});
 });
 

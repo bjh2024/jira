@@ -175,4 +175,8 @@ public class Issue {
 	public void updateDivOrder(Integer idx) {
 		this.divOrder = idx;
 	}
+	
+	public void updateIssueType(IssueType issueType) {
+		this.issueType = issueType;
+	}
 }
