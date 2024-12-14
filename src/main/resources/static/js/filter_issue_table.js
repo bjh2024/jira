@@ -67,16 +67,16 @@ let filterDatas = {
 		
 		let issueKey = "";
 		document.querySelector(".issueListFilter").addEventListener("click", function(event) {
-		    // 클릭된 요소가 .issue_box_choice인 경우에만 처리
-		    if (event.target.closest(".issue_box_choice")) {
+	    // 클릭된 요소가 .issue_box_choice인 경우에만 처리
+	    if (event.target.closest(".issue_box_choice")) {
 		        let item = event.target.closest(".issue_box_choice");  // 클릭한 .issue_box_choice 요소
-		        issueKey = item.dataset.issueKey;  // 데이터 속성에서 issueKey 값을 가져옴
-
+	        issueKey = item.dataset.issueKey;  // 데이터 속성에서 issueKey 값을 가져옴/
 		        // issueKey로 세부 정보를 가져오는 함수 호출
 		        fetchIssueDetail();
 		    }
 		});
 		window.addEventListener("load", function() {
+			alert("로드 들어")
 			
 			document.querySelectorAll(".project_input_list").forEach(function(item) {
 			       if (item.checked) {
@@ -94,6 +94,7 @@ let filterDatas = {
 				}
 			})
 			document.querySelectorAll(".issue_manager_input_list").forEach(function(item){
+				
 				if(item.checked){
 					filterDatas.issueManagersArr.push(item.value);
 				}
@@ -106,7 +107,13 @@ let filterDatas = {
 			})
 			document.querySelectorAll(".done_input_list").forEach(function(item){
 				if(item.checked){
-					filterDatas.issueReporterArr.push(item.value);
+					filterDatas.doneCheck = item.value;
+					document.querySelector(".done_check").style.display = "block";
+				}
+			})
+			document.querySelectorAll(".done_input_list2").forEach(function(item){
+				if(item.checked){
+					filterDatas.notDoneCheck = item.value;
 					document.querySelector(".done_check").style.display = "block";
 				}
 			})
@@ -116,8 +123,9 @@ let filterDatas = {
 					document.querySelector(".issuePriority").style.display = "block";
 				}
 			})
-			fetchInput(); 
 			fetchInputIssue();	
+			fetchInput(); 
+			
 		});
 
 
@@ -288,7 +296,6 @@ let filterDatas = {
 			 fetchInputIssue();
 	 	 });
 	 	 document.getElementById("done_start_date").addEventListener("change", function(){
-				alert("startDate 들어옴")
 	 			filterDatas.doneStartDate = new Date(this.value);
 	 			if(filterDatas.doneLastDate != null){
 	 				document.getElementById("done_last_date").value = null;
@@ -298,7 +305,6 @@ let filterDatas = {
 				fetchInputIssue();
 	 	 })
 	 	 document.getElementById("done_last_date").addEventListener("change", function(){
-				alert("lastDate 들어옴")
 	 		if(filterDatas.doneStartDate == null){
 	 			alert("시작날짜 먼저 입력해주세요!");
 	 			this.value = null;
@@ -503,6 +509,7 @@ function fetchInput() {
 			document.querySelector("tbody").innerHTML = ""
 			
 			issueListByProjectKey.forEach(function(item){
+				
 				document.querySelector("tbody").innerHTML +=
 				`<tr class="filter_row">
 					<td>
@@ -619,7 +626,11 @@ function fetchInputIssue() {
 			if(document.querySelector(".issueListFilter") == null) return;
 			document.querySelector(".issueListFilter").innerHTML = ""
 			
-			issueList.forEach(function(item){
+			issueList.forEach(function(item, index){
+				if(index === 0){
+				issueKey = item.issueKey;
+				fetchIssueDetail();
+				}
 				document.querySelector(".issueListFilter").innerHTML += 
 				`<div class="issue_box_choice" data-issue-key="${item.issueKey}">
 						<div class="issue_title">
