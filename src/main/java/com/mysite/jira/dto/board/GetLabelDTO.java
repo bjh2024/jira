@@ -6,4 +6,5 @@ import lombok.Getter;
 public class GetLabelDTO {
 	private Integer[] idx;
 	private Integer issueIdx;
+	private Integer jiraIdx;
 }

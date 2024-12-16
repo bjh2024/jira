@@ -29,6 +29,11 @@ configurations {
 
 repositories {
 	mavenCentral()
+	
+	maven {
+        url 'https://repository.aspose.com/repo/'
+    }
+	
 }
 
 dependencies {
@@ -66,7 +71,11 @@ dependencies {
 	// email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	
+	// json(open ai)
 	implementation group: 'org.json', name: 'json', version: '20240303'
+    
+	// aspose-words(text preview)
+	implementation 'com.aspose:aspose-words:24.11:jdk17'
 }
 
 

@@ -41,9 +41,11 @@ import com.mysite.jira.dto.board.UpdateIssuePathDTO;
 import com.mysite.jira.dto.board.UpdateIssueTypeDTO;
 import com.mysite.jira.dto.board.UpdateReplyDTO;
 import com.mysite.jira.dto.board.VoterListDTO;
+import com.mysite.jira.dto.project.upload.FileRequestDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueExtends;
+import com.mysite.jira.entity.IssueFile;
 import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueLikeMembers;
@@ -73,7 +75,7 @@ public class BoardMainAPTIController {
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
 		List<IssueLabelData> labelList = new ArrayList<>();
 		if(labelListDTO.getIdx()[0] == -1) {
-			labelList = boardMainService.getLabelData();
+			labelList = boardMainService.getLabelData(labelListDTO.getJiraIdx());
 		}else {
 			labelList = boardMainService.getAlterLabelData(labelListDTO.getIdx());
 		}
@@ -604,5 +606,23 @@ public class BoardMainAPTIController {
 	public void deleteVoteData(@RequestBody VoterListDTO voterListDTO) {
 		IssueLikeMembers voteData = boardMainService.getOnceVoteData(voterListDTO.getUserIdx(), voterListDTO.getIssueIdx());
 		boardMainService.deleteVoteData(voteData.getIdx());
+	}
+	
+	@PostMapping("/get_file_list")
+	public List<FileRequestDTO> getFileList(@RequestBody FileRequestDTO fileRequestDTO){
+		Integer issueIdx = fileRequestDTO.getIssueIdx();
+		List<IssueFile> fileList = boardMainService.getFileListByIssueIdx(issueIdx);
+		List<FileRequestDTO> dtoList = new ArrayList<>();
+		for(int i = 0; i < fileList.size(); i++) {
+			FileRequestDTO dto = FileRequestDTO.builder()
+										.userIdx(fileList.get(i).getAccount().getIdx())
+										.fileIdx(fileList.get(i).getIdx())
+										.issueIdx(issueIdx)
+										.name(fileList.get(i).getName())
+										.createDate(fileList.get(i).getUploadDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+										.build();
+			dtoList.add(dto);
+		}
+		return dtoList;
 	}
 }

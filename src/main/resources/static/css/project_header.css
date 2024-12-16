@@ -288,19 +288,6 @@
 	cursor: default;
 }
 
-.menu-icon-box:hover {
-	border-bottom: 2px solid #44546f;
-	padding-bottom: 5px;
-}
-
-.menu-icon-box:hover .menu-icon {
-	margin-bottom: 4px;
-}
-
-.menu-icon-box:hover .menu-text {
-	margin-bottom: 4px;
-}
-
 .menu-text{
 	margin-bottom: 2px;
 }

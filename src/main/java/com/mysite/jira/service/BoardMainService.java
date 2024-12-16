@@ -117,16 +117,16 @@ public class BoardMainService {
 		return this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, grade);
 	}
 	
-	public List<IssueLabelData> getLabelData(){
-		return this.issueLabelDataRepository.findAll();
+	public List<IssueLabelData> getLabelData(Integer idx){
+		return this.issueLabelDataRepository.findByIssueProjectJiraIdx(idx);
 	}
 	
 	public List<IssueLabelData> getAlterLabelData(Integer[] idx){
 		return this.issueLabelDataRepository.findDistinctByIssueLabelIdxNotIn(idx);
 	}
 	
-	public List<IssueReply> getIssueReply(){
-		return this.issueReplyRepository.findAllByOrderByCreateDateDesc();
+	public List<IssueReply> getIssueReply(Integer idx){
+		return this.issueReplyRepository.findByIssueProjectIdxOrderByCreateDateDesc(idx);
 	}
 	
 	public IssuePriority getOnceIssuePriority(Integer idx) {
@@ -155,8 +155,8 @@ public class BoardMainService {
 		return this.teamRepository.findAll();
 	}
 	
-	public List<IssueFile> getFiles(){
-		return this.issueFileRepository.findAll();
+	public List<IssueFile> getFilesbyProjectIdx(Integer idx){
+		return this.issueFileRepository.findByIssueProjectIdx(idx);
 	}
 	
 	public List<ProjectMembers> getPrjMembers(Integer idx){
@@ -579,5 +579,10 @@ public class BoardMainService {
 	
 	public void deleteVoteData(Integer idx) {
 		this.issueLikeMembersRepository.deleteById(idx);
+	}
+	
+	public List<IssueFile> getFileListByIssueIdx(Integer idx){
+		List<IssueFile> fileList = this.issueFileRepository.findByIssueIdx(idx);
+		return fileList;
 	}
 }

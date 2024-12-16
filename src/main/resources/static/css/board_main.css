@@ -1485,9 +1485,6 @@ body{
 	display: flex;
 	align-items: center;
 	gap: 12px;
-}
-
-.delete-alert-title{
 	font-weight: bold;
 	font-size: 19px;
 	color: #292A2E;
@@ -2083,7 +2080,7 @@ body{
 }
 
 .issuedetailviewbox{
-	max-height: 766px;
+	max-height: 714px;
 	width: 791px;
 	padding: 0px 0px 32px 0px;
 	margin-top: -1px;
@@ -2252,6 +2249,111 @@ body{
 	display: block;
 }
 
+.attached-files-box{
+	padding-left: 24px;
+	margin-top: 24px;
+	display: none;
+}
+
+.attached-files-box.show{
+	display: block;
+}
+
+.file-list-title{
+	max-width: 734px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.file-list-title:nth-child(1){
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.file-list-btnbar{
+	font-size: 14px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.file-list-addbtn{
+	border-radius: 3px;
+	padding: 2px 0px;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.file-list-addbtn:hover{
+	background-color: #0515240F;
+}
+
+.add-file-icon{
+	width: 16px;
+	height: 16px;
+	filter: invert(32%) sepia(9%) saturate(306%) hue-rotate(187deg) brightness(94%) contrast(92%);
+}
+
+.file-list-box{
+	width: 734px;
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 8px;
+	row-gap: 8px;
+	padding: 4px 2px;
+}
+
+.attached-file{
+	width: 156px;
+	height: 125px;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(9, 30, 66, 0.31), 0 0 1px 0 rgba(9, 30, 66, 0.31);
+}
+
+.file-image-box{
+	height: 89px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.attached-file-preview{
+	max-width: 156px;
+}
+
+.attached-file-titlebar{
+	width: 156px;
+	height: 36px;
+	padding: 4px 8px;
+	background-color: white;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	color: #292A2E;
+	line-height: 12px;
+}
+
+.attached-file-name{
+	font-size: 12px;
+	font-weight: bold;
+	width: 140px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attached-file-date{
+	font-size: 11px;
+}
+
 .subissue-list-box{
 	padding-left: 24px;
 	margin-top: 24px;
@@ -2263,13 +2365,13 @@ body{
 }
 
 .subissue-list-title{
-	max-width: 738px;
+	max-width: 734px;
 	height: 24px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 8px;
 	margin: 8px 0px;
-	
 }
 
 .subissue-list-title:nth-child(1){
@@ -2288,32 +2390,15 @@ body{
 .subissue-list-addbtn{
 	border-radius: 3px;
 	padding: 2px 0px;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .subissue-list-addbtn:hover{
 	background-color: #0515240F;
-}
-
-.subissue-list-sortbtn{
-	font-weight: normal;
-	color: #505258;
-	height: 24px;
-	padding: 0px 8px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-}
-
-.subissue-list-sortbtn > span > img{
-	width: 18px;
-	height: 12px;
-	filter: invert(32%) sepia(9%) saturate(306%) hue-rotate(187deg) brightness(94%) contrast(92%);
-}
-
-.subissue-list-addbtn{
-	width: 24px;
-	height: 24px;
 }
 
 .add-subissue-icon{

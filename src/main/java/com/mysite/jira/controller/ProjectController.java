@@ -112,7 +112,6 @@ public class ProjectController {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
 		Integer projectIdx = project.getIdx();
-		model.addAttribute("projectIdx", projectIdx);
 		
 		// 현재 시간용 변수
 		LocalDateTime now = LocalDateTime.now();
@@ -135,11 +134,11 @@ public class ProjectController {
 		model.addAttribute("issueTypeList", issueTypeList);
 		
 		// 전체 레이블 리스트
-		List<IssueLabelData> labelDataList = boardMainService.getLabelData();
+		List<IssueLabelData> labelDataList = boardMainService.getLabelData(projectIdx);
 		model.addAttribute("labelDataList", labelDataList);
 		
 		// 전체 댓글 리스트
-		List<IssueReply> replyList = boardMainService.getIssueReply();
+		List<IssueReply> replyList = boardMainService.getIssueReply(projectIdx);
 		model.addAttribute("replyList", replyList);
 		
 		// 프로젝트 별 상속 관계 리스트
@@ -151,7 +150,7 @@ public class ProjectController {
 		model.addAttribute("orderedPriorityList", orderedPriorityList);
 		
 		// 팀 리스트
-		List<Team> teamList = boardMainService.getTeamList();
+		List<Team> teamList = boardMainService.getJiraTeamList(jira.getIdx());
 		model.addAttribute("teamList", teamList);
 		
 		// 프로젝트 별 참여자 리스트
@@ -168,9 +167,12 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/attached_files")
-	public String attachedFiles(Model model) {
+	public String attachedFiles(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
 		// 모든 첨부파일 리스트
-		List<IssueFile> fileList = boardMainService.getFiles();
+		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(project.getIdx());
 		model.addAttribute("fileList", fileList);
 		
 		return "project/attached_files";

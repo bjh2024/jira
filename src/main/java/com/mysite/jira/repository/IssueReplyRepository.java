@@ -8,4 +8,6 @@ import com.mysite.jira.entity.IssueReply;
 
 public interface IssueReplyRepository extends JpaRepository<IssueReply, Integer>{
 	List<IssueReply> findAllByOrderByCreateDateDesc();
+	
+	List<IssueReply> findByIssueProjectIdxOrderByCreateDateDesc(Integer idx);
 }
