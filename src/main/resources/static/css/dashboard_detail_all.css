@@ -4,12 +4,15 @@
 }
 
 .dashboard_content_container {
+	width: 100%;
+	
 	margin-top: 24px;
 	display: flex;
 	justify-content: space-between
 }
 
-.dashboard_content_container>div {
+.dashboard_content_container>.box1, 
+.dashboard_content_container>.box2 {
 	width: calc(50% - 16px);
 }
 
@@ -22,6 +25,16 @@
 	border-top: 4px solid #2684ff;
 	border-radius: 4px;
 	box-shadow: 0px 1px 1px #091e423f, 0px 0px 1px #091e4221;
+}
+
+.dashboard_content_container .alert_box.show{
+	display: block;
+}
+
+.dashboard_content_container .alert_box{
+	display: none;
+	color: #ae2e24;
+	font-size: 14px;
 }
 
 .add_dashboard_content_header {

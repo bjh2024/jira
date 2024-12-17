@@ -87,6 +87,7 @@ async function drawPieChart(pieChart) {
 		pieChart.querySelector(".dashboard_pie_chart_content .header .issue_total").innerHTML = `<a href="#">모든 이슈: ${total}</a>`
 	}
 	await pieChartFetch(dashboardColIdx);
+	
 	const doughnutChartTag = document.querySelector(`#pieChart-${idx}`);
 	const statusColor = ["#4688EC", "#F15B50", "#B38600", "#22A06B", "#2898BD", "#AF59E1"];
 	const doughnutChart = new Chart(doughnutChartTag, {
@@ -426,29 +427,34 @@ window.onload = function() {
 	const allot = document.querySelectorAll(".dashboard_allot");
 	if (allot !== null) {
 		allot.forEach(function(item) {
-			item.setAttribute("page-num-data", 0);
-			drawAllot(item);
+			if(item.getAttribute("is-save-data") === "1"){
+				item.setAttribute("page-num-data", 0);
+				drawAllot(item);
+			}
 		});
 	}
 	// 파이 차트
 	const pieChart = document.querySelectorAll(".dashboard_pie_chart");
 	if (pieChart !== null) {
 		pieChart.forEach(function(chart) {
-			drawPieChart(chart);
+			if(chart.getAttribute("is-save-data") === "1")
+				drawPieChart(chart);
 		});
 	}
 	// 	만듦 대비 해결됨 차트
 	const issueCompleteChart = document.querySelectorAll(".dashboard_issue_complete");
 	if (issueCompleteChart !== null) {
 		issueCompleteChart.forEach(function(chart) {
-			drawIssueComplete(chart);
+			if(chart.getAttribute("is-save-data") === "1")
+				drawIssueComplete(chart);
 		});
 	}
 	// 최근의 만듦 차트
 	const issueRecentChart = document.querySelectorAll(".dashboard_issue_recent");
 	if (issueRecentChart !== null) {
 		issueRecentChart.forEach(async function(chart) {
-			drawIssueRecent(chart);
+			if(chart.getAttribute("is-save-data") === "1")
+				drawIssueRecent(chart);
 		});
 	}
 
@@ -456,7 +462,8 @@ window.onload = function() {
 	const issueStatisticsChart = document.querySelectorAll(".dashboard_issue_statistics");
 	if (issueStatisticsChart !== null) {
 		issueStatisticsChart.forEach(function(item) {
-			drawIssueStatistics(item);			
+			if(item.getAttribute("is-save-data") === "1")
+				drawIssueStatistics(item);			
 		});
 	}
 
@@ -464,6 +471,7 @@ window.onload = function() {
 	const issueFilterChart = document.querySelectorAll(".dashboard_issue_filter");
 	if (issueFilterChart !== null) {
 		issueFilterChart.forEach(function(item) {
+			// if(item.getAttribute("is-save-data") === "1");
 		});
 	}
 }

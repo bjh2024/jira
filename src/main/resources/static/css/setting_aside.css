@@ -1,0 +1,82 @@
+.setting_aside{
+	width: 240px;
+}
+
+.setting_aside .title_box{
+	padding: 0 16px;
+	padding-top: 12px;
+	padding-bottom: 4px;
+}
+
+.back_btn_box{
+	margin-bottom: 16px;
+	font-weight: bold;
+	
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.project_info_box{
+	font-size: 14px;
+	
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.project_info_box p{
+	color: #6b6e76;
+	font-size: 12px;
+}
+
+.setting_lnb{
+	padding: 16px;
+}
+
+.setting_lnb > a{
+	line-height: 32px;
+	
+	padding-left: 16px;
+	margin: 4px 0;
+	
+	border-radius: 4px;
+	font-size: 14px;
+	
+	display: flex;
+	align-items: center;
+	
+	cursor: pointer;
+}
+
+.setting_lnb > a.active{
+	color: #1868db;
+	background-color: #e9f2fe;
+}
+
+.accent_btn {
+  position: relative;
+  border-radius: 4px;
+}
+
+.accent_btn.active:hover {
+  background-color: #cfe1fd;
+}
+
+.accent_btn:hover {
+  background-color: #e9edf3a6;
+}
+
+.accent_btn.active > .accent_border{
+	display: block;
+}
+
+.accent_btn > .accent_border {
+  display: none;
+  width: 2px;
+  height: 12px;
+  background-color: #1868db;
+
+  position: absolute;
+  left: 0;
+}

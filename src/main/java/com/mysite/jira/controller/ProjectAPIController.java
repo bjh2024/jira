@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysite.jira.dto.project.ProjectSearchDTO;
+import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
+import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -66,7 +67,6 @@ public class ProjectAPIController {
 	// 프로젝트 생성
 	@PostMapping("create")
 	public boolean projectCreate(@RequestBody ProjectCreateDTO projectCreateDTO, Principal principal) {
-		System.out.println(projectCreateDTO);
 		String uri = projectCreateDTO.getUri();
 		String name = projectCreateDTO.getName();
 		String key = projectCreateDTO.getKey();
@@ -74,6 +74,18 @@ public class ProjectAPIController {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		
 		projectService.createProject(name, key ,jira, account);
+		
+		return true;
+	}
+	// 프로젝트 수정
+	@PostMapping("update")
+	public boolean projectupdate(@RequestBody RequestUpdateDTO RequestUpdateDTO) {
+		String name = RequestUpdateDTO.getProjectName();
+		String key = RequestUpdateDTO.getProjectKey();
+		Integer projectIdx = RequestUpdateDTO.getProjectIdx();
+		
+		Account account = accountService.getAccountByIdx(RequestUpdateDTO.getLeaderIdx());
+		projectService.updateProject(projectIdx, name, key ,account);
 		
 		return true;
 	}
@@ -89,8 +101,8 @@ public class ProjectAPIController {
 	
 	// 프로젝트 이름으로 search
 	@GetMapping("search")
-	public List<ProjectSearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
-													@RequestParam("uri") String uri){
+	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
+										     @RequestParam("uri") String uri){
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		return projectService.getByJiraIdxAndNameLikeProject(jira.getIdx(), searchName);
 		

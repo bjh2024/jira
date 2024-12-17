@@ -1,4 +1,5 @@
 .dashboard_container {
+	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr 400px;
 	
@@ -25,17 +26,6 @@
 
 }
 
-.dashboard_content_container {
-	margin-top: 24px;
-
-	display: flex;
-	justify-content: space-between;
-}
-
-.dashboard_content_container>div {
-	width: calc(50% - 16px);
-}
-
 .add_dashboard_content .not_null_check {
 	color: red;
 }
@@ -43,25 +33,25 @@
 .dashboard_content_container .empty_box.show {
 	display: flex;
 }
-
 .dashboard_content_container .empty_box {
 	display: none;
-	height: 729px;
-
+	/* 제목 height와 margin, padding을 뺀 값*/
+	min-height: calc(100vh - 48px - 72px - 72px - 24px);
 	border: 1px dashed black;
-
+	
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
 
-.dashboard_content_container>.empty_box p {
+.dashboard_content_container .empty_box p {
 	margin-top: 16px;
 	font-size: 14px;
 }
 
-.dashboard_content_container .empty_box a {
+.dashboard_content_container .empty_box span {
 	color: #0c66e4;
+	cursor: pointer;
 }
 
 .dashboard_add_gadget {
@@ -74,7 +64,7 @@
 	position: fixed;
     top: 52px;
     right: 0;
-	
+	z-index: 998;
 	overflow-y: auto;
 }
 
@@ -134,6 +124,11 @@
 	border: none;
 
 	font-size: 14px;
+}
+
+.gadget_header .input_box:focus-within{
+	border: 2px solid #0c66e4;
+	margin: -1px;
 }
 
 .dashboard_filter_btn_box {
@@ -359,9 +354,9 @@
 }
 
 .add_dashboard_content_main .main_group input#project_name:focus{
-	border: 3px solid #0c66e4;
+	border: 2px solid #0c66e4;
 	border-radius: 4px;
-	margin: 2px -1px;
+	margin: 2px 0;
 }
 
 .add_dashboard_content_main .main_group:focus-within .name_search_box{

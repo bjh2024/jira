@@ -75,8 +75,8 @@ public class GlobalModelAdvice {
 		    // 현재 들어온 지라 정보
 		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		    System.out.println("globalModelAdvice "+principal.getName());
-			// 가져올 값들
 		    
+			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
 			Integer jiraIdx = jira.getIdx();
 			// header
@@ -155,7 +155,6 @@ public class GlobalModelAdvice {
 			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 	}
-
 	
 	@ModelAttribute
 	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
@@ -167,6 +166,24 @@ public class GlobalModelAdvice {
 			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
+		}
+	}
+	
+	@ModelAttribute
+	public void settingAsideAttributes(HttpServletRequest request, 
+									   Model model,
+									   @PathVariable(value = "jiraName", required = false) String jiraName,
+									   @PathVariable(value = "projectKey", required = false) String projectKey) {
+		String uri = request.getRequestURI();
+		if (uri.contains("/api")) return;
+		if(uri.contains("/setting")) {
+			Jira jira = jiraService.getByNameJira(jiraName);
+			Integer jiraIdx = jira.getIdx();
+			model.addAttribute("currentProject", projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey));
+
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
+			Integer projectIdx = project.getIdx();
+			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
 		}
 	}
 }

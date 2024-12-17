@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProjectSearchDTO {
+public class SearchDTO {
 
 	private String name;
 	private String iconFilename;
 	private String key;
 
 	@Builder
-	public ProjectSearchDTO(String name, String iconFilename, String key) {
+	public SearchDTO(String name, String iconFilename, String key) {
 		this.name = name;
 		this.iconFilename = iconFilename;
 		this.key = key;

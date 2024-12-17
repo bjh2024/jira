@@ -340,4 +340,34 @@ public class DashboardService {
 		dashboardIssueStatisticsRepository.save(issueStatistics);
 	}
 	
+	// 대시보드 파이 차트 삭제
+	public void deletePieChart(Integer idx) {
+		dashboardPieChartRepository.deleteById(idx);
+	}
+	
+	// 대시보드 나에게 할당됨 삭제
+	public void deleteAllot(Integer idx) {
+		dashboardAllotRepository.deleteById(idx);
+	}
+	
+	// 대시보드 만듦 대비 최근 생성 차트 삭제
+	public void deleteIssueComplete(Integer idx) {
+		dashboardIssueCompleteRepository.deleteById(idx);
+	}
+	
+	// 대시보드 최근에 생성된 이슈 차트 삭제
+	public void deleteIssueRecent(Integer idx) {
+		dashboardIssueRecentRepository.deleteById(idx);
+	}
+	
+	// 대시보드 이슈 통계 삭제
+	public void deleteIssueStatistics(Integer idx) {
+		dashboardIssueStatisticsRepository.deleteById(idx);
+	}
+	
+	// 대시보드 필터링된 이슈 삭제
+	public void deleteIssueFilter(Integer idx) {
+		dashboardIssueFilterRepository.deleteById(idx);
+	}
+	
 }

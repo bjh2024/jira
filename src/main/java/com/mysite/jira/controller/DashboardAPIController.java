@@ -184,6 +184,37 @@ public class DashboardAPIController {
 	}
 	
 	@PostMapping("update/issue_filter")
-	public void updateDashboardIssueFilter(@RequestBody Integer dashboardIdx) {
+	public void updateDashboardIssueFilter(@RequestBody Integer idx) {
 	}
+	
+	@PostMapping("delete/pie_chart")
+	public void deleteDashboardPieChart(@RequestBody Integer idx) {
+		dashboardService.deletePieChart(idx);
+	}
+	
+	@PostMapping("delete/allot")
+	public void deleteDashboardAllot(@RequestBody Integer idx) {
+		dashboardService.deleteAllot(idx);
+	}
+	
+	@PostMapping("delete/issue_complete")
+	public void deleteDashboardIssueComplete(@RequestBody Integer idx) {
+		dashboardService.deleteIssueComplete(idx);
+	}
+	
+	@PostMapping("delete/issue_recent")
+	public void deleteDashboardIssueRecent(@RequestBody Integer idx) {
+		dashboardService.deleteIssueRecent(idx);
+	}
+	
+	@PostMapping("delete/issue_statistics")
+	public void deleteDashboardIssueStatistics(@RequestBody Integer idx) {
+		dashboardService.deleteIssueStatistics(idx);
+	}
+	
+	@PostMapping("delete/issue_filter")
+	public void deleteDashboardIssueFilter(@RequestBody Integer idx) {
+		dashboardService.deleteIssueFilter(idx);
+	}
+	
 }

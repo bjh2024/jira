@@ -1,14 +1,19 @@
 // 가젯 리스트 hidden
 document.querySelector(".gadget_header .title .img_box").addEventListener("click", function() {
-	document.querySelector(".dashboard_add_gadget").style.width = '0px';
-	document.querySelector(".dashboard_add_gadget").style.borderLeft = 'none';
+	const gadgetBox = document.querySelector(".dashboard_add_gadget");
+	gadgetBox.style.width = '0px';
+	gadgetBox.style.borderLeft = 'none';
 	document.querySelector(".dashboard_container").style.gridTemplateColumns = '1fr 0';
 });
 // 가젯 리스트 show
 document.querySelector(".gnb_btn2.gadget_add_btn").addEventListener("click", function() {
-	document.querySelector(".dashboard_add_gadget").style.width = '400px';
-	document.querySelector(".dashboard_add_gadget").style.borderLeft = '3px solid #ddd';
+	const gadgetBox = document.querySelector(".dashboard_add_gadget");
+	gadgetBox.style.width = '400px';
+	gadgetBox.style.borderLeft = '3px solid #ddd';
 	document.querySelector(".dashboard_container").style.gridTemplateColumns = '1fr 400px';
+
+	const gadgetInput = document.querySelector(".gadget_header .input_box input");
+	gadgetInput.focus();
 })
 
 // 프로젝트 idx 가져오기
@@ -28,20 +33,20 @@ async function isseuTotalFetch(){
 // dashboardCol 문자로 바꾸기
 function dashboardColChange(dashboardColIdx){
 	switch(dashboardColIdx){
-		case 1:
+		case "1":
 			return "담당자"
-		case 2:
+		case "2":
 			return "레이블"
-		case 3:
+		case "3":
 			return "보고자"
-		case 4:
+		case "4":
 			return "상태"
-		case 5:
+		case "5":
 			return "우선순위"
-		case 6:
+		case "6":
 			return "이슈 유형"
 	}
-	return "값이 없습니다...."
+	return "값이 없습니다..."
 }
 
 // 구성 버튼 클릭시
@@ -76,6 +81,56 @@ function editChartChange(contentBox, chartTitle, name) {
 	}
 }
 
+// 대시보드 삭제 취소
+document.querySelector("body").addEventListener("click", function(e) {
+	const deleteBox = e.target.closest(".dashboard_delete_box");
+	const cancleBtn = e.target.closest(".cancle_btn");
+	const deleteBtn = e.target.closest(".delete_btn");
+	
+	if(deleteBox === null || cancleBtn !== null){
+		document.querySelector(".dashboard_detail_delete_modal").classList.remove("show");
+		return;
+	}
+	
+	// 삭제 클릭시
+	if(deleteBtn !== null){
+		const idx = deleteBox.getAttribute("idx-data");
+		function dashboardItemDeleteFetch(){
+			let uri = "/api/dashboard/delete/";
+			const type = deleteBox.getAttribute("type");
+			switch(type){
+				case "dashboard_pie_chart":
+					uri += "pie_chart";
+					break;
+				case "dashboard_allot":
+					uri += "allot";
+					break;
+				case "dashboard_issue_complete":
+					uri += "issue_complete";
+					break;
+				case "dashboard_issue_recent":
+					uri += "issue_recent";
+					break;
+				case "dashboard_issue_statistics":
+					uri += "issue_statistics";
+					break;
+				case "dashboard_issue_filter":
+					uri += "issue_filter";
+					break;
+			}
+			fetch(uri, {method: "post", 
+						headers: {"Content-Type" : "application/json"}, 
+						body:JSON.stringify(idx)})
+			.catch(err => {
+				console.error(err);
+			});
+			location.reload(true);
+		}
+		dashboardItemDeleteFetch();
+	}
+	
+});
+
 // 대시보드 더보기 show
 document.querySelector("body").addEventListener("click", function(e) {
 	const moreBtn = e.target.closest(".img_box.dashboard_more");
@@ -85,17 +140,28 @@ document.querySelector("body").addEventListener("click", function(e) {
 		const btn = e.target.closest(".more_gadget_option .btn_box button");
 		if (btn !== null) {
 			const btnText = btn.querySelector("span").innerText;
+			const chartTitle = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
+			const name = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[1];
+			const contentBox = e.target.closest(".add_dashboard_content");
 			switch (btnText) {
 				case "구성":
-					const chartTitle = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
 					// 프로젝트 이름 or 사용자 이름
-					const name = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[1];
-					const contentBox = e.target.closest(".add_dashboard_content");
 					editChartChange(contentBox, chartTitle, name);
 					break;
 				case "복제":
 					break;
 				case "삭제":
+					const deleteModal = document.querySelector(".dashboard_detail_delete_modal");
+					const deleteBox = deleteModal.querySelector(".dashboard_delete_box");
+					const deleteHeader = deleteModal.querySelector("h2");
+					deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
+											 		   <span>${chartTitle} 가젯을 삭제하겠습니까?</span>`
+				    deleteModal.classList.add("show");
+					
+					const dashboardItem = e.target.closest(".dashboard_item");
+					const idx = dashboardItem.getAttribute("idx-data");
+					deleteBox.setAttribute("idx-data", idx);
+					deleteBox.setAttribute("type", dashboardItem.className.split(" ")[0]);
 					break;
 			}
 		}
@@ -136,16 +202,17 @@ function setPieChartContent(isChange = false, projectName = '', colName = '') {
 								<div>
 									<button>고급 검색</button>
 								</div>
+								<div class="alert_box">선택한 프로젝트 없음</div>
 							</div>
 							<div class="main_group box2">
 								<label for="pie_statistic">통계 유형<span class="not_null_check">*</span></label>
 								<select name="statistic" id="pie_statistic">
-									<option value="1" ${colName === '담당자' ? 'selected' : ''}>담당자</option>
-									<option value="2" ${colName === '레이블' ? 'selected' : ''}>레이블</option>
-									<option value="3" ${colName === '보고자' ? 'selected' : ''}>보고자</option>
-									<option value="4" ${colName === '상태' ? 'selected' : ''}>상태</option>
-									<option value="5" ${colName === '우선순위' ? 'selected' : ''}>우선순위</option>
-									<option value="6" ${colName === '이슈 유형' ? 'selected' : ''}>이슈 유형</option>
+									<option value=1 ${colName === '담당자' ? 'selected' : ''}>담당자</option>
+									<option value=2 ${colName === '레이블' ? 'selected' : ''}>레이블</option>
+									<option value=3 ${colName === '보고자' ? 'selected' : ''}>보고자</option>
+									<option value=4 ${colName === '상태' ? 'selected' : ''}>상태</option>
+									<option value=5 ${colName === '우선순위' ? 'selected' : ''}>우선순위</option>
+									<option value=6 ${colName === '이슈 유형' ? 'selected' : ''}>이슈 유형</option>
 								</select>
 								<p>이 필터를 표시할 통계의 유형을 선택.</p>
 							</div>
@@ -236,7 +303,6 @@ async function pieChartSave(pieChart) {
 									</div>
 								</div>
 							</div>`
-	// detail_all.js
 	drawPieChart(pieChart);
 }
 
@@ -321,12 +387,12 @@ function setAllotContent(name = '', colNum = '10') {
 								<div class="main_group box3">
 									<label>표시할 열 추가</label>
 									<select>
-										<option value="1">담당자</option>
-										<option value="2">레이블</option>
-										<option value="3">보고자</option>
-										<option value="4">상태</option>
-										<option value="5">우선순위</option>
-										<option value="6">이슈 유형</option>
+										<option value=1>담당자</option>
+										<option value=2>레이블</option>
+										<option value=3>보고자</option>
+										<option value=4>상태</option>
+										<option value=5>우선순위</option>
+										<option value=6>이슈 유형</option>
 									</select>
 									<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 								</div>
@@ -452,6 +518,7 @@ function setIssueComplete(isChange = false, projectName = '', unitPeriod = '매�
 								<div>
 									<button>고급 검색</button>
 								</div>
+								<div class="alert_box">선택한 프로젝트 없음</div>
 							</div>
 							<div class="main_group box2">
 								<label for="complete_unit_period">기간<span class="not_null_check">*</span></label>
@@ -588,6 +655,7 @@ function setIssueRecent(isChange = false, projectName = '', unitPeriod = '매일
 								<div>
 									<button>고급 검색</button>
 								</div>
+								<div class="alert_box">선택한 프로젝트 없음</div>
 							</div>
 							<div class="main_group box2">
 								<label for="recent_unit_period">기간<span class="not_null_check">*</span></label>
@@ -723,16 +791,17 @@ function setIssueStatistics(isChange = false, projectName = '', type = '담당�
 									<div>
 										<button>고급 검색</button>
 									</div>
+									<div class="alert_box">선택한 프로젝트 없음</div>
 								</div>
 								<div class="main_group box2">
 									<label for="statistic">통계 유형<span class="not_null_check">*</span></label>
 									<select name="statistic" id="statistic">
-										<option value="1" ${type === "담당자" ? "selected" : ""}>담당자</option>
-										<option value="2" ${type === "레이블" ? "selected" : ""}>레이블</option>
-										<option value="3" ${type === "보고자" ? "selected" : ""}>보고자</option>
-										<option value="4" ${type === "상태" ? "selected" : ""}>상태</option>
-										<option value="5" ${type === "우선순위" ? "selected" : ""}>우선순위</option>
-										<option value="6" ${type === "이슈 유형" ? "selected" : ""}>이슈 유형</option>
+										<option value=1 ${type === "담당자" ? "selected" : ""}>담당자</option>
+										<option value=2 ${type === "레이블" ? "selected" : ""}>레이블</option>
+										<option value=3 ${type === "보고자" ? "selected" : ""}>보고자</option>
+										<option value=4 ${type === "상태" ? "selected" : ""}>상태</option>
+										<option value=5 ${type === "우선순위" ? "selected" : ""}>우선순위</option>
+										<option value=6 ${type === "이슈 유형" ? "selected" : ""}>이슈 유형</option>
 									</select>
 									<p>이 필터를 표시할 통계의 유형을 선택.</p>
 								</div>
@@ -842,14 +911,14 @@ function debounce(func, timeout = 300) {
     }, timeout);  // 설정된 timeout 후에만 실행
   };
 }
-function projectListFetch(projectNameInput) {
-	let projectName = projectNameInput.value;
+function projectListFetch(searchText) {
+	let projectName = searchText.value;
 	const uri = `/api/project/search?searchName=${projectName}&uri=${window.location.pathname}`
 	fetch(uri, { method: "get" })
 		.then(res => res.json())
 		.then(projectList => {
 			console.log(projectList);
-			const box = projectNameInput.nextElementSibling;
+			const box = searchText.nextElementSibling;
 			box.innerHTML = ``;
 			projectList.forEach(function(project) {
 				box.innerHTML += `<div>
@@ -870,6 +939,19 @@ document.querySelector(".dashboard_content_container").addEventListener("keyup",
 	debouncedFetch(projectNameInput);
 });
 
+// dashboardItem alert_box
+function dashboardItemAlertBox(dashboardItem){
+	const projectNameInput = dashboardItem.querySelector("#project_name");
+	const projectName = dashboardItem.querySelector(".project_name_box").innerText;
+	if(projectName === "선택된 프로젝트 없음"){
+		dashboardItem.querySelector(".alert_box").classList.add("show");
+		projectNameInput.focus();
+		return false;
+	}
+	dashboardItem.querySelector(".alert_box").classList.remove("show");
+	return true;
+}
+
 // 저장 버튼 클릭시
 document.querySelector(".dashboard_content_container").addEventListener("click", async function(e) {
 	const saveBtn = e.target.closest(".save_btn");
@@ -880,6 +962,8 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	// 파이 차트
 	let pieChart = e.target?.closest(".dashboard_pie_chart");
 	if (pieChart !== null) {
+		if(!dashboardItemAlertBox(pieChart)) return;
+		
 		await pieChartSave(pieChart);
 		uri += "pie_chart";
 		const idx = pieChart.getAttribute("idx-data");
@@ -906,6 +990,8 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	// 만듦 대비 해결됨 차트
 	let issueComplete = e.target?.closest(".dashboard_issue_complete");
 	if (issueComplete !== null) {
+		if(!dashboardItemAlertBox(issueComplete)) return;
+		
 		await issueCompleteSave(issueComplete);
 		uri += "issue_complete";
 		const idx = issueComplete.getAttribute("idx-data");
@@ -918,10 +1004,13 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 			"viewDate" : viewDate,
 			"unitPeriod" : unitPeriod
 		}
+		
 	}
 	// 최근에 만듦 차트
 	let issueRecent = e.target?.closest(".dashboard_issue_recent");
 	if (issueRecent !== null) {
+		if(!dashboardItemAlertBox(issueRecent)) return;
+		
 		await issueRecentSave(issueRecent);
 		uri += "issue_recent";
 		const idx = issueRecent.getAttribute("idx-data");
@@ -938,6 +1027,8 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	// 이슈 통계
 	let issueStatistics = e.target?.closest(".dashboard_issue_statistics");
 	if (issueStatistics !== null) {
+		if(!dashboardItemAlertBox(issueStatistics)) return;
+		
 		await issueStatisticsSave(issueStatistics);
 		uri += "issue_statistics";
 		const idx = issueStatistics.getAttribute("idx-data");
@@ -998,7 +1089,9 @@ const issueFilter = `<div class="add_dashboard_content_header">
 							<div>
 								<button>고급 검색</button>
 							</div>
+							<div class="alert_box">선택한 필터 없음</div>
 						</div>
+						<div class="alert_box">선택한 프로젝트 없음</div>
 						<div class="main_group box2">
 							<label for="view_num">결과의 수<span class="not_null_check">*</span></label>
 							<input type="text" id="view_num" value="10" />
@@ -1323,12 +1416,12 @@ const issueFilter = `<div class="add_dashboard_content_header">
 						<div class="main_group box4">
 							<label>표시할 열 추가</label>
 							<select>
-								<option value="1">담당자</option>
-								<option value="2">레이블</option>
-								<option value="3">보고자</option>
-								<option value="4">상태</option>
-								<option value="5">우선순위</option>
-								<option value="6">이슈 유형</option>
+								<option value=1>담당자</option>
+								<option value=2>레이블</option>
+								<option value=3>보고자</option>
+								<option value=4>상태</option>
+								<option value=5>우선순위</option>
+								<option value=6>이슈 유형</option>
 							</select>
 							<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 						</div>
@@ -1397,12 +1490,13 @@ async function addDashboardGarget(tagStr, order) {
 	await dashboardItemAddFetch(uri);
 	
 	const gadgetContentBox1 = document.querySelector(".dashboard_content_container .box1");
-	const gadgetContentEmptyBox = document.querySelector(".dashboard_content_container .box1 .empty_box");
+	const gadgetContentEmptyBox = document.querySelector(".dashboard_content_container .empty_box");
 	const newDiv = document.createElement("div");
 	newDiv.classList.add("add_dashboard_content");
-	newDiv.innerHTML = `<div class="${className}" idx-data="${idx}">${tagStr}</div>`;
+	newDiv.innerHTML = `<div class="${className} dashboard_item" idx-data="${idx}">${tagStr}</div>`;
 	//gadgetContentEmptyBox.classList.remove("show");
 	gadgetContentBox1.prepend(newDiv);
+	gadgetContentEmptyBox.classList.remove("show");
 }
 
 const htmlTagArr = [setPieChartContent(), setAllotContent(), setIssueComplete(), setIssueRecent(), setIssueStatistics(), issueFilter];
@@ -1412,4 +1506,26 @@ gadgetAddBtn.forEach(function(btn, idx) {
 		addDashboardGarget(htmlTagArr[idx], idx);
 	});
 });
+
+// 새 가젯 추가 클릭
+document.querySelector(".dashboard_content_container").addEventListener("click", function(e){
+	const btn = e.target.closest(".empty_box span");
+	if(btn === null) return;
+	
+	// 가젯 추가창 open
+	const gadgetBox = document.querySelector(".dashboard_add_gadget");
+	gadgetBox.style.width = '400px';
+	gadgetBox.style.borderLeft = '3px solid #ddd';
+	document.querySelector(".dashboard_container").style.gridTemplateColumns = '1fr 400px';
+	
+	// 가젯 input 포커스
+	const gadgetInput = document.querySelector(".gadget_header .input_box input");
+	gadgetInput.focus();
+});
+
+
+
+
+
+
 

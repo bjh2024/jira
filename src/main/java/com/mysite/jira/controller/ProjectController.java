@@ -86,14 +86,13 @@ public class ProjectController {
 	@GetMapping("/list")
 	public String listPage(Model model, 
 						   Principal principal, 
-						   HttpServletRequest request, 
+						   @PathVariable("jiraName") String jiraName,
 						   @RequestParam(value="page", defaultValue = "0") int page) {
 		// 현재 로그인 계정
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer accountIdx = account.getIdx();
 		// 현재 위치한 지라 페이지
-		String uri = request.getRequestURI();
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Jira jira = jiraService.getByNameJira(jiraName);
 		Integer jiraIdx = jira.getIdx();
 		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
 		
@@ -159,9 +158,19 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/{projectKey}/setting_issue_type")
+	@GetMapping("/{projectKey}/setting/issue_type")
 	public String settingIssueType() {
-		return "project/setting_issue_type";
+		return "project/setting/issue_type";
+	}
+	
+	@GetMapping("/{projectKey}/setting/info")
+	public String settingProjectInfo() {
+		return "project/setting/info";
+	}
+	
+	@GetMapping("/{projectKey}/setting/access")
+	public String settingAccess() {
+		return "project/setting/access";
 	}
 	
 	@GetMapping("/{projectKey}/attached_files")

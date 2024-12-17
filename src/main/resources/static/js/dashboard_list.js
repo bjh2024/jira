@@ -1,10 +1,8 @@
 // modal창 on
-document
-	.querySelector(".dashboard_list_title button")
-	.addEventListener("click", function() {
+document.querySelector(".dashboard_list_title button").addEventListener("click", function() {
 		const modal = document.querySelector(".dashboard_craete_modal");
 		modal.classList.add("show");
-	});
+});
 
 // 대시보드 리스트 필터 이벤트 
 document.querySelectorAll(".dashboard_list_filter input").forEach(function(input) {
