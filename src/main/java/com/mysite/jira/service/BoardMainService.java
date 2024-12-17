@@ -77,7 +77,7 @@ public class BoardMainService {
 	
 	// board_main 
 	public List<Issue> getIssuesByProjectIdx(Integer idx){
-		return this.issueRepository.findIssuesByProjectIdxOrderByDivOrder(idx);
+		return this.issueRepository.findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(idx, 1);
 	}
 	
 	public Issue getIssueByIdx(Integer idx){
@@ -107,6 +107,10 @@ public class BoardMainService {
 	
 	public List<IssueExtends> getIssueExtendsByProjectIdx(Integer projectIdx){
 		return this.issueExtendsRepository.findAllByProjectIdx(projectIdx);
+	}
+	
+	public List<IssueExtends> getIssueExtendsByParentIdx(Integer parentIdx){
+		return this.issueExtendsRepository.findByParentIdx(parentIdx);
 	}
 	
 	public List<IssueType> getIssueTypesByProjectIdxAndGradeGreaterThan(Integer projectIdx, Integer grade){
@@ -282,6 +286,10 @@ public class BoardMainService {
 			}
 		}
 		
+		if(issueType.getGrade() == 1) {
+			max = -1;
+		}
+		
 		Issue issue = Issue.builder()
 							.key(key)
 							.name(issueName)
@@ -339,7 +347,7 @@ public class BoardMainService {
 		this.issueRepository.save(currentIssue);
 		for(int i = 0; i < issueList.size(); i++) {
 			Issue issue = issueList.get(i);
-			if(issue.getIdx() != currentIssueIdx) {
+			if(issue.getIdx() != currentIssueIdx && issue.getIssueType().getGrade() != 1) {
 				Integer newOrder = issue.getDivOrder() + 1;
 				issue.updateDivOrder(newOrder);
 				this.issueRepository.save(issue);
@@ -350,10 +358,12 @@ public class BoardMainService {
 	public void updatePrevIssueOrder(Integer currentIssueidx, Integer oldIdx, Integer oldStatusIdx) {
 		List<Issue> issueList = this.issueRepository.findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(oldIdx, oldStatusIdx);
 		for(int i = 0; i < issueList.size(); i++) {
-			Issue issue = issueList.get(i);
-			Integer newOrder = issue.getDivOrder() - 1;
-			issue.updateDivOrder(newOrder);
-			this.issueRepository.save(issue);
+			if(issueList.get(i).getIssueType().getGrade() != 1) {
+				Issue issue = issueList.get(i);
+				Integer newOrder = issue.getDivOrder() - 1;
+				issue.updateDivOrder(newOrder);
+				this.issueRepository.save(issue);
+			}
 		}
 	}
 	
@@ -451,8 +461,8 @@ public class BoardMainService {
 		this.issueReplyRepository.deleteById(idx);
 	}
 	
-	public List<IssueType> getGeneralIssueTypeList(Integer projectIdx){
-		List<IssueType> list = this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, 2);
+	public List<IssueType> getGeneralIssueTypeList(Integer projectIdx, Integer grade){
+		List<IssueType> list = this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, grade);
 		return list;
 	}
 	
@@ -503,6 +513,10 @@ public class BoardMainService {
 												.project(project)
 												.build();
 		this.issueExtendsRepository.save(issueExtends);
+	}
+	
+	public void deleteIssueExtends(Integer extendsIdx) {
+		this.issueExtendsRepository.deleteById(extendsIdx);
 	}
 	
 	public List<Issue> getIssueByProjectIdxAndIssueTypeGrade(Integer projectIdx, Integer grade){

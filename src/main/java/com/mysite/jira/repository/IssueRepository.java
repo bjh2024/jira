@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer>{
-	List<Issue> findIssuesByProjectIdxOrderByDivOrder(Integer idx);
+	List<Issue> findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(Integer idx, Integer grade);
 
 	// kdw
 	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(

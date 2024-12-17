@@ -37,28 +37,39 @@
 			<span class="signup-text">계속하려면 가입하세요.</span>
 		</div>
 		<div class="signup-content">
-			<!--<div class="alert alert-danger" th:errors="*{pwNotMatched}"></div>-->
 			<form th:action="@{/account/signup}" th:object="${createUserForm}" method="post">
 				<div class="top-input">
 					<label for="email" class="form-label">이메일</label>
 					<input type="email" name="email" th:field="*{email}" placeholder="이메일을 입력하세요" class="borderline">
 				</div>
-				<div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+				<div  th:if="${#fields.hasErrors('email')}" class="alert-box">
+					<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+		            <div class="alert alert-danger" th:errors="*{email}"></div>
+		        </div>
 				<div class="other-input">
 					<label for="username" class="form-label">사용자 이름</label>
 					<input type="text" name="username" th:field="*{username}" placeholder="Jira에서 사용될 이름을 입력하세요" class="borderline">
 				</div>
-				<div class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+				<div th:if="${#fields.hasErrors('username')}" class="alert-box">
+					<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+		            <div class="alert alert-danger" th:errors="*{username}"></div>
+		        </div>
 				<div class="other-input">
 					<label for="pw" class="form-label">비밀번호</label>
 					<input type="password" name="pw" th:field="*{pw}" placeholder="비밀번호를 입력하세요" class="borderline">
 				</div>
-				<div class="alert alert-danger" th:if="${#fields.hasErrors('pw')}" th:errors="*{pw}"></div>
+				<div th:if="${#fields.hasErrors('pw')}" class="alert-box">
+					<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+		            <div class="alert alert-danger" th:errors="*{pw}"></div>
+		        </div>
 				<div class="other-input">
 					<label for="checkpw" class="form-label">비밀번호 확인</label>
 					<input type="password" name="checkpw" th:field="*{checkpw}" placeholder="비밀번호가 일치한지 확인해 주세요" class="borderline">
 				</div>
-				<div class="alert alert-danger" th:if="${#fields.hasErrors('checkpw')}" th:errors="*{checkpw}"></div>
+				<div th:if="${#fields.hasErrors('checkpw')}" class="alert-box">
+					<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+		            <div class="alert alert-danger" th:errors="*{checkpw}"></div>
+		        </div>
 				<div>
 					<button class="next-btn">계속</button>
 				</div>

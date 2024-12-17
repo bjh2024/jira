@@ -93,7 +93,7 @@
 								<span style="margin-top: 1px;" th:text="${issueList.name}"></span>
 								<div class="issue-menubtnbox">
 									<div class="issue-menuwindow">
-										<div class="menuwindow-option" th:attr="data-issueidx=${issueList.idx}, data-issuekey=${issueList.key}">
+										<div class="menuwindow-option main" th:attr="data-issueidx=${issueList.idx}, data-issuekey=${issueList.key}">
 											<span>삭제</span>
 										</div>
 									</div>
@@ -211,6 +211,17 @@
 								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
 								 						</span>
 								 					</div>
+													<div class="issuedetail-option delete">
+														<div class="issue-menuwindow">
+															<div class="menuwindow-option detail" th:attr="data-issueidx=${extendsList.child.idx}, data-issuekey=${extendsList.child.key}">
+																<span>삭제</span>
+															</div>
+														</div>
+								 						<span style="margin-top: 2.5px;">
+								 							<img th:src="@{/images/three_dots_icon_small.svg}"
+								 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+								 						</span>
+								 					</div>
 								 					<div class="issuedetail-option issuedetail-off">
 								 						<span style="margin-top: 2.5px;">
 								 							<img th:src="@{/images/cancel_icon.svg}"
@@ -263,6 +274,7 @@
 								 							<span>첨부 파일</span>
 								 							<div class="file-list-btnbar">
 								 								<button class="file-list-addbtn">
+																	<input type="file" style="display: none;" class="file-input-direct">
 								 									<img th:src="@{/images/plus_icon.svg}" class="add-file-icon">
 								 								</button>
 								 							</div>
@@ -661,6 +673,17 @@
 						 						</span>
 												<span class="issuedetail-vote-count">0</span>
 						 					</div>
+											<div class="issuedetail-option delete">
+												<div class="issue-menuwindow">
+													<div class="menuwindow-option detail" th:attr="data-issueidx=${issueList.idx}, data-issuekey=${issueList.key}">
+														<span>삭제</span>
+													</div>
+												</div>
+						 						<span style="margin-top: 2.5px;">
+						 							<img th:src="@{/images/three_dots_icon_small.svg}"
+						 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						 						</span>
+						 					</div>
 						 					<div class="issuedetail-option issuedetail-off">
 						 						<span style="margin-top: 2.5px;">
 						 							<img th:src="@{/images/cancel_icon.svg}"
@@ -730,7 +753,8 @@
 												<div class="file-list-title">
 						 							<span>첨부 파일</span>
 						 							<div class="file-list-btnbar">
-						 								<button class="file-list-addbtn">
+						 								<button class="file-list-addbtn" th:attr="data-issueidx=${issueList.idx}, data-useridx=${currentUser.idx}">
+															<input type="file" style="display: none;" class="file-input-direct">
 						 									<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
 						 								</button>
 						 							</div>
@@ -767,7 +791,7 @@
 						 								</span>
 														<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
 															  th:if="${extendsList.child.manager == null}">
-						 									<img th:src="@{|/images/user_icon_file5.png|}" class="issue-managerimg">
+						 									<img th:src="@{|/images/user_icon_file10.png|}" class="issue-managerimg">
 						 								</span>
 						 								<div th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
 						 												+${extendsList.child.issueStatus.status == 2 ? 'status2':''}

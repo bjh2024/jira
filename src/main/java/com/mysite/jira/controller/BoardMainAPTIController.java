@@ -307,7 +307,7 @@ public class BoardMainAPTIController {
 		Integer currentIssueIdx = dragIssueDTO.getIssueIdx();
 		Integer oldStatusIdx = dragIssueDTO.getOldStatusIdx();
 		Integer issueStatusIdx = dragIssueDTO.getStatusIdx();
-		if(oldStatusIdx != issueStatusIdx) {
+		if(oldStatusIdx != issueStatusIdx || (oldStatusIdx == issueStatusIdx && newIdx > oldIdx)) {
 			boardMainService.updatePrevIssueOrder(currentIssueIdx, oldIdx, oldStatusIdx);
 		}
 		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
@@ -315,7 +315,12 @@ public class BoardMainAPTIController {
 	
 	@PostMapping("/delete_issue_data")
 	public void deleteIssueData(@RequestBody DeleteIssueDTO deleteIssueDTO) {
+		List<IssueExtends> extendsList = boardMainService.getIssueExtendsByParentIdx(deleteIssueDTO.getIssueIdx());
+		for(int i = 0; i < extendsList.size(); i++) {
+			boardMainService.deleteIssueData(extendsList.get(i).getChild().getIdx());
+		}
 		boardMainService.deleteIssueData(deleteIssueDTO.getIssueIdx());
+		
 	}
 	
 	@PostMapping("/update_issue_name")
@@ -430,7 +435,7 @@ public class BoardMainAPTIController {
 	@PostMapping("/get_subissue_type")
 	public List<IssueTypeDTO> getSubissueTypeList(@RequestBody IssueTypeDTO issueTypeDTO){
 		Integer projectIdx = issueTypeDTO.getProjectIdx();
-		List<IssueType> typeList = boardMainService.getGeneralIssueTypeList(projectIdx);
+		List<IssueType> typeList = boardMainService.getGeneralIssueTypeList(projectIdx, 2);
 		List<IssueTypeDTO> dtoList = new ArrayList<>();
 		for(int i = 0; i < typeList.size(); i++) {
 			IssueTypeDTO dto = IssueTypeDTO.builder()
@@ -442,6 +447,19 @@ public class BoardMainAPTIController {
 			dtoList.add(dto);
 		}
 		return dtoList;
+	}
+	
+	@PostMapping("/get_sub_task_idx")
+	public IssueTypeDTO getSubTaskIDx(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Integer projectIdx = issueTypeDTO.getProjectIdx();
+		List<IssueType> typeList = boardMainService.getGeneralIssueTypeList(projectIdx, 1);
+		IssueTypeDTO dto = IssueTypeDTO.builder()
+				.projectIdx(projectIdx)
+				.idx(typeList.get(0).getIdx())
+				.name(typeList.get(0).getName())
+				.iconFilename(typeList.get(0).getIconFilename())
+				.build();
+		return dto;
 	}
 	
 	@PostMapping("/create_sub_issue")

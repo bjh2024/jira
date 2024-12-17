@@ -67,12 +67,15 @@ body {
 	padding-bottom: 2px;
 }
 
+.alert-box{
+	display: flex; 
+	align-items: center; 
+	margin: 0px auto -17px 36px;
+}
+
 .alert.alert-danger{
-	width: 331px;
-	margin: 0px auto -17px auto;
 	color: #AE2E24;
 	font-size: 13px;
-	font-weight: bold;
 }
 
 .social-btn {
@@ -89,6 +92,7 @@ body {
 	text-align: center;
 	justify-content: center;
 	position: relative;
+	cursor: pointer;
 }
 
 .social-title {

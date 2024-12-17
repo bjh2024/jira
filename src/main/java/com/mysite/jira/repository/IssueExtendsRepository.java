@@ -11,4 +11,6 @@ public interface IssueExtendsRepository extends JpaRepository<IssueExtends, Inte
 	List<IssueExtends> findAllByProjectIdx(Integer projectIdx);
 	
 	Optional<IssueExtends> findByProjectIdxAndParentIdxAndChildIdx(Integer projectIdx, Integer parentIdx, Integer childIdx);
+	
+	List<IssueExtends> findByParentIdx(Integer parentIdx);
 }

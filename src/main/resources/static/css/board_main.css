@@ -1466,7 +1466,7 @@ body{
 	height: 100%;
 	background-color: #050C1F75;
 	display: none;
-	z-index: 100;
+	z-index: 1000;
 }
 
 .issue-delete-alert-container.show{
@@ -1983,6 +1983,11 @@ body{
 	color: #172B4D;
 	border: 1px solid #091E422F;
 	border-radius: 3px;
+}
+
+.issuedetail-option.delete{
+	position: relative;
+	font-weight: normal;
 }
 
 .issuedetail-option:hover{

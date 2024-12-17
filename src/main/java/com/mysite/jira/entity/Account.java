@@ -63,9 +63,9 @@ public class Account {
 		this.codeExpDate = LocalDateTime.now().plusMinutes(3);
 	}
 	
-	public void updateAccount() {
-		this.authCode = null;
-		this.codeExpDate = null;
+	public void updateAccount(String authCode, LocalDateTime codeExpDate) {
+		this.authCode = authCode;
+		this.codeExpDate = codeExpDate;
 	}
 
 	// 지라 생성자 FK

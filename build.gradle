@@ -76,6 +76,8 @@ dependencies {
     
 	// aspose-words(text preview)
 	implementation 'com.aspose:aspose-words:24.11:jdk17'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 

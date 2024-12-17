@@ -1,5 +1,6 @@
 package com.mysite.jira.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,7 +39,7 @@ public class AccountService {
 		return result;
 	}
 	
-	public Account singup(String username, String email, String pw) {
+	public Account signup(String username, String email, String pw) {
 		String code = "";
 		for(int i = 0; i < 4; i++) {
 			int tempCode = (int) (Math.random() * 26) + 65;
@@ -76,8 +77,19 @@ public class AccountService {
 			throw new NoSuchElementException("Account not found");
 		}
 		
-		existingAccount.updateAccount();
+		existingAccount.updateAccount(null, null);
 		this.accountRepository.save(existingAccount);
+	}
+	
+	public Account resetCode(Account user) {
+		String code = "";
+		for(int i = 0; i < 4; i++) {
+			int tempCode = (int) (Math.random() * 26) + 65;
+			code += (char)tempCode;
+		}
+		user.updateAccount(code, LocalDateTime.now().plusMinutes(3));
+		this.accountRepository.save(user);
+		return user;
 	}
 	
 }

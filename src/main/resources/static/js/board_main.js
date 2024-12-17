@@ -797,7 +797,8 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
 			|| e.target.closest(".subissuebox") !== null || e.target.closest(".issue-menuwindow") !== null
-			|| e.target.closest(".menuwindow-option") !== null || e.target.closest(".insertwindow-btn") !== null){
+			|| e.target.closest(".menuwindow-option") !== null || e.target.closest(".insertwindow-btn") !== null
+			|| e.target.closest(".subissue-list-box") !== null){
 			return;
 		}
 		
@@ -843,6 +844,15 @@ document.querySelectorAll(".issues").forEach(function(btn, index){
 	});
 });
 
+document.querySelectorAll(".issuedetail-option.delete").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		btn.children[0].classList.toggle("show");
+		btn.children[0].style.position = "absolute";
+		btn.children[0].style.top = "40px";
+		btn.children[0].style.left = "-190px";
+	});
+});
+
 let getAttachedFilesData = {
 	"issueIdx": ""
 }
@@ -867,7 +877,7 @@ function getFileListFetch(box){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : file.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${file.name}</div>
@@ -927,12 +937,20 @@ function deleteIssue(){
 	});
 }
 
-document.querySelectorAll(".menuwindow-option").forEach(function(btn){
+document.querySelectorAll(".menuwindow-option.main").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const container = document.querySelector(".issue-delete-alert-container");
 		container.classList.add("show");
 		container.children[0].children[0].children[1].innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
 		deleteIssueData.issueIdx = btn.dataset.issueidx;
+	});
+});
+
+document.querySelectorAll(".menuwindow-option.detail").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const container = document.querySelector(".issue-delete-alert-container");
+		container.classList.add("show");
+		container.querySelector(".delete-alert-titletext").innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
 		deleteIssueData.issueIdx = btn.dataset.issueidx;
 	});
 });
@@ -1621,6 +1639,8 @@ document.querySelectorAll(".create-subissue").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const submitbtn = e.target.closest(".create-subissue");
 		const createbox = btn.parentElement.parentElement.parentElement;
+		const container = e.target.closest(".issuedetail-container");
+		
 		if(submitbtn !== null && submitbtn.className.includes("submit") && submitbtn.className.includes("action")){
 			const input = createbox.querySelector(".create-subissue-input");
 			createSubIssueData.jiraName = createbox.dataset.jiraname;
@@ -1630,16 +1650,21 @@ document.querySelectorAll(".create-subissue").forEach(function(btn){
 			createSubIssueData.statusIdx = createbox.dataset.statusidx;
 			createSubIssueData.name = input.value;
 			createSubIssueData.issueTypeIdx = createbox.querySelector(".create-subissue-type").dataset.typeidx;
-			console.log(createSubIssueData);
 			createSubIssuefetch(createbox);
 			
-			const container = e.target.closest(".issuedetail-container");
 			createLogData.userIdx = container.dataset.useridx;
 			createLogData.issueIdx = container.dataset.issueidx;
 			createLogData.type = 9;
 			createProjectLog();
-		}else if(submitbtn !== null && submitbtn.className.includes("cancel")){
+			
 			createbox.classList.remove("show");
+		}else if(submitbtn !== null && submitbtn.className.includes("cancel")){
+			const subissuelist = container.querySelector(".subissue-list-box.main");
+			if(subissuelist.children.length < 3){
+				createbox.parentElement.classList.remove("show");
+			}else{
+				createbox.classList.remove("show");
+			}
 		}
 	});
 });
@@ -1866,7 +1891,7 @@ document.querySelectorAll(".issuedetail-statusbtn").forEach(function(btn, index)
 	});
 });
 
-document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn, index){
+document.querySelectorAll(".issuedetail-insertbtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const btnItem = e.target.closest(".issuedetail-insertbtn");
 			const windowItem = btnItem.children[0];
@@ -1924,21 +1949,86 @@ document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, in
 		listbox.classList.add("show");
 		
 		const grade = btn.dataset.grade;
+		const typebtn = createbox.querySelector(".create-subissue-type");
+		
 		if(grade == 3){
-			const typebtn = createbox.querySelector(".create-subissue-type");
 			getSubIssueTypeData.projectIdx = btn.dataset.projectidx;
 			console.log(getSubIssueTypeData);
 			getSubIssueTypeFetch(typebtn, typebtn.children[0]);
 			typebtn.classList.add("active");
 			typebtn.style.border = "1px solid #8C8F97";
+		}else{
+			getSubIssueTypeData.projectIdx = btn.dataset.projectidx;
+			getSubTaskIdxFetch(typebtn);
 		}
 		createbox.classList.add("show");
+	});
+});
+
+function getSubTaskIdxFetch(btn){
+	let url = "/api/project/get_sub_task_idx";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(getSubIssueTypeData)
+	})
+	.then(response => response.json())
+	.then(type => {
+		btn.children[1].src = `/images/${type.iconFilename}`;
+		btn.setAttribute("data-typeidx", type.idx);
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".file-list-addbtn").forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		const inputItem = btn.children[0];
+		inputItem.click();
+	});
+});
+
+document.querySelectorAll(".file-input-direct").forEach(function(input){
+	input.addEventListener("change", function(e){
+		const btn = input.parentElement;
+		
+		const formData = new FormData();
+		formData.append("issueIdx", btn.dataset.issueidx);
+		formData.append("userIdx", btn.dataset.useridx);
+        formData.append("file", input.files[0]);
+		
+		fetch('/api/issue_files', {
+	        method: 'POST',
+	        body: formData
+	    }).then(response => response.json())
+		.then(fileData => {
+			const path = fileData.name.split(".");
+			console.log(path[1]);
+			
+			const listBox = input.parentElement.parentElement.parentElement.nextElementSibling;
+			const myFile = document.createElement("div");
+			myFile.classList.add("attached-file");
+			myFile.innerHTML = `<div class="file-image-box">
+									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+								</div>
+								<div class="attached-file-titlebar">
+									<div class="attached-file-name">${fileData.name}</div>
+									<div class="attached-file-date">${fileData.createDate}</div>
+								</div>`;
+			listBox.appendChild(myFile);
+		}).catch(error => {
+	        console.error('Error:', error);
+	        alert('파일 업로드 중 오류 발생!');
+	    });
 	});
 });
 
 document.querySelectorAll(".insertwindow-btn.file").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const inputItem = btn.children[0];
+		btn.parentElement.classList.remove("show");
 		inputItem.click();
 	});
 });

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.entity.IssueType;
 
 public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {

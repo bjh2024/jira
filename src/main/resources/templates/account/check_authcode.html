@@ -13,14 +13,11 @@
 			<div class="top-logo">
 				<img src="/images/sendEmail.png" width="130" class="emailicon">
 			</div>
-			<span class="login-text" th:text="${user.email}">kritac.ndh0521@gmail.com</span>
+			<span class="login-text" th:text="${user.email}"></span>
 			<span>인증번호 이메일을 발송했습니다.<br>받으신 번호를 입력해 주세요.</span>
 		</div>
 		<div class="login-content">
 			<form th:action="@{/account/check_authcode}" th:object="${authCodeForm}" method="post">
-				<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-		            <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-		        </div>
 				<div class="authcode-container">
 					<div class="inputcode" style="display: none;">
 						<label for="email" class="form-label">이메일</label>
@@ -46,11 +43,15 @@
 				<div style="display: block;">
 					<button class="next-btn">인증하기</button>
 				</div>
+				<div th:if="${#fields.hasErrors('email')}" class="alert-box">
+					<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+		            <div class="alert alert-danger" th:errors="*{email}"></div>
+		        </div>
 			</form>
 			<div class="retry">
 				<a href="login">이메일을 받지 못하셨나요?</a>
 				<a style="color: black; margin: 0 4px;">•</a>
-				<a href="signup">코드 재전송</a>
+				<a th:href="@{reset_code(email=${user.email})}">코드 재전송</a>	
 				<hr class="line">
 			</div>
 			<div class="under-logo"> <svg viewBox="0 0 69 32" width="70" xmlns="http://www.w3.org/2000/svg"
