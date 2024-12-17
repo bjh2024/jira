@@ -93,7 +93,6 @@ public class AccountController {
 		}
 		
 		return "redirect:/account/login";
-		// return "redirect:/account/login";
 	}
 	
 	@GetMapping("/send_email")
