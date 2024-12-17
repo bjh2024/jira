@@ -1,6 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
@@ -36,8 +38,7 @@ public class ProjectAPIController {
 	
 	@GetMapping("duplication/name")
 	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName,
-											 @RequestParam("uri") String uri,
-											 Principal principal) {
+											 @RequestParam("uri") String uri) {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		if(projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName) == null) {
 			return 0;
@@ -106,5 +107,12 @@ public class ProjectAPIController {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		return projectService.getByJiraIdxAndNameLikeProject(jira.getIdx(), searchName);
 		
+	}
+	
+	// jiraIdx에 해당하는 모든 프로젝트
+	@GetMapping("dashboard/list")
+	public List<ProjectListDTO> getProjectList(@RequestParam("uri") String uri){
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		return projectService.getByJiraIdxProjectListDTO(jira.getIdx());
 	}
 }

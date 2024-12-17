@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.mywork.RecentProjectDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
@@ -50,6 +51,28 @@ public class ProjectService {
 		return null;
 	}
 
+	public List<Project> getByJiraIdxProject(Integer jiraIdx){
+		return projectRepository.findByJira_idx(jiraIdx);
+	}
+	
+	public List<ProjectListDTO> getByJiraIdxProjectListDTO(Integer jiraIdx){
+		List<Project> projectList = this.getByJiraIdxProject(jiraIdx);
+		List<ProjectListDTO> result = new ArrayList<>();
+		
+		for(int i = 0; i < projectList.size(); i++) {
+			Integer idx = projectList.get(i).getIdx();
+			String name = projectList.get(i).getName();
+			String iconFilename = projectList.get(i).getIconFilename();
+			ProjectListDTO dto = ProjectListDTO.builder()
+											   .idx(idx)
+											   .name(name)
+											   .iconFilename(iconFilename)
+											   .build();
+			result.add(dto);
+		}
+		return result;
+	}
+	
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가!!!)
 	public void createProject(String name, String key, Jira jira, Account account) {
 		int idx = (int) (Math.random() * 3);

@@ -14,6 +14,8 @@ public interface DashboardRepository extends JpaRepository<Dashboard,Integer>{
 	
 	Optional<Dashboard> findById(Integer idx);
 	
+	Dashboard findByJiraIdxAndName(Integer jiraIdx, String name);
+	
 	// kdw
 	@Query(value="""
 			SELECT  d.*

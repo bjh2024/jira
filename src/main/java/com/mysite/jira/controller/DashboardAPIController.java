@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.ChartDTO;
 import com.mysite.jira.dto.dashboard.AllotDTO;
+import com.mysite.jira.dto.dashboard.AuthTypeDTO;
 import com.mysite.jira.dto.dashboard.IssueCompleteChartDTO;
 import com.mysite.jira.dto.dashboard.RequestAllotDTO;
 import com.mysite.jira.dto.dashboard.RequestCompleteRecentDTO;
+import com.mysite.jira.dto.dashboard.RequestDashboardCreateDTO;
 import com.mysite.jira.dto.dashboard.RequestPieChartDTO;
 import com.mysite.jira.dto.dashboard.RequestStatisticsDTO;
 import com.mysite.jira.entity.Account;
@@ -39,6 +41,34 @@ public class DashboardAPIController {
 	private final JiraService jiraService;
 	
 	private final IssueService issueService;
+	
+	@PostMapping("create")
+	public Integer dashboardCreate(@RequestBody RequestDashboardCreateDTO requestDashboardCreateDTO, Principal principal) {
+		String name = requestDashboardCreateDTO.getName();
+		String explain = requestDashboardCreateDTO.getExplain();
+		String uri = requestDashboardCreateDTO.getUri();
+		List<AuthTypeDTO> authItems = requestDashboardCreateDTO.getAuthItems();
+		
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Account account = accountService.getAccountByEmail(principal.getName());
+		
+		return dashboardService.createDashboard(name, explain, jira, account, authItems);
+	}
+	
+	@PostMapping("delete")
+	public void dashboardDelete(@RequestBody Integer idx) {
+		dashboardService.deleteDashboard(idx);
+	}
+	
+	@GetMapping("duplication/name")
+	public Integer getDuplicationDashboardName(@RequestParam("dashboardName") String dashboardName,
+											   @RequestParam("uri") String uri) {
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		if(dashboardService.getByJiraIdxAndNameDashboard(jira.getIdx(), dashboardName) == null) {
+			return 0;
+		}
+		return 1;
+	}
 	
 	@GetMapping("allot")
 	public List<AllotDTO> getAllot(@RequestParam("uri") String uri,

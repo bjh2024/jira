@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -37,6 +38,12 @@ public class AccountAPIController {
 		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), projectKey);
 		// key를 accountIdx로 사용
 		return accountService.getProjectMemberList(project.getIdx(), searchName);
+	}
+	
+	@GetMapping("dashboard/list")
+	public List<AccountListDTO> getAccountList(@RequestParam("uri") String uri){
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		return accountService.getAccountListDashboard(jira.getIdx());
 	}
 	
 }

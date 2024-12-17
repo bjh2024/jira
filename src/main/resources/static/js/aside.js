@@ -178,6 +178,12 @@ function goProjectCreatePage(element){
 	let jiraName = element.getAttribute("data-jira-name");
 	location.href = `/${jiraName}/project/create`;
 }
+
+// dashboard create modal창 표시
+function showDashboardCreate(){
+	const modal = document.querySelector(".dashboard_craete_modal");
+	modal.classList.add("show");
+}
   
 // 프로젝트, 필터, 대시보드
 document.querySelectorAll(".view_under_box_btn").forEach(function (btn) {

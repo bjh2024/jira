@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/{jiraName}/team")
 public class TeamController {
 	
-	@GetMapping("/list")
+	@GetMapping("list")
 	public String listPage() {
 		return "team/team_list";
 	}

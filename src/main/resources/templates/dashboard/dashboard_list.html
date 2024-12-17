@@ -109,7 +109,7 @@
 				<tr th:each="dashboardList : ${dashboardList}">
 					<td>
 						<div class="dashboard_list_item_box">
-							<div class="star_box">
+							<div class="star_box" th:idx-data="${dashboardList.dashboard.idx}">
 								<img th:src="@{|/images/${dashboardList.isLike ? 'star_icon_yellow' : 'star_icon_empty'}.svg|}"
 									width="16" height="16">
 							</div>
@@ -144,7 +144,7 @@
 											     dashboardAuth.team.name}"></span>
 								<span th:text="${dashboardAuth.projectRole == 3 ? 'Administrator' :
 												 dashboardAuth.projectRole == 2 ? 'Member' :
-												 'Viewer'}"></span>
+												 dashboardAuth.projectRole == 1 ? 'Viewer' : ''}"></span>
 							</div>
 							<div class="dashboard_list_item_box"
 							     th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 1])}">
@@ -188,11 +188,11 @@
 								</g>
 							</svg>
 						</div>
-						<div class="more_box">
+						<div class="more_box" th:idx-data="${dashboardList.dashboard.idx}">
 							<button>대시보드 복사</button>
 							<button>대시보드 이름 변경 또는 공유</button>
 							<button>소유자 변경</button>
-							<button>휴지통으로 이동</button>
+							<button>대시보드 삭제</button>
 						</div>
 					</td>
 				</tr>

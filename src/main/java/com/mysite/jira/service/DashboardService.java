@@ -7,24 +7,33 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.dto.dashboard.AuthTypeDTO;
 import com.mysite.jira.dto.dashboard.DashboardListDTO;
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.DashboardAllot;
+import com.mysite.jira.entity.DashboardAuth;
 import com.mysite.jira.entity.DashboardCol;
 import com.mysite.jira.entity.DashboardIssueComplete;
 import com.mysite.jira.entity.DashboardIssueFilter;
 import com.mysite.jira.entity.DashboardIssueRecent;
 import com.mysite.jira.entity.DashboardIssueStatistics;
 import com.mysite.jira.entity.DashboardPieChart;
+import com.mysite.jira.entity.DashboardRecentClicked;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.repository.DashboardAllotRepository;
+import com.mysite.jira.repository.DashboardAuthRepository;
 import com.mysite.jira.repository.DashboardColRepository;
 import com.mysite.jira.repository.DashboardIssueCompleteRepository;
 import com.mysite.jira.repository.DashboardIssueFilterRepository;
 import com.mysite.jira.repository.DashboardIssueRecentRepository;
 import com.mysite.jira.repository.DashboardIssueStatisticsRepository;
 import com.mysite.jira.repository.DashboardPieChartRepository;
+import com.mysite.jira.repository.DashboardRecentClickedRepository;
 import com.mysite.jira.repository.DashboardRepository;
+import com.mysite.jira.repository.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +42,8 @@ import lombok.RequiredArgsConstructor;
 public class DashboardService {
 
 	private final DashboardRepository dashboardRepository;
+	
+	private final DashboardRecentClickedRepository dashboardRecentClickedRepository;
 	
 	private final DashboardAllotRepository dashboardAllotRepository;
 	
@@ -48,7 +59,17 @@ public class DashboardService {
 	
 	private final DashboardColRepository dashboardColRepository;
 	
+	private final DashboardAuthRepository dashboardAuthRepository;
+	
 	private final ProjectService projectService;
+	
+	private final TeamService teamService;
+	
+	private final AccountService accountService;
+	
+	public Dashboard getByJiraIdxAndNameDashboard(Integer jiraIdx, String dashboardName) {
+		return dashboardRepository.findByJiraIdxAndName(jiraIdx, dashboardName);
+	}
 	
 	public Dashboard getDashboardByIdx(Integer idx) {
 		Optional<Dashboard> dashboard = dashboardRepository.findById(idx);
@@ -62,6 +83,66 @@ public class DashboardService {
 		if(!dashboardCol.isEmpty())
 			return dashboardCol.get();
 		return null;
+	}
+	
+	public Integer createDashboard(String name, String explain, Jira jira, Account account, List<AuthTypeDTO> authItems) {
+		// 대시보드 추가
+		Dashboard dashboard = Dashboard.builder()
+									   .name(name)
+									   .explain(explain)
+									   .jira(jira)
+									   .account(account)
+									   .build();
+		dashboardRepository.save(dashboard);
+		
+		// 대시보드 최근 방문 추가
+		DashboardRecentClicked dashboardRecentClicked = DashboardRecentClicked.builder()
+																			  .dashboard(dashboard)
+																			  .jira(jira)
+																			  .account(account)
+																			  .build();
+		dashboardRecentClickedRepository.save(dashboardRecentClicked);
+		
+		// 대시보드 보기, 편집 권한 추가
+		List<DashboardAuth> authList = new ArrayList<>();
+		for(int i = 0; i < authItems.size(); i++) {
+			String itemType = authItems.get(i).getItemType();
+			Integer itemIdx = authItems.get(i).getIdx();
+			Integer type = authItems.get(i).getAuthType();
+			Integer projectRole = authItems.get(i).getRole();
+			
+			Project project = null;
+			Team team = null;
+			Account authAccount = null;
+			
+			if(itemType.equals("비공개")) continue;
+			if(itemType.equals("프로젝트")) {
+				project = projectService.getProjectByIdx(itemIdx);
+			}else if(itemType.equals("그룹")) {
+				team = teamService.getTeamByIdx(itemIdx);
+			}else if(itemType.equals("사용자")) {
+				authAccount = accountService.getAccountByIdx(itemIdx);
+			}
+			
+			DashboardAuth dashboardAuth = DashboardAuth.builder()
+													   .dashboard(dashboard)
+													   .project(project)
+													   .type(type)
+													   .projectRole(projectRole)
+													   .team(team)
+													   .account(authAccount)
+													   .build();
+			authList.add(dashboardAuth);
+		}
+		dashboardAuthRepository.saveAll(authList);
+		
+		int idx = dashboard.getIdx();
+		return idx;
+	}
+	
+	// 대시보드 삭제
+	public void deleteDashboard(Integer idx) {
+		dashboardRepository.deleteById(idx);
 	}
 	
 	// 대시보드 리스트

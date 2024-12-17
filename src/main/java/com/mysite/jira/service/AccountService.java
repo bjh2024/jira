@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.JiraMembers;
@@ -49,6 +50,23 @@ public class AccountService {
 		List<Account> result = new ArrayList<>();
 		for (int i = 0; i < jiraMembers.size(); i++) {
 			result.add(jiraMembers.get(i).getAccount());
+		}
+		return result;
+	}
+	
+	public List<AccountListDTO> getAccountListDashboard(Integer jiraIdx) {
+		List<Account> accountList = this.getAccountList(jiraIdx);
+		List<AccountListDTO> result = new ArrayList<>();
+		for (int i = 0; i < accountList.size(); i++) {
+			Integer idx = accountList.get(i).getIdx();
+			String name = accountList.get(i).getName();
+			String iconFilename = accountList.get(i).getIconFilename();
+			AccountListDTO dto = AccountListDTO.builder()
+											   .idx(idx)
+										       .name(name)
+										       .iconFilename(iconFilename)
+										       .build();
+			result.add(dto);
 		}
 		return result;
 	}

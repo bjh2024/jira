@@ -36,12 +36,16 @@ document.querySelectorAll(".dashboard_list_item_box > .star_box").forEach(functi
 	box.addEventListener("click", function(e) {
 		e.preventDefault();
 		const starImg = this.children[0];
-
+		
 		if (starImg.getAttribute("src") === "/images/star_icon_yellow.svg") {
 			starImg.setAttribute("src", "/images/star_icon_empty.svg");
 		} else {
 			starImg.setAttribute("src", "/images/star_icon_yellow.svg")
 		}
+		
+		const idx = Number(this.getAttribute("idx-data"));
+		const isLike = starImg.getAttribute("src") === "/images/star_icon_yellow.svg" ? true : false;
+		likeFetch("dashboard", idx, isLike);
 	});
 });
 
@@ -84,5 +88,27 @@ document.querySelectorAll(".dashboard_list_filter_item .select_top_menue_list .i
 	item.addEventListener("click", function(e) {
 	})
 })
+
+// 대시보드 더보기에 삭제 버튼 클릭시
+document.querySelectorAll(".dashboard_list_table td:last-of-type> .more_box button").forEach(function(btn){
+	btn	.addEventListener("click", function(e){
+		const text = this.innerText;
+		const moreBox = e.target.closest(".more_box");
+		const idx = moreBox.getAttribute("idx-data");
+		
+		if(text === "대시보드 삭제"){
+			const uri = "/api/dashboard/delete";
+			fetch(uri, {method:"post", 
+						headers:{"Content-Type":"application/json"}, 
+						body:JSON.stringify(idx)}
+			)
+			.catch(err => {
+				console.error(err);
+			});
+			location.reload();
+		}
+	});
+});
+
 
 
