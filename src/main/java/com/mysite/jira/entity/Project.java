@@ -74,8 +74,13 @@ public class Project {
 		this.key = key;
 		this.account = account;
 	}
+	
 	public void updateSeq(Integer temp) {
 		this.sequence = temp + 1;
+	}
+	
+	public void updateProjectName(String name) {
+		this.name = name;
 	}
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)

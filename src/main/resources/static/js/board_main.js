@@ -2095,7 +2095,7 @@ document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, 
 
 });
 
-document.querySelector(".issuedetail-sortbtn").addEventListener("click", function(e){
+document.querySelector(".issuedetail-sortbtn")?.addEventListener("click", function(e){
 	const btnItem = e.target.closest(".issuedetail-sortbtn");
 	btnItem.classList.toggle("active");
 });

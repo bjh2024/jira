@@ -66,13 +66,4 @@ public class SecurityConfig {
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-	
-	@Bean
-    AuthenticationSuccessHandler successHandler() {
-        return ((request, response, authentication) -> {
-        	DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
-        	String id = defaultOAuth2User.getAttributes().get("id").toString();
-        	System.out.println(id);
-        });
-    }
 }

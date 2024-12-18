@@ -42,7 +42,12 @@ public class MainController {
 		if(principal == null) {
 			return "redirect:/account/login";
 		}
-		Account account = accountService.getAccountByEmail(principal.getName());
+		Account account = new Account();
+		if(principal.getName().split("@").length < 2) {
+			account = this.accountService.getAccountByKakaoKey(principal.getName());
+		}else {
+			account = this.accountService.getAccountByEmail(principal.getName());
+		}
 		Integer accountIdx = account.getIdx();
 		jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
 		return "redirect:/" + jiraName;
@@ -51,7 +56,12 @@ public class MainController {
 	
 	@GetMapping("/{jiraName}")
 	public String filter(Model model, Principal principal, @PathVariable("jiraName") String jiraName) {
-		Account account = accountService.getAccountByEmail(principal.getName());
+		Account account = new Account();
+		if(principal.getName().split("@").length < 2) {
+			account = this.accountService.getAccountByKakaoKey(principal.getName());
+		}else {
+			account = this.accountService.getAccountByEmail(principal.getName());
+		}
 		Integer accountIdx = account.getIdx();
 		
 		Jira jira = jiraService.getByNameJira(jiraName);

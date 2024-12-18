@@ -215,4 +215,9 @@ public class ProjectService {
 	public List<ProjectMembers> getProjectMembersByProjectIdx(Integer projectIdx){
 		return projectMembersRepository.findAllByProjectIdx(projectIdx);
 	}
+	
+	public void updateProjectName(Project project, String name) {
+		project.updateProjectName(name);
+		projectRepository.save(project);
+	}
 }

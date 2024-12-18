@@ -50,13 +50,70 @@
 }
 
 .header-title {
-	font-weight: normal;
+	font-weight: bold;
 	display: flex;
 	font-size: 25px;
 	margin-left: 12px;
 	letter-spacing: -2px;
 	color: #172b4d;
 	margin-top: -1px;
+}
+
+.header-title:hover{
+	background-color: #0515240F;
+}
+
+.header-title.none{
+	display: none;
+}
+
+.project-title-editbox{
+	width: 328px;
+	height: 40px;
+	padding: 0px 6px;
+	margin-left: 8px;
+	background-color: white;
+    border: 1px solid #8C8F97;
+    border-radius: 3px;
+	align-items: center;
+	position: relative;
+	cursor: pointer;
+	display: none;
+}
+
+.project-title-editbox.show{
+	display: flex;
+}
+
+.project-title-input{
+	width: 320px;
+	height: 34px;
+	font-size: 25px;
+	font-weight: bold;
+	outline: none;
+	border: none;
+	color: #505258;
+}
+
+.edit-prjtitlebtn{
+	position: absolute;
+	top: 44px;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	background-color: white;
+	z-index: 1;
+}
+
+.edit-prjtitlebtn.submit{
+	right: 36px;
+}
+
+.edit-prjtitlebtn.cancel{
+	right: 0px;
 }
 
 .header-setting {

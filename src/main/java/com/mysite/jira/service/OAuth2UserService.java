@@ -42,7 +42,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
         String email = (String) ((Map<String, Object>) attributes.get("kakao_account")).get("email");
         String name = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname");
         String kakaoKey = attributes.get("id").toString();
-        System.out.println(email + " " + name + " " + kakaoKey);
+        System.out.println("OAuth2UserService: " + email + " " + name + " " + kakaoKey);
         
         Optional<Account> optAccount = this.accountRepository.findByEmail(email);
         

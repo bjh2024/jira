@@ -56,7 +56,13 @@ public class ProjectController {
 	public String summationPage(Model model, HttpServletRequest request, Principal principal, 
 								@PathVariable("jiraName") String jiraName,
 								@PathVariable("projectKey") String projectKey) {
-		Account account = accountService.getAccountByEmail(principal.getName());
+		Account account = new Account();
+		if(principal.getName().split("@").length < 2) {
+			account = this.accountService.getAccountByKakaoKey(principal.getName());
+		}else {
+			account = this.accountService.getAccountByEmail(principal.getName());
+		}
+		
 		Integer accountIdx = account.getIdx();
 		
 		Jira jira = jiraService.getByNameJira(jiraName);
@@ -101,7 +107,13 @@ public class ProjectController {
 	
 	@GetMapping("/create")
 	public String createPage(Model model, Principal principal) {
-		model.addAttribute("account", accountService.getAccountByEmail(principal.getName()));
+		Account currentUser = new Account();
+		if(principal.getName().split("@").length < 2) {
+			currentUser = this.accountService.getAccountByKakaoKey(principal.getName());
+		}else {
+			currentUser = this.accountService.getAccountByEmail(principal.getName());
+		}
+		model.addAttribute("account", currentUser);
 		return "project/project_create";
 	}
 	
