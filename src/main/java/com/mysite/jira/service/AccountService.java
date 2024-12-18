@@ -56,6 +56,19 @@ public class AccountService {
 		return newUser;
 	}
 	
+	public void createSocialUser(String username, String email, String pw) {
+		Account user = Account.builder()
+							.name(username)
+							.email(email)
+							.pw(passwordEncoder.encode(pw))
+							.authCode(null)
+							.build();
+		this.accountRepository.save(user);
+		
+		user.updateAccount(null, null);
+		this.accountRepository.save(user);
+	}
+	
 	public Account getAccountByEmail(String email) {
 		Optional<Account> optAccount = this.accountRepository.findByEmail(email);
 		Account account = null;

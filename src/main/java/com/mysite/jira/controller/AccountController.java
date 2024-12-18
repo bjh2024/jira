@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,18 +32,26 @@ public class AccountController {
 	private final EmailClient emailClient;
 
 	@Value("${kakao.client_id}")
-    private String clientId;
+    private String kakaoClientId;
 
     @Value("${kakao.redirect_uri}")
-    private String redirectUri;
+    private String kakaoRedirectUri;
+    
+    @Value("${naver.client_id}")
+    private String naverClientId;
+    
+    @Value("${naver.redirect_uri}")
+    private String naverRedirectUri;
 	
 	@GetMapping("/login")
 	public String login(Model model) {
-		String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+clientId+"&redirect_uri="+redirectUri;
-        model.addAttribute("location", location);
-		
 		return "account/login";
 	}
+	
+//	@GetMapping("/login/naver")
+//    public CustomResponseEntity<UserResponse.Login> loginByNaver(@RequestParam(name = "code") String code) {
+//        return CustomResponseEntity.success(userService.loginByOAuth(code, NAVER));
+//    }
 
 	@GetMapping("/signup")
 	public String signup(CreateUserForm createUserForm) {

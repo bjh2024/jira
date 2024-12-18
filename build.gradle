@@ -30,6 +30,7 @@ configurations {
 repositories {
 	mavenCentral()
 	
+	// aspose-words(text preview)
 	maven {
         url 'https://repository.aspose.com/repo/'
     }
@@ -77,7 +78,10 @@ dependencies {
 	// aspose-words(text preview)
 	implementation 'com.aspose:aspose-words:24.11:jdk17'
 	
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	
+	// oauth2(social login)
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 

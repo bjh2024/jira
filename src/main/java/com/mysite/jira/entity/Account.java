@@ -32,7 +32,6 @@ public class Account {
 	private String email;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
-	@NotNull
 	private String pw;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
@@ -50,6 +49,12 @@ public class Account {
 
 	@Column
 	private LocalDateTime codeExpDate;
+	
+	@Column(columnDefinition = "VARCHAR2(500)")
+	private String kakaoSocialKey;
+	
+	@Column(columnDefinition = "VARCHAR2(500)")
+	private String naverSocialKey;
 	
 	@Builder
 	public Account(String email, String pw, String name, String iconFilename, 

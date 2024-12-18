@@ -2,6 +2,10 @@ body {
 	overflow: hidden;
 }
 
+a{
+	text-decoration: none;
+}
+
 .login-container {
 	text-align: center;
 	width: 400px;
@@ -42,11 +46,13 @@ body {
 	width: 320px;
 	height: 40px;
 	padding-left: 5px;
+	border: none;
+	outline: 1px solid #D1D1D1;
+	border-radius: 3px;
 }
 
 .borderline:focus {
-	border: 2px solid #0C66E4;
-	outline: none;
+	outline: 2px solid #0C66E4;
 	border-radius: 3px;
 }
 
@@ -55,7 +61,7 @@ body {
 }
 
 .next-btn {
-	width: 331px;
+	width: 329px;
 	height: 40px;
 	background-color: #0C66E4;
 	color: white;
@@ -85,7 +91,7 @@ body {
 	margin-right: auto;
 	margin-bottom: 8px;
 	background-color: white;
-	border: 1px #d1d1d1 solid;
+	border: 1px solid #D1D1D1;
 	border-radius: 3px;
 	display: flex;
 	align-items: center;
