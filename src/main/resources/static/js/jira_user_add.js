@@ -93,10 +93,10 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 	
 	function addJiraUserFetch(jiraUserEmail){
 		const uri = "/api/account/add/jira_member/send_email"
-		
+		console.log(jiraUserEmail);
 		fetch(uri, {method:"post", 
 					headers:{"Content-Type" : "application/json"}, 
-					body:JSON.stringify({"email":jiraUserEmail})
+					body:JSON.stringify(jiraUserEmail)
 					 }
 			 )
 		 .then(res => res.json())
@@ -109,5 +109,5 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 			console.error(err);
 		});
 	}
-	addJiraUserFetch();
+	addJiraUserFetch(jiraUserEmail);
 });

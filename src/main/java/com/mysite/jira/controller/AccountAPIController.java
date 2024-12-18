@@ -79,8 +79,9 @@ public class AccountAPIController {
 	}
 	
 	@PostMapping("add/jira_member/send_email")
-	public Integer addJiraMemberSendEmail(@RequestBody String email) {
-		jiraInviteEmailClient.sendEmail(email, "/");
+	public Integer addJiraMemberSendEmail(@RequestBody String jiraUserEmail) {
+		System.out.println(jiraUserEmail.replaceAll("\"", ""));
+		jiraInviteEmailClient.sendEmail(jiraUserEmail.replaceAll("\"", ""));
 		return 1;
 	}
 }

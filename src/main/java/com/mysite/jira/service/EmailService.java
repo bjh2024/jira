@@ -25,10 +25,9 @@ public class EmailService {
         return templateEngine.process(templateName, context);
     }
     
-    public String inviteBuildEmailContent(String uri, String email) {
+    public String inviteBuildEmailContent() {
         // Context 객체 생성 및 데이터 추가
         Context context = new Context();
-        context.setVariable("uri", uri);
 
         // 템플릿 경로 지정 및 처리
         String templateName = "team/send_email";

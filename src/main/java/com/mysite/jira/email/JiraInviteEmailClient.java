@@ -19,12 +19,12 @@ public class JiraInviteEmailClient {
 	
 	private final EmailService emailService;
 	
-	public void sendEmail(String to, String uri) {
+	public void sendEmail(String to) {
 		try {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			
 			String subject = "[JIRA]👋관리자가 당신을 Jira에 초대했습니다.";
-			String emailContent = emailService.inviteBuildEmailContent(uri, to);
+			String emailContent = emailService.inviteBuildEmailContent();
 			
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
 			messageHelper.setFrom("kritac_jira@naver.com");
