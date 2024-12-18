@@ -62,7 +62,6 @@ public class FilterService {
 		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 	}
 	public List<Filter> getByJiraIdx(Integer idx){
-		System.out.println(filterRepository.findByJiraIdx(idx).size());
 		return filterRepository.findByJiraIdx(idx);
 	}
 	public List<Integer> getProjectIdxArrByFilterIdx(Integer idx){

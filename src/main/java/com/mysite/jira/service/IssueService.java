@@ -127,7 +127,6 @@ public class IssueService {
 		Integer[] projectIdxArr = new Integer[issueProject.size()];
 		
 		for (int i = 0; i < issueProject.size(); i++) {
-			System.out.println("프로젝트 필터링 이슈 사이즈" +issueProject.size());
 			projectIdxArr[i] = issueProject.get(i).getProject().getIdx();
 		}
 		
@@ -139,7 +138,6 @@ public class IssueService {
 		List<FilterIssueType> issueType = filterIssueTypeRepository.findByFilterIdx(filterIdx);
 		String[] issueTypeArr = new String[issueType.size()];
 		for (int i = 0; i < issueType.size(); i++) {
-			System.out.println("이슈타입 필터링 사이즈" +issueType.size());
 			issueTypeArr[i] = issueType.get(i).getIssueType().getName();
 		}
 		List<Issue> list = issueRepository.findByIssueTypeNameIn(issueTypeArr);
@@ -271,7 +269,6 @@ public class IssueService {
 		for (Object[] result : managerListObject) {
 		 	Integer managerIdx=((BigDecimal)result[0]).intValue(); 
             String name = (String) result[1]; 
-            System.out.println("매니저 이름은?"+name);
             String iconFilename = (String) result[2];
             // DTO 객체 생성
             ManagerDTO managerDTO = new ManagerDTO(managerIdx, name, iconFilename);

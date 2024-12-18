@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.IssueStatusListDTO;
-import com.mysite.jira.dto.IssueTypeListDTO;
-import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.ProjectRepository;
 
