@@ -60,7 +60,7 @@ public class AccountAPIController {
 	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email,
 												 @RequestParam("uri") String uri) {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		
+		 
 		if(jiraMembersService.getByJiraIdxAndEmailJiraMember(jira.getIdx(), email) == null) {
 			return 0;
 		}
