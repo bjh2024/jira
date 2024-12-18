@@ -3,15 +3,19 @@ package com.mysite.jira.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.AddJiraMemberDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
+import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
@@ -27,6 +31,8 @@ public class AccountAPIController {
 	private final ProjectService projectService;
 	
 	private final JiraService jiraService;
+	
+	private final JiraMembersService jiraMembersService;
 
 	// 유저 이름으로 project에 포함된 유저 search
 	@GetMapping("project/members")
@@ -46,4 +52,25 @@ public class AccountAPIController {
 		return accountService.getAccountListDashboard(jira.getIdx());
 	}
 	
+	@GetMapping("duplication/jira_member")
+	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email,
+												 @RequestParam("uri") String uri) {
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		
+		if(jiraMembersService.getByJiraIdxAndEmailJiraMember(jira.getIdx(), email) == null) {
+			return 0;
+		}
+		return 1;
+	}
+	
+	@GetMapping("add/jira_member")
+	public void addJiraMember(@RequestBody AddJiraMemberDTO addJiraMemberDTO) {
+		String email = addJiraMemberDTO.getEmail();
+		String uri = addJiraMemberDTO.getUri();
+		
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Account account = accountService.getAccountByEmail(email);
+		
+		jiraMembersService.addJiraMember(account, jira);
+	}
 }
