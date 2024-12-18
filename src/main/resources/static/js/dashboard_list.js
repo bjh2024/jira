@@ -89,23 +89,47 @@ document.querySelectorAll(".dashboard_list_filter_item .select_top_menue_list .i
 	})
 })
 
+// 대시보드 삭제 모달창 이벤트
+document.querySelector("body").addEventListener("mousedown", function(e){
+	const deleteModal = document.querySelector(".dashboard_delete_modal.list");
+	const deleteBox = e.target.closest(".dashboard_delete_modal.list .dashboard_delete_box");
+	const cancleBtn = e.target.closest(".dashboard_delete_modal.list .cancle_btn");
+	const deleteBtn = e.target.closest(".dashboard_delete_modal.list .delete_btn");
+	
+	if(deleteBox === null || cancleBtn !== null){
+		deleteModal.classList.remove("show");
+		return;
+	}
+	
+	if(deleteBtn !== null){
+		const uri = "/api/dashboard/delete";
+		const idx = deleteModal.getAttribute("idx-data");
+		fetch(uri, {method:"post", 
+					headers:{"Content-Type":"application/json"}, 
+					body:JSON.stringify(idx)}
+		)
+		.catch(err => {
+			console.error(err);
+		});
+		location.reload();
+	}
+});
+
 // 대시보드 더보기에 삭제 버튼 클릭시
 document.querySelectorAll(".dashboard_list_table td:last-of-type> .more_box button").forEach(function(btn){
 	btn	.addEventListener("click", function(e){
 		const text = this.innerText;
 		const moreBox = e.target.closest(".more_box");
 		const idx = moreBox.getAttribute("idx-data");
+		const dashboardName = moreBox.getAttribute("dashboard-name-data");
 		
 		if(text === "대시보드 삭제"){
-			const uri = "/api/dashboard/delete";
-			fetch(uri, {method:"post", 
-						headers:{"Content-Type":"application/json"}, 
-						body:JSON.stringify(idx)}
-			)
-			.catch(err => {
-				console.error(err);
-			});
-			location.reload();
+			const deleteModal = document.querySelector(".dashboard_delete_modal.list");
+			const deleteHeader = deleteModal.querySelector("h2");
+			deleteModal.setAttribute("idx-data", idx);
+			deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
+									  <span>${dashboardName}을(를) 삭제하겠습니까?</span>`
+			deleteModal.classList.add("show");
 		}
 	});
 });

@@ -5,9 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysite.jira.dto.dashboard.create.TeamListDTO;
+import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Team;
+import com.mysite.jira.entity.TeamMembers;
+import com.mysite.jira.repository.TeamMembersRepository;
 import com.mysite.jira.repository.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +23,8 @@ public class TeamService {
 	
 	private final TeamRepository teamRepository;
 	
+	private final TeamMembersRepository teamMembersRepository;
+	
 	public Team getTeamByIdx(Integer idx) {
 		Optional<Team> opTeam = teamRepository.findById(idx);
 		Team team = null;
@@ -27,7 +34,12 @@ public class TeamService {
 		return team;
 	}
 	
-	public List<TeamListDTO> getTeamListByJiraIdx(Integer jiraIdx){
+	public List<Team> getTeamListByJiraIdx(Integer jiraIdx){
+		return teamRepository.findByJiraIdx(jiraIdx);
+	}
+	
+	// 대시보드
+	public List<TeamListDTO> getTeamListByJiraIdxDashboard(Integer jiraIdx){
 		List<Team> teamList = teamRepository.findByJiraIdx(jiraIdx);
 		List<TeamListDTO> result = new ArrayList<>();
 		
@@ -42,4 +54,28 @@ public class TeamService {
 		}
 		return result;
 	}
+	
+	public Team getByJiraIdxAndNameTeam(Integer jiraIdx, String teamName) {
+		return teamRepository.findByJiraIdxAndName(jiraIdx, teamName);
+	}
+	
+	@Transactional
+	public boolean createTeam(Account account, Jira jira, String teamName) {
+		Team team = Team.builder()
+						.name(teamName)
+						.jira(jira)
+						.account(account)
+						.build();
+		teamRepository.save(team);
+		
+		// 팀 멤버 추가
+		TeamMembers teamMembers = TeamMembers.builder()
+											 .team(team)
+											 .account(account)
+											 .build();
+		teamMembersRepository.save(teamMembers);
+		
+		return true;
+	}
+	
 }

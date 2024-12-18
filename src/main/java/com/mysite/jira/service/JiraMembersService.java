@@ -16,7 +16,6 @@ public class JiraMembersService {
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	public List<JiraMembers> getMembersByJiraIdx(Integer idx){
-		
 		return jiraMembersRepository.findByJiraIdx(idx); 
 	}
 }

@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_list.css}">
 </head>
 <div layout:fragment="content">
+	<div th:replace="~{/dashboard/dashboard_delete :: dashboardDelete}"></div>
 	<div class="dashboard_list_container">
 		<div class="dashboard_list_title">
 			<h2>대시보드</h2>
@@ -136,9 +137,9 @@
 								th:if="${dashboardAuth.type == 1}">
 								<img th:src="@{|/images/${dashboardAuth.project != null ? dashboardAuth.project.iconFilename :
 														  dashboardAuth.account != null ? dashboardAuth.account.iconFilename :
-														  'aside_team_icon.svg'}|}" 
-									 alt="" th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'" 
-									 width="24" height="24" />
+														  'aside_team_icon.svg'}|}" alt=""
+									th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'"
+									width="24" height="24" />
 								<span th:text="${dashboardAuth.project != null ? dashboardAuth.project.name :
 											     dashboardAuth.account != null ? dashboardAuth.account.name :
 											     dashboardAuth.team.name}"></span>
@@ -147,8 +148,8 @@
 												 dashboardAuth.projectRole == 1 ? 'Viewer' : ''}"></span>
 							</div>
 							<div class="dashboard_list_item_box"
-							     th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 1])}">
-								<img src="/images/private_icon.svg" width="24" height="24"/>
+								th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 1])}">
+								<img src="/images/private_icon.svg" width="24" height="24" />
 								<span>비공개</span>
 							</div>
 						</div>
@@ -159,19 +160,19 @@
 							th:if="${dashboardAuth.type == 2}">
 							<img th:src="@{|/images/${dashboardAuth.project != null ? dashboardAuth.project.iconFilename :
 													  dashboardAuth.account != null ? dashboardAuth.account.iconFilename :
-													  'aside_team_icon.svg'}|}" 
-								 alt="" th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'" 
-								 width="24" height="24" />
+													  'aside_team_icon.svg'}|}" alt=""
+								th:style="'border-radius:'+${dashboardAuth.account != null ? 50 : 2}+'px'" width="24"
+								height="24" />
 							<span th:text="${dashboardAuth.project != null ? dashboardAuth.project.name :
 										     dashboardAuth.account != null ? dashboardAuth.account.name :
 										     dashboardAuth.team.name}"></span>
 							<span th:text="${dashboardAuth.projectRole == 3 ? 'Administrator' :
 											 dashboardAuth.projectRole == 2 ? 'Member' :
-											 'Viewer'}"></span>
+											 dashboardAuth.projectRole == 1 ? 'Viewer' : ''}"></span>
 						</div>
 						<div class="dashboard_list_item_box"
-							 th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 2])}">
-							<img src="/images/private_icon.svg" width="24" height="24"/>
+							th:if="${#lists.isEmpty(dashboardList.dashboard.dashboardAuthList.?[type == 2])}">
+							<img src="/images/private_icon.svg" width="24" height="24" />
 							<span>비공개</span>
 						</div>
 					</td>
@@ -188,7 +189,9 @@
 								</g>
 							</svg>
 						</div>
-						<div class="more_box" th:idx-data="${dashboardList.dashboard.idx}">
+						<div class="more_box" 
+						     th:idx-data="${dashboardList.dashboard.idx}"
+							 th:dashboard-name-data="${dashboardList.dashboard.name}">
 							<button>대시보드 복사</button>
 							<button>대시보드 이름 변경 또는 공유</button>
 							<button>소유자 변경</button>

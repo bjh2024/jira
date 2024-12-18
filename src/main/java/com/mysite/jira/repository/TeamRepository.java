@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.mysite.jira.entity.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Integer>{
+	
 	List<Team> findByJiraIdx(Integer jiraIdx);
+	
+	Team findByJiraIdxAndName(Integer jiraIdx, String name);
 }

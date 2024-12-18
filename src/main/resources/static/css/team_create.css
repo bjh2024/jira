@@ -82,10 +82,13 @@
 	height: 36px;
 	margin-bottom: 4px;
 	padding: 8px 6px;
+	border: 1px solid #000;
 }
 
 .team_create_content_box .input_box input:focus{
 	border: 2px solid #4d97ff;
+	margin: 0 -1px;
+	margin-bottom: 4px;
 }
 
 .team_create_content_box .input_box p {
@@ -99,27 +102,31 @@
 	align-items: center;
 }
 
-.team_create_content_box .input_check_box{
-	margin-top: 4px;
-	
+.team_create_content_box .team_alert_box.show{
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 }
+.team_create_content_box .team_alert_box {
+	display: none;
+	padding: 4px 0;
 
-.team_create_content_box .input_check_box span {
-	margin-bottom: 4px;
-	
-	color: #44546f;
+	color: #AE2E24;
 	font-size: 12px;
-	font-weight: bold;
-	
 }
 
-.team_create_content_box .input_check_box .check_box{
-	font-size: 14px;
-	
-	display: flex;
-	gap: 8px;
+.team_create_content_box .team_alert_box img {
+	margin: 0 4px;
+	filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);
+}
+
+#teamName.active {
+	border: 2px solid #4d97ff !important; 
+}
+
+#teamName.alert{
+	border: 2px solid #E2483D;
+	margin: 0 -1px;
+	margin-bottom: 4px;
 }
 
 .team_create_container .btn_box{
@@ -140,4 +147,12 @@
 .team_create_container .btn_box button:nth-of-type(2){
 	color: white;
 	background-color: #0c66e4;
+}
+
+.team_create_container .btn_box .cancle_btn:hover{
+	background-color: #e9edf3a6;
+}
+
+.team_create_container .btn_box .create_team_btn:hover{
+	background-color: #1558BC;
 }

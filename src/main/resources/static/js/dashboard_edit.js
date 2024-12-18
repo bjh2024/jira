@@ -88,7 +88,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const deleteBtn = e.target.closest(".delete_btn");
 	
 	if(deleteBox === null || cancleBtn !== null){
-		document.querySelector(".dashboard_detail_delete_modal").classList.remove("show");
+		document.querySelector(".dashboard_delete_modal.detail").classList.remove("show");
 		return;
 	}
 	
@@ -151,7 +151,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 				case "복제":
 					break;
 				case "삭제":
-					const deleteModal = document.querySelector(".dashboard_detail_delete_modal");
+					const deleteModal = document.querySelector(".dashboard_delete_modal.detail");
 					const deleteBox = deleteModal.querySelector(".dashboard_delete_box");
 					const deleteHeader = deleteModal.querySelector("h2");
 					deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
@@ -1522,10 +1522,3 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	const gadgetInput = document.querySelector(".gadget_header .input_box input");
 	gadgetInput.focus();
 });
-
-
-
-
-
-
-

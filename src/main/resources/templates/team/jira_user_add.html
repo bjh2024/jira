@@ -7,8 +7,12 @@
 		<div class="jira_user_add_box">
 			<h2>Jira에 사용자 추가</h2>
 			<div class="input_box">
-				<label>이름 또는 이메일<span class="not_null_check">*</span></label>
-				<input type="text" placeholder="예: Maria, maria@company.com" />
+				<label for="jiraUserName">이름 또는 이메일<span class="not_null_check">*</span></label>
+				<input type="email" id="jiraUserName" name="jiraUserName" placeholder="예: Maria, maria@company.com" />
+				<div class="jira_alert_box">
+					<img src="/images/alaret_icon.svg" width="12" height="12"/>
+					<span class="comment"></span>
+				</div>
 			</div>
 			<fieldset>
 				<legend>또는 다음에서 추가</legend>
@@ -31,7 +35,7 @@
 			</p>
 			<div class="btn_box">
 				<button class="cancle_btn">취소</button>
-				<button>추가</button>
+				<button class="jira_user_add_btn">추가</button>
 			</div>
 		</div>
 	</div>

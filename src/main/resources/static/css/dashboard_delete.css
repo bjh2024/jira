@@ -1,8 +1,8 @@
-.dashboard_detail_delete_modal.show {
+.dashboard_delete_modal.show {
 	display: block;
 }
 
-.dashboard_detail_delete_modal {
+.dashboard_delete_modal {
 	display: none;
 	width: 100%;
 	height: 100%;

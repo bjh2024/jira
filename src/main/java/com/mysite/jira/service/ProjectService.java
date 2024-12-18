@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.mywork.RecentProjectDTO;
@@ -73,7 +74,8 @@ public class ProjectService {
 		return result;
 	}
 	
-	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가!!!)
+	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
+	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
 		int idx = (int) (Math.random() * 3);
 		int sequence = 0;

@@ -15,7 +15,6 @@ import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller

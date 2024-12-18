@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysite.jira.dto.dashboard.AuthTypeDTO;
 import com.mysite.jira.dto.dashboard.DashboardListDTO;
@@ -85,6 +86,7 @@ public class DashboardService {
 		return null;
 	}
 	
+	@Transactional
 	public Integer createDashboard(String name, String explain, Jira jira, Account account, List<AuthTypeDTO> authItems) {
 		// 대시보드 추가
 		Dashboard dashboard = Dashboard.builder()
