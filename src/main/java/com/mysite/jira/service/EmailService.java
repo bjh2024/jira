@@ -25,7 +25,7 @@ public class EmailService {
         return templateEngine.process(templateName, context);
     }
     
-    public String inviteBuildEmailContent(String uri) {
+    public String inviteBuildEmailContent(String uri, String email) {
         // Context 객체 생성 및 데이터 추가
         Context context = new Context();
         context.setVariable("uri", uri);
