@@ -92,4 +92,9 @@ public class AccountService {
 		return user;
 	}
 	
+	public Account getAccountByKakaoKey(String key){
+		Optional<Account> account = this.accountRepository.findByKakaoSocialKey(key);
+		return account.get();
+	}
+	
 }

@@ -28,9 +28,10 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 	    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 	    String email = (String) oAuth2User.getAttributes().get("email"); // OAuth2User에서 이메일 가져오기
-	    System.out.println(email + "      dddd");
+	    String id = oAuth2User.getAttributes().get("id").toString();
+	    System.out.println(id + "      dddd");
 	    
-	    Account account = accountService.getAccountByEmail(email); // 이메일로 Account 조회
+	    Account account = accountService.getAccountByKakaoKey(id); // 이메일로 Account 조회
 	    Integer accountIdx = account.getIdx();
 	    
 	    Jira jira = jiraService.getRecentTop1Jira(accountIdx);

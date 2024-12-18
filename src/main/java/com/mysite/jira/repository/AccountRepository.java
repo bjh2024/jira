@@ -29,4 +29,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
 	//kdw 
 	Optional<Account> findByEmail(String email);
+	
+	Optional<Account> findByKakaoSocialKey(String key);
 }

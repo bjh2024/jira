@@ -64,8 +64,17 @@ public class GlobalModelAdvice {
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (uri.contains("/project") && uri.contains("/create")) return;
 		try {
+			System.out.println("Principal name: " + principal.getName());
+			
 			// 현재 로그인한 계정 정보
-		    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+			Account currentUser = new Account();
+			
+			if(principal.getName().split("@").length < 2) {
+				currentUser = this.accountService.getAccountByKakaoKey(principal.getName());
+			}else {
+				currentUser = this.accountService.getAccountByEmail(principal.getName());
+			}
+			
 		    // 현재 들어온 지라 정보
 		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 			// 가져올 값들

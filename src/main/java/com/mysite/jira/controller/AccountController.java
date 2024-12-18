@@ -30,18 +30,6 @@ public class AccountController {
 	private final AccountService accountService;
 	
 	private final EmailClient emailClient;
-
-	@Value("${kakao.client_id}")
-    private String kakaoClientId;
-
-    @Value("${kakao.redirect_uri}")
-    private String kakaoRedirectUri;
-    
-    @Value("${naver.client_id}")
-    private String naverClientId;
-    
-    @Value("${naver.redirect_uri}")
-    private String naverRedirectUri;
 	
 	@GetMapping("/login")
 	public String login(Model model) {
