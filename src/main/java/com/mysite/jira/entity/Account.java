@@ -32,7 +32,6 @@ public class Account {
 	private String email;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
-	@NotNull
 	private String pw;
 
 	@Column(columnDefinition = "VARCHAR2(100)")
@@ -50,10 +49,16 @@ public class Account {
 
 	@Column
 	private LocalDateTime codeExpDate;
-
+	
+	@Column(columnDefinition = "VARCHAR2(500)")
+	private String kakaoSocialKey;
+	
+	@Column(columnDefinition = "VARCHAR2(500)")
+	private String naverSocialKey;
+	
 	@Builder
 	public Account(String email, String pw, String name, String iconFilename, 
-			String authCode) {
+			String authCode, String kakaoSocialKey, String naverSocialKey) {
 		this.email = email;
 		this.pw = pw;
 		this.name = name;
@@ -61,11 +66,13 @@ public class Account {
 		this.createDate = LocalDateTime.now();
 		this.authCode = authCode;
 		this.codeExpDate = LocalDateTime.now().plusMinutes(3);
+		this.kakaoSocialKey = kakaoSocialKey; 
+		this.naverSocialKey = naverSocialKey;
 	}
 	
-	public void updateAccount() {
-		this.authCode = null;
-		this.codeExpDate = null;
+	public void updateAccount(String authCode, LocalDateTime codeExpDate) {
+		this.authCode = authCode;
+		this.codeExpDate = codeExpDate;
 	}
 
 	// 지라 생성자 FK
@@ -123,20 +130,6 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueLikeMembers> issueLikeMembersList;
-	
-	// filter FK 추가
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<Filter> filterList;
-	
-	// filterAuth FK 추가
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<FilterAuth> filterAuthList;
-	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<FilterManager> FilterManagerList;
-	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<FilterLikeMembers> FilterLikeMembersList;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<FilterReporter> FilterReporterList;

@@ -126,11 +126,11 @@ public class LikeService {
 			List<FilterLikeMembers> filterLikeList = filterLikeMembersRepository.findByAccountIdxAndFilter_jiraIdx(accountIdx, jiraIdx);
 			for(int i = 0; i < filterLikeList.size(); i++) {
 				Integer idx = filterLikeList.get(i).getFilter().getIdx();
-				String projectName = filterLikeList.get(i).getFilter().getName();
+				String filterName = filterLikeList.get(i).getFilter().getName();
 				String iconFileName = "filter_icon.svg";
 				LikeContentDTO dto = LikeContentDTO.builder()
 												 .idx(idx)
-												 .name(projectName)
+												 .name(filterName)
 												 .iconFilename(iconFileName)
 												 .build();
 				result.add(dto);

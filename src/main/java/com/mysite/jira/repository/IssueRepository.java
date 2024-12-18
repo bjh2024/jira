@@ -11,12 +11,13 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
+	
 	List<Issue> findIssuesByProjectIdx(Integer idx);
+	
+	List<Issue> findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(Integer idx, Integer grade);
 
 	// kdw
-	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(
-			@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
-
+	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 
@@ -59,8 +60,8 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	List<Issue> findIssuesByStartDate(@Param("startDate") LocalDateTime startDate);
 
 	@Query("SELECT i FROM Issue i WHERE i.editDate <= :lastDate")
-	List<Issue> findIssuesByLastDate(@Param("lastDate") LocalDateTime LastDate);
-
+	List<Issue> findIssuesByLastDate(@Param("lastDate") LocalDateTime lastDate);
+	 
 	@Query("SELECT i FROM Issue i WHERE i.createDate >= :startDate")
 	List<Issue> findIssuesBycreateStartDate(@Param("startDate") LocalDateTime startDate);
 
@@ -260,6 +261,11 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 			""")
 	List<Map<String, Object>> findByIssueCompleteCountBetweenCreateDate(@Param("projectIdx") Integer projectIdx,
 																	    @Param("startDate") LocalDateTime startDate);
+	List<Issue> findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(Integer newIdx, Integer statusIdx); 
 	
+	List<Issue> findByProjectIdxAndIssueStatusIdx(Integer projectIdx, Integer issueIdx);
 	
+	List<Issue> findByProjectIdxAndIssueTypeGrade(Integer projectIdx, Integer grade);
+	
+	List<Issue> findByProjectIdxAndIssueTypeGradeAndIdxNot(Integer projectIdx, Integer grade, Integer idx);
 }

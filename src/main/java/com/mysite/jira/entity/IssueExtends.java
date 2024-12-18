@@ -37,4 +37,8 @@ public class IssueExtends {
 		this.parent = parent;
 		this.child = child;
 	}
+	
+	public void updateParent(Issue parent) {
+		this.parent = parent;
+	}
 }

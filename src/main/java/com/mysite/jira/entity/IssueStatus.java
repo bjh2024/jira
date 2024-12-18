@@ -52,8 +52,16 @@ public class IssueStatus {
 		this.project = project;
 	}
 
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
 	public void updateStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public void updateDivOrder(Integer idx) {
+		this.divOrder = idx;
 	}
 	
 	@OneToMany(mappedBy = "issueStatus", cascade = CascadeType.REMOVE) 

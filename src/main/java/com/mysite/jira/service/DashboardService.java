@@ -453,4 +453,11 @@ public class DashboardService {
 		dashboardIssueFilterRepository.deleteById(idx);
 	}
 	
+	public Dashboard getDashboard(Integer dashboardIdx) {
+		Optional<Dashboard> dashboard = dashboardRepository.findById(dashboardIdx);
+		if(!dashboard.isEmpty())
+			return dashboard.get();
+		return null;
+	}
+	
 }

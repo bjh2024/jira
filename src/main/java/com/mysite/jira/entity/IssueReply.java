@@ -54,4 +54,11 @@ public class IssueReply {
 		this.issue = issue;
 		this.account = account;
 	}
+	public void updateReplyContent(String content) {
+		this.content = content;
+	}
+	
+	public void updateEditDate(LocalDateTime editDate) {
+		this.editDate = editDate;
+	}
 }

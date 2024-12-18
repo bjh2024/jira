@@ -61,7 +61,6 @@ public class DashboardIssueComplete {
 		this.isSave = isSave;
 		this.unitPeriod = unitPeriod;
 	}
-	
 	public void updateIssueComplete(Project project, Integer viewDate, String unitPeriod) {
 		this.project = project;
 		this.viewDate = viewDate;

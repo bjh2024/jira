@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<nav class="header-menubar">
-			<div class="menu-icon-box">
+			<div class="menu-icon-box summation">
 				<a th:href="@{|/${currentJira}/project/${project.key}/summation|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/summation_icon.svg}"
@@ -39,17 +39,16 @@
 					<span class="menu-text">요약</span>
 				</a>
 			</div>
-			<div class="menu-icon-box"
-				style="border-bottom: 2px solid #44546f; padding-bottom: 3px; padding-right: 4px;">
+			<div class="menu-icon-box board_main">
 				<a th:href="@{|/${currentJira}/project/${project.key}/board_main|}">
-					<span class="menu-icon" style="width: 24px; margin-bottom: 5px;">
+					<span class="menu-icon" style="width: 24px;">
 						<img th:src="@{/images/board_icon.svg}"
 							style="width: 24px; filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
-					<span style="margin-bottom: 6px;">보드</span>
+					<span class="menu-text">보드</span>
 				</a>
 			</div>
-			<div class="menu-icon-box">
+			<div class="menu-icon-box chart">
 				<a th:href="@{|/${currentJira}/project/${project.key}/chart|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/list_icon.svg}"
@@ -58,7 +57,7 @@
 					<span class="menu-text">목록</span>
 				</a>
 			</div>
-			<div class="menu-icon-box">
+			<div class="menu-icon-box attached_files">
 				<a th:href="@{|/${currentJira}/project/${project.key}/attached_files|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/attachment_icon.svg}"
@@ -67,7 +66,7 @@
 					<span class="menu-text">첨부 파일</span>
 				</a>
 			</div>
-			<div class="menu-icon-box">
+			<div class="menu-icon-box issue">
 				<a>
 					<span class="menu-icon">
 						<img th:src="@{/images/project_issue_icon.svg}"
@@ -87,7 +86,7 @@
 					<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}" style="width: 16px; height: 16px;"></span>
 					<span style="margin-bottom: 2px;">사용자 추가</span>
 				</button>
-				<button th:onclick="|location.href='@{/project/setting_issue_type}'|" class="menuwindow-optionbtn">
+				<button th:onclick="|location.href='@{|/${currentJira}/project/${project.key}/setting_issue_type|}'|" class="menuwindow-optionbtn">
 					<span style="height: 16px;"><img th:src="@{/images/setting_icon.svg}" style="width: 16px; height: 16px;"></span>
 					<span style="margin-bottom: 2px;">프로젝트 설정</span>
 				</button>
@@ -149,11 +148,6 @@
 								<span class="colorpallette-colorbtn"></span>
 								<span style="font-size: 11px; ">배경 없음</span>
 							</span>
-						</div>
-						<div class="setbg-title">사용자 지정 이미지</div>
-						<div class="setbg-uploadbox">
-							<div class="uploadimgbtn">업로드할 이미지를 선택</div> <br>
-							<span>하거나 여기에 끌어다 놓으세요</span>
 						</div>
 					</div>
 					<span style="height: 24px; margin-left: -4px;"><img th:src="@{/images/set_bg_icon.svg}" style="width: 24px; height: 24px;"></span>

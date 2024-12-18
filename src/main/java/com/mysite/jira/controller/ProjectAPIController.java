@@ -115,4 +115,5 @@ public class ProjectAPIController {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		return projectService.getByJiraIdxProjectListDTO(jira.getIdx());
 	}
+	
 }

@@ -31,4 +31,6 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 	List<IssueStatus> findAllByProjectIdxOrderByStatusAsc(Integer idx);
 	
 	List<IssueStatus> findAllByProjectIdxAndIdxNotOrderByStatusAsc(Integer projectIdx, Integer idx);
+	
+	List<IssueStatus> findByDivOrderBetweenAndProjectIdx(Integer oldIdx, Integer newIdx, Integer projectIdx); 
 }

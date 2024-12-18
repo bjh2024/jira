@@ -51,7 +51,7 @@ public class DashboardIssueStatistics {
 	private DashboardCol dashboardCol;
 	
 	@Builder
-	public DashboardIssueStatistics(Integer rowNum, Integer divOrderX, Integer divOrderY,
+	public DashboardIssueStatistics(Integer rowNum, Integer divOrderX, Integer divOrderY, 
 			Dashboard dashboard, Project project, DashboardCol dashboardCol, Integer isSave) {
 		this.rowNum = rowNum;
 		this.divOrderX = divOrderX;

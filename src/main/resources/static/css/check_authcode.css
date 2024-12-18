@@ -129,13 +129,17 @@ body {
 }
 
 .retry,
-.retry a {
+.retry > a,
+.retry > button {
 	text-align: center;
 	text-decoration: none;
 	font-size: 14px;
 	margin-top: 24px;
 	margin-bottom: 18px;
 	color: #0C66E4;
+	border: none;
+	outline: none;
+	background-color: white;
 }
 
 .under-logo {
@@ -178,4 +182,16 @@ body {
 
 .emailicon{
 	filter: invert(30%) sepia(70%) saturate(6582%) hue-rotate(209deg) brightness(99%) contrast(91%);
+}
+
+.alert-box{
+	display: flex; 
+	align-items: center; 
+	margin: 0px auto 0px 40px;
+}
+
+.alert.alert-danger{
+	color: #AE2E24;
+	font-size: 13px;
+	text-align: left;
 }
