@@ -27,7 +27,7 @@ public class JiraInviteEmailClient {
 			String emailContent = emailService.inviteBuildEmailContent(uri, to);
 			
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-			messageHelper.setFrom("dahyunkid@naver.com");
+			messageHelper.setFrom("kritac_jira@naver.com");
 			messageHelper.setTo(to);
 			messageHelper.setSubject(subject);
 			messageHelper.setText(emailContent, true);

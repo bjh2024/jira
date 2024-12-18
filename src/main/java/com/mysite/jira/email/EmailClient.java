@@ -31,7 +31,7 @@ public class EmailClient {
 			
 			// 수신자, 제목, 본문 설정
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-			messageHelper.setFrom("dahyunkid@naver.com");
+			messageHelper.setFrom("kritac_jira@naver.com");
 			messageHelper.setTo(to);
 			messageHelper.setSubject(subject);
 			messageHelper.setText(emailContent, true);
