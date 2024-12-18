@@ -10,10 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
-import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +23,6 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	private AccountService accountService;
 	@Autowired
     private JiraService jiraService;
-	@Autowired
-	private ProjectService projectService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

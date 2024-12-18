@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
@@ -56,7 +57,7 @@ public class SecurityConfig {
 	        .expiredUrl("/account/login")
 		).oauth2Login(oauth2Configurer -> oauth2Configurer
                 .loginPage("/login")
-                .successHandler(socialAuthenticationHandler)
+                .successHandler(successHandler())
                 .userInfoEndpoint()
                 .userService(oAuth2UserService));
 	    return http.build();
@@ -70,8 +71,9 @@ public class SecurityConfig {
 	@Bean
     AuthenticationSuccessHandler successHandler() {
         return ((request, response, authentication) -> {
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        	DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+        	String id = defaultOAuth2User.getAttributes().get("id").toString();
+        	System.out.println(id);
         });
     }
 }

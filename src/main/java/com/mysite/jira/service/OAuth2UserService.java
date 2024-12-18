@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService{
-	private final AccountService accountService;
-	
 	private final AccountRepository accountRepository;
 	
 	@Override
@@ -43,13 +41,24 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
         // db 저장
         String email = (String) ((Map<String, Object>) attributes.get("kakao_account")).get("email");
         String name = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname");
-        String fixedPassword = "kakaouserpassword";
-        System.out.println(email + " " + name + " " + fixedPassword);
+        String kakaoKey = attributes.get("id").toString();
+        System.out.println(email + " " + name + " " + kakaoKey);
         
         Optional<Account> optAccount = this.accountRepository.findByEmail(email);
         
         if(optAccount.isEmpty()) {
-        	this.accountService.createSocialUser(name, email, fixedPassword);
+        	Account user = Account.builder()
+					.name(name)
+					.email(email)
+					.pw(null)
+					.authCode(null)
+					.kakaoSocialKey(kakaoKey)
+					.naverSocialKey(null)
+					.build();
+			this.accountRepository.save(user);
+			
+			user.updateAccount(null, null);
+			this.accountRepository.save(user);
         }
         
         return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), userNameAttributeName);
