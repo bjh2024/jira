@@ -59,7 +59,6 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
-		System.out.println(uri);
 		if(principal == null ||
 		   uri.length() == 0 ||
 		   uri.equals("/") ||
@@ -70,8 +69,6 @@ public class GlobalModelAdvice {
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (uri.contains("/project") && uri.contains("/create")) return;
 		try {
-			System.out.println("Principal name: " + principal.getName());
-			
 			// 현재 로그인한 계정 정보
 			Account currentUser = new Account();
 			
@@ -83,7 +80,6 @@ public class GlobalModelAdvice {
 			
 		    // 현재 들어온 지라 정보
 		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		    System.out.println("globalModelAdvice "+principal.getName());
 		    
 			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
@@ -115,7 +111,6 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
-			System.out.println(filterLikeMembers.size());
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
