@@ -8,5 +8,5 @@ import com.mysite.jira.entity.FilterDoneDate;
 
 public interface FilterDoneDateRepository extends JpaRepository<FilterDoneDate, Integer>{
 
-	List<FilterDoneDate> findByFilterIdx(Integer idx);
+	FilterDoneDate findByFilterIdx(Integer idx);
 }

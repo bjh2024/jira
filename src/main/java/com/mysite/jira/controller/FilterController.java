@@ -1,6 +1,7 @@
 package com.mysite.jira.controller;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.FilterProject;
+import com.mysite.jira.entity.Filter;
+import com.mysite.jira.entity.FilterAuth;
+import com.mysite.jira.entity.FilterDoneDate;
+import com.mysite.jira.entity.FilterIssueCreateDate;
+import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.Project;
@@ -64,23 +69,13 @@ public class FilterController {
 //	}
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName) {
+			@PathVariable("jiraName") String jiraName){
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
-			System.out.println(filterIdx);
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
-			
-//			List<Issue> projectFilterIssue = issueService.getIssueByProjectIdxAndFilterIdx(filterIdx);
-//			if(projectFilterIssue.size() > 0) {
-//				issue.retainAll(projectFilterIssue);
-//			}
-//			List<Issue> issueTypeFilterIssue = issueService.getIssueByIssueTypeAndFilterIdx(filterIdx);
-//			if(issueTypeFilterIssue.size() > 0) {
-//				issue.retainAll(issueTypeFilterIssue);
-//			}
 			model.addAttribute("issue", issue);
-			
+ 
 			List<Integer> filterProjectIdxArr = filterService.getProjectIdxArrByFilterIdx(filterIdx);
 			model.addAttribute("filterProject", filterProjectIdxArr);
 			
@@ -102,6 +97,37 @@ public class FilterController {
 			List<Integer> filterDone = filterService.getIssueStatusIdxByFilterIdx(filterIdx);
 			model.addAttribute("filterDone", filterDone);
 			
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			
+			FilterIssueUpdate updateDate = filterService.getIssueUpdateDateByFilterIdx(filterIdx);
+			model.addAttribute("updateDate", updateDate);
+			LocalDateTime updateStartDate = (updateDate != null)? updateDate.getStartDate() : null;
+			LocalDateTime updateEndDate = (updateDate != null)? updateDate.getEndDate() : null;
+	        String updateStartDate2 = (updateStartDate != null) ? dateTimeFormatter.format(updateStartDate) : null;
+	        String updateEndDate2 = (updateEndDate != null) ? dateTimeFormatter.format(updateEndDate) : null;
+			model.addAttribute("updateStartDate", updateStartDate2);
+			model.addAttribute("updateEndDate", updateEndDate2);
+			
+			FilterDoneDate doneDate = filterService.getIssueDoneDateByFilterIdx(filterIdx);
+			model.addAttribute("doneDate", doneDate);
+			LocalDateTime doneStartDate = (doneDate != null)?doneDate.getStartDate(): null;
+			LocalDateTime doneEndDate = (doneDate != null)?doneDate.getEndDate(): null;
+			String doneStartDate2 = (doneStartDate != null) ? dateTimeFormatter.format(doneStartDate) : null;
+			String doneEndDate2 = (doneEndDate != null) ? dateTimeFormatter.format(doneEndDate) : null;
+			model.addAttribute("doneStartDate", doneStartDate2);
+			model.addAttribute("doneEndDate", doneEndDate2);
+			
+			FilterIssueCreateDate createDate = filterService.getIssueCreateDateByFilterIdx(filterIdx);
+			model.addAttribute("createDate", createDate);
+			LocalDateTime createStartDate = (createDate != null)?createDate.getStartDate():null;
+			LocalDateTime createEndDate = (createDate != null)?createDate.getEndDate():null;
+			String createStartDate2 = (createStartDate != null) ? dateTimeFormatter.format(createStartDate) : null;
+			String createEndDate2 = (createEndDate != null) ? dateTimeFormatter.format(createEndDate) : null;
+			model.addAttribute("createStartDate", createStartDate2);
+			model.addAttribute("createEndDate", createEndDate2);
+			
+			
+// ====================== 필터용 ==================================================================================
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);
 			
@@ -123,6 +149,9 @@ public class FilterController {
 			List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
 			model.addAttribute("teamList", teamList);
 			
+			List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+			model.addAttribute("filterList", filterList);
+			model.addAttribute("filterIdx", filterIdx);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -131,20 +160,85 @@ public class FilterController {
 	}
 
 	@GetMapping("/every_filter")
-	public String everyfilter() {
+	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
+			@PathVariable("jiraName") String jiraName) {
+		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+		
+		List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+		model.addAttribute("filterList", filterList);
+		
+		List<FilterAuth> filterAuth = filterService.getFilterAuthAll();
+		model.addAttribute("filterAuth", filterAuth);
+		
+		List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
+		model.addAttribute("teamList", teamList);
+		
 		return "filter/every_filter";
 	}
 
 	@GetMapping("/filter_issue_table")
-	public String filterIssueTable(@RequestParam(value = "projectKey",required = false) String projectKey,Model model) {
-		Integer jiraIdx = 1;
-
+	public String filterIssueTable
+	(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
+			@PathVariable("jiraName") String jiraName) {
+		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
 		try {
-			model.addAttribute("projectKey", projectKey);
 			
+
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
+ 
+			List<Integer> filterProjectIdxArr = filterService.getProjectIdxArrByFilterIdx(filterIdx);
+			model.addAttribute("filterProject", filterProjectIdxArr);
 			
+			List<String> filterIssueTypeNameArr = filterService.getIssueTypeNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueTypeNameArr", filterIssueTypeNameArr);
+			
+			List<String> filterIssueStatusNameArr = filterService.getIssueStatusNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueStatusNameArr", filterIssueStatusNameArr);
+			
+			List<String> filterIssueManagerNameArr = filterService.getIssueManagerNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterIssueManagerNameArr", filterIssueManagerNameArr);
+			
+			List<Integer> filterIssuePriorityIdxArr = filterService.getIssuePriorityIdxByFilterIdx(filterIdx);
+			model.addAttribute("filterIssuePriorityIdxArr", filterIssuePriorityIdxArr);
+			
+			List<String> filterReporterNameArr = filterService.getIssueReporterNameArrByFilterIdx(filterIdx);
+			model.addAttribute("filterReporterNameArr", filterReporterNameArr);
+			
+			List<Integer> filterDone = filterService.getIssueStatusIdxByFilterIdx(filterIdx);
+			model.addAttribute("filterDone", filterDone);
+			
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			
+			FilterIssueUpdate updateDate = filterService.getIssueUpdateDateByFilterIdx(filterIdx);
+			model.addAttribute("updateDate", updateDate);
+			LocalDateTime updateStartDate = (updateDate != null)? updateDate.getStartDate() : null;
+			LocalDateTime updateEndDate = (updateDate != null)? updateDate.getEndDate() : null;
+	        String updateStartDate2 = (updateStartDate != null) ? dateTimeFormatter.format(updateStartDate) : null;
+	        String updateEndDate2 = (updateEndDate != null) ? dateTimeFormatter.format(updateEndDate) : null;
+			model.addAttribute("updateStartDate", updateStartDate2);
+			model.addAttribute("updateEndDate", updateEndDate2);
+			
+			FilterDoneDate doneDate = filterService.getIssueDoneDateByFilterIdx(filterIdx);
+			model.addAttribute("doneDate", doneDate);
+			LocalDateTime doneStartDate = (doneDate != null)?doneDate.getStartDate(): null;
+			LocalDateTime doneEndDate = (doneDate != null)?doneDate.getEndDate(): null;
+			String doneStartDate2 = (doneStartDate != null) ? dateTimeFormatter.format(doneStartDate) : null;
+			String doneEndDate2 = (doneEndDate != null) ? dateTimeFormatter.format(doneEndDate) : null;
+			model.addAttribute("doneStartDate", doneStartDate2);
+			model.addAttribute("doneEndDate", doneEndDate2);
+			
+			FilterIssueCreateDate createDate = filterService.getIssueCreateDateByFilterIdx(filterIdx);
+			model.addAttribute("createDate", createDate);
+			LocalDateTime createStartDate = (createDate != null)?createDate.getStartDate():null;
+			LocalDateTime createEndDate = (createDate != null)?createDate.getEndDate():null;
+			String createStartDate2 = (createStartDate != null) ? dateTimeFormatter.format(createStartDate) : null;
+			String createEndDate2 = (createEndDate != null) ? dateTimeFormatter.format(createEndDate) : null;
+			model.addAttribute("createStartDate", createStartDate2);
+			model.addAttribute("createEndDate", createEndDate2);
+			
+			
+// ====================== 필터용 ==================================================================================
 			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
 			model.addAttribute("project", project);
 			
@@ -162,6 +256,10 @@ public class FilterController {
 			
 			List<Account> jiraMembers = accountService.getAccountList(jiraIdx);
 			model.addAttribute("jiraMembers", jiraMembers);
+			
+			List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
+			model.addAttribute("teamList", teamList);
+			
 			
 			
 		}catch(Exception e){

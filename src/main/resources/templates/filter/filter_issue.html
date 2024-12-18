@@ -13,11 +13,14 @@
 		<div class="inside_main_div">
 			<div class="filter_issue_main">
 				<div>
-					<h2>이슈</h2>
+					<h2 th:each="filterList:${filterList}" 
+					th:text="${filterList.name}"
+					th:if="${filterList.idx == filterIdx}">이슈
+					</h2>
 				</div>
 				<div class="category_parent">
 					<div class="filter_issue_list">
-						<button class="category_1" onclick="location.href='../filter_issue_table'">목록 보기</button>
+						<button class="category_1" onclick="location.href='./filter_issue_table'">목록 보기</button>
 						<button class="category_2" style="color: #0052CC; background-color: #E9F2FE; border:1px solid #0C66E4;">세부 정보 보기</button>
 					</div>
 					<div class="category_3">
@@ -495,30 +498,34 @@
 												<div class="filter_issue_box">
 													<form>
 													<div class="update_date"> 
-														<input type="radio" name="date" id="radio_days">&nbsp<b>몇일 전</b>
+														<input class="update_date_input_list" type="radio" name="date" id="radio_days"
+														th:checked="${updateDate == null? false: updateDate.beforeDate != null? updateDate.beforeDate: null}" >&nbsp<b>몇일 전</b>
 													</div>
 													<div class="update_date_box_1">
 														<div><input type="text" placeholder="일 입력" id="update_before_date" style="height: 26px;"
-															></div>
+															th:value="${updateDate == null? '': updateDate.beforeDate != null? updateDate.beforeDate: null}"></div>
 														&nbsp&nbsp
 														<div><input type="button" value="저장" id="update_date_save_button" style="height: 26px;"></div>
 													</div>
 													<div class="update_date"> 
-														<input type="radio" name="date" id="radio_range">&nbsp<b>사이</b>
+														<input class="update_date_input_list" type="radio" name="date" id="radio_range"
+														th:checked="${updateDate == null? false:updateDate.startDate != null? updateDate.startDate: null}">&nbsp<b>사이</b>
 													</div>
 													<div class="update_date_box_2">
-														<input type="date"
+														<input  type="date"
 														        id="update_start_date"
 														        max="2080-06-20"
-														        min="2000-01-01" required>
+														        min="2000-01-01"
+																th:value="${updateDate == null? '': updateDate.startDate != null? updateDate.startDate: ''}">
 																&nbsp&nbsp&nbsp
 														<input type="date"
 														        id="update_last_date"
 														        max="2077-06-20"
-														        min="2000-01-01" required>
+														        min="2000-01-01" 
+																th:value="${updateDate == null? '': updateDate.endDate != null? updateDate.endDate:''}">
 													</div>
 													<div class="date_button_box">
-														<input class="reset_button" id="update_date_reset" type="reset" value="초기화">
+														<input class="reset_button" id="update_date_reset" value="초기화">
 													</div>
 													</form>
 												</div>
@@ -539,26 +546,31 @@
 												<div class="filter_issue_box">
 													<form>								
 													<div class="create_date"> 
-														<input type="radio" name="date" id="create_date">&nbsp<b>몇일 전</B>
+														<input class="create_date_input_list" type="radio" name="date" id="create_date"
+														th:checked="${createDate == null? false:createDate.beforeDate != null}">&nbsp<b>몇일 전</B>
 													</div>
 													<div class="create_date_box_1">
-														<div><input type="text" placeholder="일 입력" id="create_before_date" style="height: 26px;"></div>
+														<div><input type="text" placeholder="일 입력" id="create_before_date" style="height: 26px;"
+															th:value="${createDate == null? '':createDate.beforeDate != null? createDate.beforeDate:'' }"></div>
 														&nbsp&nbsp
 														<div><input type="button" value="저장" id="create_date_save_button" style="height: 26px;"></div>
 													</div>
 													<div class="create_date"> 
-														<input type="radio" name="date" id="create_between">&nbsp<b>사이</B>
+														<input class="create_date_input_list" type="radio" name="date" id="create_between"
+														th:checked="${createDate == null? false:createDate.startDate!=null?createDate.startDate:null}">&nbsp<b>사이</B>
 													</div>
 													<div class="create_date_box_2">
 														<input type="date"
 														        id="create_start_date"
 														        max="2080-06-20"
-														        min="2000-01-01">
+														        min="2000-01-01"
+																th:value="${createDate == null? '':createDate.startDate!=null?createDate.startDate:''}">
 																&nbsp&nbsp&nbsp
 														<input type="date"
 														        id="create_last_date"
 														        max="2077-06-20"
-														        min="2000-01-01">
+														        min="2000-01-01"
+																th:value="${createDate == null? '':createDate.endDate!=null?createDate.endDate:''}">
 													</div>
 													
 													<div class="date_button_box">
@@ -583,26 +595,30 @@
 												<div class="filter_issue_box">
 													<form>
 													<div class="done_date"> 
-														<input type="radio" name="date" id="done_date">&nbsp<b>몇일 전</B>
+														<input class="done_date_input_list" type="radio" name="date" id="done_date"
+														th:checked="${doneDate == null? false:doneDate.beforeDate != null? doneDate.beforeDate:''}">&nbsp<b>몇일 전</B>
 													</div>
 													<div class="done_date_box_1">
-														<div><input type="text" placeholder="일 입력" id="done_before_date" style="height: 26px;"></div>
+														<div><input type="text" placeholder="일 입력" id="done_before_date" style="height: 26px;"
+															th:value="${doneDate == null? '':doneDate.beforeDate != null? doneDate.beforeDate:''}"></div>
 																							&nbsp&nbsp
 														<div><input type="button" value="저장" id="done_date_save_button" style="height: 26px;"></div>	
 													</div>
 													<div class="done_date"> 
-														<input type="radio" name="date" id="done_between">&nbsp<b>사이</B>
+														<input class="done_date_input_list" type="radio" name="date" id="done_between">&nbsp<b>사이</B>
 													</div>
 													<div class="done_date_box_2">
 														<input type="date"
 														        id="done_start_date"
 														        max="2080-06-20"
-														        min="2000-01-01">
+														        min="2000-01-01"
+																th:value="${doneDate == null? '':doneDate.startDate != null? doneDate.startDate:''}">
 																&nbsp&nbsp&nbsp
 														<input type="date"
 														        id="done_last_date"
 														        max="2077-06-20"
-														        min="2000-01-01">
+														        min="2000-01-01"
+																th:value="${doneDate == null? '':doneDate.endDate != null? doneDate.endDate:''}">
 													</div>
 													
 													<div class="date_button_box">
@@ -647,7 +663,8 @@
 														<label for="doneDate">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="doneDate" value="doneDate"></div>
+																<input type="checkbox" id="doneDate" value="doneDate"
+																th:checked="${doneDate != null}"></div>
 															<div style="margin-left: 8px; font-size: 14px;">해결 날짜</div>
 														</div>
 														</label>
@@ -655,20 +672,23 @@
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
 																<input type="checkbox" id="doneCheck" value="doneCheck"
-																th:checked="${filterDone.size() != 0}"></div>														<div style="margin-left: 8px; font-size: 14px;">해결</div>
+																th:checked="${filterDone.size() != 0}"></div>														
+																<div style="margin-left: 8px; font-size: 14px;">해결</div>
 														</div>
 														</label>
 														<label for="updateDate">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="updateDate" value="updateDate"></div>
+																<input type="checkbox" id="updateDate" value="updateDate"
+																th:checked="${updateDate != null}"></div>
 															<div style="margin-left: 8px; font-size: 14px;">최근 업데이트</div>
 														</div>
 														</label>
 														<label for="createDate">
 														<div class="filter_issue_project_div_3">
 															<div style="height: 13px; margin-left: 6px;">
-																<input type="checkbox" id="createDate" value="createDate"></div>
+																<input type="checkbox" id="createDate" value="createDate"
+																th:checked="${createDate != null}"></div>
 															<div style="margin-left: 8px; font-size: 14px;">최근 생성</div>
 														</div>
 														</label>
@@ -1172,6 +1192,7 @@
 			</div>
 	</div>
 	<div class="modal">
+		<form action="./every_filter">
 		<div class="modal_content">
 			<div class="content_div_1">
 				필터 저장
@@ -1182,7 +1203,7 @@
 			</div>
 			<div class="filter_save_font">
 				이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
-				<input class="hover_input" type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;">
+				<input class="hover_input" type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;" required>
 			</div> 
 			<div class="filter_save_font">
 				설명
@@ -1228,6 +1249,7 @@
 							<div class="project_div_1" style="width: auto;">
 								<div style="width: 2px;"></div>
 								<div class="projectLabel" style="margin-left: 4px; z-index: 0;">
+									<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
 									프로젝트 선택
 								</div>
 								<div>
@@ -1250,7 +1272,8 @@
 							</div>
 							<div class="team_div_1" style="width: auto;">
 								<div style="width: 2px;"></div>
-									<div class="teamLabel" style="margin-left: 4px; z-index: 0;">
+								<div class="teamLabel" style="margin-left: 4px; z-index: 0;">
+										<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
 										그룹 선택
 									</div>
 									<div>
@@ -1262,7 +1285,8 @@
 									</div>
 									<div class="team_div_category" >
 										<div class="teamItem" th:each="team :${teamList}">
-											<div>
+											<div style="display: flex; align-items: center;">
+												<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
 												<span th:text="${team.name}"></span>
 											</div>
 									</div>
@@ -1270,7 +1294,8 @@
 							</div>
 							<div class="user_div_1" style="width: auto;">
 								<div style="width: 2px;"></div>
-									<div class="userLabel" style="margin-left: 4px; z-index: 0;">
+								<div class="userLabel" style="margin-left: 4px; z-index: 0;">
+										<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
 										사용자 선택
 									</div>
 									<div>
@@ -1294,7 +1319,7 @@
 							</div>
 						</div>
 				<div style="display: flex;">
-				<button class="filter_save_reset" style="border:none; color: #6B778C; margin-right: 4px;">
+				<button type="button" class="filter_save_reset" style="border:none; color: #6B778C; margin-right: 4px;">
 					초기화</button>
 				<div class="viewer_div_2">
 					추가
@@ -1344,6 +1369,7 @@
 						<div class="project_div_2" style="width: auto;">
 							<div style="width: 2px;"></div>
 							<div class="projectLabel2" style="margin-left: 4px; z-index: 0;">
+								<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
 								프로젝트 선택
 							</div>
 							<div>
@@ -1366,7 +1392,8 @@
 						</div>
 						<div class="team_div_2" style="width: auto;">
 							<div style="width: 2px;"></div>
-								<div class="teamLabel2" style="margin-left: 4px; z-index: 0;">
+								<div class="teamLabel2" style="margin-left: 4px; z-index: 0; ">
+									<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
 									그룹 선택
 								</div>
 								<div>
@@ -1387,6 +1414,7 @@
 						<div class="user_div_2" style="width: auto;">
 							<div style="width: 2px;"></div>
 								<div class="userLabel2" style="margin-left: 4px; z-index: 0;">
+									<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
 									사용자 선택
 								</div>
 								<div>
@@ -1410,7 +1438,7 @@
 						</div>
 						</div>
 				<div style="display: flex;">
-				<button class="filter_save_reset2" style="border:none; color: #6B778C; margin-right: 4px;">
+				<button class="filter_save_reset2" type="button"style="border:none; color: #6B778C; margin-right: 4px;">
 					초기화</button>
 				<div class="viewer_div_2">
 					추가
@@ -1421,11 +1449,12 @@
 				<!--추가 누르면 내용이 추가될 부분-->
 			</div>
 			<div class="viewer_last_button">
-				<div class="save_button">저장</div>
-				<div class="cancle_button">취소</div>
+				<button class="save_button">저장</button>
+				<button class="cancle_button">취소</button>
 			</div>
 
 		</div>
+		</form>
 	</div>
 	</div>
 	<script th:src="@{/js/filter_issue.js}"></script>

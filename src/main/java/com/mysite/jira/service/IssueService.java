@@ -94,6 +94,7 @@ public class IssueService {
 	public List<Issue> getcreateLastDateLessThanEqual(LocalDateTime lastDate){
 		return issueRepository.findIssuesBycreateLastDate(lastDate);
 	}
+	
 	public List<Issue> getfinishStartDateGreaterThanEqual(LocalDateTime startDate){
 		return issueRepository.findIssuesByfinishStartDate(startDate);
 	}

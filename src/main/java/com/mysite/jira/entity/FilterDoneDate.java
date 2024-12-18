@@ -33,7 +33,7 @@ public class FilterDoneDate {
 	
 	@ColumnDefault("30")
 	@NotNull
-	private Integer deadline;
+	private Integer BeforeDate;
 
 	@Column
 	private LocalDateTime startDate;
@@ -42,9 +42,9 @@ public class FilterDoneDate {
 	private LocalDateTime endDate;
 	
 	@Builder
-	public FilterDoneDate(Filter filter, Integer deadline) {
+	public FilterDoneDate(Filter filter, Integer BeforeDate) {
 		this.filter = filter;
-		this.deadline = deadline;
+		this.BeforeDate = BeforeDate;
 	}
 
 }

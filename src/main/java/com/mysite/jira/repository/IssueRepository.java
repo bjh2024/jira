@@ -56,7 +56,7 @@ public interface IssueRepository extends JpaRepository<Issue, Integer>{
     List<Issue> findIssuesByStartDate(@Param("startDate") LocalDateTime startDate);
 	
 	@Query("SELECT i FROM Issue i WHERE i.editDate <= :lastDate")
-	List<Issue> findIssuesByLastDate(@Param("lastDate") LocalDateTime LastDate);
+	List<Issue> findIssuesByLastDate(@Param("lastDate") LocalDateTime lastDate);
 	 
 	@Query("SELECT i FROM Issue i WHERE i.createDate >= :startDate")
 	List<Issue> findIssuesBycreateStartDate(@Param("startDate") LocalDateTime startDate);

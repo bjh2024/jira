@@ -178,7 +178,7 @@
 	display: none;
 }
 .update_date_box_2.show {
-	display: block;
+	display: flex;
 }
 .create_date {
 	margin: 16px 16px;
@@ -615,6 +615,14 @@ div::-webkit-scrollbar {
 	position: relative;
 	display: none;
 }
+.teamLabel{
+	display: flex;
+	align-items: center;
+}
+.teamLabel2 {
+	display: flex;
+	align-items: center;
+}
 .project_div_2{
 	height: 32px;
 	border: 1px solid #091E424F;
@@ -762,7 +770,6 @@ div::-webkit-scrollbar {
 }
 .choice_list_filter_auth{
 	display: flex;
-	padding: 2px 4px;
 	align-items: center;
 	
 }
@@ -784,6 +791,7 @@ div::-webkit-scrollbar {
 	height: 32px;
 	color: white;
 	text-align: center;
+	cursor: pointer;
 	line-height: 32px;
 }
 .cancle_button {
@@ -827,9 +835,9 @@ div::-webkit-scrollbar {
 	align-items: center;
 }
 .teamItem {
-	height: 32px;
-	align-items: center;
 	display: flex;
+	align-items: center;
+	height: 32px;
 	padding-left: 6px;
 }
 .teamItem2 {

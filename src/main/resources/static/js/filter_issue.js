@@ -256,16 +256,26 @@ const handleSelect3_1 = (item) => {
 const handleSelect4 = (item) => {
   teamLabel.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)  
   
-  const text = item.textContent.trim(); // 텍스트 가져오기
+  const img = item.querySelector('img');
+   const text = item.textContent.trim(); // 텍스트 가져오기
 
+   if (img) {
+     const imgClone = img.cloneNode(true); // 이미지를 복제
+     teamLabel.appendChild(imgClone); // 라벨에 복제한 이미지 추가
+   }
   teamLabel.innerHTML += text; // 라벨에 텍스트 추가
 }
 const handleSelect4_1 = (item) => {
-  teamLabel2.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)  
-  
-  const text = item.textContent.trim(); // 텍스트 가져오기
+	teamLabel2.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)  
+	  
+	  const img = item.querySelector('img');
+	   const text = item.textContent.trim(); // 텍스트 가져오기
 
-  teamLabel2.innerHTML += text; // 라벨에 텍스트 추가
+	   if (img) {
+	     const imgClone = img.cloneNode(true); // 이미지를 복제
+	     teamLabel2.appendChild(imgClone); // 라벨에 복제한 이미지 추가
+	   }
+	  teamLabel2.innerHTML += text; // 라벨에 텍스트 추가
 }
 const handleSelect5 = (item) => {
 	userLabel.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)  
@@ -327,27 +337,45 @@ document.querySelectorAll(".viewer_div_1_category").forEach(function(item) {
 	      document.querySelector(".project_div_1").style.display = "flex";
 	      document.querySelector(".team_div_1").style.display = "none";
 	      document.querySelector(".user_div_1").style.display = "none";
-	      document.querySelector(".teamLabel").innerText = "그룹 선택";
-	      document.querySelector(".userLabel").innerText = "사용자 선택";
+		  document.querySelector(".teamLabel").innerHTML = 
+		  		  `<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		  			그룹 선택`;
+		 document.querySelector(".userLabel").innerHTML = 
+		 		  `<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		 			사용자 선택`;
 	    } else if (e.target.innerText.trim() === "그룹") {
 	      document.querySelector(".team_div_1").style.display = "flex";
 	      document.querySelector(".project_div_1").style.display = "none";
 	      document.querySelector(".user_div_1").style.display = "none";
-	      document.querySelector(".projectLabel").innerText = "프로젝트 선택";
-	      document.querySelector(".userLabel").innerText = "사용자 선택";
+		  document.querySelector(".projectLabel").innerHTML = 
+		   		  `<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		  	    프로젝트 선택`;
+		  document.querySelector(".userLabel").innerHTML = 
+		  		  `<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		  			사용자 선택`;
 	    } else if (e.target.innerText.trim() === "사용자") {
 	      document.querySelector(".user_div_1").style.display = "flex";
 	      document.querySelector(".team_div_1").style.display = "none";
 	      document.querySelector(".project_div_1").style.display = "none";
-	      document.querySelector(".teamLabel").innerText = "그룹 선택";
-	      document.querySelector(".projectLabel").innerText = "프로젝트 선택";
+		  document.querySelector(".teamLabel").innerHTML = 
+		  		  `<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		  			그룹 선택`;
+					document.querySelector(".projectLabel").innerHTML = 
+					 		  `<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+						    프로젝트 선택`;
 	    } else if (e.target.innerText.trim() === "비공개") {
 	      document.querySelector(".user_div_1").style.display = "none";
 	      document.querySelector(".team_div_1").style.display = "none";
 	      document.querySelector(".project_div_1").style.display = "none";
-	      document.querySelector(".userLabel").innerText = "사용자 선택";
-	      document.querySelector(".teamLabel").innerText = "그룹 선택";
-	      document.querySelector(".projectLabel").innerText = "프로젝트 선택";
+	      document.querySelector(".userLabel").innerHTML = 
+		  `<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+			사용자 선택`;
+	      document.querySelector(".teamLabel").innerHTML = 
+		  `<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+			그룹 선택`;
+	      document.querySelector(".projectLabel").innerHTML = 
+  		  `<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+		    프로젝트 선택`;
 	    }
 		let viewerCategory = document.querySelector(".viewer_div_1_category");
 		    let displayStyle = getComputedStyle(viewerCategory).display;
@@ -418,15 +446,14 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 		let userText = userDiv.innerText.trim();
 		
 		let viewerListBox = document.querySelector('.viewer_list_box');
-      const isDuplicate = Array.from(viewerListBox.querySelectorAll('.choice_list_filter_auth')).some(item => {
+      const isDuplicate = Array.from(viewerListBox.querySelectorAll('.choice_list_filter_auth'))
+	  .some(item => {
           let existingText = item.innerText.trim();
-		
           // 하나라도 일치하면 중복
           return existingText === projectText || 
                  existingText === teamText || 
                  existingText === userText;
       });
-
       // 중복이 없다면 추가
       if (!isDuplicate) {
           viewerListBox.innerHTML += `
@@ -434,10 +461,9 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
                   ${projectText === "프로젝트 선택" ? '' : projectDiv.innerHTML}
                   ${teamText === "그룹 선택" ? '' : teamDiv.innerHTML}
                   ${userText === "사용자 선택" ? '' : userDiv.innerHTML}
-              </div>
-          `;
-      }
-	  	}else if(viewerDiv.querySelector(".projectLabel2")){
+              </div>`;
+			  }
+      }else if(viewerDiv.querySelector(".projectLabel2")){
         let projectDiv2 = viewerDiv.querySelector(".projectLabel2");
         let teamDiv2 = viewerDiv.querySelector(".teamLabel2");
         let userDiv2 = viewerDiv.querySelector(".userLabel2");
@@ -446,29 +472,25 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 		let teamText2 = teamDiv2.innerText.trim();
 		let userText2 = userDiv2.innerText.trim();
 		
-		let viewerListBox = document.querySelector('.viewer_list_box2');
+		let viewerListBox2 = document.querySelector('.viewer_list_box2');
+	      const isDuplicate = Array.from(viewerListBox2.querySelectorAll('.choice_list_filter_auth'))
+		  .some(item => {
+	          let existingText = item.innerText.trim();
+	          // 하나라도 일치하면 중복
+	          return existingText === projectText2 || 
+	                 existingText === teamText2 || 
+	                 existingText === userText2;
+	      });
 		
-		      const isDuplicate = Array.from(viewerListBox.querySelectorAll('.choice_list_filter_auth')).some(item => {
-		          let existingText = item.innerText.trim();
-				
-		          // 하나라도 일치하면 중복
-		          return existingText === projectText2 || 
-		                 existingText === teamText2 || 
-		                 existingText === userText2;
-		      });
-
-			  if (!isDuplicate) {
-		viewerListBox.innerHTML += `
+		if (!isDuplicate) {
+		viewerListBox2.innerHTML += `
 				   <div class="choice_list_filter_auth">           
 				        ${projectText2 === "프로젝트 선택"? '':projectDiv2.innerHTML}
 						${teamText2 === "그룹 선택" ? '':teamDiv2.innerHTML}
 						${userText2 === "사용자 선택"? '':userDiv2.innerHTML}
-				    	</div>
-					</div>
-				`;
-				}
+			    	</div>`;
+			}
 		}
-		
     });
 });
 
@@ -481,3 +503,11 @@ document.querySelector(".filter_save_reset2").addEventListener("click",function(
 	viewerListBox.innerHTML = '';
 })
 
+document.querySelector(".save_button").addEventListener("click",function(){
+	let name = document.querySelector(".hover_input").value;
+})
+document.querySelector(".cancle_button").addEventListener("click",function(){
+	document.querySelector(".hover_input").value = '';
+	document.querySelector(".viewer_list_box2").innerHTML = '';
+	document.querySelector(".viewer_list_box").innerHTML = '';
+})

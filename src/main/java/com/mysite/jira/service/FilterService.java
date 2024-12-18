@@ -1,28 +1,41 @@
+
 package com.mysite.jira.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
+import com.mysite.jira.entity.FilterAuth;
 import com.mysite.jira.entity.FilterDone;
 import com.mysite.jira.entity.FilterDoneDate;
+import com.mysite.jira.entity.FilterIssueCreateDate;
 import com.mysite.jira.entity.FilterIssuePriority;
 import com.mysite.jira.entity.FilterIssueStatus;
 import com.mysite.jira.entity.FilterIssueType;
+import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.FilterManager;
 import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.FilterReporter;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.repository.AccountRepository;
+import com.mysite.jira.repository.FilterAuthRepository;
 import com.mysite.jira.repository.FilterDoneDateRepository;
 import com.mysite.jira.repository.FilterDoneRepository;
+import com.mysite.jira.repository.FilterIssueCreateDateRepository;
 import com.mysite.jira.repository.FilterIssuePriorityRepository;
 import com.mysite.jira.repository.FilterIssueStatusRepository;
 import com.mysite.jira.repository.FilterIssueTypeRepository;
+import com.mysite.jira.repository.FilterIssueUpdateRepository;
 import com.mysite.jira.repository.FilterManagerRepository;
 import com.mysite.jira.repository.FilterProjectRepository;
 import com.mysite.jira.repository.FilterReporterRepository;
 import com.mysite.jira.repository.FilterRepository;
+import com.mysite.jira.repository.JiraRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,7 +51,12 @@ public class FilterService {
 	private final FilterIssuePriorityRepository filterIssuePriorityRepository;
 	private final FilterReporterRepository filterReporterRepostiory;
 	private final FilterDoneRepository filterDoneRepository;
+	private final FilterIssueUpdateRepository filterIssueUpdateRepository;
 	private final FilterDoneDateRepository filterDoneDateRepository;
+	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
+	private final FilterAuthRepository filterAuthRepository;
+	private final AccountRepository accountRepository;
+	private final JiraRepository jiraRepository;
 	
 	public List<Filter> getByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx){
 		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
@@ -108,12 +126,48 @@ public class FilterService {
 		
 		for (int i = 0; i < issueDone.size(); i++) {
 			issueDoneIdxArr.add(issueDone.get(i).getIsCompleted());
-			System.out.println("둘다 나오냐?"+issueDone.get(i).getIsCompleted());
 		}
 		return issueDoneIdxArr;
 	}
 	
-	public Integer getIssueDoneDateByFilterIdx(Integer idx) {
-		return 1;
+	public FilterIssueUpdate getIssueUpdateDateByFilterIdx(Integer idx) {
+		FilterIssueUpdate issue = filterIssueUpdateRepository.findByFilterIdx(idx);
+		return issue;
+	}
+	
+	public FilterIssueCreateDate getIssueCreateDateByFilterIdx(Integer idx) {
+		FilterIssueCreateDate issue = filterIssueCreateDateRepository.findByFilterIdx(idx);
+		return issue;
+	}
+	
+	public FilterDoneDate getIssueDoneDateByFilterIdx(Integer idx) {
+		FilterDoneDate issue = filterDoneDateRepository.findByFilterIdx(idx);
+		return issue;
+	}
+	
+	public List<FilterAuth> getFilterAuthAll(){
+		return filterAuthRepository.findAll();
+	}
+	
+	
+	public Filter filterCreate(String name, String explain, Account account, Jira jira) {
+		Filter filter = Filter.builder()
+				.name(name)
+				.explain(explain)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		return filter;
+	}
+	public void filterDoneCreate(Filter filter, Integer isCompleted) {
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(isCompleted)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+	}
+	public void filterDoneDateCreate(Filter filter, LocalDateTime endDate, LocalDateTime startDate, Integer beforeDate) {
+		
 	}
 }

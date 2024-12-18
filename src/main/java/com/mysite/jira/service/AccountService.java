@@ -25,6 +25,10 @@ public class AccountService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
+	public Account getByUserName(String name) {
+		return accountRepository.findByName(name);
+	}
+	
 	public List<JiraMembers> getByJiraIdx(Integer idx){
 		return jiraMembersRepository.findByJiraIdx(idx);
 	}
