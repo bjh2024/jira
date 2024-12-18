@@ -184,7 +184,12 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/profile")
-	public String profile() {
+	public String profile(Model model) {
+		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+		model.addAttribute("issue", issueList);
+		
+		List<Project> projectList = projectService.getProjectByJiraIdx(1);
+		model.addAttribute("projectList", projectList);
 		return "account/profile.html";
 	}
 

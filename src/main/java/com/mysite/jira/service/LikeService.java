@@ -123,15 +123,14 @@ public class LikeService {
 	// 별표 표시한 필터 kdw
 	public List<LikeContentDTO> getFilterLikeList(Integer accountIdx, Integer jiraIdx){
 			List<LikeContentDTO> result = new ArrayList<>();
-			List<FilterLikeMembers> filterLikeList = filterLikeMembersRepository.findByFilter_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
-
+			List<FilterLikeMembers> filterLikeList = filterLikeMembersRepository.findByAccountIdxAndFilter_jiraIdx(accountIdx, jiraIdx);
 			for(int i = 0; i < filterLikeList.size(); i++) {
 				Integer idx = filterLikeList.get(i).getFilter().getIdx();
-				String projectName = filterLikeList.get(i).getFilter().getName();
+				String filterName = filterLikeList.get(i).getFilter().getName();
 				String iconFileName = "filter_icon.svg";
 				LikeContentDTO dto = LikeContentDTO.builder()
 												 .idx(idx)
-												 .name(projectName)
+												 .name(filterName)
 												 .iconFilename(iconFileName)
 												 .build();
 				result.add(dto);

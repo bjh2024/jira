@@ -3,6 +3,8 @@ package com.mysite.jira.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
+import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.LogDataService;
@@ -38,22 +41,25 @@ import lombok.RequiredArgsConstructor;
 public class GlobalModelAdvice {
 
 	private final AccountService accountService;
-	
+
 	private final JiraService jiraService;
 
 	private final ProjectService projectService;
 
 	private final LogDataService logDataService;
-	
+
 	private final RecentService recentService;
-	
+
 	private final LikeService likeService;
 	
+	private final FilterService filterService;
+
 	private final DashboardService dashboardService;
 	
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
+		System.out.println(uri);
 		if(principal == null ||
 		   uri.length() == 0 ||
 		   uri.equals("/") ||
@@ -77,6 +83,7 @@ public class GlobalModelAdvice {
 			
 		    // 현재 들어온 지라 정보
 		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		    System.out.println("globalModelAdvice "+principal.getName());
 			// 가져올 값들
 		    
 			Integer accountIdx = currentUser.getIdx();
@@ -108,11 +115,13 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
+			System.out.println(filterLikeMembers.size());
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
+			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 			// 현재 jiraName url에서 가져오기
 			model.addAttribute("currentJira", uri.split("/")[1]);
-			
+
 			// header
 			model.addAttribute("leaders", leaders);
 			model.addAttribute("issuesRecentList", issuesRecentList);
@@ -121,7 +130,7 @@ public class GlobalModelAdvice {
 			model.addAttribute("alarmLogData", alarmLogData);
 			model.addAttribute("allRecentList", allRecentList);
 			model.addAttribute("currentUser", currentUser);
-			
+
 			// aside
 			model.addAttribute("todayRecentList", todayRecentList);
 			model.addAttribute("yesterdayRecentList", yesterdayRecentList);
@@ -129,31 +138,34 @@ public class GlobalModelAdvice {
 			model.addAttribute("monthRecentList", monthRecentList);
 			model.addAttribute("monthGreaterRecentList", monthGreaterRecentList);
 			model.addAttribute("allLikeMembers", allLikeMembers);
-			
+
 			model.addAttribute("projectLikeMembers", projectLikeMembers);
 			model.addAttribute("projectRecentList", projectRecentList);
-			
+
 			model.addAttribute("filterLikeMembers", filterLikeMembers);
 			model.addAttribute("filterRecentList", filterRecentList);
-			
+
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
+			model.addAttribute("filterList", filterList);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@ModelAttribute
 	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
-		String uri = request.getRequestURI(); 
-		if(uri.contains("/api")) return;
-		if(uri.contains("/project")) {
+		String uri = request.getRequestURI();
+		if (uri.contains("/api"))
+			return;
+		if (uri.contains("/project")) {
 			Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 			Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
 			model.addAttribute("project", project);
 			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 	}
+
 	
 	@ModelAttribute
 	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {

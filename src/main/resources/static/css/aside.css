@@ -14,14 +14,16 @@ aside {
 .aside_container {
   width: 216px;
   height: calc(100vh - 48px);
-  padding: 12px;
-  padding-right: 540px;
+  padding-left: 12px;
 
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
 
   box-sizing: content-box;
+}
+.aside_container:hover {
+	padding-right: 540px;
 }
 
 .aside_container .img_container.show {

@@ -23,6 +23,134 @@ document.querySelector("body").addEventListener("click", function(e) {
 			console.log(btnText);
 			switch (btnText) {
 				case "구성":
+<<<<<<< HEAD
+					const chartTitle = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
+					const projectName = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[1];
+					const contentBox = e.target.closest(".add_dashboard_content");
+					const colName = e.target.closest(".add_dashboard_content").querySelector(".dashboard_pie_chart_content .header h3").innerText;
+					editChartChange(contentBox, chartTitle, projectName, colName);
+					break;
+				case "복제":
+					break;
+				case "삭제":
+					break;
+			}
+		}
+	} else {
+		document.querySelector(".more_gadget_option.show")?.classList.remove("show");
+	}
+});
+
+function editChartChange(contentBox, chartTitle, projectName, colName, idx) {
+	contentBox.innerHTML = "";
+	switch (chartTitle) {
+		case "파이 차트":
+			contentBox.innerHTML = setPieChartContent(true, projectName, colName, 1);
+			break;
+		case "나에게 할당됨":
+			break;
+		case "만듦 대비 해결됨 차트":
+			break;
+		case "최근에 만듦 차트":
+			break;
+		case "이슈 통계":
+			break;
+		case "결과 필터":
+			break;
+	}
+}
+
+function addDashboardGarget(tagStr) {
+	const gadgetContentBox1 = document.querySelector(".dashboard_content_container .box1");
+	const gadgetContentEmptyBox = document.querySelector(".dashboard_content_container .box1 .empty_box");
+	const newDiv = document.createElement("div");
+	newDiv.classList.add("add_dashboard_content");
+	newDiv.innerHTML = tagStr;
+	//gadgetContentEmptyBox.classList.remove("show");
+	gadgetContentBox1.prepend(newDiv);
+}
+// 파이 차트 값 add
+function setPieChartContent(isChange, projectName, colName, chartIdx) {
+	const pieChartContent = `
+						<div class="add_dashboard_content_header">
+							<h2>
+								<img src="/images/switch_position_icon.svg" />
+								<span>파이 차트</span>
+							</h2>
+							<div>
+								<div class="img_box">
+									<img src="/images/minimize_icon.svg" />
+								</div>
+								<div class="img_box">
+									<img src="/images/maximize_icon.svg" />
+								</div>
+								<div class="img_box">
+									<img src="/images/refresh_icon.svg" />
+								</div>
+								<div class="img_box dashboard_more">
+									<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+										<div class="more_gadget_option">
+											<div class="color_box">
+												<p>강조 색상</p>
+												<div class="color_content">
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</div>
+											<div class="btn_box">
+												<button>
+													<span>구성</span>
+												</button>
+												<button>
+													<span>복제</span>
+												</button>
+												<button>
+													<span>삭제</span>
+												</button>
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+						<div class="add_dashboard_content_main piechart_content_main">
+							<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+							<div class="main_group box1">
+								<label for="project_name">프로젝트 또는 저장된 필터<span class="not_null_check">*</span></label>
+								${isChange ? `<div class="project_name_box">${projectName}</div>` : `<div class="project_name_box">선택된 필터/프로젝트 없음</div>`}
+								<input type="text" id="project_name" placeholder="검색" />
+								<p>그래프에 기준으로 사용할 프로젝트 또는 저장된 필터입니다.</p>
+								<div>
+									<button>고급 검색</button>
+								</div>
+							</div>
+							<div class="main_group box2">
+								<label for="pie_statistic">통계 유형<span class="not_null_check">*</span></label>
+								<select name="statistic" id="pie_statistic">
+									<option value="담당자" ${colName === '담당자' ? 'selected' : ''}>담당자</option>
+									<option value="레이블" ${colName === '레이블' ? 'selected' : ''}>레이블</option>
+									<option value="보고자" ${colName === '보고자' ? 'selected' : ''}>보고자</option>
+									<option value="상태" ${colName === '상태' ? 'selected' : ''}>상태</option>
+									<option value="우선 순위" ${colName === '우선 순위' ? 'selected' : ''}>우선 순위</option>
+									<option value="이슈 유형" ${colName === '이슈 유형' ? 'selected' : ''}>이슈 유형</option>
+								</select>
+								<p>이 필터를 표시할 통계의 유형을 선택.</p>
+							</div>
+							<div class="main_group box3">
+								<label for="update">자동 새로 고침</label>
+								<div class="update_check_box">
+									<input type="checkbox" id="update" />
+									<label for="update">매 15분마다 업데이트</label>
+								</div>
+							</div>
+							<div class="save_btn">
+								<button idx-data="${chartIdx}">저장</button>
+=======
 					const chartName = e.target.closest(".add_dashboard_content_header").querySelector("h2 span").innerText.split(":")[0];
 					const contentBox = e.target.closest(".add_dashboard_content");
 					editChartChange(contentBox, chartName);
@@ -147,6 +275,7 @@ function setPieChartContent(isChange, projectName, colName) {
 							</div>
 							<div class="save_btn">
 								<button>저장</button>
+>>>>>>> branch 'ndh' of https://github.com/bjh2024/jira.git
 							</div>
 						</div>
 						<div class="add_dashboard_content_footer">

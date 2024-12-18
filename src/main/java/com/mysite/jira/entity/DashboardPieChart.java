@@ -21,9 +21,11 @@ public class DashboardPieChart {
 	@SequenceGenerator(name = "pie_chart_seq", sequenceName = "pie_chart_seq", allocationSize = 1)
 	private Integer idx;
 	
+	@Column
 	@NotNull
 	private Integer divOrderX;
 	
+	@Column
 	@NotNull
 	private Integer divOrderY;
 	

@@ -28,6 +28,7 @@ public class DashboardAllot {
 	@Column
 	private Integer rowNum;
 	
+	@Column
 	@NotNull
 	private Integer divOrderX;
 	
@@ -44,9 +45,9 @@ public class DashboardAllot {
 	@Builder
 	public DashboardAllot(Integer rowNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Integer isSave) {
 		this.rowNum = rowNum;
+		this.dashboard = dashboard;
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
-		this.dashboard = dashboard;
 		this.isSave = isSave;
 	}
 	

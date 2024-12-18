@@ -146,19 +146,19 @@
 	width: 6px;
 	height: 6px;
 }
-.second_tr{
-	
-	height: 44px;
-}
 .second_tr td{
 	
 	padding : 0px 8px;
 	
 }
+.second_tr:hover{
+	background-color: #091E420F;
+	cursor: pointer;
+	border-radius: 5px;
+}
 .second_tr div:nth-of-type(1){
 	
 	font-size: 14px;
-	height: 44px;
 }
 
 .second_tr td:nth-of-type(1){
@@ -172,4 +172,7 @@
 }
 table{
     border-spacing: 1px;
+}
+a:hover {
+	text-decoration: underline;
 }

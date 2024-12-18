@@ -31,8 +31,7 @@ public class FilterIssueCreateDate {
 	private Filter filter;
 	
 	@ColumnDefault("30")
-	@NotNull
-	private Integer deadline;
+	private Integer BeforeDate;
 
 	@Column
 	private LocalDateTime startDate;
@@ -41,8 +40,10 @@ public class FilterIssueCreateDate {
 	private LocalDateTime endDate;
 	
 	@Builder
-	public FilterIssueCreateDate(Filter filter, Integer deadline) {
+	public FilterIssueCreateDate(Filter filter, Integer BeforeDate, LocalDateTime startDate, LocalDateTime endDate) {
 		this.filter = filter;
-		this.deadline = deadline;
+		this.BeforeDate = BeforeDate;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 }

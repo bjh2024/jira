@@ -217,3 +217,9 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 		});
 	});
 });
+// 현재 페이지 URL에서 username 추출
+let urlParts = window.location.pathname.split('/');
+let username = urlParts[1];  // 경로의 첫 번째 부분이 'dahyun0521'
+
+// 추출한 username을 사용하여 동적으로 링크 생성
+document.getElementById("profileLink").href = "/" + username + "/project/profile";

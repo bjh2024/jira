@@ -376,7 +376,7 @@
 				</div>
 			</div>
 			<div class="aside_more_box">
-				<a href="#" class="more_item_box accent_btn">
+				<a href="#" id="filter_move" class="more_item_box accent_btn">
 					<div class="accent_border"></div>
 					<div class="more_item">
 						<img src="/images/search_icon.svg" alt="" width="16" height="16" />
@@ -388,7 +388,7 @@
 					<div class="more_item_list" 
 						 th:each="item : ${filterLikeMembers}">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -424,12 +424,13 @@
 						</div>
 					</div>
 				</div>
+<!----필터 최근 시작 ------------------------------------------------------------->
 				<div th:if="${#lists.size(filterRecentList) != 0}">
 					<h2>최근</h2>
 					<div class="more_item_list" 
 					     th:each="item : ${filterRecentList}">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -473,204 +474,12 @@
 						</div>
 					</button>
 					<div class="more_item_list default_filter_box">
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+						<div class="more_item_container" th:each="filter, loop : ${filterList}" th:if="${loop.index} < 8">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>나의 미해결 이슈</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>내가 보고함</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>모든 이슈</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>모든 이슈</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>미결 이슈</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>완료된 이슈</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>최근 확인</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>최근에 만듦</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>최근에 해결됨</span>
-								</div>
-								<div class="img_container">
-									<div class="img_box aside_more">
-										<img src="/images/three_dots_row_icon.svg" alt="" width="12" height="12" />
-									</div>
-								</div>
-							</a>
-							<div class="more_sub_box aside_more">
-								<button class="more_sub_item star">
-									<img src="/images/star_icon_empty.svg" alt="" width="16" height="16" />
-									<span>별표 표시 목록에 추가</span>
-								</button>
-								<button class="more_sub_item">
-									<img src="/images/filter_copy_icon.svg" alt="" width="16" height="16" />
-									<span>필터 복사</span>
-								</button>
-							</div>
-						</div>
-						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
-								<div class="accent_border"></div>
-								<div class="more_item">
-									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
-									<span>최근 업데이트</span>
+									<span th:text="${filter.name}"></span>
 								</div>
 								<div class="img_container">
 									<div class="img_box aside_more">
@@ -691,7 +500,7 @@
 						</div>
 					</div>
 				</div>
-				<a href="#" class="more_item_box accent_btn">
+				<a th:href="@{|/${currentJira}/filter/every_filter|}" class="more_item_box accent_btn">
 					<div class="accent_border"></div>
 					<div class="more_item">
 						<img src="/images/all_view_btn_icon.svg" alt="" width="20" height="20" />
@@ -728,7 +537,6 @@
 					</button>
 				</div>
 			</div>
-
 			<div class="aside_more_box">
 				<div th:if="${#lists.size(dashboardLikeMembers) != 0}">
 					<h2>별표 표시됨</h2>

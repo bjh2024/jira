@@ -24,9 +24,11 @@ public class DashboardIssueStatistics {
 	@Column
 	private Integer rowNum;
 	
+	@Column
 	@NotNull
 	private Integer divOrderX;
 	
+	@Column
 	@NotNull
 	private Integer divOrderY;
 	

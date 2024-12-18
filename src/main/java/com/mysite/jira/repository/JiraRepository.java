@@ -84,4 +84,6 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 				WHERE al.rnum = 1
 			""")
 	Jira findByRecentClickedJira(@Param("accountIdx") Integer accountIdx);
+	
+	Optional<Jira> findByIdx(Integer idx);
 }

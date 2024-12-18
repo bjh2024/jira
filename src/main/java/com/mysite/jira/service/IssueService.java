@@ -1,7 +1,6 @@
 package com.mysite.jira.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,15 +12,26 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
 import com.mysite.jira.dto.project.summation.PercentTableDTO;
 import com.mysite.jira.dto.project.summation.chartDTO;
+import com.mysite.jira.entity.FilterIssueType;
+import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
+import com.mysite.jira.repository.FilterDoneDateRepository;
+import com.mysite.jira.repository.FilterDoneRepository;
+import com.mysite.jira.repository.FilterIssueCreateDateRepository;
+import com.mysite.jira.repository.FilterIssuePriorityRepository;
+import com.mysite.jira.repository.FilterIssueStatusRepository;
+import com.mysite.jira.repository.FilterIssueTypeRepository;
+import com.mysite.jira.repository.FilterIssueUpdateRepository;
+import com.mysite.jira.repository.FilterManagerRepository;
+import com.mysite.jira.repository.FilterProjectRepository;
+import com.mysite.jira.repository.FilterReporterRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
-import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
@@ -42,10 +52,99 @@ public class IssueService {
 	
 	private final AccountRepository accountRepository;
 	
+	private final FilterProjectRepository filterProjectRepository;
+	private final FilterIssueStatusRepository filterIssueStatusRepository;
+	private final FilterIssueTypeRepository filterIssueTypeRepository;
+	private final FilterManagerRepository filterManagerRepository;
+	private final FilterIssuePriorityRepository filterIssuePriorityRepository;
+	private final FilterDoneRepository filterDoneRepository;
+	private final FilterDoneDateRepository filterDoneDateRepository;
+	private final FilterIssueUpdateRepository filterIssueUpdateRepository;
+	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
+	private final FilterReporterRepository filterReporterRepository;
+	
 	public List<Issue> getIssuesByJiraIdx(Integer jiraIdx) {
 		return issueRepository.findByJiraIdx(jiraIdx);
 	}
+	
+	public List<IssuePriority> getIssuePriority(){
+		return issuePriorityRepository.findAll();
+	}
+	
+	public List<Issue> getReporterNameIn(String[] name){
+		return issueRepository.findByReporterNameIn(name);
+	}
+	
+	public List<Issue> getIssuePriorityNameIn(String[] name){
+		return issueRepository.findByIssuePriorityNameIn(name);
+	}
+	
+	public List<Issue> getStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByStartDate(startDate);
+	}
+	
+	public List<Issue> getLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByLastDate(lastDate);
+	}
+	
+	public List<Issue> getcreateStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesBycreateStartDate(startDate);
+	}
+	
+	public List<Issue> getcreateLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesBycreateLastDate(lastDate);
+	}
+	
+	public List<Issue> getfinishStartDateGreaterThanEqual(LocalDateTime startDate){
+		return issueRepository.findIssuesByfinishStartDate(startDate);
+	}
+	
+	public List<Issue> getfinishLastDateLessThanEqual(LocalDateTime lastDate){
+		return issueRepository.findIssuesByfinishLastDate(lastDate);
+	}
 
+	public List<Issue> getIssueByNameLike(String text){
+		return issueRepository.findByNameLike("%" + text + "%");
+	}
+	
+	public List<Issue> getIssueByStatus(Integer number){
+		return issueRepository.findByIssueStatus_Status(number);
+	}
+	
+	public List<Issue> getIssueByStatusNot(Integer number){
+		return issueRepository.findByIssueStatus_StatusNot(number);
+	}
+	
+	public List<Issue> getIssueByQuery(String text){
+		return issueRepository.findByQuery(text);
+				}
+	
+	public List<Issue> getIssueByProjectIdxAndFilterIdx(Integer filterIdx){
+		List<FilterProject> issueProject = filterProjectRepository.findByFilterIdx(filterIdx);
+		
+		Integer[] projectIdxArr = new Integer[issueProject.size()];
+		
+		for (int i = 0; i < issueProject.size(); i++) {
+			System.out.println("프로젝트 필터링 이슈 사이즈" +issueProject.size());
+			projectIdxArr[i] = issueProject.get(i).getProject().getIdx();
+		}
+		
+		List<Issue> list = issueRepository.findByProjectIdxIn(projectIdxArr);
+		return list;
+	}
+	
+	public List<Issue> getIssueByIssueTypeAndFilterIdx(Integer filterIdx){
+		List<FilterIssueType> issueType = filterIssueTypeRepository.findByFilterIdx(filterIdx);
+		String[] issueTypeArr = new String[issueType.size()];
+		for (int i = 0; i < issueType.size(); i++) {
+			System.out.println("이슈타입 필터링 사이즈" +issueType.size());
+			issueTypeArr[i] = issueType.get(i).getIssueType().getName();
+		}
+		List<Issue> list = issueRepository.findByIssueTypeNameIn(issueTypeArr);
+		return list;
+	}
+	
+	
 	public List<Issue> getIssueByBetweenCreateDateDesc(Integer jiraIdx, LocalDateTime startDate, LocalDateTime endDate){
 		List<Issue> issues = issueRepository.IssueByJiraIdxAndCreateDateBetweenOrderByCreateDateDesc(jiraIdx, startDate,endDate);
 		// ProjectLogData의 중복값 제거
@@ -127,6 +226,7 @@ public class IssueService {
 		 for (Object[] result : managerListObject) {
 			 	Integer managerIdx=((BigDecimal)result[0]).intValue(); 
 	            String name = (String) result[1]; 
+	            System.out.println("매니저 이름은?"+name);
 	            String iconFilename = (String) result[2];
 	            // DTO 객체 생성
 	            ManagerDTO managerDTO = new ManagerDTO(managerIdx, name, iconFilename);

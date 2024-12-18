@@ -28,9 +28,11 @@ public class DashboardIssueFilter {
 	@Column
 	private Integer rowNum;
 
+	@Column
 	@NotNull
 	private Integer divOrderX;
 	
+	@Column
 	@NotNull
 	private Integer divOrderY;
 	

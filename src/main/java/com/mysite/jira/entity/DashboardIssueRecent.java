@@ -24,9 +24,11 @@ public class DashboardIssueRecent {
 	@Column
 	private Integer viewDate;
 	
+	@Column
 	@NotNull
 	private Integer divOrderX;
 	
+	@Column
 	@NotNull
 	private Integer divOrderY;
 	
