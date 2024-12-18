@@ -4,7 +4,6 @@ package com.mysite.jira.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,11 @@ import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.FilterManager;
 import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.FilterReporter;
+import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.FilterAuthRepository;
 import com.mysite.jira.repository.FilterDoneDateRepository;
@@ -176,4 +179,65 @@ public class FilterService {
 				.build();
 		this.filterDoneDateRepository.save(filterDoneDate);
 	}
+	public void filterCreateDateCreate(Filter filter, LocalDateTime startDate, LocalDateTime endDate, Integer beforeDate) {
+		FilterIssueCreateDate filterIssueCreateDate = FilterIssueCreateDate.builder()
+				.filter(filter)
+				.startDate(startDate)
+				.endDate(endDate)
+				.BeforeDate(beforeDate)
+				.build();
+		this.filterIssueCreateDateRepository.save(filterIssueCreateDate);
+	}
+	public void filterIssuePriorityCreate(Filter filter, IssuePriority issuePriority) {
+		FilterIssuePriority filterIssuePriority = FilterIssuePriority.builder()
+				.filter(filter)
+				.issuePriority(issuePriority)
+				.build();
+		this.filterIssuePriorityRepository.save(filterIssuePriority);
+	}
+	public void filterIssueStatusCreate(Filter filter, IssueStatus issueStatus) {
+		FilterIssueStatus filterIssueStatus = FilterIssueStatus.builder()
+				.filter(filter)
+				.issueStatus(issueStatus)
+				.build();
+		this.filterIssueStatusRepository.save(filterIssueStatus);
+	}
+    public void filterIssueTypeCreate(Filter filter, IssueType issueType) {
+    	FilterIssueType filterIssueType = FilterIssueType.builder()
+    			.filter(filter)
+    			.issutype(issueType)
+    			.build();
+    	this.filterIssueTypeRepository.save(filterIssueType);
+    }
+    public void filterIssueUpdateCreate(Filter filter, LocalDateTime startDate, LocalDateTime endDate, Integer beforeDate) {
+    	FilterIssueUpdate filterIssueUpdate = FilterIssueUpdate.builder()
+    			.filter(filter)
+    			.startDate(startDate)
+    			.endDate(endDate)
+    			.BeforeDate(beforeDate)
+    			.build();
+    	this.filterIssueUpdateRepository.save(filterIssueUpdate);
+    }
+    public void filterManagerCreate(Filter filter, Account account) {
+    	FilterManager filterManager = FilterManager.builder()
+    			.filter(filter)
+    			.account(account)
+    			.build();
+    	this.filterManagerRepository.save(filterManager);
+    }
+    public void filterProjectCreate(Filter filter,Project project) {
+    	FilterProject filterProject = FilterProject.builder()
+    			.filter(filter)
+    			.project(project)
+    			.build();
+    	this.filterProjectRepository.save(filterProject);
+    }
+    public void filterReporterCreate(Filter filter, Account account) {
+    	FilterReporter filterReporter = FilterReporter.builder()
+    			.filter(filter)
+    			.account(account)
+    			.build();
+    	this.filterReporterRepostiory.save(filterReporter);
+    }
 }
+

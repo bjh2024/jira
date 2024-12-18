@@ -32,6 +32,10 @@ public class AccountService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
+	public Optional<Account> getByName(String name){
+		return accountRepository.findByName(name);
+	}
+	
 	public Account getAccountByIdx(Integer idx) {
 		Optional<Account> opAccount = accountRepository.findById(idx);
 		Account account = null;
@@ -41,7 +45,7 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account getByUserName(String name) {
+	public Optional<Account> getByUserName(String name) {
 		return accountRepository.findByName(name);
 	}
 	

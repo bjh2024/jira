@@ -1,7 +1,7 @@
 package com.mysite.jira.repository;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +10,10 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.IssueStatus;
 
 public interface IssueStatusRepository extends JpaRepository<IssueStatus, Integer>{
+	
+	
+	Optional<IssueStatus> findByName(String name);
+	
 	@Query("SELECT s.status, COUNT(i.idx) AS issueCount, s.idx, s.name "
 			+ "FROM IssueStatus s LEFT JOIN Issue i ON i.issueStatus.idx = s.idx "
 			+ "WHERE s.project.idx = :idx "

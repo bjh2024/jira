@@ -828,7 +828,7 @@
 						</button>
 					</div>
 				</div>
-				<div class="issue_middle_right" th:each="issueList,loop : ${issue}" style="display: none;"th:data-key="${issueList.key}">
+				<div class="issue_middle_right" th:each="issueList,loop : ${issue}" th:data-key="${issueList.key}">
 					<div class="issuedetailbox">
 							<div class="issuedetail-headerbar">
 								<div class="issuekeypathbox">
@@ -1449,7 +1449,7 @@
 				<!--추가 누르면 내용이 추가될 부분-->
 			</div>
 			<div class="viewer_last_button">
-				<button class="save_button">저장</button>
+				<button class="save_button" th:attr="data-jira-idx=${currentJira}">저장</button>
 				<button class="cancle_button">취소</button>
 			</div>
 

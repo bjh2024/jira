@@ -44,6 +44,10 @@ public class ProjectService {
 
 	private final UtilityService utilityService;
 
+	public Optional<Project> getByIdx(Integer idx){
+		return projectRepository.findByIdx(idx);
+	}
+	
 	public Project getProjectByIdx(Integer idx) {
 		Optional<Project> project = projectRepository.findById(idx);
 		if (!project.isEmpty()) {

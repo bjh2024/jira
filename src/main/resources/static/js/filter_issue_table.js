@@ -62,7 +62,14 @@ let filterDatas = {
 			"searchBox" : null,
 			"doneCheck" : null,
 			"notDoneCheck" : null,
-			"filterIdx" : null
+			"filterIdx" : null,
+			"filterName" : null,
+			"explain" : null,
+			"updateBefore" : null,
+			"doneDateBefore" : null,
+			"createDateBefore" : null,
+			"isCompleted" : [],
+			"jiraName" : null
 		}
 		
 		let issueKey = "";
@@ -430,7 +437,6 @@ document.querySelector("#all_reset").addEventListener("click",function(){
 
 // 전체리셋버튼 끝 ========================================================================================
 window.addEventListener("load", function() {
-		
 			document.querySelectorAll(".project_input_list").forEach(function(item) {
 		       if (item.checked) {
 			           filterDatas.projectIdxArr.push(item.value);  // 체크된 값 추가
@@ -526,8 +532,9 @@ window.addEventListener("load", function() {
 						document.querySelector(".doneDate").style.display = "block"
 					}
 				})
-				fetchInput();
+				
 				fetchInputIssue();
+				fetchInput();
 				fetchIssueDetail();
 		});
 // ajex 데이터 보내기 ========================================================================================
@@ -540,27 +547,7 @@ function fetchInput() {
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify({
-			projectIdx: filterDatas.projectIdxArr, 
-			issueTypes: filterDatas.issueTypeArr,
-			issueStatus: filterDatas.issueStatusArr,
-			issueManager: filterDatas.issueManagersArr,
-			issueReporter: filterDatas.issueReporterArr,
-			issuePriority: filterDatas.issuePriorityArr,
-			updateStartDate: filterDatas.updateStartDate,
-			updateLastDate: filterDatas.updateLastDate,
-			updateBeforeDate: filterDatas.updateBeforeDate,
-			createStartDate : filterDatas.createStartDate,
-			createLastDate : filterDatas.createLastDate,
-			createBeforeDate: filterDatas.createBeforeDate,
-			doneStartDate : filterDatas.doneStartDate,
- 			doneLastDate : filterDatas.doneLastDate,
- 			doneBeforeDate: filterDatas.doneBeforeDate,
-			searchContent : filterDatas.searchBox,
-			doneCheck : filterDatas.doneCheck,
-			notDoneCheck : filterDatas.notDoneCheck,
-			filterIdx : filterDatas.filterIdx
-		})
+		body: JSON.stringify(filterDatas)
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueListByProjectKey => {
@@ -658,27 +645,7 @@ function fetchInputIssue() {
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify({
-			projectIdx: filterDatas.projectIdxArr, 
-			issueTypes: filterDatas.issueTypeArr,
-			issueStatus: filterDatas.issueStatusArr,
-			issueManager: filterDatas.issueManagersArr,
-			issueReporter: filterDatas.issueReporterArr,
-			issuePriority: filterDatas.issuePriorityArr,
-			updateStartDate: filterDatas.updateStartDate,
-			updateLastDate: filterDatas.updateLastDate,
-			updateBeforeDate: filterDatas.updateBeforeDate,
-			createStartDate : filterDatas.createStartDate,
-			createLastDate : filterDatas.createLastDate,
-			createBeforeDate: filterDatas.createBeforeDate,
-			doneStartDate : filterDatas.doneStartDate,
- 			doneLastDate : filterDatas.doneLastDate,
- 			doneBeforeDate: filterDatas.doneBeforeDate,
-			searchContent : filterDatas.searchBox,
-			doneCheck : filterDatas.doneCheck,
-			notDoneCheck : filterDatas.notDoneCheck,
-			filterIdx : filterDatas.filterIdx
-		})
+		body: JSON.stringify(filterDatas)
 	})
 		.then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueList => {
@@ -686,7 +653,7 @@ function fetchInputIssue() {
 			document.querySelector(".issueListFilter").innerHTML = ""
 			
 			issueList.forEach(function(item, index){
-				if(index === 0){
+				if(index == 0){
 				issueKey = item.issueKey;
 				fetchIssueDetail();
 				}
@@ -748,10 +715,10 @@ function fetchInputIssue() {
 		    })
 		    .then(response => response.json())  // JSON 형태로 응답 받기
 			.then(issueDetail => {
-				if(issueDetail[0].issueKey == null) return;
+				if(issueDetail[0].issueKey === null) return;
 			    // issueDetail의 첫 번째 항목에서 issueKey를 가져옵니다.
 			    let issueKey = issueDetail[0].issueKey;
-
+				alert(issueKey)
 			    // 모든 .issue_middle_right 요소를 가져와서 확인합니다.
 			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
 			        // 각 div의 data-key 값을 가져옵니다.
@@ -840,48 +807,35 @@ document.getElementById("doneCheck").addEventListener("change",function(){
 	}
 })
 
-let filterName = "";
-let explain = "";
 document.querySelector(".save_button").addEventListener("click",function(){
-	filterName = document.querySelector(".hover_input").value;
-	explain = document.querySelector(".textArea_1").value;
+	filterName = document.querySelector(".hover_input")?.value;
+	explain = document.querySelector(".textArea_1")?.value;
+	updateBefore = document.getElementById("update_before_date")?.value;
+	doneDateBefore = document.getElementById("done_before_date")?.value;
+	createDateBefore = document.getElementById("create_before_date")?.value;
+	if(document.querySelector(".done_input_list").checked){
+		isCompleted.push(1);
+	}
+	if(document.querySelector(".done_input_list2").checked){
+		isCompleted.push(0);
+	}
+	jiraIdx = this.dataset.jiraIdx;
 	fetchFitlerCreate();
 })
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
     let url = "/api/filter_issue_table/filter_create"; 
-
     fetch(url, {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json' // JSON 데이터를 전송
 	        },
-	        body: JSON.stringify({
-				projectIdx: filterDatas.projectIdxArr, 
-				issueTypes: filterDatas.issueTypeArr,
-				issueStatus: filterDatas.issueStatusArr,
-				issueManager: filterDatas.issueManagersArr,
-				issueReporter: filterDatas.issueReporterArr,
-				issuePriority: filterDatas.issuePriorityArr,
-				updateStartDate: filterDatas.updateStartDate,
-				updateLastDate: filterDatas.updateLastDate,
-				updateBeforeDate: filterDatas.updateBeforeDate,
-				createStartDate : filterDatas.createStartDate,
-				createLastDate : filterDatas.createLastDate,
-				createBeforeDate: filterDatas.createBeforeDate,
-				doneStartDate : filterDatas.doneStartDate,
-	 			doneLastDate : filterDatas.doneLastDate,
-	 			doneBeforeDate: filterDatas.doneBeforeDate,
-				searchContent : filterDatas.searchBox,
-				doneCheck : filterDatas.doneCheck,
-				notDoneCheck : filterDatas.notDoneCheck,
-				filterIdx : filterDatas.filterIdx,
-				filterName : filterName,
-				explain : explain
-	        })
+	        body: JSON.stringify(filterDatas)
 	    })
 	    .then(response => response.json())  // JSON 형태로 응답 받기
 		.then(issueDetail => {
+			alert("filter.issue.js 837 line")
+			
 		})
 	    .catch(error => {
 	        console.error("Fetch error:", error);  // 에러 처리

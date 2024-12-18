@@ -26,9 +26,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 			""")
 	List<Map<String, Object>> findByManagerByIssueCount(@Param("projectIdx") Integer projectIdx); 
 	
-	Optional<Account> findByIdx(Integer idx);
-	
-	Account findByName(String name);
+	Optional<Account> findByName(String name);
 
 	//kdw 
 	Optional<Account> findByEmail(String email);

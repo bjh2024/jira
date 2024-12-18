@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import groovy.transform.builder.Builder;
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

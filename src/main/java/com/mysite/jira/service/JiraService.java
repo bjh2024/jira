@@ -26,6 +26,10 @@ public class JiraService {
 	
 	private final JiraMembersRepository jiraMembersRepository;
 	
+	public Integer getJiraIdxByName(String name) {
+		return jiraRepository.findJiraIdxByName(name);
+	}
+	
 	public Optional<Jira> getByIdx(Integer idx) {
 		return jiraRepository.findByIdx(idx);
 	}

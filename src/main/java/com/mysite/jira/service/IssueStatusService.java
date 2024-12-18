@@ -2,6 +2,7 @@ package com.mysite.jira.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class IssueStatusService {
 	private final IssueStatusRepository issueStatusRepository;
 	private final ProjectRepository projectRepository;
 	
+	public Optional<IssueStatus> getByName(String name){
+		return issueStatusRepository.findByName(name);
+	}
 	// issueStatus를 name과 status만 뽑아 만든 DTO
 	 public List<IssueStatusListDTO> getDistinctIssueStatus(Integer jiraIdx) {
 	        List<IssueStatusListDTO> issueStatusListDTO = new ArrayList<>();

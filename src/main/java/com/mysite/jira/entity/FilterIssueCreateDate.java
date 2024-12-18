@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import groovy.transform.builder.Builder;
+import com.mysite.jira.entity.FilterDone.FilterDoneBuilder;
+
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,10 +42,11 @@ public class FilterIssueCreateDate {
 	private LocalDateTime endDate;
 	
 	@Builder
-	public FilterIssueCreateDate(Filter filter, Integer BeforeDate, LocalDateTime startDate, LocalDateTime endDate) {
+	public FilterIssueCreateDate(Filter filter, LocalDateTime startDate, LocalDateTime endDate, Integer BeforeDate) {
 		this.filter = filter;
 		this.BeforeDate = BeforeDate;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
+
 }
