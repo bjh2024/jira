@@ -50,7 +50,7 @@ public class Account {
 
 	@Column
 	private LocalDateTime codeExpDate;
-	
+
 	@Builder
 	public Account(String email, String pw, String name, String iconFilename, 
 			String authCode) {
