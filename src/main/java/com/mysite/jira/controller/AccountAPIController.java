@@ -1,7 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.util.List;
-
+ 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,7 +60,7 @@ public class AccountAPIController {
 	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email,
 												 @RequestParam("uri") String uri) {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		
+		 
 		if(jiraMembersService.getByJiraIdxAndEmailJiraMember(jira.getIdx(), email) == null) {
 			return 0;
 		}
