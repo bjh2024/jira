@@ -430,6 +430,7 @@ document.querySelector("#all_reset").addEventListener("click",function(){
 
 // 전체리셋버튼 끝 ========================================================================================
 window.addEventListener("load", function() {
+		
 			document.querySelectorAll(".project_input_list").forEach(function(item) {
 		       if (item.checked) {
 			           filterDatas.projectIdxArr.push(item.value);  // 체크된 값 추가

@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,9 +42,8 @@ public class FilterIssueTableAPIController {
     
     
     @PostMapping("/project_filter")
-    public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest,
-    		@RequestBody FilterDTO filterDto,@PathVariable("jiraName") String jiraName) {
-    	List<Issue> issueList = issueService.getIssuesByJiraIdx(jiraService.getByNameJira(jiraName).getIdx());
+    public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
+    	List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
     	
         Integer[] projectIdx = filterRequest.getProjectIdx();
         String[] issueTypes = filterRequest.getIssueTypes();
@@ -65,7 +63,6 @@ public class FilterIssueTableAPIController {
         String searchContent = filterRequest.getSearchContent();
         Integer doneCheck = filterRequest.getDoneCheck();
         Integer notDoneCheck = filterRequest.getNotDoneCheck();
-        Integer filterIdx = filterRequest.getFilterIdx();
  
         List<Issue> issueByProjectIdx = filterIssueService.getIssueByProjectIdxIn(projectIdx);
         List<Issue> issueByIssueTypeName = issueService.getIssuesByIssueTypeName(issueTypes);
@@ -202,7 +199,8 @@ public class FilterIssueTableAPIController {
 	    Optional<Jira> jira = jiraService.getByIdx(jiraIdx);
 	    
 	    Filter filter = filterService.filterCreate(filterName, explain, account, jira.get());
-	    
+	    filterService.filterDoneCreate(filter, filterDto2.getIsCompleted());
+	    filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(), 30);
     }
     
 }

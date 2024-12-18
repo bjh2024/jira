@@ -167,7 +167,13 @@ public class FilterService {
 				.build();
 		this.filterDoneRepository.save(filterDone);
 	}
-	public void filterDoneDateCreate(Filter filter, LocalDateTime endDate, LocalDateTime startDate, Integer beforeDate) {
-		
+	public void filterDoneDateCreate(Filter filter, LocalDateTime startDate, LocalDateTime endDate, Integer beforeDate) {
+		FilterDoneDate filterDoneDate = FilterDoneDate.builder()
+				.filter(filter)
+				.startDate(startDate)
+				.endDate(endDate)
+				.beforeDate(beforeDate)
+				.build();
+		this.filterDoneDateRepository.save(filterDoneDate);
 	}
 }
