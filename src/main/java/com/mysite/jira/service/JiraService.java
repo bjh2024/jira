@@ -26,6 +26,10 @@ public class JiraService {
 	
 	private final JiraMembersRepository jiraMembersRepository;
 	
+	public Optional<Jira> getByIdx(Integer idx) {
+		return jiraRepository.findByIdx(idx);
+	}
+	 
 	// kdw
 	public List<String> getjiraLeaderList(Integer accountIdx) {
 		return jiraRepository.findJiraAndMembersByAccountIdxName(accountIdx);

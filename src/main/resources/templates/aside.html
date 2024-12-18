@@ -388,7 +388,7 @@
 					<div class="more_item_list" 
 						 th:each="item : ${filterLikeMembers}">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -424,12 +424,13 @@
 						</div>
 					</div>
 				</div>
+<!----필터 최근 시작 ------------------------------------------------------------->
 				<div th:if="${#lists.size(filterRecentList) != 0}">
 					<h2>최근</h2>
 					<div class="more_item_list" 
 					     th:each="item : ${filterRecentList}">
 						<div class="more_item_container">
-							<a href="#" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -474,7 +475,7 @@
 					</button>
 					<div class="more_item_list default_filter_box">
 						<div class="more_item_container" th:each="filter, loop : ${filterList}" th:if="${loop.index} < 8">
-							<a th:href="@{|?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/${currentJira}/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -499,7 +500,7 @@
 						</div>
 					</div>
 				</div>
-				<a href="#" class="more_item_box accent_btn">
+				<a th:href="@{|/${currentJira}/filter/every_filter|}" class="more_item_box accent_btn">
 					<div class="accent_border"></div>
 					<div class="more_item">
 						<img src="/images/all_view_btn_icon.svg" alt="" width="20" height="20" />
@@ -520,7 +521,7 @@
 							<span>대시보드</span>
 						</div>
 						<div class="img_container">
-							<div class="img_box">
+							<div class="img_box" onclick="showDashboardCreate()">
 								<img src="/images/plus_icon.svg" alt="" width="12" height="12" />
 							</div>
 							<div class="img_box aside_more">

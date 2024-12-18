@@ -5,6 +5,7 @@ body {
 .dashboard_list_container {
 	width: 94%;
 	margin: 0 auto;
+	margin-bottom: 200px;
 }
 
 .dashboard_list_title {

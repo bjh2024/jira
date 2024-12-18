@@ -25,4 +25,5 @@ public class FilterIssueRequestDTO {
 	private String searchContent;
 	private Integer doneCheck;
 	private Integer notDoneCheck;
+	private Integer filterIdx;
 }

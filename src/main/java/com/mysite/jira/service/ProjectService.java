@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.mywork.RecentProjectDTO;
+import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.ProjectRecentClicked;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
+import com.mysite.jira.repository.ProjectMembersRepository;
 import com.mysite.jira.repository.ProjectRecentClickedRepository;
 import com.mysite.jira.repository.ProjectRepository;
 
@@ -27,55 +33,79 @@ import lombok.RequiredArgsConstructor;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
-	
+
 	private final ProjectRecentClickedRepository projectRecentClickedRepository;
 
+	private final ProjectMembersRepository projectMembersRepository;
+
 	private final IssueTypeRepository issueTypeRepository;
-	
+
 	private final IssueStatusRepository issueStatusRepository;
 
 	private final UtilityService utilityService;
 
-	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가!!!)
+	public Project getProjectByIdx(Integer idx) {
+		Optional<Project> project = projectRepository.findById(idx);
+		if (!project.isEmpty()) {
+			return project.get();
+		}
+		return null;
+	}
+
+	public List<Project> getByJiraIdxProject(Integer jiraIdx){
+		return projectRepository.findByJira_idx(jiraIdx);
+	}
+	
+	public List<ProjectListDTO> getByJiraIdxProjectListDTO(Integer jiraIdx){
+		List<Project> projectList = this.getByJiraIdxProject(jiraIdx);
+		List<ProjectListDTO> result = new ArrayList<>();
+		
+		for(int i = 0; i < projectList.size(); i++) {
+			Integer idx = projectList.get(i).getIdx();
+			String name = projectList.get(i).getName();
+			String iconFilename = projectList.get(i).getIconFilename();
+			ProjectListDTO dto = ProjectListDTO.builder()
+											   .idx(idx)
+											   .name(name)
+											   .iconFilename(iconFilename)
+											   .build();
+			result.add(dto);
+		}
+		return result;
+	}
+	
+	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
+	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
-		int idx = (int)(Math.random()*3);
+		int idx = (int) (Math.random() * 3);
 		int sequence = 0;
-		String[] colorArr = {"#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC"};
-		String[] iconArr = {"project_icon_file1.png", "project_icon_file2.png", "project_icon_file3.png", "project_icon_file4.png"};
+		String[] colorArr = { "#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC" };
+		String[] iconArr = { "project_icon_file1.png", "project_icon_file2.png", "project_icon_file3.png",
+				"project_icon_file4.png" };
 		Project project = Project.builder().key(key).name(name).color(colorArr[idx]).iconFilename(iconArr[idx])
 				.jira(jira).account(account).sequence(sequence).build();
 		projectRepository.save(project);
 		// 프로젝트 클릭 로그
-		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder()
-																		.account(account)
-																		.jira(jira)
-																		.project(project)
-																		.build();
+		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder().account(account).jira(jira)
+				.project(project).build();
 		projectRecentClickedRepository.save(projectRecentClicked);
+
+		// 프로젝트 멤버,권한 추가
+		ProjectMembers projectMembers = ProjectMembers.builder().project(project).account(account).auth_type(3).build();
+		projectMembersRepository.save(projectMembers);
+
 		// 기본 이슈유형
 		List<IssueType> issueTypes = Arrays.asList(
-			    IssueType.builder()
-			    		 .name("작업")
-			    		 .content("A small, distinct piece of work.")
-			    		 .subContent("")
-			    		 .iconFilename("issue_task.svg")
-			    		 .grade(2)
-			    		 .project(project).build(),
-			    IssueType.builder()
-			             .name("하위 작업")
-			             .content("A small piece of work that''s part of a larger task.")
-			             .subContent("")
-			             .iconFilename("issue_sub_task.svg")
-			    		 .grade(2)
-			    		 .project(project).build()
-			);
+				IssueType.builder().name("작업").content("A small, distinct piece of work.").subContent("")
+						.iconFilename("issue_task.svg").grade(2).project(project).build(),
+				IssueType.builder().name("하위 작업").content("A small piece of work that''s part of a larger task.")
+						.subContent("").iconFilename("issue_sub_task.svg").grade(2).project(project).build());
 		issueTypeRepository.saveAll(issueTypes);
 		// 기본 이슈상태
 		List<IssueStatus> issueStatuses = Arrays.asList(
-			    IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
-			    IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
-			    IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build()
-			);
+				IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
+				IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
+				IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build());
 		issueStatusRepository.saveAll(issueStatuses);
 		// 기본 필터
 //		List<Filter> issueStatuses = Arrays.asList(
@@ -85,6 +115,18 @@ public class ProjectService {
 //		);
 	}
 
+	public void updateProject(Integer projectIdx, String name, String key, Account account) {
+		
+		Optional<Project> opProject = projectRepository.findById(projectIdx);
+		Project project = null;
+		if(!opProject.isEmpty()) {
+			project = opProject.get();
+		}
+		
+		project.updateProject(name, key, account);
+		projectRepository.save(project);
+	}
+	
 	public List<Project> getProjectByJiraIdx(Integer jiraIdx) {
 		return projectRepository.findByJiraIdx(jiraIdx);
 	}
@@ -125,7 +167,7 @@ public class ProjectService {
 		List<ProjectListIsLikeDTO> result = new ArrayList<>();
 
 		for (Map<String, Object> project : projectPage) {
-			Integer projectIdx = (Integer)project.get("projectIdx");
+			Integer projectIdx = (Integer) project.get("projectIdx");
 			String projectName = project.get("projectName").toString();
 			String projectIconFilename = project.get("projectIconFilename").toString();
 			String projectKey = project.get("projectKey").toString();
@@ -133,13 +175,9 @@ public class ProjectService {
 			String accountIconFilename = project.get("accountIconFilename").toString();
 			boolean isLike = project.get("isLike").toString().equals("true") ? true : false;
 
-			ProjectListIsLikeDTO dto = ProjectListIsLikeDTO.builder()
-					.projectIdx(projectIdx)
-					.projectName(projectName)
-					.projectIconFilename(projectIconFilename)
-					.projectKey(projectKey).accountName(accountName)
-					.accountIconFilename(accountIconFilename)
-					.isLike(isLike).build();
+			ProjectListIsLikeDTO dto = ProjectListIsLikeDTO.builder().projectIdx(projectIdx).projectName(projectName)
+					.projectIconFilename(projectIconFilename).projectKey(projectKey).accountName(accountName)
+					.accountIconFilename(accountIconFilename).isLike(isLike).build();
 			result.add(dto);
 		}
 		return result;
@@ -155,5 +193,26 @@ public class ProjectService {
 
 	public Project getByJiraIdxAndNameProject(Integer jiraIdx, String name) {
 		return projectRepository.findByJira_idxAndName(jiraIdx, name);
+	}
+
+	public List<SearchDTO> getByJiraIdxAndNameLikeProject(Integer jiraIdx, String searchName) {
+		searchName = searchName + "%";
+		if (searchName.equals("%"))
+			searchName = "";
+
+		List<Project> projectList = projectRepository.findByJira_idxAndNameLike(jiraIdx, searchName);
+		List<SearchDTO> result = new ArrayList<>();
+		for (int i = 0; i < projectList.size(); i++) {
+			String name = projectList.get(i).getName();
+			String iconFilename = projectList.get(i).getIconFilename();
+			String key = projectList.get(i).getKey();
+			SearchDTO dto = SearchDTO.builder().name(name).iconFilename(iconFilename).key(key).build();
+			result.add(dto);
+		}
+		return result;
+	}
+	
+	public List<ProjectMembers> getProjectMembersByProjectIdx(Integer projectIdx){
+		return projectMembersRepository.findAllByProjectIdx(projectIdx);
 	}
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,5 +34,13 @@ public class ProjectLogData {
 	
 	@ManyToOne
 	private ProjectLogStatus projectLogStatus;
+	
+	@Builder
+	public ProjectLogData(Issue issue, Account account, ProjectLogStatus projectLogStatus) {
+		this.issue = issue;
+		this.account = account;
+		this.projectLogStatus = projectLogStatus;
+		this.createDate = LocalDateTime.now();
+	}
 	
 }

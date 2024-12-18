@@ -35,7 +35,6 @@
 	padding-top: 24px;
 	padding-bottom: 12px;
 
-	font-weight: normal;
 	font-size: 20px;
 }
 
@@ -64,9 +63,31 @@
 	font-size: 14px;
 }
 
-.jira_user_add_box .input_box input:focus{
+.jira_user_add_box .input_box #jiraUserName.active{
 	padding: 5px;
-	border: 2px solid #4d97ff;
+	border: 2px solid #4d97ff !important;
+}
+
+.jira_user_add_box .input_box #jiraUserName.alert{
+	padding: 5px;
+	border: 2px solid #E2483D;
+}
+
+.jira_user_add_box .jira_alert_box.show{
+	display: flex;
+	align-items: center;
+}
+.jira_user_add_box .jira_alert_box {
+	display: none;
+	padding: 4px 0;
+
+	color: #AE2E24;
+	font-size: 12px;
+}
+
+.jira_user_add_box .jira_alert_box img {
+	margin: 0 4px;
+	filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);
 }
 
 .jira_user_add_box fieldset {
@@ -137,9 +158,17 @@
 	font-size: 14px;
 }
 
-.jira_user_add_box > .btn_box button:nth-of-type(2){
+.jira_user_add_box > .btn_box .jira_user_add_btn{
 	margin-left: 10px;
 	
 	color: white;
 	background-color: #0c66e4;
+}
+
+.jira_user_add_box > .btn_box .cancle_btn:hover{
+	background-color: #e9edf3a6;
+}
+
+.jira_user_add_box > .btn_box .jira_user_add_btn:hover{
+	background-color: #1558BC;
 }

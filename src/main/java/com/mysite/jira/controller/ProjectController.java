@@ -86,14 +86,13 @@ public class ProjectController {
 	@GetMapping("/list")
 	public String listPage(Model model, 
 						   Principal principal, 
-						   HttpServletRequest request, 
+						   @PathVariable("jiraName") String jiraName,
 						   @RequestParam(value="page", defaultValue = "0") int page) {
 		// 현재 로그인 계정
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer accountIdx = account.getIdx();
 		// 현재 위치한 지라 페이지
-		String uri = request.getRequestURI();
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Jira jira = jiraService.getByNameJira(jiraName);
 		Integer jiraIdx = jira.getIdx();
 		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
 		
@@ -107,9 +106,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/board_main")
-	public String boardMain(Model model) {
-		Integer projectIdx = 1;
-		model.addAttribute("projectIdx", projectIdx);
+	public String boardMain(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+		Integer projectIdx = project.getIdx();
 		
 		// 현재 시간용 변수
 		LocalDateTime now = LocalDateTime.now();
@@ -128,15 +129,15 @@ public class ProjectController {
 		model.addAttribute("issueList", issueList);
 		
 		// 프로젝트 별 서브 이슈 유형을 제외한 이슈 유형 리스트
-		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGrade(projectIdx, 1);
+		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGradeGreaterThan(projectIdx, 1);
 		model.addAttribute("issueTypeList", issueTypeList);
 		
 		// 전체 레이블 리스트
-		List<IssueLabelData> labelDataList = boardMainService.getLabelData();
+		List<IssueLabelData> labelDataList = boardMainService.getLabelData(projectIdx);
 		model.addAttribute("labelDataList", labelDataList);
 		
 		// 전체 댓글 리스트
-		List<IssueReply> replyList = boardMainService.getIssueReply();
+		List<IssueReply> replyList = boardMainService.getIssueReply(projectIdx);
 		model.addAttribute("replyList", replyList);
 		
 		// 프로젝트 별 상속 관계 리스트
@@ -148,7 +149,7 @@ public class ProjectController {
 		model.addAttribute("orderedPriorityList", orderedPriorityList);
 		
 		// 팀 리스트
-		List<Team> teamList = boardMainService.getTeamList();
+		List<Team> teamList = boardMainService.getJiraTeamList(jira.getIdx());
 		model.addAttribute("teamList", teamList);
 		
 		// 프로젝트 별 참여자 리스트
@@ -159,15 +160,28 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/{projectKey}/setting_issue_type")
+	@GetMapping("/{projectKey}/setting/issue_type")
 	public String settingIssueType() {
-		return "project/setting_issue_type";
+		return "project/setting/issue_type";
+	}
+	
+	@GetMapping("/{projectKey}/setting/info")
+	public String settingProjectInfo() {
+		return "project/setting/info";
+	}
+	
+	@GetMapping("/{projectKey}/setting/access")
+	public String settingAccess() {
+		return "project/setting/access";
 	}
 	
 	@GetMapping("/{projectKey}/attached_files")
-	public String attachedFiles(Model model) {
+	public String attachedFiles(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
 		// 모든 첨부파일 리스트
-		List<IssueFile> fileList = boardMainService.getFiles();
+		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(project.getIdx());
 		model.addAttribute("fileList", fileList);
 		
 		return "project/attached_files";

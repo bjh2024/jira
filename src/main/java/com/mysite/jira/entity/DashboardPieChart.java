@@ -29,6 +29,11 @@ public class DashboardPieChart {
 	@NotNull
 	private Integer divOrderY;
 	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
+	
 	@Column
 	@NotNull
 	private Integer isSave;
@@ -51,5 +56,11 @@ public class DashboardPieChart {
 		this.project = project;
 		this.isSave = isSave;
 		this.dashboardCol = dashboardCol;
+	}
+	
+	public void updatePieChart(Project project, DashboardCol dashboardCol) {
+		this.project = project;
+		this.dashboardCol = dashboardCol;
+		this.isSave = 1;
 	}
 }

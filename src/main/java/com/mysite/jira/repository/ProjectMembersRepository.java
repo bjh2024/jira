@@ -10,4 +10,6 @@ public interface ProjectMembersRepository extends JpaRepository<ProjectMembers, 
 	List<ProjectMembers> findAllByProjectIdx(Integer projectIdx);
 	
 	List<ProjectMembers> findAllByProjectIdxAndAccountIdxNot(Integer projectIdx, Integer accountIdx);
+	
+	List<ProjectMembers> findByprojectIdxAndAccount_NameLike(Integer projectIdx, String name);
 }

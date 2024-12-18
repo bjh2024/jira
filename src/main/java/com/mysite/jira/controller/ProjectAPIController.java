@@ -1,6 +1,8 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
+import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
+import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -33,8 +38,7 @@ public class ProjectAPIController {
 	
 	@GetMapping("duplication/name")
 	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName,
-											 @RequestParam("uri") String uri,
-											 Principal principal) {
+											 @RequestParam("uri") String uri) {
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		if(projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName) == null) {
 			return 0;
@@ -64,7 +68,6 @@ public class ProjectAPIController {
 	// 프로젝트 생성
 	@PostMapping("create")
 	public boolean projectCreate(@RequestBody ProjectCreateDTO projectCreateDTO, Principal principal) {
-		System.out.println(projectCreateDTO);
 		String uri = projectCreateDTO.getUri();
 		String name = projectCreateDTO.getName();
 		String key = projectCreateDTO.getKey();
@@ -75,4 +78,42 @@ public class ProjectAPIController {
 		
 		return true;
 	}
+	// 프로젝트 수정
+	@PostMapping("update")
+	public boolean projectupdate(@RequestBody RequestUpdateDTO RequestUpdateDTO) {
+		String name = RequestUpdateDTO.getProjectName();
+		String key = RequestUpdateDTO.getProjectKey();
+		Integer projectIdx = RequestUpdateDTO.getProjectIdx();
+		
+		Account account = accountService.getAccountByIdx(RequestUpdateDTO.getLeaderIdx());
+		projectService.updateProject(projectIdx, name, key ,account);
+		
+		return true;
+	}
+	
+	@GetMapping("idx")
+	public Integer getProjecIdx(@RequestParam("projectName") String projectName,
+								@RequestParam("uri") String uri) {
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName);
+		
+		return project.getIdx();
+	}
+	
+	// 프로젝트 이름으로 search
+	@GetMapping("search")
+	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
+										     @RequestParam("uri") String uri){
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		return projectService.getByJiraIdxAndNameLikeProject(jira.getIdx(), searchName);
+		
+	}
+	
+	// jiraIdx에 해당하는 모든 프로젝트
+	@GetMapping("dashboard/list")
+	public List<ProjectListDTO> getProjectList(@RequestParam("uri") String uri){
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		return projectService.getByJiraIdxProjectListDTO(jira.getIdx());
+	}
+	
 }

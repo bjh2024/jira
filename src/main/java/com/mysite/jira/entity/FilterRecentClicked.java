@@ -43,8 +43,7 @@ public class FilterRecentClicked {
 	this.filter = filter;
 	this.jira = jira;
 	this.clickedDate = LocalDateTime.now();
-}
+	}
    
    
-
 }

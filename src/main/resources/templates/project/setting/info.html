@@ -1,0 +1,71 @@
+<html layout:decorate="~{/project/setting/layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/setting_info.css}">
+</head>
+<div layout:fragment="content">
+	<div class="setting_container">
+		<div class="project_setting_title">
+			<p>프로젝트<span>/</span><th:block th:text=${currentProject.name}></th:block><span>/</span>프로젝트 설정</p>
+			<h1>세부 사항</h1>
+		</div>
+		<div class="project_info_main">
+			<div class="project_icon_box">
+				<img src="/images/project_icon_file1.png" width="128" height="128" style="border-radius: 4px;"/>
+				<div class="btn_box">
+					<button>아이콘 변경</button>
+				</div>
+			</div>
+			<div class="project_info_form">
+				<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+				<div class="input_box">
+					<label for="projectName">이름<span class="not_null_check">*</span></label>
+					<input id="projectName" name="projectName" th:value="${currentProject.name}"/>
+					<div class="alret_project_update_box">
+						<img src="/images/alaret_icon.svg" width="12" height="12">
+						<div class="comment"></div>
+					</div>
+				</div>
+				<div class="input_box">
+					<label for="projectKey">프로젝트 키<span class="not_null_check">*</span></label>
+					<input id="projectKey" name="projectKey" th:value="${currentProject.key}"/>
+					<div class="alret_project_update_box">
+						<img src="/images/alaret_icon.svg" width="12" height="12">
+						<div class="comment"></div>
+					</div>
+				</div>
+				<div class="input_box leader_box">
+					<div class="search_box">
+						<div class="search_list static show">
+							<div th:classappend="${projectMember.account.name eq currentProject.account.name} ? active : ''" th:each="projectMember : ${projectMemberList}"
+							     th:idx-data="${projectMember.account.idx}">
+								<img th:src="@{|/images/${projectMember.account.iconFilename}|}" width="32" height="32" style="border-radius: 32px;"/>
+								<span th:text="${projectMember.account.name}"></span>
+							</div>
+						</div>
+						<div class="search_list dynamic">
+							
+						</div>
+					</div>
+					<label for="projectLeader">프로젝트 리더<span class="not_null_check">*</span></label>
+					<div class="input_item_box">
+						<img th:src="@{|/images/${currentProject.account.iconFilename}|}" width="24" height="24" style="border-radius: 24px;"/>
+						<input id="projectLeader" 
+							   name="projectLeader"
+							   th:value="${currentProject.account.name}"
+							   th:idx-data="${currentProject.account.idx}"
+							   th:project-idx-data="${currentProject.idx}"
+							   th:icon-file-name-data="${currentProject.account.iconFilename}" 
+						       th:name-data="${currentProject.account.name}"/>
+					</div>
+					<p>프로젝트 리더가 프로젝트의 이슈에 액세스할 수 있는지 확인하세요.</p>
+				</div>
+			</div>
+			<div class="save_btn_box">
+				<button class="prevent_btn">저장</button>
+			</div>
+		</div>
+	</div>
+	<script src="/js/setting_info.js"></script>
+</div>
+</html>

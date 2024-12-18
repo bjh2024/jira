@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- sbb CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/setting_aside.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+	<title>jira_setting</title>
+</head>
+
+<body>
+	<!-- 네비게이션바 -->
+	<div th:replace="~{header :: headerFragment}"></div>
+	<main>
+		<div th:replace="~{project/setting/aside :: settingAsideFragment}"></div>
+		<div id="main_content" layout:fragment="content"></div>
+	</main>
+</body>
+</html>

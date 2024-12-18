@@ -1,0 +1,138 @@
+.setting_container{
+	width: 900px;
+	margin: 0 auto;
+}
+
+.project_setting_title{
+	margin: 24px 0;
+}
+
+.project_setting_title p{
+	margin-bottom: 10px;
+	
+	font-size: 14px;
+	color: #505e58;
+}
+
+.project_setting_title p span{
+	padding: 0 10px;
+}
+
+.project_setting_title .title_box{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.project_setting_title .title_box h1{
+	padding-left: 4px;
+	
+	font-size: 24px;
+	font-weight: normal;
+}
+
+.project_setting_title .title_box button{
+	padding: 6px 10px;
+	background-color: #1868db;
+	border-radius: 4px;
+	
+	font-size: 14px;
+	color: #fff;
+}
+
+.project_access_main h2{
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.project_access_main .explanation_box{
+	margin: 12px 0;
+
+	font-size: 14px;
+	color: #292a2e;
+		
+	display: flex;
+	gap: 4px;
+}
+
+.project_access_main .search_box{
+	margin-top: 24px;
+	
+	display: flex;
+	gap: 8px;
+	align-items: center;	
+}
+
+.project_access_main .search_box .input_box:focus-within{
+	width: 322px;
+	border: 2px solid #1868db;
+	margin: -1px;
+}
+
+.project_access_main .search_box .input_box{
+	width: 320px;
+	height: 32px;
+	padding: 0 8px;
+	border: 1px solid #000;
+	border-radius: 4px;
+		
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	
+}
+
+.project_access_main .search_box input{
+	width: calc(100% - 16px);
+	height: 100%;
+	border: transparent;
+	
+	font-size: 14px;
+}
+
+.project_access_main .search_box select{
+	height: 32px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.access_table{
+	width: 100%;
+
+	margin: 24px 0;
+	border-collapse: collapse;
+}
+
+.access_table thead{
+	border-bottom: 2px solid #ddd;
+}
+
+.access_table tbody{
+	border-bottom: 2px solid #ddd;
+}
+
+.access_table th{
+	text-align: left;
+	font-size: 12px;
+}
+
+.access_table td{
+	height: 56px;
+	font-size: 14px;
+}
+
+.access_table .user_info_box{
+	padding-left: 8px;
+	
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.access_table td select{
+	width: 90%;
+	height: 32px;
+	
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}

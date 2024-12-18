@@ -26,16 +26,19 @@ public class DashboardAllot {
 	private Integer idx;
 	
 	@Column
-	@NotNull
-	private Integer pageNum;
+	private Integer rowNum;
 	
 	@Column
 	@NotNull
 	private Integer divOrderX;
 	
-	@Column
 	@NotNull
 	private Integer divOrderY;
+	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
 	
 	@Column
 	@NotNull
@@ -45,12 +48,17 @@ public class DashboardAllot {
 	private Dashboard dashboard;
 	
 	@Builder
-	public DashboardAllot(Integer pageNum, Integer divOrderX, Integer divOrderY , Dashboard dashboard, Integer isSave) {
-		this.pageNum = pageNum;
+	public DashboardAllot(Integer rowNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Integer isSave) {
+		this.rowNum = rowNum;
 		this.dashboard = dashboard;
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
 		this.isSave = isSave;
+	}
+	
+	public void updateAllot(Integer rowNum) {
+		this.rowNum = rowNum;
+		this.isSave = 1;
 	}
 	
 	@OneToMany(mappedBy = "dashboardAllot", cascade = CascadeType.REMOVE)

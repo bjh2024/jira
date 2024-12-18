@@ -1,0 +1,26 @@
+<div class="setting_aside" th:fragment="settingAsideFragment">
+	<div class="title_box">
+		<div class="back_btn_box">
+			<a href="/"><img src="/images/arrow_tail_left_icon.svg"/></a>
+			<div>프로젝트 설정</div>
+		</div>
+		<div class="project_info_box">
+			<img th:src="@{|/images/${currentProject.iconFilename}|}" width="20" height="20" style="border-radius: 4px;"/>
+			<div>
+				<div th:text="${currentProject.name}"></div>
+				<p>비즈니스 프로젝트</p>
+			</div>
+		</div>
+	</div>
+	<div class="setting_lnb">
+		<a th:href="@{|/${currentJira}/project/${currentProject.key}/setting/info|}" class="info accent_btn">
+			<div class="accent_border"></div>
+			세부 사항
+		</a>
+		<a th:href="@{|/${currentJira}/project/${currentProject.key}/setting/access|}" class="access accent_btn">
+			<div class="accent_border"></div>
+			액세스
+		</a>
+	</div>
+	<script src="/js/setting_aside.js"></script>
+</div>

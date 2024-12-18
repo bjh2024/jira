@@ -1,3 +1,35 @@
+const url = window.location.pathname;
+const urlArr = url.split("/");
+const currentMenu = document.querySelector(`.menu-icon-box.${urlArr[4]}`);
+
+currentMenu.style.borderBottom = "2px solid #44546f";
+
+document.querySelectorAll(".menu-icon-box").forEach(function(btn){
+	const icon = btn.querySelector(".menu-icon");
+	const text = btn.querySelector(".menu-text");
+	btn.addEventListener("mouseover", function(e){
+		if(btn.className.includes(urlArr[4])){
+			return;
+		}
+		btn.style.borderBottom = "2px solid #44546f";
+		btn.style.paddingBottom = "5px";
+		
+		icon.style.marginBottom = "2px";
+		text.style.marginBottom = "6px";
+	});
+	
+	btn.addEventListener("mouseout", function(e){
+		if(btn.className.includes(urlArr[4])){
+			return;
+		}
+		btn.style.borderBottom = "none";
+		btn.style.paddingBottom = "10px";
+		
+		icon.style.marginBottom = "0px";
+		text.style.marginBottom = "2px";
+	});
+});
+
 document.querySelector(".header-setbgimg")?.addEventListener("click", function(e) {
 	const setBgItem = e.target.closest(".header-setbgimgbtn");
 	const removePopupItem = e.target.closest(".header-setbgbtn");

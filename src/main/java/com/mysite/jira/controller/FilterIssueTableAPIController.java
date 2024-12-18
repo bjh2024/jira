@@ -1,27 +1,31 @@
 package com.mysite.jira.controller;
 
-import java.time.LocalDate;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.FilterDTO;
 import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
+import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.FilterIssueService;
+import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.IssueStatusService;
-import com.mysite.jira.service.IssueTypeService;
-import com.mysite.jira.service.JiraMembersService;
-import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.JiraService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,11 +36,10 @@ public class FilterIssueTableAPIController {
 
     private final FilterIssueService filterIssueService; 
     private final IssueService issueService;
-    private final ProjectService projectService;
-    private final IssueTypeService issueTypeService;
-    private final IssueStatusService issueStatusService;
-    private final JiraMembersService jiraMembersService;
+    private final JiraService jiraService;
     private final AccountService accountService;
+    private final FilterService filterService;
+    
     
     @PostMapping("/project_filter")
     public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
@@ -79,8 +82,8 @@ public class FilterIssueTableAPIController {
         List<Issue> doneStartDateOver = issueService.getfinishStartDateGreaterThanEqual(doneStartDate);
         List<Issue> doneLastDateOver = issueService.getfinishLastDateLessThanEqual(doneLastDate);
         List<Issue> doneBeforeDateOver = issueService.getfinishStartDateGreaterThanEqual(doneBeforeDate);
-        
         List<Issue> searchIssue = issueService.getIssueByNameLike(searchContent);
+        
         List<Issue> doneCheck1 = issueService.getIssueByStatus(doneCheck);
         List<Issue> notDoneCheck2 = issueService.getIssueByStatusNot(notDoneCheck);
         // 두 리스트에서 공통된 아이템만 필터링
@@ -92,17 +95,7 @@ public class FilterIssueTableAPIController {
         		issueList.addAll(issueByManagerNull);
         	}
         }
-        // 업데이트 필터
-        if(updateStartDate != null) {
-        	issueList.retainAll(updateStartDateOver);
-        }
-        if(updateLastDate != null) {
-        	issueList.retainAll(updateLastDateOver);
-        }
-        if(updateBeforeDate != null) {
-        	issueList.retainAll(updateBeforeDateOver);
-        }
-        // 업데이트 필터 끝
+       
         // 해결
         if(!(notDoneCheck != null && doneCheck != null)) {
         	if(notDoneCheck != null) {
@@ -154,6 +147,18 @@ public class FilterIssueTableAPIController {
         if(searchContent != null) {
         	issueList.retainAll(searchIssue);
     	}
+        
+        // 업데이트 필터
+        if(updateStartDate != null) {
+        	issueList.retainAll(updateStartDateOver);
+        }
+        if(updateLastDate != null) {
+        	issueList.retainAll(updateLastDateOver);
+        }
+        if(updateBeforeDate != null) {
+        	issueList.retainAll(updateBeforeDateOver);
+        }
+        // 업데이트 필터 끝
         // FilterIssueDTO로 변환하여 반환
         List<FilterIssueDTO> filterIssue = new ArrayList<>();
         for (Issue issue : issueList) {
@@ -180,4 +185,22 @@ public class FilterIssueTableAPIController {
         }
         return filterIssue;
     }
+    
+    @PostMapping("/filter_create")
+    @Transactional
+    public void filterCreate(@RequestBody FilterIssueRequestDTO filterDto,
+    		@RequestBody FilterDTO filterDto2, @PathVariable("jiraName") String jiraName
+    		,Principal principal){
+    	String filterName = filterDto2.getFilterName();
+    	String explain = filterDto2.getExplain();
+    	String username = principal.getName();  // 현재 인증된 사용자 이름 가져오기
+	    Account account = accountService.getByUserName(username); // 예시: 사용자 이름으로 Account 객체를 조회
+	    Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+	    Optional<Jira> jira = jiraService.getByIdx(jiraIdx);
+	    
+	    Filter filter = filterService.filterCreate(filterName, explain, account, jira.get());
+	    filterService.filterDoneCreate(filter, filterDto2.getIsCompleted());
+	    filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(), 30);
+    }
+    
 }

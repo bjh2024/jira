@@ -1,7 +1,11 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -55,11 +59,7 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
-		if (principal == null)
-			return;
-		if (uri.contains("/api"))
-			return;
-		System.out.println("globalModelAdvice "+uri);
+		System.out.println(uri);
 		if(principal == null ||
 		   uri.length() == 0 ||
 		   uri.equals("/") ||
@@ -70,13 +70,22 @@ public class GlobalModelAdvice {
 		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
 		if (uri.contains("/project") && uri.contains("/create")) return;
 		try {
+			System.out.println("Principal name: " + principal.getName());
+			
 			// 현재 로그인한 계정 정보
-		    Account currentUser = this.accountService.getAccountByEmail(principal.getName());
+			Account currentUser = new Account();
+			
+			if(principal.getName().split("@").length < 2) {
+				currentUser = this.accountService.getAccountByKakaoKey(principal.getName());
+			}else {
+				currentUser = this.accountService.getAccountByEmail(principal.getName());
+			}
+			
 		    // 현재 들어온 지라 정보
 		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		    System.out.println("globalModelAdvice "+principal.getName());
-			// 가져올 값들
 		    
+			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
 			Integer jiraIdx = jira.getIdx();
 			// header
@@ -106,6 +115,7 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> allLikeMembers = likeService.getAllLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> projectLikeMembers = likeService.getProjectLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
+			System.out.println(filterLikeMembers.size());
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
@@ -155,17 +165,35 @@ public class GlobalModelAdvice {
 			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 	}
-
 	
 	@ModelAttribute
 	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
 		String uri = request.getRequestURI();
+		if (uri.contains("/api")) return;
 		if(uri.contains("/dashboard") && 
 		  !uri.contains("/list")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;
-			Dashboard dashboard = dashboardService.getDashboard(dashboardIdx);
+			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
+		}
+	}
+	
+	@ModelAttribute
+	public void settingAsideAttributes(HttpServletRequest request, 
+									   Model model,
+									   @PathVariable(value = "jiraName", required = false) String jiraName,
+									   @PathVariable(value = "projectKey", required = false) String projectKey) {
+		String uri = request.getRequestURI();
+		if (uri.contains("/api")) return;
+		if(uri.contains("/setting")) {
+			Jira jira = jiraService.getByNameJira(jiraName);
+			Integer jiraIdx = jira.getIdx();
+			model.addAttribute("currentProject", projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey));
+
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
+			Integer projectIdx = project.getIdx();
+			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
 		}
 	}
 }

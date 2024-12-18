@@ -2,8 +2,10 @@
 
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_edit.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_all.css}">
 </head>
 <div layout:fragment="content">
+	<div th:replace="~{/dashboard/dashboard_detail_delete :: dashboardDetailDelete}"></div>
 	<div class="dashboard_container">
 		<div class="dashboard_box">
 			<div th:replace="~{/dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
@@ -13,7 +15,59 @@
 			</div>
 			<div class="dashboard_content_container">
 				<div class="box1">
-					<div class="add_dashboard_content" idx-data="">
+					<div th:if="${#lists.size(dashboardItemList[0]) == 0}" class="empty_box show">
+						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
+							alt="" width="112" height="100">
+						<p>가젯을 추가해보세요 <span>새 가젯 추가</span></p>
+					</div>
+					<div class="add_dashboard_content" th:each="item : ${dashboardItemList[0]}">
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
+							<div class="dashboard_pie_chart dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:dashboardColIdx-data="${item.dashboardCol.idx}"
+								th:projectIdx-data="${item.project.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|파이 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+					<div class="add_dashboard_content">
 						<div class="add_dashboard_content_header">
 							<h2>
 								<img src="/images/switch_position_icon.svg" />
@@ -45,78 +99,1535 @@
 												<div></div>
 											</div>
 										</div>
-										<div class="btn_box">
-											<button>
-												<span>구성</span>
-											</button>
-											<button>
-												<span>복제</span>
-											</button>
-											<button>
-												<span>삭제</span>
-											</button>
+									</div>
+								</div>
+								<div class="dynamic_box dashboard_pie_chart_container">
+									<div class="doughnut_chart_ratio"></div>
+									<div class="dashboard_pie_chart_box">
+										<div>
+											<div class="doughnut_chart_ratio"></div>
+											<canvas th:id="|pieChart-${item.idx}|"></canvas>
+										</div>
+									</div>
+									<div class="dashboard_pie_chart_content">
+										<div class="header">
+											<h3 th:text="${item.dashboardCol.content}"></h3>
+											<div class="issue_total"></div>
+										</div>
+										<div class="main">
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="dashboard_pie_chart_container">
-							<div class=".doughnut_chart_ratio"></div>
-							<div class="dashboard_pie_chart_box">
+							<div class="dashboard_pie_chart dashboard_item" th:if="${item.isSave == 0}"
+								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>파이 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main piechart_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="pie_statistic">통계 유형<span class="not_null_check">*</span></label>
+										<select name="statistic" id="pie_statistic">
+											<option value=1 selected>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardAllot))}">
+							<div class="dashboard_allot dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:row-num-data="${item.rowNum}"
+								th:issue-total="${allotIssueCount}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|나에게 할당됨: ${currentUser.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box">
+									<table style="table-layout: fixed;">
+										<colgroup>
+											<col style="width: 32px;">
+											<col style="width: 62px;">
+											<col style="width: 65%;">
+											<col style="width: 20%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>화</th>
+												<th>키</th>
+												<th>요약</th>
+												<th>p</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+									<div class="paging_box"></div>
+								</div>
+							</div>
+							<div class="dashboard_allot dashboard_item" th:idx-data="${item.idx}"
+								th:is-save-data="${item.isSave}" 
+								th:if="${item.isSave == 0}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span th:text="|나에게 할당됨: ${currentUser.name}"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main my_responsibility_issue_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label>결과의 수<span class="not_null_check">*</span></label>
+										<input type="text" value="10" />
+										<p>표시할 결과의 수(최대 50개)</p>
+									</div>
+									<div class="main_group box2">
+										<label>표시할 열<span class="not_null_check">*</span></label>
+										<form>
+											<table>
+												<colgroup>
+													<col width="8%" />
+													<col width="73%" />
+													<col width="19%" />
+												</colgroup>
+												<tr>
+													<td>
+													</td>
+													<td>이슈 유형</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>키</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>요약</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>우선순위</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+											</table>
+										</form>
+									</div>
+									<div class="main_group box3">
+										<label>표시할 열 추가</label>
+										<select>
+											<option value=1>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueComplete))}">
+							<div class="dashboard_issue_complete dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:viewDate-data="${item.viewDate}" th:unitPeriod-data="${item.unitPeriod}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|만듦 대비 해결됨 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box dashboard_issue_complete_container">
+									<div>
+										<canvas th:id="|issueCompleteChart-${item.idx}|"
+											style="width: 400px; height: 400px;"></canvas>
+									</div>
+									<div class="dashboard_issue_complete_content">
+										<h3>
+											<b>최근 <span th:text="${item.viewDate}"></span>일간의 이슈</b>
+											(단위:<span th:text="${item.unitPeriod}"></span>)
+										</h3>
+										<div class="main">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard_issue_complete dashboard_item" 
+								 th:if="${item.isSave == 0}"
+								 th:idx-data="${item.idx}"
+								 th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>만듦 대비 해결됨 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="complete_unit_period">기간<span
+												class="not_null_check">*</span></label>
+										<select name="statistic" id="complete_unit_period">
+											<option value="매시간">매시간</option>
+											<option value="매일" selected>매일</option>
+											<option value="매주">매주</option>
+											<option value="매월">매월</option>
+											<option value="매년">매년</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
+										<input type="text" id="prev_date" value="30" />
+										<p>선택한 기간내에서 자료를 수집할 과거 일 수</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueRecent))}">
+							<div class="dashboard_issue_recent dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:viewDate-data="${item.viewDate}" th:unitPeriod-data="${item.unitPeriod}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|최근에 만듦 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic dashboard_issue_recent_container">
+									<div>
+										<canvas th:id="|issueRecentChart-${item.idx}|"
+											style="width: 400px; height: 400px;">
+										</canvas>
+									</div>
+									<div class="dashboard_issue_recent_content">
+										<h3></h3>
+										<p>
+											기간: 최근 <b th:text="${item.viewDate}"></b>&nbsp;일(<b
+												th:text="${item.unitPeriod}"></b>&nbsp;별)
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard_issue_recent dashboard_item" th:if="${item.isSave == 0}"
+								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>최근에 만듦 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="recent_unit_period">기간<span class="not_null_check">*</span></label>
+										<select name="statistic" id="recent_unit_period">
+											<option value="매시간">매시간</option>
+											<option value="매일" selected>매일</option>
+											<option value="매주">매주</option>
+											<option value="매월">매월</option>
+											<option value="매년">매년</option>
+										</select>
+										<p>기간의 길이가 그래프에 표시됩니다.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
+										<input type="text" id="prev_date" value="${viewDate}" />
+										<p>그래프에 표시할 일수(오늘 포함)</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueStatistics))}">
+							<div class="dashboard_issue_statistics dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:dashboardColIdx-data="${item.dashboardCol.idx}" th:row-num-data="${item.rowNum}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|이슈 통계: ${item.project.name} (${item.dashboardCol.content})|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box">
+									<table style="table-layout: fixed;">
+										<colgroup>
+											<col style="width: 100px;">
+											<col style="width: 32px;">
+											<col>
+											<col style="width: 32px;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th th:text="${item.dashboardCol.content}"></th>
+												<th>개수</th>
+												<th>퍼센트</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="dashboard_issue_statistics dashboard_item" th:if="${item.isSave == 0}" th:idx-data="${item.idx}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>이슈 통계</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="statistic">통계 유형<span class="not_null_check">*</span></label>
+										<select name="statistic" id="statistic">
+											<option value=1 selected>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="view_num">결과의 수<span class="not_null_check">*</span></label>
+										<input type="text" id="view_num" value="${viewNum}" />
+										<p>표시할 결과의 수(최대 50개)</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<div class="dashboard_issue_filter dashboard_item"
+							th:if="${item.isSave == 1 && #strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}"
+							th:idx-data="${item.idx}" th:filterIdx-data="${item.filter.idx}">
+							<div class="add_dashboard_content_header">
+								<h2>
+									<span th:text="|결과 필터: ${item.filter.name}|"></span>
+								</h2>
 								<div>
-									<div class="doughnut_chart_ratio"></div>
-									<canvas id="TSYR1"></canvas>
+									<div class="img_box">
+										<img src="/images/minimize_icon.svg">
+									</div>
+									<div class="img_box">
+										<img src="/images/maximize_icon.svg">
+									</div>
+									<div class="img_box">
+										<img src="/images/refresh_icon.svg">
+									</div>
+									<div class="img_box dashboard_more">
+										<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+										<div class="more_gadget_option">
+											<div class="color_box">
+												<p>강조 색상</p>
+												<div class="color_content">
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</div>
+											<div class="btn_box">
+												<button>
+													<span>구성</span>
+												</button>
+												<button>
+													<span>복제</span>
+												</button>
+												<button>
+													<span>삭제</span>
+												</button>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="dashboard_pie_chart_content">
-								<div class="header">
-									<h3>담당자</h3>
-									<a th:href="@{#}">모든 이슈: <b>8</b></a>
-								</div>
-								<div class="main">
-									<a th:href="@{#}">
-										<div>
-											<div class="color_box" style="background-color: #388BFF"></div>
-											<p>다현</p>
-										</div>
-										<span>4</span>
-									</a>
-									<a th:href="@{#}">
-										<div>
-											<div class="color_box" style="background-color: #F15B50"></div>
-											<p>김대완</p>
-										</div>
-										<span>2</span>
-									</a>
-									<a th:href="@{#}">
-										<div>
-											<div class="color_box" style="background-color: #B38600"></div>
-											<p>방준혁</p>
-										</div>
-										<span>2</span>
-									</a>
-								</div>
+							<div class="dynamic_box">
+								<table style="table-layout: fixed;">
+									<colgroup>
+										<col style="width: 32px;">
+										<col style="width: 62px;">
+										<col style="width: 65%;">
+										<col style="width: 20%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th>화</th>
+											<th>키</th>
+											<th>요약</th>
+											<th>p</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								<div class="paging_box"></div>
 							</div>
-						</div>
-						<div class="add_dashboard_content_footer">
-							<img src="/images/refresh_icon.svg" width="16" height="16" />
-							<span>14분 전</span>
 						</div>
 					</div>
-					<!--<div class="empty_box show">
-					<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
-						width="112" height="100">
-					<p>가젯을 이 열로 끌어오거나 <a th:href="@{#}">새 가젯 추가</a></p>
-				</div> -->
 				</div>
 				<div class="box2">
-					<div class="empty_box show">
+					<div th:if="${#lists.size(dashboardItemList[1]) == 0}" class="empty_box show">
 						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
-							width="112" height="100">
-						<p>가젯을 이 열로 끌어오거나 <a th:href="@{#}">새 가젯 추가</a></p>
+							alt="" width="112" height="100">
+						<p>가젯을 추가해보세요 <span>새 가젯 추가</span></p>
+					</div>
+					<div class="add_dashboard_content" th:each="item : ${dashboardItemList[1]}">
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
+							<div class="dashboard_pie_chart dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:dashboardColIdx-data="${item.dashboardCol.idx}"
+								th:projectIdx-data="${item.project.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|파이 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box dashboard_pie_chart_container">
+									<div class="doughnut_chart_ratio"></div>
+									<div class="dashboard_pie_chart_box">
+										<div>
+											<div class="doughnut_chart_ratio"></div>
+											<canvas th:id="|pieChart-${item.idx}|"></canvas>
+										</div>
+									</div>
+									<div class="dashboard_pie_chart_content">
+										<div class="header">
+											<h3 th:text="${item.dashboardCol.content}"></h3>
+											<div class="issue_total"></div>
+										</div>
+										<div class="main">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard_pie_chart dashboard_item" th:if="${item.isSave == 0}"
+								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>파이 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main piechart_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="pie_statistic">통계 유형<span class="not_null_check">*</span></label>
+										<select name="statistic" id="pie_statistic">
+											<option value=1 selected>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardAllot))}">
+							<div class="dashboard_allot dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:row-num-data="${item.rowNum}"
+								th:issue-total="${allotIssueCount}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|나에게 할당됨: ${currentUser.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box">
+									<table style="table-layout: fixed;">
+										<colgroup>
+											<col style="width: 32px;">
+											<col style="width: 62px;">
+											<col style="width: 65%;">
+											<col style="width: 20%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>화</th>
+												<th>키</th>
+												<th>요약</th>
+												<th>p</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+									<div class="paging_box"></div>
+								</div>
+							</div>
+							<div class="dashboard_allot dashboard_item" th:idx-data="${item.idx}"
+								th:is-save-data="${item.isSave}" 
+								th:if="${item.isSave == 0}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span th:text="|나에게 할당됨: ${currentUser.name}"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main my_responsibility_issue_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label>결과의 수<span class="not_null_check">*</span></label>
+										<input type="text" value="10" />
+										<p>표시할 결과의 수(최대 50개)</p>
+									</div>
+									<div class="main_group box2">
+										<label>표시할 열<span class="not_null_check">*</span></label>
+										<form>
+											<table>
+												<colgroup>
+													<col width="8%" />
+													<col width="73%" />
+													<col width="19%" />
+												</colgroup>
+												<tr>
+													<td>
+													</td>
+													<td>이슈 유형</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>키</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>요약</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													</td>
+													<td>우선순위</td>
+													<td>
+														<button>
+															<img src="/images/trash_icon.svg" / width="16" height="16">
+														</button>
+													</td>
+												</tr>
+											</table>
+										</form>
+									</div>
+									<div class="main_group box3">
+										<label>표시할 열 추가</label>
+										<select>
+											<option value=1>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueComplete))}">
+							<div class="dashboard_issue_complete dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:viewDate-data="${item.viewDate}" th:unitPeriod-data="${item.unitPeriod}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|만듦 대비 해결됨 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box dashboard_issue_complete_container">
+									<div>
+										<canvas th:id="|issueCompleteChart-${item.idx}|"
+											style="width: 400px; height: 400px;"></canvas>
+									</div>
+									<div class="dashboard_issue_complete_content">
+										<h3>
+											<b>최근 <span th:text="${item.viewDate}"></span>일간의 이슈</b>
+											(단위:<span th:text="${item.unitPeriod}"></span>)
+										</h3>
+										<div class="main">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard_issue_complete dashboard_item" 
+								 th:if="${item.isSave == 0}"
+								 th:idx-data="${item.idx}"
+								 th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>만듦 대비 해결됨 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="complete_unit_period">기간<span
+												class="not_null_check">*</span></label>
+										<select name="statistic" id="complete_unit_period">
+											<option value="매시간">매시간</option>
+											<option value="매일" selected>매일</option>
+											<option value="매주">매주</option>
+											<option value="매월">매월</option>
+											<option value="매년">매년</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
+										<input type="text" id="prev_date" value="30" />
+										<p>선택한 기간내에서 자료를 수집할 과거 일 수</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueRecent))}">
+							<div class="dashboard_issue_recent dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:viewDate-data="${item.viewDate}" th:unitPeriod-data="${item.unitPeriod}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|최근에 만듦 차트: ${item.project.name}|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic dashboard_issue_recent_container">
+									<div>
+										<canvas th:id="|issueRecentChart-${item.idx}|"
+											style="width: 400px; height: 400px;">
+										</canvas>
+									</div>
+									<div class="dashboard_issue_recent_content">
+										<h3></h3>
+										<p>
+											기간: 최근 <b th:text="${item.viewDate}"></b>&nbsp;일(<b
+												th:text="${item.unitPeriod}"></b>&nbsp;별)
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard_issue_recent dashboard_item" th:if="${item.isSave == 0}"
+								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>최근에 만듦 차트</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="recent_unit_period">기간<span class="not_null_check">*</span></label>
+										<select name="statistic" id="recent_unit_period">
+											<option value="매시간">매시간</option>
+											<option value="매일" selected>매일</option>
+											<option value="매주">매주</option>
+											<option value="매월">매월</option>
+											<option value="매년">매년</option>
+										</select>
+										<p>기간의 길이가 그래프에 표시됩니다.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
+										<input type="text" id="prev_date" value="${viewDate}" />
+										<p>그래프에 표시할 일수(오늘 포함)</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<th:block
+							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueStatistics))}">
+							<div class="dashboard_issue_statistics dashboard_item" th:if="${item.isSave == 1}"
+								th:idx-data="${item.idx}" th:projectIdx-data="${item.project.idx}"
+								th:dashboardColIdx-data="${item.dashboardCol.idx}" th:row-num-data="${item.rowNum}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<span th:text="|이슈 통계: ${item.project.name} (${item.dashboardCol.content})|"></span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg">
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg">
+										</div>
+										<div class="img_box dashboard_more">
+											<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+											<div class="more_gadget_option">
+												<div class="color_box">
+													<p>강조 색상</p>
+													<div class="color_content">
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+												<div class="btn_box">
+													<button>
+														<span>구성</span>
+													</button>
+													<button>
+														<span>복제</span>
+													</button>
+													<button>
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dynamic_box">
+									<table style="table-layout: fixed;">
+										<colgroup>
+											<col style="width: 100px;">
+											<col style="width: 32px;">
+											<col>
+											<col style="width: 32px;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th th:text="${item.dashboardCol.content}"></th>
+												<th>개수</th>
+												<th>퍼센트</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="dashboard_issue_statistics dashboard_item" th:if="${item.isSave == 0}" th:idx-data="${item.idx}"
+								th:is-save-data="${item.isSave}">
+								<div class="add_dashboard_content_header">
+									<h2>
+										<img src="/images/switch_position_icon.svg" />
+										<span>이슈 통계</span>
+									</h2>
+									<div>
+										<div class="img_box">
+											<img src="/images/minimize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/maximize_icon.svg" />
+										</div>
+										<div class="img_box">
+											<img src="/images/refresh_icon.svg" />
+										</div>
+									</div>
+								</div>
+								<div class="add_dashboard_content_main">
+									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
+									<div class="main_group box1">
+										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
+										<div class="project_name_box">선택된 프로젝트 없음</div>
+										<input type="text" id="project_name" placeholder="검색" autocomplete="off" />
+										<div class="name_search_box">
+										</div>
+										<p>그래프에 기준으로 사용할 저장된 프로젝트입니다.</p>
+										<div>
+											<button>고급 검색</button>
+										</div>
+										<div class="alert_box">선택한 프로젝트 없음</div>
+									</div>
+									<div class="main_group box2">
+										<label for="statistic">통계 유형<span class="not_null_check">*</span></label>
+										<select name="statistic" id="statistic">
+											<option value=1 selected>담당자</option>
+											<option value=2>레이블</option>
+											<option value=3>보고자</option>
+											<option value=4>상태</option>
+											<option value=5>우선순위</option>
+											<option value=6>이슈 유형</option>
+										</select>
+										<p>이 필터를 표시할 통계의 유형을 선택.</p>
+									</div>
+									<div class="main_group box3">
+										<label for="view_num">결과의 수<span class="not_null_check">*</span></label>
+										<input type="text" id="view_num" value="${viewNum}" />
+										<p>표시할 결과의 수(최대 50개)</p>
+									</div>
+									<div class="main_group box4">
+										<label for="update">자동 새로 고침</label>
+										<div class="update_check_box">
+											<input type="checkbox" id="update" />
+											<label for="update">매 15분마다 업데이트</label>
+										</div>
+									</div>
+									<div class="save_btn">
+										<button>저장</button>
+									</div>
+								</div>
+								<div class="add_dashboard_content_footer">
+									<img src="/images/refresh_icon.svg" width="16" height="16" />
+									<span>14분 전</span>
+								</div>
+							</div>
+						</th:block>
+						<div class="dashboard_issue_filter dashboard_item"
+							th:if="${item.isSave == 1 && #strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}"
+							th:idx-data="${item.idx}" th:filterIdx-data="${item.filter.idx}">
+							<div class="add_dashboard_content_header">
+								<h2>
+									<span th:text="|결과 필터: ${item.filter.name}|"></span>
+								</h2>
+								<div>
+									<div class="img_box">
+										<img src="/images/minimize_icon.svg">
+									</div>
+									<div class="img_box">
+										<img src="/images/maximize_icon.svg">
+									</div>
+									<div class="img_box">
+										<img src="/images/refresh_icon.svg">
+									</div>
+									<div class="img_box dashboard_more">
+										<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
+										<div class="more_gadget_option">
+											<div class="color_box">
+												<p>강조 색상</p>
+												<div class="color_content">
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</div>
+											<div class="btn_box">
+												<button>
+													<span>구성</span>
+												</button>
+												<button>
+													<span>복제</span>
+												</button>
+												<button>
+													<span>삭제</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dynamic_box">
+								<table style="table-layout: fixed;">
+									<colgroup>
+										<col style="width: 32px;">
+										<col style="width: 62px;">
+										<col style="width: 65%;">
+										<col style="width: 20%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th>화</th>
+											<th>키</th>
+											<th>요약</th>
+											<th>p</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								<div class="paging_box"></div>
+							</div>
+						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<div class="dashboard_add_gadget">
@@ -251,64 +1762,9 @@
 			</div>
 		</div>
 	</div>
-	<script th:src="@{/js/dashboard_edit.js}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script>
-		// jiraID + projectKey
-		const doughnutChartTag = document.querySelector("#TSYR1");
-		const statusNumArr = [4, 2, 2];
-		const statusColor = ["#388BFF", "#F15B50", "#B38600"];
-		const labels = ["다현", "방준혁", "김대완"];
-
-		const doughnutChart = new Chart(doughnutChartTag, {
-			type: "doughnut",
-			data: {
-				labels: labels,
-				datasets: [
-					{
-						data: statusNumArr,
-						borderWidth: 1,
-						backgroundColor: statusColor,
-					},
-				],
-			},
-			options: {
-				cutout: '35%',
-				responsive: true,
-				maintainAspectRatio: false,
-				plugins: {
-					tooltip: {
-						enabled: false, // 툴팁 활성화
-					},
-					legend: {
-						display: false,
-					},
-				},
-				onHover: function (event, chartElement) {
-					if (chartElement && chartElement.length) {
-						const index = chartElement[0].index; // hover된 요소의 데이터 인덱스
-						const label = this.data.labels[index]; // 해당 인덱스의 label
-						const value = this.data.datasets[0].data[index];
-						let color = this.data.datasets[0].backgroundColor[index];
-						if (color === '#DFE1E6') {
-							color = '#172b4d';
-						}
-						updateChartRatio(statusNumArr, value, label, color, this.canvas);
-					}
-				},
-				onMouseOut: function (event, chartElement) {
-					console.log('Mouse left the chart area');
-				}
-			},
-		});
-		function updateChartRatio(data, num, comment, color, canvas) {
-			const total = data.reduce((prev, cur) => prev + cur, 0);
-
-			const ratio = Math.round((num / total) * 100);
-			canvas.previousElementSibling.innerHTML = `<p style="color:${color}">${ratio}%</p><span>${comment}</span>`;
-		}
-
-	</script>
+	<script th:src="@{/js/dashboard_detail_all.js}"></script>
+	<script th:src="@{/js/dashboard_edit.js}"></script>
 </div>
 
 </html>

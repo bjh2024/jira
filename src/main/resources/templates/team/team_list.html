@@ -14,7 +14,7 @@
 		</div>
 		<div class="input_box">
 			<label for="teamSearch">
-				<img th:src="@{/images/search_icon.svg}" />
+				<img th:src="@{/images/search_icon.svg}" width="16" height="16"/>
 			</label>
 			<input type="text" id="teamSearch" placeholder="사용자 및 팀 검색" />
 		</div>
@@ -24,18 +24,12 @@
 					<h2>내가 공동 작업</h2>
 				</div>
 				<ul>
-					<li>
+					<li th:each="member : ${memberList}"
+						th:if="${member.account != currentUser}">
 						<a th:src="@{#}">
-							<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
-								alt="" style="border-radius: 50%;" width="70" height="70">
-							<span>방준혁</span>
-						</a>
-					</li>
-					<li>
-						<a th:src="@{#}">
-							<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-								alt="" style="border-radius: 50%;" width="70" height="70">
-							<span>다현</span>
+							<img th:src="@{|/images/${member.account.iconFilename}|}"
+								alt="" style="border-radius: 70px;" width="70" height="70">
+							<span th:text="${member.account.name}"></span>
 						</a>
 					</li>
 				</ul>
@@ -65,19 +59,18 @@
 							<button class="team_create_btn">팀 만들기</button>
 						</div>
 					</li>
-					<li>
+					<li th:each="team : ${teamList}">
 						<div>
-
 						</div>
 						<div>
-							<span>정처산기 4조</span>
-							<div>
-								<img src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" style="border-radius: 50%;" width="24" height="24">
-								<img src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
-									alt="" style="border-radius: 50%; " width="24" height="24">
-								<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-									alt="" style="border-radius: 50%;" width="24" height="24">
+							<span th:text="${team.name}"></span>
+							<div class="user_list_info_box">
+								<div th:each="member, loop : ${team.teamMembersList}"
+								     th:if="${loop.index < 3}">
+									<img th:src="@{|/images/${member.account.iconFilename}|}"
+										 alt="" style="border-radius: 50%;" width="24" height="24">
+									<div class="name_hover_box" th:text="${member.account.name}"></div>
+								</div>
 							</div>
 						</div>
 					</li>

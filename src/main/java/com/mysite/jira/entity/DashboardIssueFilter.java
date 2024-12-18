@@ -26,8 +26,7 @@ public class DashboardIssueFilter {
 	private Integer idx;
 	
 	@Column
-	@NotNull
-	private Integer viewNum;
+	private Integer rowNum;
 
 	@Column
 	@NotNull
@@ -36,6 +35,11 @@ public class DashboardIssueFilter {
 	@Column
 	@NotNull
 	private Integer divOrderY;
+	
+	public void updateOrder(Integer divOrderX, Integer divOrderY) {
+		this.divOrderX = divOrderX;
+		this.divOrderY = divOrderY;
+	}
 	
 	@Column
 	@NotNull
@@ -51,9 +55,9 @@ public class DashboardIssueFilter {
 	private List<DashboardIssueFilterCol> dashboardIssueFilterColList;
 	
 	@Builder
-	public DashboardIssueFilter(Integer viewNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Filter filter, Integer isSave) {
+	public DashboardIssueFilter(Integer rowNum, Integer divOrderX, Integer divOrderY, Dashboard dashboard, Filter filter, Integer isSave) {
 		this.isSave = isSave;
-		this.viewNum = viewNum;
+		this.rowNum = rowNum;
 		this.divOrderX = divOrderX;
 		this.divOrderY = divOrderY;
 		this.isSave = isSave;
