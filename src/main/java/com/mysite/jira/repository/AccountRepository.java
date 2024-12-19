@@ -28,7 +28,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	
 	Optional<Account> findByIdx(Integer idx);
 	
-	Account findByName(String name);
+	List<Account> findByName(String name);
+	
+	List<Account> findAllByEmail(String email);
 
 	//kdw 
 	Optional<Account> findByEmail(String email);

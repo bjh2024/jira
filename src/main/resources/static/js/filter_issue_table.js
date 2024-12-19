@@ -1,5 +1,3 @@
-
-
 document.querySelector("body").addEventListener("click", function(e) {
     const menu = e.target.closest(".filter_menu");  // 클릭된 메뉴 찾기
     const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
@@ -840,11 +838,28 @@ document.getElementById("doneCheck").addEventListener("change",function(){
 	}
 })
 
-let filterName = "";
-let explain = "";
+let filterName = null;
+let explain = null;
+let isCompleted = [];
+let doneDateBefore = null;
+let updateBefore = null;
+let createDateBefore = null;
+let jiraName = null;
+
 document.querySelector(".save_button").addEventListener("click",function(){
-	filterName = document.querySelector(".hover_input").value;
-	explain = document.querySelector(".textArea_1").value;
+	filterName = document.querySelector(".hover_input")?.value;
+	explain = document.querySelector(".textArea_1")?.value;
+	updateBefore = document.getElementById("update_before_date")?.value;
+	doneDateBefore = document.getElementById("done_before_date")?.value;
+	createDateBefore = document.getElementById("create_before_date")?.value;
+	if(document.querySelector(".done_input_list").checked){
+		isCompleted.push(1);
+	}
+	if(document.querySelector(".done_input_list2").checked){
+		isCompleted.push(0);
+	}
+	jiraName = this.dataset.jiraName;
+	
 	fetchFitlerCreate();
 })
 function fetchFitlerCreate() {
@@ -877,7 +892,12 @@ function fetchFitlerCreate() {
 				notDoneCheck : filterDatas.notDoneCheck,
 				filterIdx : filterDatas.filterIdx,
 				filterName : filterName,
-				explain : explain
+				explain : explain,
+				isCompleted : isCompleted,
+				doneDateBefore : doneDateBefore,
+				updateBefore : updateBefore,
+				createDateBefore : createDateBefore,
+				jiraName : jiraName
 	        })
 	    })
 	    .then(response => response.json())  // JSON 형태로 응답 받기

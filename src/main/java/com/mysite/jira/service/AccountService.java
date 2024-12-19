@@ -32,6 +32,18 @@ public class AccountService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
+	public Optional<Account> getByEmail(String email) {
+		return accountRepository.findByEmail(email);
+	}
+	
+	public Account getByName(String name){
+		List<Account> accountList = accountRepository.findByName(name);
+		if(accountList.size() > 0) {
+		Account result = accountList.get(0);
+		return result;
+		}
+		return null;
+	}
 	public Account getAccountByIdx(Integer idx) {
 		Optional<Account> opAccount = accountRepository.findById(idx);
 		Account account = null;
@@ -41,7 +53,7 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account getByUserName(String name) {
+	public List<Account> getByUserName(String name) {
 		return accountRepository.findByName(name);
 	}
 	

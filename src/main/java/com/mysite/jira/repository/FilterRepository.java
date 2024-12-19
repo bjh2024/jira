@@ -34,6 +34,8 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);
 	
-	List<Filter> findByJiraIdx(Integer idx); 
+	List<Filter> findByJiraIdxAndAccountIdx(Integer jiraIdx,Integer AccountIdx); 
+	
+	List<Filter> findByJiraIdx(Integer idx);
 	
 }

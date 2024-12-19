@@ -1,5 +1,6 @@
 package com.mysite.jira.service;
 
+import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +45,10 @@ public class ProjectService {
 
 	private final UtilityService utilityService;
 
+	public Optional<Project> getByIdx(Integer idx){
+		return projectRepository.findById(idx);
+	}
+	
 	public Project getProjectByIdx(Integer idx) {
 		Optional<Project> project = projectRepository.findById(idx);
 		if (!project.isEmpty()) {

@@ -28,4 +28,36 @@ document.querySelector("body").addEventListener("click", function(e) {
         }
     }
 });
-
+document.querySelectorAll(".delete_button").forEach(function(item){
+	item.addEventListener("mouseup",function(){
+		let delete_button_1 = this.querySelector(".delete_button_1");
+		if(delete_button_1.style.display == "none"){
+			delete_button_1.style.display = "block"
+		}else{
+			delete_button_1.style.display = "none"
+		}
+	})
+})
+document.querySelectorAll(".delete_button_1").forEach(function(item){
+	item.addEventListener("click",function(){
+		event.stopPropagation();
+		let parent = this.closest(".delete_button");
+		if(parent.querySelector(".delete_modal").style.display == "none"){
+		parent.querySelector(".delete_modal").style.display = "block";
+		}else{
+		parent.querySelector(".delete_modal").style.display = "none";
+		}
+	})
+})
+document.querySelectorAll(".delete_alert_cancelbtn").forEach(function(item){
+	item.addEventListener("click",function(){
+		event.stopPropagation();
+		let parent = this.closest(".delete_button");
+		if(parent.querySelector(".delete_modal").style.display == "block"){
+		parent.querySelector(".delete_modal").style.display = "none";
+		parent.querySelector(".delete_button_1").style.display = "none";
+		}else{
+		
+		}
+	})
+})

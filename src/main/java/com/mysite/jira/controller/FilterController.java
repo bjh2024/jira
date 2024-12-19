@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -69,8 +70,9 @@ public class FilterController {
 //	}
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName){
+			@PathVariable("jiraName") String jiraName, Principal principal){
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
@@ -149,7 +151,7 @@ public class FilterController {
 			List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
 			model.addAttribute("teamList", teamList);
 			
-			List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+			List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
 			model.addAttribute("filterList", filterList);
 			model.addAttribute("filterIdx", filterIdx);
 			
@@ -161,10 +163,11 @@ public class FilterController {
 
 	@GetMapping("/every_filter")
 	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName) {
+			@PathVariable("jiraName") String jiraName, Principal principal) {
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		
-		List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+		List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
 		model.addAttribute("filterList", filterList);
 		
 		List<FilterAuth> filterAuth = filterService.getFilterAuthAll();
@@ -183,7 +186,6 @@ public class FilterController {
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
 		try {
 			
-
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
  

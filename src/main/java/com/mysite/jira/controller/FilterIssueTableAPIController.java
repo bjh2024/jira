@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.nio.file.spi.FileSystemProvider;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,25 +8,32 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysite.jira.dto.FilterDTO;
 import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
+import com.mysite.jira.entity.FilterIssuePriority;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
+import com.mysite.jira.repository.FilterIssuePriorityRepository;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.FilterIssueService;
 import com.mysite.jira.service.FilterService;
+import com.mysite.jira.service.IssuePriorityService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.IssueStatusService;
+import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +47,10 @@ public class FilterIssueTableAPIController {
     private final JiraService jiraService;
     private final AccountService accountService;
     private final FilterService filterService;
-    
+    private final IssuePriorityService issuePriorityService;
+    private final IssueStatusService issueStatusService;
+    private final IssueTypeService issueTypeService;
+    private final ProjectService projectService;
     
     @PostMapping("/project_filter")
     public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
@@ -187,20 +198,80 @@ public class FilterIssueTableAPIController {
     }
     
     @PostMapping("/filter_create")
-    @Transactional
-    public void filterCreate(@RequestBody FilterIssueRequestDTO filterDto,
-    		@RequestBody FilterDTO filterDto2, @PathVariable("jiraName") String jiraName
+    public void filterCreate(@RequestBody FilterIssueRequestDTO filterDto
     		,Principal principal){
-    	String filterName = filterDto2.getFilterName();
-    	String explain = filterDto2.getExplain();
+    	
+    	boolean filterNameAgain = true;
+    	for (int i = 0; i < filterService.getAll().size(); i++) {
+    		if(filterService.getAll().get(i).getName().equals(filterDto.getFilterName())) {
+    			filterNameAgain = false;
+    		}
+		}    	
+    	if(!filterNameAgain) return;
+    	
+    	String filterName = filterDto.getFilterName(); // 필터 제목
+    	String explain = filterDto.getExplain(); // 필터 설명내용
     	String username = principal.getName();  // 현재 인증된 사용자 이름 가져오기
-	    Account account = accountService.getByUserName(username); // 예시: 사용자 이름으로 Account 객체를 조회
-	    Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
-	    Optional<Jira> jira = jiraService.getByIdx(jiraIdx);
-	    
+	    Optional<Account> optAccount = accountService.getByEmail(username); // 예시: 사용자 이름으로 Account 객체를 조회
+	    Account account = optAccount.get();
+	    Optional<Jira> jira = jiraService.getIdxByName(filterDto.getJiraName());
+	   
+	    // 필터 생성시 무조건 생성되는 필터 기본
 	    Filter filter = filterService.filterCreate(filterName, explain, account, jira.get());
-	    filterService.filterDoneCreate(filter, filterDto2.getIsCompleted());
-	    filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(), 30);
+	    
+	    if(filterDto.getIsCompleted().length > 0 && filterDto.getIsCompleted() != null) {
+	    	for (int i = 0; i < filterDto.getIsCompleted().length; i++) {
+	    		filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);
+			}
+	    }
+	    // 행이 여러개 생길 수 있는 데이터
+	    if(filterDto.getIssuePriority().length > 0 && filterDto.getIssuePriority() != null) {
+	    	for (int i = 0; i < filterDto.getIssuePriority().length; i++) {
+	    		Optional<IssuePriority> issuePriority = issuePriorityService.getByName(filterDto.getIssuePriority()[i]);
+	    		filterService.filterIssuePriorityCreate(filter, issuePriority.get());
+			}
+	    }
+	    if(filterDto.getIssueStatus().length > 0 && filterDto.getIssueStatus() != null) {
+		    for (int i = 0; i < filterDto.getIssueStatus().length; i++) {
+		    	IssueStatus issueStatus = issueStatusService.getByName(filterDto.getIssueStatus()[i]);
+		    	filterService.filterIssueStatusCreate(filter, issueStatus);
+		    }	
+	    }
+	    if(filterDto.getIssueTypes().length > 0 && filterDto.getIssueTypes() != null) {
+		    for (int i = 0; i < filterDto.getIssueTypes().length; i++) {
+		    	IssueType issueType = issueTypeService.getByName(filterDto.getIssueTypes()[i]);
+		    	filterService.filterIssueTypeCreate(filter, issueType);
+			}
+	    }
+	    if(filterDto.getIssueManager().length > 0 && filterDto.getIssueManager() != null) {
+		    for (int i = 0; i < filterDto.getIssueManager().length; i++) {
+		    	System.out.println(filterDto.getIssueManager()[i]);
+		    	Account managerAccount = accountService.getByName(filterDto.getIssueManager()[i]);
+		    	filterService.filterManagerCreate(filter, managerAccount);
+			}
+	    }
+	    if(filterDto.getProjectIdx().length > 0 && filterDto.getProjectIdx() != null) {
+		    for (int i = 0; i < filterDto.getProjectIdx().length; i++) {
+		    	Optional<Project> project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
+		    	filterService.filterProjectCreate(filter, project.get());
+			}
+	    }
+	    if(filterDto.getIssueReporter().length > 0 && filterDto.getIssueReporter() != null) {
+		    for (int i = 0; i < filterDto.getIssueReporter().length; i++) {
+		    	Account reporterAccount = accountService.getByName(filterDto.getIssueReporter()[i]);
+		    	filterService.filterReporterCreate(filter, reporterAccount);
+		    }			
+	    }
+	    // 여기 까지
+	    if(filterDto.getDoneBeforeDate() != null || filterDto.getDoneStartDate() != null) {
+	    	filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(), filterDto.getDoneDateBefore());
+	    }
+	    if(filterDto.getCreateBeforeDate() != null || filterDto.getCreateStartDate() != null) {
+	    	filterService.filterCreateDateCreate(filter, filterDto.getCreateStartDate(), filterDto.getCreateLastDate(), filterDto.getCreateDateBefore());
+	    }
+	    if(filterDto.getUpdateBeforeDate() != null || filterDto.getUpdateStartDate() != null) {
+	    	filterService.filterIssueUpdateCreate(filter, filterDto.getUpdateStartDate(), filterDto.getUpdateLastDate(), filterDto.getUpdateBefore());
+	    }
+	    
     }
-    
 }

@@ -33,7 +33,8 @@
 				<div style="border: none; background-color: transparent; height: 24px;"><svg width="24" height="24"
 						viewBox="0 0 24 24" role="presentation">
 						<path fill="#42526E" fill-rule="evenodd"
-							d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+							d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93
+2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
 						</path>
 					</svg></div>
 			</div>
@@ -75,15 +76,7 @@
 			</div>
 		</div>
 		<table class="table_th">
-			<colgroup>
-				<col width="3.1%" />
-				<col width="22%" />
-				<col width="20%" />
-				<col width="20%" />
-				<col width="20%" />
-				<col width="10%" />
-				<col width="3.4%" />
-			</colgroup>
+			
 			<tr class="first_tr">
 				<th style="height: 24px; align-items: center;">
 					<svg width="14" height="14" viewBox="0 0 24 24" role="presentation" style="color: #5E6C84">
@@ -102,8 +95,7 @@
 				<th>편집기</th>
 				<th>별표 표시</th>
 			</tr>
-			
-			<tr class="second_tr" th:each="filterList :${filterList}" th:if="${filterList.explain} != null">
+			<tr class="second_tr" th:each="filterList, loop :${filterList}" th:if="${loop.index} > 8 ">
 				<td>
 					<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 						<path fill="#5E6C84"
@@ -163,18 +155,46 @@
 					<div style="font-size: 14px; padding: 12px 0px;">1명</div>
 				</td>
 				<td>
-					<div style="padding: 8px 0px 0px 4px;">
-						<svg style="margin-left:16px" width="24" height="24" viewBox="0 0 24 24" role="presentation">
+					<div class="delete_button" style="padding: 8px 0px 0px 4px;">
+						<div>
+							<svg style="padding: 0px 4px 2px;"width="24" height="24" viewBox="0 0 24 24" role="presentation">
 							<g fill="currentcolor" fill-rule="evenodd">
 								<circle cx="5" cy="12" r="2"></circle>
 								<circle cx="12" cy="12" r="2"></circle>
 								<circle cx="19" cy="12" r="2"></circle>
 							</g>
 						</svg>
+						</div>
+						<button class="delete_button_1">
+							<div class="delete_button_1_text">삭제</div>
+						</button>
+						<div class="delete_modal">
+							<div class="delete_modal_contents">
+								<div class="delete_alert_title">
+									<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+									<div th:text="${filterList.name}+'을(를) 삭제하시겠습니까?'" class="delete-alert-titletext"></div>
+								</div>
+								<div class="delete_alert_body">
+									<div style="margin: 60px 0px;">
+										이 항목과 관련 댓글, 첨부 파일 및 모든 데이터를 영구적으로 삭제하려고 합니다.<br>
+										삭제하지 않으려면 대신에 해결하거나 닫을 수 있습니다.
+									</div>
+								</div>
+								<div class="delete_alert_btnbar">
+									<button class="delete_alert_cancelbtn">
+										<div>취소</div>
+									</button>
+									<button class="delete_alert_submitbtn">
+										<div>삭제</div>
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</td>
 			</tr>
 		</table>
+				
 	</div>
 	<script th:src="@{/js/every_filter.js}"></script>
 </div>

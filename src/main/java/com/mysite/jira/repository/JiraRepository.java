@@ -13,6 +13,7 @@ import com.mysite.jira.entity.Jira;
 
 public interface JiraRepository extends JpaRepository<Jira, Integer> {
 
+	Optional<Jira> findIdxByName(String name);
 	// kdw
 	Optional<Jira> findByName(String name);
 

@@ -26,4 +26,11 @@ public class FilterIssueRequestDTO {
 	private Integer doneCheck;
 	private Integer notDoneCheck;
 	private Integer filterIdx;
+	private Integer updateBefore;
+	private Integer doneDateBefore;
+	private Integer createDateBefore;
+	private String explain;
+	private String filterName;
+	private String jiraName;
+	private Integer[] isCompleted;
 }

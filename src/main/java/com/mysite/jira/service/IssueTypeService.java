@@ -3,10 +3,12 @@ package com.mysite.jira.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.repository.IssueTypeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,11 @@ public class IssueTypeService {
 	
 	private final IssueTypeRepository issueTypeRepository;
 	
+	public IssueType getByName(String name){
+		List<IssueType> issueTypeList = issueTypeRepository.findByName(name);
+		IssueType result = issueTypeList.get(0);
+		return result;
+	}
 	  // distinct한 issueType 데이터 처리
     public List<IssueTypeListDTO> getDistinctIssueTypes(Integer jiraIdx) {
         List<IssueTypeListDTO> issueTypeDTOList = new ArrayList<>();

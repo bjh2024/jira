@@ -266,15 +266,6 @@ public class IssueService {
 			// DTO 객체를 List에 추가
 			managerList.add(managerDTO);
 		}
-		for (Object[] result : managerListObject) {
-		 	Integer managerIdx=((BigDecimal)result[0]).intValue(); 
-            String name = (String) result[1]; 
-            String iconFilename = (String) result[2];
-            // DTO 객체 생성
-            ManagerDTO managerDTO = new ManagerDTO(managerIdx, name, iconFilename);
-            // DTO 객체를 List에 추가
-            managerList.add(managerDTO);
-        }
 		return managerList;
 	}
 
