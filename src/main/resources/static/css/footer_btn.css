@@ -1,19 +1,58 @@
+.footer-layout{
+	height: 50px;
+	display: flex; 
+	align-items: center; 
+	position: fixed; 
+	right: 30px; 
+	bottom: 30px;
+}
+
+.footer-btn{
+	z-index: 999;
+}
+
 .btn-container{
 	background-color: white; 
 	width: 50px; 
 	height: 50px;
+	margin: 0 2px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	position: relative;
+	
+	box-shadow: 0 1px 1px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	
+	transition: ease-in-out 0.1s;
+}
+
+.footer-btn-item.chat-bot{
+	position: absolute;
+	top: 0;
+	left: -54px;
+	z-index: 998;
+}
+
+.footer-btn-item.chat-room{
+	position: absolute;
+	top: 0;
+	left: -108px;
+	z-index: 998;
+}
+	
+.footer-btn-item.hidden{
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
 }
 
 .selectwindow{
 	position: absolute;
 	bottom: 60px;
 	right: 0px;
+	z-index: 999;
 	width: 300px;
 	background-color: white;
 	border-radius: 10px;

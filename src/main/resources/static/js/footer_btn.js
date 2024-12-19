@@ -1,8 +1,25 @@
+let isClick = false;
+document.querySelector(".footer-btn").addEventListener("click", function(){
+	document.querySelectorAll(".footer-btn-item").forEach(function(container){
+		container.classList.toggle("hidden");
+		if(isClick){
+			isClick = !isClick;
+		}
+	});
+});
+
+// chat_bot 이벤트
 document.querySelector("body").addEventListener("click", function(e) {
+	
+	if(e.target.closest(".chat-bot") === null){
+		document.querySelector(".selectwindow.show")?.classList.remove("show");
+		return;
+	}
+	
 	if(e.target.closest(".show")?.className.includes("show")){
 		return;
 	}
-	document.querySelector(".selectwindow.show")?.classList.remove("show");
+	
 
 	const createIssueItem = e.target.closest(".btn-container");
 	if(createIssueItem !== null){
