@@ -56,8 +56,6 @@ document.querySelectorAll(".delete_alert_cancelbtn").forEach(function(item){
 		if(parent.querySelector(".delete_modal").style.display == "block"){
 		parent.querySelector(".delete_modal").style.display = "none";
 		parent.querySelector(".delete_button_1").style.display = "none";
-		}else{
-		
 		}
 	})
 })
