@@ -71,8 +71,7 @@
 									           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
 										       : '업데이트' }"></span>
 								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
-									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
-									            +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'">
 									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="32" height="32">
 									<div class="name_hover_box" th:text="${logData.account.name}"></div>
@@ -103,8 +102,7 @@
 																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
 																	       : '업데이트' }"></span>
 								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
-									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
-								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'">
 									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="32" height="32">
 									<div class="name_hover_box" th:text="${logData.account.name}"></div>
@@ -135,8 +133,7 @@
 																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
 																	       : '업데이트' }"></span>
 								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
-									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
-																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'">
 								    <img th:src="@{|/images/${logData.account.iconFilename}|}" alt="" style="border-radius: 50%;" width="32" height="32">
 									<div class="name_hover_box" th:text="${logData.account.name}"></div>
 								</div>
@@ -166,8 +163,7 @@
 																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
 																	       : '업데이트' }"></span>
 								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
-									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
-																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'">
 									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="32" height="32">
 									<div class="name_hover_box" th:text="${logData.account.name}"></div>
@@ -198,8 +194,7 @@
 																           : issue.projectLogDataList[0].projectLogStatus.idx == 1 ? '댓글'
 																	       : '업데이트' }"></span>
 								<div class="img_box" th:each="logData, loop : ${issue.projectLogDataList}"
-									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'
-																		   								              +'z-index:' + ${#lists.size(issue.projectLogDataList) - loop.index} + ';'">
+									th:if="${loop.index < 3}" th:style="'left: calc(6 * (' + ${#lists.size(issue.projectLogDataList)} + 'px - ' + ${loop.index} + 'px));'">
 									<img th:src="@{|/images/${logData.account.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="32" height="32">
 									<div class="name_hover_box" th:text="${logData.account.name}"></div>
