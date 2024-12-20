@@ -28,12 +28,18 @@ document.querySelector("body").addEventListener("click", function(e) {
         }
     }
 });
+document.querySelectorAll(".delete_modal").forEach(function(item){
+	item.addEventListener("click",function(){
+		event.stopPropagation();
+	})
+})
 document.querySelectorAll(".delete_button").forEach(function(item){
-	item.addEventListener("mouseup",function(){
+	item.addEventListener("click",function(){
+		event.stopPropagation();
 		let delete_button_1 = this.querySelector(".delete_button_1");
 		if(delete_button_1.style.display == "none"){
 			delete_button_1.style.display = "block"
-		}else{
+		}else if(delete_button_1.style.display == "block"){
 			delete_button_1.style.display = "none"
 		}
 	})
@@ -44,11 +50,12 @@ document.querySelectorAll(".delete_button_1").forEach(function(item){
 		let parent = this.closest(".delete_button");
 		if(parent.querySelector(".delete_modal").style.display == "none"){
 		parent.querySelector(".delete_modal").style.display = "block";
-		}else{
+		}else if(parent.querySelector(".delete_modal").style.display == "block"){
 		parent.querySelector(".delete_modal").style.display = "none";
 		}
 	})
 })
+
 document.querySelectorAll(".delete_alert_cancelbtn").forEach(function(item){
 	item.addEventListener("click",function(){
 		event.stopPropagation();
@@ -59,3 +66,35 @@ document.querySelectorAll(".delete_alert_cancelbtn").forEach(function(item){
 		}
 	})
 })
+let filterIdxNum = {
+	"filterIdx" : null
+};
+document.querySelectorAll(".delete_alert_submitbtn").forEach(function(item){
+	item.addEventListener("click",function(){
+		filterIdxNum.filterIdx = this.value;
+		fetchIssueDetail()
+	})
+})
+function fetchIssueDetail() {
+		    // fetch()를 사용하여 AJAX 요청
+	    let url = "/api/filter_issue_table/filter_delete"; 
+
+	    fetch(url, {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json' // JSON 데이터를 전송
+	        },
+	        body: JSON.stringify(filterIdxNum)
+	    })
+		.then(response => {
+		        if (response.ok) {
+					alert("삭제 완료");
+				   window.location.href = window.location.href;
+		        } else {
+		            // 응답 상태가 성공 범위를 벗어나는 경우
+		            throw new Error(`HTTP error!`);
+		        }
+	    }).catch(error => {
+        console.error("Fetch error:", error);  // 에러 처리
+	    });
+	}

@@ -1,3 +1,4 @@
+
 document.querySelector("body").addEventListener("click", function(e) {
     const menu = e.target.closest(".filter_menu");  // 클릭된 메뉴 찾기
     const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
@@ -846,7 +847,7 @@ let updateBefore = null;
 let createDateBefore = null;
 let jiraName = null;
 
-document.querySelector(".save_button").addEventListener("click",function(){
+document.querySelector(".save_button").addEventListener("click",async function(){
 	filterName = document.querySelector(".hover_input")?.value;
 	explain = document.querySelector(".textArea_1")?.value;
 	updateBefore = document.getElementById("update_before_date")?.value;
@@ -860,8 +861,37 @@ document.querySelector(".save_button").addEventListener("click",function(){
 	}
 	jiraName = this.dataset.jiraName;
 	
+	try{
+		const res = await fetch("/api/filter_issue_table/filter_create",{
+			method: 'POST',
+			headers:{
+				'Content-Type': 'application/json' // JSON 데이터를 전송
+	        },
+			body: JSON.stringify({
+				filterName : filterName
+			})
+		})
+		const booleanResult = await res.json();
+		if(!booleanResult){
+			alert("들어옴")
+			document.querySelector(".hover_input").style.border = "2px solid #C9372C";
+			document.querySelector(".hover_input").style.borderRadius = "4px";
+			document.querySelector(".fail_name").innerText = "중복된 이름이 존재합니다.";
+			document.querySelector(".fail_name").style.color = "#C9372C";
+			return;
+		}else{
+			
+		}
+	}catch(error){
+		console.error(error);
+	}
+	
+		
+	
+	
 	fetchFitlerCreate();
 })
+
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
     let url = "/api/filter_issue_table/filter_create"; 
@@ -900,10 +930,15 @@ function fetchFitlerCreate() {
 				jiraName : jiraName
 	        })
 	    })
-	    .then(response => response.json())  // JSON 형태로 응답 받기
-		.then(issueDetail => {
-		})
-	    .catch(error => {
+		.then(response => {
+				        if (response.ok) {
+							alert("생성 완료");
+							window.location.href = "./every_filter"
+				        } else {
+				            // 응답 상태가 성공 범위를 벗어나는 경우
+				            throw new Error(`HTTP error!`);
+				        }
+			    }).catch(error => {
 	        console.error("Fetch error:", error);  // 에러 처리
 	    });
 	}

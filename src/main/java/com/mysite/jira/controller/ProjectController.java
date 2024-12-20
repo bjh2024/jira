@@ -27,6 +27,7 @@ import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LogDataService;
@@ -41,16 +42,12 @@ import lombok.RequiredArgsConstructor;
 public class ProjectController {
 	@Autowired
 	private BoardMainService boardMainService;
-	
 	private final IssueService issueService;
-	
 	private final ProjectService projectService;
-	
 	private final LogDataService logDataService;
-	
 	private final AccountService accountService;
-	
 	private final JiraService jiraService;
+	private final FilterService filterService;
 	
 	@GetMapping("/{projectKey}/summation")
 	public String summationPage(Model model, HttpServletRequest request, Principal principal, 
@@ -188,7 +185,15 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/chart")
-	public String chart() {
+	public String chart(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+		Integer projectIdx = project.getIdx();
+		
+		List<Issue> issueList = issueService.getByProjectIdx(projectIdx);
+		model.addAttribute("issueList", issueList);
+		
 		return "project/chart";
 	}
 	

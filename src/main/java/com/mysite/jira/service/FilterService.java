@@ -247,4 +247,7 @@ public class FilterService {
 				.build();
 		this.filterReporterRepostiory.save(filterReporter);
 	}
+	public void filterDelete(Integer idx) {
+		this.filterRepository.deleteById(idx);
+	}
 }

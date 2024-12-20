@@ -2,7 +2,7 @@ package com.mysite.jira.entity;
 
 import java.util.List;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,28 +44,28 @@ public class Filter {
 		this.jira = jira;
 	}
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterAuth> filterAuthList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterDoneDate> filterDoneDateList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterDone> filterDoneList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterIssueUpdate> filterIssueUpdateList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterProject> FilterProjectList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterIssueType> FilterIssueTypeList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterIssueStatus> FilterIssueStatusList;
 	
-	@OneToMany(mappedBy = "filter",orphanRemoval = true) 
+	@OneToMany(mappedBy = "filter",cascade = CascadeType.REMOVE) 
 	private List<FilterManager> FilterManagerList;
 	
 	@OneToMany(mappedBy = "filter",orphanRemoval = true) 

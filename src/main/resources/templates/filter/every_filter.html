@@ -165,10 +165,10 @@
 							</g>
 						</svg>
 						</div>
-						<button class="delete_button_1">
+						<button class="delete_button_1" style="display: none;">
 							<div class="delete_button_1_text">삭제</div>
 						</button>
-						<div class="delete_modal">
+						<div class="delete_modal" style="display: none;">
 							<div class="delete_modal_contents">
 								<div class="delete_alert_title">
 									<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
@@ -184,7 +184,7 @@
 									<button class="delete_alert_cancelbtn">
 										<div>취소</div>
 									</button>
-									<button class="delete_alert_submitbtn">
+									<button class="delete_alert_submitbtn" th:value="${filterList.idx}">
 										<div>삭제</div>
 									</button>
 								</div>

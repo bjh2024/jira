@@ -49,25 +49,6 @@ public class FilterController {
 	private final TeamService teamService;
 	private final JiraService jiraService;
 
-//	@GetMapping("filter_issue")
-//	public String filterIssueMain(Model model, HttpServletRequest request) {
-//	    // Jira에서 문제 목록을 가져옴
-//	    List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
-//	    // 첫 번째 이슈의 Key를 사용하여 리다이렉트
-//	    String issueKey = issueList.get(0).getKey();
-//
-//	    String requestUrl = request.getRequestURL().toString();
-//	    String queryString = request.getQueryString();
-//
-//	    // 쿼리 스트링이 있으면, issueKey를 그 사이에 추가
-//	    if (queryString != null) {
-//	        // URL의 끝에 '?'가 포함되어 있는지 확인하고 issueKey를 추가
-//	        return "redirect:" + requestUrl + "/" + issueKey + "?" + queryString;
-//	    }
-//
-//	    // 쿼리 스트링이 없으면, 그냥 issueKey만 추가
-//	    return "redirect:" + requestUrl + "/" + issueKey;
-//	}
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
 			@PathVariable("jiraName") String jiraName, Principal principal){

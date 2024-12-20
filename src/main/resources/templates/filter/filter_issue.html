@@ -814,19 +814,6 @@
 <!--여기서 부터 이슈끝ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 					</div>
 					<div class="issue_box_end">
-						<button><svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-								<path fill="#5e6c84" fill-rule="evenodd"
-									d="m9.005 10.995 4.593-4.593a.99.99 0 1 1 1.4 1.4l-3.9 3.9 3.9 3.9a.99.99 0 0 1-1.4 1.4L9.005 12.41a1 1 0 0 1 0-1.414">
-								</path>
-							</svg>
-						</button>
-						1~8/8
-						<button><svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
-								<path fill="#5e6c84" fill-rule="evenodd"
-									d="M14.995 10.995a1 1 0 0 1 0 1.414l-4.593 4.593a.99.99 0 0 1-1.4-1.4l3.9-3.9-3.9-3.9a.99.99 0 0 1 1.4-1.4z">
-								</path>
-							</svg>
-						</button>
 					</div>
 				</div>
 				<div class="issue_middle_right" th:each="issueList,loop : ${issue}" style="display: none;"th:data-key="${issueList.key}">
@@ -1205,6 +1192,7 @@
 			<div class="filter_save_font">
 				이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
 				<input class="hover_input" type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;" required>
+				<div class="fail_name" style="color : #AE2E24;"></div>
 			</div> 
 			<div class="filter_save_font">
 				설명
@@ -1450,7 +1438,7 @@
 				<!--추가 누르면 내용이 추가될 부분-->
 			</div>
 			<div class="viewer_last_button">
-				<button class="save_button" th:attr="data-jira-name=${currentJira}">저장</button>
+				<button class="save_button" type="button" th:attr="data-jira-name=${currentJira}">저장</button>
 				<button class="cancle_button">취소</button>
 			</div>
 
