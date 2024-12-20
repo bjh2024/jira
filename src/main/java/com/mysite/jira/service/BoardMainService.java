@@ -222,6 +222,15 @@ public class BoardMainService {
 		this.issueRepository.save(issue);
 	}
 	
+	public boolean statusNameCheck(Integer projectIdx, String name) {
+		Optional<IssueStatus> status = this.issueStatusRepository.findByProjectIdxAndName(projectIdx, name);
+		if(status.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public void createIssueStatus(String name, Integer status, Integer projectIdx) {
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Project project = optProject.get();
