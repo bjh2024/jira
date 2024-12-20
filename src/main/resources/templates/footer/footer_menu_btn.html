@@ -1,8 +1,5 @@
-<div th:fragment="btnFragment" style="position: fixed; right: 30px; bottom: 30px;">
-	<head>
-		<link rel="stylesheet" type="text/css" th:href="@{/css/footer_menu_btn.css}">
-	</head>
-	<div class="btn-container">
+<div th:fragment="btnFragment">
+	<div class="btn-container footer-btn-item chat-bot hidden">
 		<div class="selectwindow">
 			<div class="selectwindow-header">
 				<img src="/images/logo.svg" alt="" width="50">
@@ -30,5 +27,4 @@
 		</div>
 		<img th:src="@{/images/chat_icon.png}" width="25px" height="25px">
 	</div>
-	<script th:src="@{/js/footer_menu_btn.js}"></script>
 </div>
