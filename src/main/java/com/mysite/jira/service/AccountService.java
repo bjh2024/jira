@@ -82,11 +82,12 @@ public class AccountService {
 			int tempCode = (int) (Math.random() * 26) + 65;
 			code += (char)tempCode;
 		}
+		Integer iconNum = (int) (Math.random() * 10) + 1;
 		Account newUser = Account.builder()
 								.name(username)
 								.email(email)
 								.pw(passwordEncoder.encode(pw))
-								.iconFilename("user_icon_file5.png")
+								.iconFilename("user_icon_file"+iconNum+".png")
 								.authCode(code)
 								.build();
 		this.accountRepository.save(newUser);
@@ -152,8 +153,21 @@ public class AccountService {
 	}
 	
 	public Account getAccountByKakaoKey(String key){
-		Optional<Account> account = this.accountRepository.findByKakaoSocialKey(key);
-		return account.get();
+		Optional<Account> optAcc = this.accountRepository.findByKakaoSocialKey(key);
+		Account account = null;
+		if(optAcc.isPresent()) {
+			account = optAcc.get();
+		}
+		return account;
+	}
+	
+	public Account getAccountByNaverKey(String key) {
+		Optional<Account> optAcc = this.accountRepository.findByNaverSocialKey(key);
+		Account account = null;
+		if(optAcc.isPresent()) {
+			account = optAcc.get();
+		}
+		return account;
 	}
 	
 }

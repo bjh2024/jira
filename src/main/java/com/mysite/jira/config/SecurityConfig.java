@@ -1,7 +1,5 @@
 package com.mysite.jira.config;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +8,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -31,6 +30,9 @@ public class SecurityConfig {
 	@Autowired
 	private OAuth2UserService oAuth2UserService;
 	
+	@Autowired
+	private KakaoLogoutHandler kakaoLogoutHandler;
+	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
@@ -46,6 +48,10 @@ public class SecurityConfig {
             .successHandler(customAuthenticationSuccessHandler)
 		).logout((logout) -> logout
 			.logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
+			.logoutSuccessHandler((request, response, authentication) -> {
+			    kakaoLogoutHandler.handleLogout(request, response, authentication);
+			    response.sendRedirect("/account/login?logout"); // 로그아웃 성공 후 리다이렉트
+			})
 	        .logoutSuccessUrl("/account/login?logout") // 로그아웃 성공 후 리다이렉트할 URL
 	        .invalidateHttpSession(true)
 	        .deleteCookies("JSESSIONID")

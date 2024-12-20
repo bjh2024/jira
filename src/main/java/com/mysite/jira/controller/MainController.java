@@ -44,7 +44,9 @@ public class MainController {
 		}
 		Account account = new Account();
 		if(principal.getName().split("@").length < 2) {
-			account = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
+			account = accKakao != null ? accKakao : accNaver;
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}
@@ -58,7 +60,9 @@ public class MainController {
 	public String filter(Model model, Principal principal, @PathVariable("jiraName") String jiraName) {
 		Account account = new Account();
 		if(principal.getName().split("@").length < 2) {
-			account = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
+			account = accKakao != null ? accKakao : accNaver;
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}

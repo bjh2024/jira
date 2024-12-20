@@ -270,6 +270,14 @@ public class BoardMainAPTIController {
 		boardMainService.createIssueStatus(name, status, projectIdx);
 	}
 	
+	@PostMapping("/issue_name_check")
+	public boolean duplicateCheck(@RequestBody CreateIssueDTO createIssueDTO) {
+		Integer projectIdx = createIssueDTO.getProjectIdx();
+		String name = createIssueDTO.getIssueName();
+		
+		return boardMainService.IssueNameCheck(projectIdx, name);
+	}
+	
 	@PostMapping("/create_issue")
 	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();

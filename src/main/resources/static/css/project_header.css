@@ -152,8 +152,10 @@
 .header-menuwindow{
 	position: absolute;
 	width: 250px;
-	top: 93px;
-	left: 119px;
+	top: 90px;
+	left: 118px;
+	/*top: 143px;
+	left: 359px;*/
 	background-color: white;
 	border-radius: 3px;
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);

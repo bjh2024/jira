@@ -26,41 +26,75 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-
         // Role generate
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
 
         // nameAttributeKey
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails()
                 .getUserInfoEndpoint()
                 .getUserNameAttributeName();
-
         Map<String, Object> attributes = oAuth2User.getAttributes();
         
-        // db 저장
-        String email = (String) ((Map<String, Object>) attributes.get("kakao_account")).get("email");
-        String name = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname");
-        String kakaoKey = attributes.get("id").toString();
-        System.out.println("OAuth2UserService: " + email + " " + name + " " + kakaoKey);
-        
-        Optional<Account> optAccount = this.accountRepository.findByEmail(email);
-        
-        if(optAccount.isEmpty()) {
-        	Account user = Account.builder()
-					.name(name)
-					.email(email)
-					.pw(null)
-					.authCode(null)
-					.kakaoSocialKey(kakaoKey)
-					.naverSocialKey(null)
-					.build();
-			this.accountRepository.save(user);
-			
-			user.updateAccount(null, null);
-			this.accountRepository.save(user);
+        if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+        	// naver 환경
+        	String name = (String) ((Map) attributes.get("response")).get("name");
+            String email = (String) ((Map) attributes.get("response")).get("email");
+            String naverKey = (String) ((Map) attributes.get("response")).get("id");
+            System.out.println("OAuth2UserService naver: " + email + " " + name + " " + naverKey);
+        	
+        	Optional<Account> optAccount = this.accountRepository.findByEmail(email);
+        	
+        	// 데이터베이스에 해당 계정이 존재하는지 확인하고, 없으면 생성
+        	if(optAccount.isEmpty()) {
+        		Integer iconNum = (int) (Math.random() * 10) + 1;
+        		
+        		Account user = Account.builder()
+        				.name(name)
+        				.email(email)
+        				.pw(null)
+        				.iconFilename("user_icon_file"+iconNum+".png")
+        				.authCode(null)
+        				.kakaoSocialKey(null)
+        				.naverSocialKey(naverKey)
+        				.build();
+        		this.accountRepository.save(user);
+        		
+        		user.updateAccount(null, null);
+        		this.accountRepository.save(user);
+        	}
+        	
+        	return new DefaultOAuth2User(authorities, Map.of("id", naverKey), "id");
+        }else {
+        	// kakao 환경
+        	String email = (String) ((Map<String, Object>) attributes.get("kakao_account")).get("email");
+        	String name = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname");
+        	String kakaoKey = attributes.get("id").toString();
+        	System.out.println("OAuth2UserService kakao: " + email + " " + name + " " + kakaoKey);
+        	
+        	Optional<Account> optAccount = this.accountRepository.findByEmail(email);
+        	
+        	// 데이터베이스에 해당 계정이 존재하는지 확인하고, 없으면 생성
+        	if(optAccount.isEmpty()) {
+        		Integer iconNum = (int) (Math.random() * 10) + 1;
+        		
+        		Account user = Account.builder()
+        				.name(name)
+        				.email(email)
+        				.pw(null)
+        				.iconFilename("user_icon_file"+iconNum+".png")
+        				.authCode(null)
+        				.kakaoSocialKey(kakaoKey)
+        				.naverSocialKey(null)
+        				.build();
+        		this.accountRepository.save(user);
+        		
+        		user.updateAccount(null, null);
+        		this.accountRepository.save(user);
+        	}
+        	
         }
         
-        return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), userNameAttributeName);
+        return new DefaultOAuth2User(authorities, attributes, userNameAttributeName);
 	}
 }

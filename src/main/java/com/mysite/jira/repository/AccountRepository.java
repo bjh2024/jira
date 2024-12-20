@@ -34,4 +34,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	Optional<Account> findByEmail(String email);
 	
 	Optional<Account> findByKakaoSocialKey(String key);
+	
+	Optional<Account> findByNaverSocialKey(String key);
 }

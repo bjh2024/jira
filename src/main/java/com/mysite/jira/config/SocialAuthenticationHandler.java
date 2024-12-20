@@ -1,6 +1,7 @@
 package com.mysite.jira.config;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,8 +29,9 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 	    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 	    String id = oAuth2User.getAttributes().get("id").toString();
-	    
-	    Account account = accountService.getAccountByKakaoKey(id); // 이메일로 Account 조회
+    	Account accKakao = accountService.getAccountByKakaoKey(id); // 인증키로 Account 조회
+    	Account accNaver = accountService.getAccountByNaverKey(id);
+    	Account account = accKakao != null ? accKakao : accNaver;
 	    Integer accountIdx = account.getIdx();
 	    
 	    Jira jira = jiraService.getRecentTop1Jira(accountIdx);

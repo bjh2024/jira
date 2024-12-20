@@ -15,6 +15,7 @@ public class CreateIssueDTO {
 	private String issueName;
 	
 	private Integer issueIdx;
+	
 	@Builder
 	public CreateIssueDTO(Integer issueIdx) {
 		this.issueIdx = issueIdx;

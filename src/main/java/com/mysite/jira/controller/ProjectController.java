@@ -58,7 +58,9 @@ public class ProjectController {
 								@PathVariable("projectKey") String projectKey) {
 		Account account = new Account();
 		if(principal.getName().split("@").length < 2) {
-			account = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
+			account = accKakao != null ? accKakao : accNaver;
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}
@@ -109,7 +111,9 @@ public class ProjectController {
 	public String createPage(Model model, Principal principal) {
 		Account currentUser = new Account();
 		if(principal.getName().split("@").length < 2) {
-			currentUser = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
+			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
+			currentUser = accKakao != null ? accKakao : accNaver;
 		}else {
 			currentUser = this.accountService.getAccountByEmail(principal.getName());
 		}
