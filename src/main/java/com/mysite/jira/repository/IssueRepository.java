@@ -12,6 +12,8 @@ import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	
+	List<Issue> findByKey(String key);
+	
 	List<Issue> findIssuesByProjectIdx(Integer idx);
 	
 	List<Issue> findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(Integer idx, Integer grade);

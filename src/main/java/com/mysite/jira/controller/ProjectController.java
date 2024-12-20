@@ -189,7 +189,7 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/attached_files")
-	public String attachedFiles(HttpServletRequest request, Model model) {
+	public String attachedFiles(HttpServletRequest request, Model model,@PathVariable("projectKey") String projectKey) {
 		String uri = request.getRequestURI(); 
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
@@ -211,6 +211,59 @@ public class ProjectController {
 		model.addAttribute("issueList", issueList);
 		
 		return "project/chart";
+	}
+	@GetMapping("/{projectKey}/project_issue")
+	public String projectIssue(HttpServletRequest request, Model model) {
+		String uri = request.getRequestURI(); 
+		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+		Integer projectIdx = project.getIdx();
+		
+		// 현재 시간용 변수
+		LocalDateTime now = LocalDateTime.now();
+		model.addAttribute("currentTime", now);
+		
+		// 프로젝트 별 상태 개수를 알기 위해 그룹화된 상태 리스트
+		List<Object[]> statusList = boardMainService.getIssueStatusByProjectIdx(projectIdx);
+		model.addAttribute("statusList", statusList);
+		
+		// 프로젝트 별 이슈 진행도 순으로 정렬된 상태 리스트
+		List<IssueStatus> orderedStatusList = boardMainService.getIssueStatusByProjectIdxOrderByStatusAsc(projectIdx);
+		model.addAttribute("orderedStatusList", orderedStatusList);
+		
+		// 프로젝트 별 이슈 리스트
+		List<Issue> issueList = boardMainService.getIssuesByProjectIdx(projectIdx);
+		model.addAttribute("issueList", issueList);
+		
+		// 프로젝트 별 서브 이슈 유형을 제외한 이슈 유형 리스트
+		List<IssueType> issueTypeList = boardMainService.getIssueTypesByProjectIdxAndGradeGreaterThan(projectIdx, 1);
+		model.addAttribute("issueTypeList", issueTypeList);
+		
+		// 전체 레이블 리스트
+		List<IssueLabelData> labelDataList = boardMainService.getLabelData(projectIdx);
+		model.addAttribute("labelDataList", labelDataList);
+		
+		// 전체 댓글 리스트
+		List<IssueReply> replyList = boardMainService.getIssueReply(projectIdx);
+		model.addAttribute("replyList", replyList);
+		
+		// 프로젝트 별 상속 관계 리스트
+		List<IssueExtends> extendsList = boardMainService.getIssueExtendsByProjectIdx(projectIdx);
+		model.addAttribute("extendsList", extendsList);
+		
+		// 높은 순으로 정렬된 이슈 중요도 리스트
+		List<IssuePriority> orderedPriorityList = boardMainService.getIssuePriority();
+		model.addAttribute("orderedPriorityList", orderedPriorityList);
+		
+		// 팀 리스트
+		List<Team> teamList = boardMainService.getJiraTeamList(jira.getIdx());
+		model.addAttribute("teamList", teamList);
+		
+		// 프로젝트 별 참여자 리스트
+		List<ProjectMembers> prjMemberList = boardMainService.getPrjMembers(projectIdx);
+		model.addAttribute("prjMemberList", prjMemberList);
+		
+		return "project/project_issue.html";
 	}
 	
 	@GetMapping("/profile")

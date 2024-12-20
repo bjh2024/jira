@@ -65,6 +65,7 @@ public class BoardMainService {
 	private final JiraRepository jiraRepository;
 	private final IssueLikeMembersRepository issueLikeMembersRepository;
 	
+	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
 		Optional<Project> projectName = this.projectRepository.findById(idx);
@@ -131,6 +132,10 @@ public class BoardMainService {
 	
 	public List<IssueReply> getIssueReply(Integer idx){
 		return this.issueReplyRepository.findByIssueProjectIdxOrderByCreateDateDesc(idx);
+	}
+	
+	public List<IssueReply> getFilterIssueReply(){
+		return this.issueReplyRepository.findAll();
 	}
 	
 	public IssuePriority getOnceIssuePriority(Integer idx) {

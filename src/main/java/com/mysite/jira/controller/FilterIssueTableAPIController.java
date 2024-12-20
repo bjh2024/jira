@@ -106,7 +106,6 @@ public class FilterIssueTableAPIController {
 				issueList.addAll(issueByManagerNull);
 			}
 		}
-
 		// 해결
 		if (!(notDoneCheck != null && doneCheck != null)) {
 			if (notDoneCheck != null) {
@@ -277,5 +276,27 @@ public class FilterIssueTableAPIController {
 				filterService.filterDelete(filterDto.getFilterIdx());
 			}
 		}
+	}
+	@PostMapping("/issue_detail")
+	public List<FilterIssueDTO> issueDetail(@RequestBody FilterIssueRequestDTO filterDto) {
+		List<Issue> issueList = issueService.getByKey(filterDto.getIssueKey());
+		List<FilterIssueDTO> filterIssue = new ArrayList<>();
+		for (Issue issue : issueList) {
+			FilterIssueDTO dto = FilterIssueDTO.builder().issueIconFilename(issue.getIssueType().getIconFilename())
+					.issueKey(issue.getKey()).issueName(issue.getName())
+					.issueManagerIconFilename(
+							issue.getManager() != null ? issue.getManager().getIconFilename() : "default_icon_file.png")
+					.issueManagerName(issue.getManager() != null ? issue.getManager().getName() : "할당되지 않음")
+					.issueReporterIconFilename(issue.getReporter().getIconFilename())
+					.issueReporterName(issue.getReporter().getName())
+					.issuePriorityIconFilename(issue.getIssuePriority().getIconFilename())
+					.issuePriorityName(issue.getIssuePriority().getName())
+					.issueStatusName(issue.getIssueStatus().getName()).issueStatus(issue.getIssueStatus().getStatus())
+					.finishDate(issue.getFinishDate()).createDate(issue.getCreateDate()).editDate(issue.getEditDate())
+					.deadlineDate(issue.getDeadlineDate()) // 기본값을 현재 날짜로 설정
+					.build();
+			filterIssue.add(dto);
+		}
+		return filterIssue;
 	}
 }

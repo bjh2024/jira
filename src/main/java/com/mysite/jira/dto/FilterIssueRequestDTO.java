@@ -33,4 +33,5 @@ public class FilterIssueRequestDTO {
 	private String filterName;
 	private String jiraName;
 	private Integer[] isCompleted;
+	private String issueKey;
 }

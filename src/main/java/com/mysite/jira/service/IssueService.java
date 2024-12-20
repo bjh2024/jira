@@ -65,6 +65,9 @@ public class IssueService {
 	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
 	private final FilterReporterRepository filterReporterRepository;
 	
+	public List<Issue> getByKey(String key){
+		return issueRepository.findByKey(key);
+	}
 	public List<Issue> getByProjectIdx(Integer idx){
 		return issueRepository.findIssuesByProjectIdx(idx);
 	}

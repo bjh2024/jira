@@ -22,6 +22,8 @@ import com.mysite.jira.entity.FilterIssueCreateDate;
 import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueReply;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
@@ -33,6 +35,7 @@ import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -45,13 +48,14 @@ public class FilterController {
 	private final IssueTypeService issueTypeService;
 	private final AccountService accountService;
 	private final FilterService filterService;
-	private final BoardMainService boradMainService;
+	private final BoardMainService boardMainService;
 	private final TeamService teamService;
 	private final JiraService jiraService;
 
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName, Principal principal){
+			@PathVariable("jiraName") String jiraName,
+			Principal principal, HttpServletRequest request){
 		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
 		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		try {
@@ -135,6 +139,10 @@ public class FilterController {
 			List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
 			model.addAttribute("filterList", filterList);
 			model.addAttribute("filterIdx", filterIdx);
+			
+			// 전체 댓글 리스트
+			List<IssueReply> replyList = boardMainService.getFilterIssueReply();
+			model.addAttribute("replyList", replyList);
 			
 		}catch(Exception e){
 			e.printStackTrace();

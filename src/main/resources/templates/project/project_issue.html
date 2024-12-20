@@ -1,0 +1,789 @@
+<html layout:decorate="~{layout}">
+<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue_table.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/issue_detail.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filterIssueDetail.css}">
+		<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+</head>
+<div layout:fragment="content" style="display: flex;">
+	<div class="header-container">
+		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+		<div class="issue_middle_right" th:each="issueList,loop : ${issue}" style="display: none;" th:data-key="${issueList.key}">
+							<div class="issuedetailbox">
+													 			<div class="issuedetail-headerbar">
+													 				<div class="issuekeypathbox">
+													 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) > 0}">
+													 						<th:block th:each="childList : ${issueList.childList}">
+													 						<div class="path-issuekeyicon epik" th:attr="data-projectidx=${issueList.project.idx}, data-currentissue=${childList.parent.idx}">
+																				<div class="update-issuepathwindow"></div>
+																				<img th:src="@{|/images/${childList.parent.issueType.iconFilename}|}" width="16px" height="16px">
+																			</div>
+													 						<span style="margin-bottom: 2px; padding-right: 4px;" th:text="${childList.parent.key}"></span>
+													 						<span style="font-size: 16px; ">/</span>
+													 						</th:block>
+													 					</div>
+													 					<div class="issuekeypath" th:if="${#lists.size(issueList.childList) < 1} and ${issueList.issueType.grade != 3}" style="gap: 0px;">
+													 						<button class="addissuepathbtn" th:attr="data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx}">
+																				<div class="addissuepath-window"></div>
+													 							<span style="height: 16px;">
+													 								<img th:src="@{/images/add_path_icon.svg}">
+													 							</span>
+													 							<span>에픽 추가</span>
+													 						</button>
+													 						<span style="font-size: 16px; ">/</span>
+													 					</div>
+													 					<div class="issuekeypath" th:attr="data-issueIdx=${issueList.idx}">
+													 						<div class="path-issuekeyicon general" style="padding-left: 0px;" th:attr="data-projectidx=${issueList.project.idx}, data-currenttype=${issueList.IssueType.idx}">
+																				<div class="update-issuepathwindow"></div>
+																				<img th:src="@{|/images/${issueList.issueType.iconFilename}|}" width="16px" height="16px">
+																			</div>
+													 						<span style="margin-bottom: 2px;" th:text="${issueList.key}"></span>
+													 					</div>
+													 				</div>
+													 				<div class="issuedetail-menubar">
+													 					<div class="issuedetail-option issuedetail-vote">
+																			<div class="issuedetail-votewindow">
+																				<div class="votewindow-votebtn">
+																					<img src="/images/thumbsup_icon.svg" style="filter: invert(18%) sepia(93%) saturate(2545%) hue-rotate(205deg) brightness(99%) contrast(113%);">
+																					<span>이 이슈에 투표합니다.</span>
+																				</div>
+																				<div class="votewindow-votedlist"></div>
+																			</div>
+													 						<span style="margin-top: 2px;">
+													 							<img th:src="@{/images/thumbsup_icon.svg}" class="thumbsup-img">
+													 						</span>
+																			<span class="issuedetail-vote-count">0</span>
+													 					</div>
+																		<div class="issuedetail-option delete">
+																			<div class="issue-menuwindow">
+																				<div class="menuwindow-option detail" th:attr="data-issueidx=${issueList.idx}, data-issuekey=${issueList.key}">
+																					<span>삭제</span>
+																				</div>
+																			</div>
+													 						<span style="margin-top: 2.5px;">
+													 							<img th:src="@{/images/three_dots_icon_small.svg}"
+													 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+													 						</span>
+													 					</div>
+													 					<div class="issuedetail-option issuedetail-off">
+													 						<span style="margin-top: 2.5px;">
+													 							<img th:src="@{/images/cancel_icon.svg}"
+													 								style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+													 						</span>
+													 					</div>
+													 				</div>
+													 			</div>
+													 			<div class="issuedetailbody-container">
+													 				<div class="issuedetailviewbox">
+													 					<div style="padding-left: 24px;">
+																			<div class="issuedetail-titlebox">
+																				<div class="edit-issuedetail-title">
+																					<input class="edit-issuedetail-title-input" th:value="${issueList.name}" th:attr="data-idx=${issueList.idx}">
+																					<button class="edit-detailtitlebtn submit">
+																						<img src="/images/status_complete_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+																					</button>
+																					<button class="edit-detailtitlebtn cancel">
+																						<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+																					</button>
+																				</div>
+														 						<h1 class="issuedetail-title" th:text="${issueList.name}"></h1>
+																			</div>
+													 						<div class="issuedetail-insertbtn">
+													 							<div class="issuedetail-insertwindow">
+													 								<button class="insertwindow-btn file" th:attr="data-issueidx=${issueList.idx}, data-useridx=${currentUser.idx}">
+																						<input type="file" style="display: none;" class="file-input">
+													 									<span
+													 										style="height: 16px; margin-left: 4px; margin-bottom: 2px;"><img
+													 											th:src="@{/images/attachment_icon.svg}"
+													 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+													 									<span style="margin-bottom: 4px; margin-left: 4px;">첨부
+													 										파일</span>
+													 								</button>
+													 								<button class="insertwindow-btn subissue" th:attr="data-grade=${issueList.issueType.grade}, data-projectidx=${issueList.project.idx}">
+													 									<span style="height: 24px; margin-bottom: 2px;"><img
+													 											th:src="@{/images/sub_issue_icon.svg}"
+													 											style="filter: invert(11%) sepia(5%) saturate(1255%) hue-rotate(191deg) brightness(97%) contrast(85%);"></span>
+													 									<span style="margin-bottom: 4px;">하위 이슈</span>
+													 								</button>
+													 							</div>
+													 							<span style="height: 16px;">
+													 								<img class="insertbtn-icon"
+													 									th:src="@{/images/plus_icon_small.svg}">
+													 							</span>
+													 							<span style="margin-bottom: 2px;">추가</span>
+													 						</div>
+													 						<div style="font-weight: bold; color: #172B4D; margin-top: 23px;">설명
+													 						</div>
+
+													 					</div>
+													 					<div class="issuedetail-exarea">
+													 						<div class="editor-container" draggable="false">
+													 							<div class="editor exarea" style="width: 738px;" draggable="false" th:attr="data-content=${issueList.content}, data-idx = ${issueList.idx}">
+													 								<p draggable="false"></p>
+													 							</div>
+													 							<div class="editareabtns">
+													 								<button class="editarea-save">저장</button>
+													 								<button class="editarea-cancel">취소</button>
+													 							</div>
+													 						</div>
+													 						<span class="issuedetail-exvalue"
+													 							th:text="${#strings.defaultString(issueList.content, '설명 편집')}"
+													 							value></span>
+													 					</div>
+																		<div class="attached-files-box main">
+																			<div class="file-list-title">
+													 							<span>첨부 파일</span>
+													 							<div class="file-list-btnbar">
+													 								<button class="file-list-addbtn" th:attr="data-issueidx=${issueList.idx}, data-useridx=${currentUser.idx}">
+																						<input type="file" style="display: none;" class="file-input-direct">
+													 									<img th:src="@{/images/plus_icon.svg}" class="add-subissue-icon">
+													 								</button>
+													 							</div>
+													 						</div>
+																			<div class="file-list-box">
+																			</div>
+																		</div> 
+													 					<div class="subissue-list-box main" >
+													 						<div class="subissue-list-title">
+													 							<span>하위 이슈</span>
+													 							<div class="subissue-list-btnbar">
+													 								<button class="subissue-list-addbtn">
+													 									<img th:src="@{/images/plus_icon.svg}" class="add-file-icon">
+													 								</button>
+													 							</div>
+													 						</div>
+													 						<div class="subissue-list" th:each="extendsList : ${extendsList}"
+													 						th:if="${extendsList.parent.idx == issueList.idx && #lists.size(issueList.parentList) > 0}">
+													 							<div class="subissue-list-leftdetail">
+													 								<span style="height: 16px;">
+													 									<img th:src="@{|/images/${extendsList.child.issueType.iconFilename}|}">
+													 								</span>
+													 								<span th:text="${extendsList.child.key}" style="height: 13px;"></span>
+													 								<span th:text="${extendsList.child.name}" style="font-size: 14px; margin-left: 8px; margin-bottom: 2px;"
+																					th:style="${extendsList.child.issueStatus.status == 3} ? 'text-decoration: line-through;' : ''"></span>
+													 							</div>
+													 							<div class="subissue-list-rightdetail">
+													 								<span style="height: 20px;">
+													 									<img th:src="@{|/images/${extendsList.child.issuePriority.iconFilename}|}" width="20px" height="20px">
+													 								</span>
+													 								<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+																						  th:if="${extendsList.child.manager != null}">
+													 									<img th:src="@{|/images/${extendsList.child.manager.iconFilename}|}" class="issue-managerimg">
+													 								</span>
+																					<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-right: 2px;"
+																						  th:if="${extendsList.child.manager == null}">
+													 									<img th:src="@{|/images/user_icon_file10.png|}" class="issue-managerimg">
+													 								</span>
+													 								<div th:classappend="${extendsList.child.issueStatus.status == 1 ? 'status1':''}
+													 												+${extendsList.child.issueStatus.status == 2 ? 'status2':''}
+													 												+${extendsList.child.issueStatus.status == 3 ? 'status3':''}"
+													 												class="rightdetail-subissue-status" style="margin-left: 0px; position: relative;"
+																						 th:attr="data-projectidx=${extendsList.child.issueList.project.idx}, data-statusidx=${extendsList.child.issueStatus.idx},
+																						 		  data-issueidx=${extendsList.child.idx}">
+													 									<div class="issuedetail-statuswindow" style="right: 0px; top: 24px;">
+													 										<div class="statuswindow-menubox">
+													 											<!--서브이슈, input 태그나 부모 버튼 클래스명 수정해야 할 곳-->
+													 										</div>
+													 									</div>
+													 									<span th:text="${extendsList.child.issueStatus.name}" style="margin-right: 2px;"></span>
+													 									<img th:src="@{/images/arrow_under_icon.svg}" width="10px" height="10px">
+																					</div>
+													 							</div>
+													 						</div>
+																			<div class="create-subissue-box" th:attr="data-statusidx=${issueList.IssueStatus.idx}, data-useridx=${currentUser.idx}, 
+																			data-projectidx=${issueList.project.idx}, data-jiraname=${currentJira}, data-parentidx=${issueList.idx}">
+																				<div class="create-subissue-titlebox">
+																					<div class="create-subissue-type">
+																						<div class="create-subissue-typewindow"></div>
+																						<img th:src="@{/images/issue_sub_task.svg}">
+																						<span class="selected-sub-issue-type">하위 작업</span>
+																						<img th:src="@{/images/arrow_under_icon.svg}" style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);" draggable="false">
+																					</div>
+																					<div class="create-subissue-title">
+																						<input type="text" class="create-subissue-input" placeholder="무엇을 완료해야 합니까?">
+																					</div>
+																				</div>
+																				<div class="create-subissue-underbox">
+																					<div class="select-exist-subissuebtn">
+																						<img th:src="@{/images/search_icon.svg}" width="16" height="16" style="filter: invert(36%) sepia(64%) saturate(1801%) hue-rotate(200deg) brightness(83%) contrast(107%);">
+																						<span>기존 이슈 선택</span>
+																					</div>
+																					<div class="create-subissue-submitbar">
+																						<div class="create-subissue submit">
+																							<span>만들기</span>
+																						</div>
+																						<div class="create-subissue cancel">
+																							<span>취소</span>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+													 					</div>
+													 					<div class="issuedetail-activebox">
+													 						<div
+													 							style="font-weight: bold; color: #172B4D; margin-top: 40px; margin-bottom: 7px;">
+													 							활동</div>
+													 						<div class="issuedetail-activebar">
+													 							<div class="issuedetail-activebtns">
+													 								<span style="margin-right: 4px;">표시: </span>
+													 								<button class="issuedetail-atvbtn reply active">
+													 									<span style="margin-right: 2px;">댓글</span>
+													 								</button>
+													 								<button class="issuedetail-atvbtn log">
+													 									<span style="margin-right: 2px;">기록</span>
+													 								</button>
+													 							</div>
+													 							<div>
+													 								<button class="issuedetail-sortbtn">
+													 									<span style="width: 16px; height: 16px; margin-top: 2px;">
+													 										<img th:src="@{/images/act_sort_icon.svg}"
+													 											style="filter: invert(11%) sepia(44%) saturate(2120%) hue-rotate(197deg) brightness(99%) contrast(90%);">
+													 									</span>
+													 								</button>
+													 							</div>
+													 						</div>
+													 					</div>
+																		<div class="issuedetail-loglist-all"></div>
+													 					<div class="issuedetail-replybox">
+													 						<div class="writereplybox">
+													 							<span style="margin-top: 4px;"><img width="24" height="24"
+													 									th:src="@{|/images/${currentUser.iconFilename}|}"
+													 									style="border-radius: 50%;"></span>
+													 							<div class="editor-container">
+													 								<div class="editor newreply" style="width: 690px;" th:attr="data-useridx=${currentUser.idx}, data-issueidx=${issueList.idx}">
+													 									<p></p>
+													 								</div>
+													 								<div class="editareabtns">
+													 									<button class="editarea-save">저장</button>
+													 									<button class="editarea-cancel">취소</button>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-replytextarea">
+													 								<span>댓글 추가...</span>
+													 							</div>
+													 						</div>
+													 						<div class="issuedetail-tipmsg">
+													 							<strong>전문가 팁: </strong>
+													 							<span>눌러서</span>
+													 							<span class="issuedetail-keyguide">M</span>
+													 							<span>댓글 추가</span>
+													 						</div>
+													 					</div>
+													 					<div class="issuedetail-replylist">
+													 						<div class="issuedetail-reply" th:each="replyList : ${replyList}" th:if="${replyList.issue.idx == issueList.idx}">
+													 							<div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+													 								<img class="issue-managerimg" th:src="@{|/images/${replyList.account.iconFilename}|}">
+													 							</div>
+													 							<div class="issuedetail-replydetailbox">
+													 								<div class="replydetail-name-date">
+													 									<span th:text="${replyList.account.name}"></span>
+													 									<span th:text="${#temporals.format(replyList.createDate, 'yyyy-MM-dd HH:mm:ss')}" style="letter-spacing: -0.2px; margin-top: 2px;"></span>
+													 									<div th:if="${replyList.editDate != null}">편집됨</div>
+													 								</div>
+													 								<div th:text="${replyList.content}" class="replydetail-content"></div>
+													 							</div>
+													 							<div></div>
+													 							<div class="replydetail-managebar">
+													 								<span class="reply-geteditbtn edit" th:if="${currentUser.idx == replyList.account.idx}" th:attr="data-content=${replyList.content}">편집</span><strong th:if="${currentUser.idx == replyList.account.idx}">·</strong>
+													 								<span class="reply-deletebtn" th:attr="data-replyidx=${replyList.idx}">삭제</span>
+													 							</div>
+													 							<div class="editor-container">
+													 								<div class="editor alterreply" th:attr="data-content=${replyList.content}, data-replyidx=${replyList.idx}" style="width: 676px;"></div>
+													 								<div class="editareabtns">
+													 									<button class="editarea-save">저장</button>
+													 									<button class="editarea-cancel">취소</button>
+													 								</div>
+													 							</div>
+													 						</div>
+													 					</div>
+																		<div class="issuedetail-loglist"></div>
+													 				</div>
+													 				<div class="issuedetailbar">
+													 					<div class="issuedetail-statusbar">
+													 						<button class="issuedetail-statusbtn" th:classappend="${issueList.issueStatus.status == 1 ? 'status1':''}
+													 								+${issueList.issueStatus.status == 2 ? 'status2':''}
+													 								+${issueList.issueStatus.status == 3 ? 'status3':''}"
+																					th:attr="data-statusidx=${issueList.issueStatus.idx},
+																							 data-projectidx=${issueList.project.idx},
+																							 data-issueidx=${issueList.idx}">
+													 							<div class="issuedetail-statuswindow" style="left: 0px;">
+													 								<div class="statuswindow-menubox" >
+													 									
+													 								</div>
+													 							</div>
+													 							<span style="margin-bottom: 3px;"
+													 								th:text="${issueList.issueStatus.name}"></span>
+													 							<span style="margin-top: 1px; margin-left: 1px;">
+													 								<img th:src="@{/images/arrow_under_icon.svg}"
+													 									style=" width: 12px; height: 12px; filter: invert(12%) sepia(2%) saturate(2571%) hue-rotate(191deg) brightness(103%) contrast(90%);">
+													 							</span>
+													 						</button>
+													 						<div class="issuedetail-status-complete"
+													 							th:if="${issueList.issueStatus.status == 3}">
+													 							<span style="height: 16px;"><img
+													 									src="/images/status_complete_icon.svg"
+													 									style="filter: invert(49%) sepia(67%) saturate(442%) hue-rotate(42deg) brightness(95%) contrast(96%);"></span>
+													 							<span>완료</span>
+													 						</div>
+													 					</div>
+													 					<div class="issuedetail-graphcontainer">
+													 						<div class="issuedetail-graphtitle">
+													 							<span style="margin-bottom: 3px;">세부 사항</span>
+													 							<span style="height: 24px; margin-right: 2px; margin-top: 2px;">
+													 								<img th:src="@{/images/arrow_up_icon.svg}"
+													 									style="filter: invert(32%) sepia(9%) saturate(1499%) hue-rotate(179deg) brightness(96%) contrast(94%);">
+													 							</span>
+													 						</div>
+													 						<div class="issuedetail-graphbox">
+													 							<div class="issuedetail-graph">
+													 								<div class="issuedetail-graphtype">
+													 									<span>우선 순위</span>
+													 								</div>
+													 								<div class="issuedetail-graphval priority" th:attr="data-issueidx=${issueList.idx}, 
+																					data-priorityidx=${issueList.issuePriority.idx}, data-iconfilename=${issueList.issuePriority.iconFilename}">
+													 									<div class="graphval-selectwindow"></div>
+													 									<span style="margin-top: 2px;"><img
+													 											th:src="@{|/images/${issueList.issuePriority.iconFilename}|}"
+													 											width="16px" height="16px"></span>
+													 									<span style="color: #172B4D;"
+													 										th:text="${issueList.issuePriority.name}"></span>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph"
+													 								style="align-items: flex-start; margin-bottom: 8px;">
+													 								<div class="issuedetail-graphtype">
+													 									<span>담당자</span>
+													 								</div>
+													 								<div>
+													 									<div class="issuedetail-graphval manager" th:attr="data-manageridx=${issueList.manager != null ? issueList.manager.idx : currentUser.idx},
+																						data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx}, data-name=${issueList.manager != null ? issueList.manager.name : ''}, 
+																						data-iconFilename=${issueList.manager != null ? issueList.manager.iconFilename : currentUser.iconFilename}, data-currentuseridx=${currentUser.idx},
+																						data-currentusericon=${currentUser.iconFilename}">
+													 										<div class="graphval-selectwindow"></div>
+														 										<span style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"
+																								th:if="${issueList.manager != null}"><img
+														 												th:src="@{|/images/${issueList.manager.iconFilename}|}"
+														 												style="width: 100%; height: 100%; object-fit: cover;"></span>
+														 										<span style="font-size: 14px; margin-bottom: 2px; margin-left: 2px; color: #172B4D;"
+																									  th:if="${issueList.manager != null}"
+																									  th:text="${issueList.manager.name}"></span>
+														 										<span th:if="${issueList.manager == null}"
+														 											style="font-size: 14px; margin-bottom: 2px; margin-left: 2px;"
+														 											th:text="없음"></span>
+													 									</div>
+													 									<div class="issuedetail-setmanager"><a th:href="@{#}">나에게 할당</a></div>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph">
+													 								<div class="issuedetail-graphtype">
+													 									<span>레이블</span>
+													 								</div>
+													 								<div class="issuedetail-graphval label-def main" th:attr="data-issueidx=${issueList.idx}, data-jiraidx=${issueList.project.jira.idx}" style="height: auto; min-height: 32px;">
+												 										<div class="graphval-selectwindow label">
+												 										</div>
+													 									<th:block th:each="labelValList : ${labelDataList}" th:if="${labelValList.issue.idx == issueList.idx}">
+													 										<span class="graphval-label" th:attr="data-idx=${labelValList.issueLabel.idx}, data-labeldataidx=${labelValList.idx}">
+													 											<a th:text="${labelValList.issueLabel.name}"></a>
+																								<img src="/images/cancel_icon.svg" class="graphval-delete-labelbtn">
+													 										</span>
+													 									</th:block>
+													 									<span class="graphval-label-def none">
+													 										없음
+													 									</span>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph">
+													 								<div class="issuedetail-graphtype">
+													 									<span>기한</span>
+													 								</div>
+													 								<div class="issuedetail-graphval-date" >
+																						<div class="deadline-bg-box"
+																						th:classappend="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime ? 'graphval-dead':''}"></div>
+																						<input type="text" class="datepicker dead" th:attr="data-issueidx=${issueList.idx}" 
+																						th:placeholder="${issueList.deadlineDate != null} ? ${#temporals.format(issueList.deadlineDate, 'yyyy-MM-dd')} : '없음'">
+																						<span th:if="${issueList.deadlineDate != null && issueList.deadlineDate < currentTime}" 
+																						style="height: 16px;position: absolute; top: 8px; right: 154px;">
+												 											<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px">
+												 										</span>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph">
+													 								<div class="issuedetail-graphtype" style="margin-top: 3px;">
+													 									<span>Start date</span>
+													 								</div>
+													 								<div class="issuedetail-graphval-date">
+																						<input type="text" class="datepicker start" th:attr="data-issueidx=${issueList.idx}" th:placeholder="${issueList.startDate != null} ? ${#temporals.format(issueList.startDate, 'yyyy-MM-dd')} : '없음'">
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph">
+													 								<div class="issuedetail-graphtype">
+													 									<span>Team</span>
+													 								</div>
+													 								<div class="issuedetail-graphval team" th:attr="data-teamidx=${issueList.team?.idx}, 
+																					data-jiraidx=${issueList.jira?.idx}, data-issueidx=${issueList.idx}">
+													 									<div class="graphval-selectwindow" style="top: 40px; left: 0px;"></div>
+													 									<span style="margin-bottom: 3px;"
+													 									th:text="${issueList.team != null} ? ${issueList.team.name} : '없음'"></span>
+													 								</div>
+													 							</div>
+													 							<div class="issuedetail-graph"
+													 								style="align-items: flex-start; margin-bottom: 6px;">
+													 								<div class="issuedetail-graphtype" style="margin-top: 1px;">
+													 									<span>보고자</span>
+													 								</div>
+													 								<div>
+													 									<div class="issuedetail-graphval reporter" th:attr="data-reporteridx=${issueList.reporter.idx},
+																						data-projectidx=${issueList.project.idx}, data-issueidx=${issueList.idx}"
+													 										style="margin-top: 1px;">
+													 										<div class="graphval-selectwindow"></div>
+													 										<span
+													 											style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; margin-left: 2px;"><img
+													 												th:src="@{|/images/${issueList.reporter.iconFilename}|}"
+													 												style="width: 100%; height: 100%; object-fit: cover;"></span>
+													 										<span th:text="${issueList.reporter.name}"
+													 											style="font-size: 14px; margin-left: 2px; margin-bottom: 2px; color: #172B4D;"></span>
+													 									</div>
+													 								</div>
+													 							</div>
+													 						</div>
+													 					</div>
+													 					<div class="issuedetail-datereport">
+													 						<div>
+													 							<div class="issuedetail-date">
+													 								<span>만듦</span>
+													 								<span
+													 									th:text="${#temporals.format(issueList.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+													 							</div>
+													 							<div class="issuedetail-date">
+													 								<span>업데이트</span>
+													 								<span
+													 									th:text="${#temporals.format(issueList.editDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+													 							</div>
+													 						</div>
+													 						<a class="issuedetail-typeset">
+													 							<span style="height: 16px;">
+													 								<img th:src="@{/images/setting_icon_small.svg}"
+													 									style="filter: invert(30%) sepia(10%) saturate(1715%) hue-rotate(179deg) brightness(97%) contrast(86%);">
+													 							</span>
+													 							<span style="margin-bottom: 2px;">구성</span>
+													 						</a>
+													 					</div>
+													 				</div>
+													 			</div>
+													 		</div>
+							</div>
+							<div class="modal">
+									<form>
+									<div class="modal_content">
+										<div class="content_div_1">
+											필터 저장
+										</div>
+										<div style="height: 20px;">
+											<span style="font-size: 14px; color:#44546F;">필수 필드는 별표로 표시되어 있습니다<span
+													style="color:#AE2E24; margin-left: 6px;">*</span></span>
+										</div>
+										<div class="filter_save_font">
+											이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
+											<input class="hover_input" type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;" required>
+											<div class="fail_name" style="color : #AE2E24;"></div>
+										</div> 
+										<div class="filter_save_font">
+											설명
+											<textarea class="textArea_1" rows="2"></textarea>
+										</div>
+										<div class="filter_save_font" style="margin-top: 7px;">
+											조회자
+										</div>
+										<div class="viewer_div">
+											<div style="display: flex;"> 
+												<div class="viewer_div_1">
+													<div class="label">
+														<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																비공개
+													</div>
+													<div style="margin-left: 46px;">
+														<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+															<path fill="currentcolor" fill-rule="evenodd"
+															d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+														</svg>
+													</div>
+													<div class="viewer_div_1_category">
+														<div class="optionItem">
+															<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															프로젝트
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															그룹
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															사용자
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															비공개
+														</div>
+													</div>
+													</div>
+													<div>
+														<div class="project_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="projectLabel" style="margin-left: 4px; z-index: 0;">
+																<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																프로젝트 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+															</svg>
+															</div>
+															<div class="project_div_category" >
+																<div class="projectItem" th:each="project :${project}">
+																	<div>
+																		<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+																	</div>
+																	<div>
+																		<span th:text="${project.name}"></span>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="team_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="teamLabel" style="margin-left: 4px; z-index: 0;">
+																	<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																	그룹 선택
+																</div>
+																<div>
+																	<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																	<path fill="currentcolor" fill-rule="evenodd"
+																		d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																	</path>
+																</svg>
+																</div>
+																<div class="team_div_category" >
+																	<div class="teamItem" th:each="team :${teamList}">
+																		<div style="display: flex; align-items: center;">
+																			<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																			<span th:text="${team.name}"></span>
+																		</div>
+																</div>
+															</div>	
+														</div>
+														<div class="user_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="userLabel" style="margin-left: 4px; z-index: 0;">
+																	<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																	사용자 선택
+																</div>
+																<div>
+																	<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																	<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+																</svg>
+																</div>
+																<div class="user_div_category" >
+																	<div class="userItem" th:each="jiraMembers :${jiraMembers}">
+																		<div>
+																			<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+																		</div>
+																		<div>
+																			<span th:text="${jiraMembers.name}"></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+											<div style="display: flex;">
+											<button type="button" class="filter_save_reset" style="border:none; color: #6B778C; margin-right: 4px;">
+												초기화</button>
+											<div class="viewer_div_2">
+												추가
+											</div>
+											</div>
+										</div>
+										<div class="viewer_list_box">
+												<!--필터조건 추가될 부분-->
+										</div>
+										<div class="filter_save_font" style="margin-top: 12px;">
+											편집기
+										</div>
+										<div class="viewer_div">
+											<div style="display: flex;">
+											<div class="viewer_div_1">
+												<div class="label2">
+													<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+													비공개
+												</div>
+												<div style="margin-left: 46px;">
+													<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+														<path fill="currentcolor" fill-rule="evenodd"
+															d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+														</path>
+													</svg>
+												</div>
+											<div class="viewer_div_1_category">
+															<div class="optionItem2">
+																<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																프로젝트
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																그룹
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																사용자
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																비공개
+															</div>
+														</div>
+													</div>
+												<div>
+													<div class="project_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+														<div class="projectLabel2" style="margin-left: 4px; z-index: 0;">
+															<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															프로젝트 선택
+														</div>
+														<div>
+															<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+															<path fill="currentcolor" fill-rule="evenodd"
+																d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+														</svg>
+														</div>
+														<div class="project_div_category" >
+															<div class="projectItem2" th:each="project :${project}">
+																<div>
+																	<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+																</div>
+																<div>
+																	<span th:text="${project.name}"></span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="team_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+															<div class="teamLabel2" style="margin-left: 4px; z-index: 0; ">
+																<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																그룹 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+															</svg>
+															</div>
+															<div class="team_div_category" >
+																<div class="teamItem2" th:each="team :${teamList}">
+																	<div>
+																		<span th:text="${team.name}"></span>
+																	</div>
+															</div>
+														</div>	
+													</div>
+													<div class="user_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+															<div class="userLabel2" style="margin-left: 4px; z-index: 0;">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																사용자 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+															</svg>
+															</div>
+															<div class="user_div_category" >
+																<div class="userItem2" th:each="jiraMembers :${jiraMembers}">
+																	<div>
+																		<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+																	</div>
+																	<div>
+																		<span th:text="${jiraMembers.name}"></span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													</div>
+											<div style="display: flex;">
+											<button class="filter_save_reset2" type="button"style="border:none; color: #6B778C; margin-right: 4px;">
+												초기화</button>
+											<div class="viewer_div_2">
+												추가
+											</div>
+											</div>
+										</div>
+										<div class="viewer_list_box2">
+											<!--추가 누르면 내용이 추가될 부분-->
+										</div>
+										<div class="viewer_last_button">
+											<button class="save_button" type="button" th:attr="data-jira-name=${currentJira}">저장</button>
+											<button class="cancle_button">취소</button>
+										</div>
+
+									</div>
+									</form>
+									<div class="reply-delete-alert-container">
+											<div class="delete-alert-box">
+												<div class="delete-alert-title">
+													<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+													<span class="delete-alert-titletext">이 댓글을 삭제하시겠습니까?</span>
+												</div>
+												<div class="delete-alert-body">
+													<span>
+														삭제하면 영구적으로 제거됩니다.
+													</span>
+												</div>
+												<div class="delete-alert-btnbar">
+													<button class="delete-alert-cancelbtn">
+														<span>취소</span>
+													</button>
+													<button class="delete-alert-submitbtn reply">
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+	</div>
+	<script th:src="@{/js/filter_issue.js}"></script>
+		<script th:src="@{/js/filter_issue_table.js}"></script>
+		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+		<script th:src="@{/js/filter_issue_detail.js}"></script>
+		<script th:inline="javascript"></script>
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script>
+			flatpickr(".datepicker", {
+				dateFormat: 'Y-m-d',
+				onChange: function(selectedDates, dateStr, instance) {
+					// selectedDates: [Thu Dec 05 2024 00:00:00 GMT+0900 (한국 표준시)]
+					// dateStr: 2024-12-11
+					// instance: {config: {…}, l10n: {…}, _handlers: Array(13), pluginElements: Array(0), parseDate: ƒ, …}
+					const issueIdx = instance.input.dataset.issueidx;
+					const date = dateStr;
+					const type = instance.input.classList[1];
+					loadDateData(issueIdx, date, type);
+				}
+			}); 
+		</script>
+</div>
+</html>
