@@ -1,7 +1,6 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
+import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -71,7 +71,12 @@ public class ProjectAPIController {
 		String uri = projectCreateDTO.getUri();
 		String name = projectCreateDTO.getName();
 		String key = projectCreateDTO.getKey();
-		Account account = accountService.getAccountByEmail(principal.getName());
+		Account account = new Account();
+		if(principal.getName().split("@").length < 2) {
+			account = this.accountService.getAccountByKakaoKey(principal.getName());
+		}else {
+			account = this.accountService.getAccountByEmail(principal.getName());
+		}
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		
 		projectService.createProject(name, key ,jira, account);
@@ -114,6 +119,12 @@ public class ProjectAPIController {
 	public List<ProjectListDTO> getProjectList(@RequestParam("uri") String uri){
 		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		return projectService.getByJiraIdxProjectListDTO(jira.getIdx());
+	}
+	
+	@PostMapping("/update_project_name")
+	public void updateProjectName(@RequestBody UpdateProjectNameDTO nameDTO) {
+		Project project = projectService.getProjectByIdx(nameDTO.getProjectIdx());
+		projectService.updateProjectName(project, nameDTO.getName());
 	}
 	
 }

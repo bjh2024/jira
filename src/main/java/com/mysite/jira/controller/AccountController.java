@@ -1,8 +1,7 @@
-package com.mysite.jira.controller;
+	package com.mysite.jira.controller;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

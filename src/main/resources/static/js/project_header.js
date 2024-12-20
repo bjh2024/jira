@@ -30,6 +30,67 @@ document.querySelectorAll(".menu-icon-box").forEach(function(btn){
 	});
 });
 
+document.querySelector("body").addEventListener("click", function(e){
+	if(e.target.closest(".project-title-editbox") !== null){
+		return;
+	}
+	
+	document.querySelector(".project-title-editbox")?.classList.remove("show");
+	document.querySelector(".header-title")?.classList.remove("none");	
+	
+	const btn = e.target.closest(".header-title");
+	
+	if(btn !== null){
+		btn.parentElement.previousElementSibling.classList.add("show");
+		btn.classList.add("none");
+	}
+});
+
+let updateProjectNameData = {
+	"projectIdx": "",
+	"name": ""
+}
+
+function updateProjectNameFetch(box, input){
+	let url = "/api/project/update_project_name";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(updateProjectNameData)
+	}).then(response => {
+        if (response.ok) {
+            box.innerText = updateProjectNameData.name;
+			input.value = updateProjectNameData.name;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelector(".edit-prjtitlebtn.submit").addEventListener("click", function(e){
+	const submitItem = e.target.closest(".edit-prjtitlebtn.submit");
+	const inputItem = document.querySelector(".project-title-input");
+	updateProjectNameData.projectIdx = inputItem.dataset.projectidx;
+	updateProjectNameData.name = inputItem.value;
+	console.log(updateProjectNameData);
+	updateProjectNameFetch(document.querySelector(".header-title"), inputItem);
+	submitItem.parentElement.classList.remove("show");
+	submitItem.parentElement.nextElementSibling.children[0].classList.remove("none");
+});
+
+document.querySelector(".edit-prjtitlebtn.cancel").addEventListener("click", function(e){
+	const cancelItem = e.target.closest(".edit-prjtitlebtn.cancel");
+	if(cancelItem !== null){
+	cancelItem.parentElement.classList.remove("show");
+	cancelItem.parentElement.nextElementSibling.children[0].classList.remove("none");
+	}
+});
+
 document.querySelector(".header-setbgimg")?.addEventListener("click", function(e) {
 	const setBgItem = e.target.closest(".header-setbgimgbtn");
 	const removePopupItem = e.target.closest(".header-setbgbtn");
@@ -37,6 +98,7 @@ document.querySelector(".header-setbgimg")?.addEventListener("click", function(e
 	if(setBgItem !== null){
 		setBgItem.classList.add("active");
 		setBgItem.nextElementSibling.classList.add("show");
+		
 	}
 	
 	if(removePopupItem !== null){

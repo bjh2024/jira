@@ -258,6 +258,14 @@ public class BoardMainService {
 		return project.get();
 	}
 	
+	public boolean IssueNameCheck(Integer projectIdx, String issueName) {
+		Optional<Issue> issue = this.issueRepository.findByProjectIdxAndName(projectIdx, issueName);
+		if(issue.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
 	public Integer createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
 		Optional<Jira> optJira = this.jiraRepository.findByName(jiraName);

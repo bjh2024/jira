@@ -284,52 +284,29 @@ function loadDateData(issueIdx, date, type){
 	createProjectLog();
 }
 
-/*document.querySelector("body").addEventListener("click", function(e) {
-	if(e.target.closest(".show")?.className.includes("show")){
-		return;
-	}
-	
-	document.querySelector(".sidebarbtn.active")?.classList.remove("active");
-	document.querySelector(".sidebarbtn-filter.active")?.classList.remove("active");
-	document.querySelector(".sidebarbtn-other.active")?.classList.remove("active");
-	document.querySelector(".btnwindow.show")?.classList.remove("show");
-	document.querySelector(".btnwindow-filter.show")?.classList.remove("show");
-
-	document.querySelector(".sidebarbtnicon-filter").style.filter = "none";
-	document.querySelector(".sidebarbtnicon-other").style.filter = "none";
-	
-	const sidebarGroupItem = e.target.closest(".sidebarbtn-group");
-	const sidebarFilterItem = e.target.closest(".sidebarbtn-filter");
-	const sidebarOtherItem = e.target.closest(".sidebarbtn-other");
-	
-	if(sidebarGroupItem !== null){
-		sidebarGroupItem.children[0].classList.add("show");
-	}
-	
-	if(sidebarFilterItem !== null){
-		sidebarFilterItem.classList.add("active");
-		sidebarFilterItem.children[0].classList.add("show");
-		document.querySelector(".sidebarbtnicon-filter").style.filter = "invert(100%) sepia(1%) saturate(7498%) hue-rotate(57deg) brightness(102%) contrast(102%)";
-	}
-	
-	if(sidebarOtherItem !== null){
-		sidebarOtherItem.classList.add("active");
-		sidebarOtherItem.children[0].classList.add("show");
-		document.querySelector(".sidebarbtnicon-other").style.filter = "invert(100%) sepia(1%) saturate(7498%) hue-rotate(57deg) brightness(102%) contrast(102%)";
-	}
-});*/
+document.querySelectorAll(".status-menuwindow").forEach(function(item){
+	item.addEventListener("DOMContentLoaded", function(e){
+		
+	});
+});
 
 document.querySelector("body").addEventListener("click", function(e){
 	if(e.target.closest(".status-menuwindow-title") !== null){
 		return;
 	}
-	document.querySelector(".status-menuwindow")?.classList.remove("show");
+	const windowItems = document.querySelectorAll(".status-menuwindow");
+	for(let i = 0; i < windowItems.length; i++){
+		windowItems[i].classList.remove("show");
+	}
 	
 	const btn = e.target.closest(".status-menubtn");
 	
 	if(btn !== null){
 		btn.children[0].classList.toggle("show");
 		const menubtn = e.target.closest(".status-menuwindow-btn");
+		const btnXY = btn.getBoundingClientRect();
+				btn.children[0].style.top = `${btnXY.top + 41}px`;
+				btn.children[0].style.left = `${btnXY.right - 106}px`;
 		
 		if(menubtn !== null && menubtn.className.includes("name")){
 			const issueStatus = btn.parentElement.previousElementSibling;
@@ -621,6 +598,24 @@ let issueDatas = {
 	"issueName": ""
 }
 
+function issueNameCheck(){
+	let url = "/api/project/issue_name_check";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(issueDatas)
+	}).then(response => response.json())
+	.then(isExist => {
+		if(isExist){
+			createissuefetch();
+		}
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
 function createissuefetch(){
 	let url = "/api/project/create_issue";
 	fetch(url, {
@@ -653,7 +648,9 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 				alert("반드시 이슈 유형을 지정해야 합니다.")
 				return;
 			}
-			createissuefetch();
+			issueNameCheck();
+			
+			// createissuefetch();
 			
 			/*createLogData.userIdx = btnBoxItem.dataset.useridx;
 			createLogData.issueIdx = issueIdx;
@@ -680,7 +677,9 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 			alert("반드시 이슈 유형을 지정해야 합니다.")
 			return;
 		}
-		createissuefetch();
+		
+		issueNameCheck();
+		// createissuefetch();
 	});
 });
 
@@ -757,6 +756,10 @@ document.querySelector(".status-title-input").addEventListener("keyup", function
 	const btnItem = document.querySelector(".status-submit-btn");
 	if(inputItem.value != "" && inputItem.value != null){
 		btnItem.classList.add("action");
+
+		if(window.event.keyCode == 13){
+			btnItem.click();
+		}
 	}else{
 		btnItem.classList.remove("action");
 	}
@@ -772,7 +775,6 @@ function createStatusFetch(){
 		body: JSON.stringify(createStatusDatas)
 	}).then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
 			location.reload();
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
@@ -1774,18 +1776,6 @@ document.querySelector(".reply-delete-alert-container").addEventListener("moused
 	}
 });
 
-document.querySelectorAll(".subissue-list").forEach(function(list, index){
-	list.addEventListener("click", function(e){
-		if(e.target.closest(".subissue-list-rightdetail") !== null){
-			return;
-		}
-		if(list !== null){
-			list.closest(".issuedetail-container")?.classList.remove("show");
-			document.querySelectorAll(".subissuedetail-container")[index]?.classList.add("show");
-		}
-	});
-});
-
 let statusDatas = {
 	"issueIdx": "",
 	"statusIdx": ""
@@ -2095,7 +2085,7 @@ document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, 
 
 });
 
-document.querySelector(".issuedetail-sortbtn").addEventListener("click", function(e){
+document.querySelector(".issuedetail-sortbtn")?.addEventListener("click", function(e){
 	const btnItem = e.target.closest(".issuedetail-sortbtn");
 	btnItem.classList.toggle("active");
 });
