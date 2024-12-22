@@ -219,7 +219,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 		return;
 	}
 	chatRoomContent.classList.add("show");
-
 });
 
 function lastSendDate(date) {
