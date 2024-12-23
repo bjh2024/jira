@@ -17,8 +17,8 @@ public class JiraMembersService {
 
 	private final JiraMembersRepository jiraMembersRepository;
 	
-	public List<JiraMembers> getMembersByJiraIdx(Integer idx){
-		return jiraMembersRepository.findByJiraIdx(idx); 
+	public List<JiraMembers> getMembersByJiraIdx(Integer jiraIdx){
+		return jiraMembersRepository.findByJiraIdx(jiraIdx); 
 	}
 	
 	public JiraMembers getByJiraIdxAndEmailJiraMember(Integer jiraIdx, String email) {
