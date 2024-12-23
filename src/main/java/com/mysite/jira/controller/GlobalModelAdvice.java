@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.LikeContentDTO;
-import com.mysite.jira.dto.chatroom.ChatRoomListDTO;
 import com.mysite.jira.dto.header.HeaderAlaramLogDataDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.ChatService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.FilterService;
+import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.LogDataService;
@@ -41,6 +42,8 @@ public class GlobalModelAdvice {
 	private final AccountService accountService;
 
 	private final JiraService jiraService;
+	
+	private final JiraMembersService jiraMembersService;
 
 	private final ProjectService projectService;
 
@@ -53,8 +56,6 @@ public class GlobalModelAdvice {
 	private final FilterService filterService;
 
 	private final DashboardService dashboardService;
-	
-	private final ChatService chatRoomService;
 	
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
@@ -115,6 +116,8 @@ public class GlobalModelAdvice {
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 			
+			// chat
+			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
 			
 			// 현재 jiraName url에서 가져오기
 			model.addAttribute("currentJira", uri.split("/")[1]);
@@ -146,6 +149,8 @@ public class GlobalModelAdvice {
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
 			model.addAttribute("filterList", filterList);
 			
+			// chat
+			model.addAttribute("allJiraMemberList", allJiraMembersList);
 			
 		}catch(Exception e) {
 			e.printStackTrace();

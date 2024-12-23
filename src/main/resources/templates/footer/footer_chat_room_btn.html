@@ -1,12 +1,11 @@
 <div th:fragment="chartFragment">
 	<div class="btn-container footer-btn-item chat-room hidden">
 		<div class="chat-room-conatiner">
-			<div class="modal"></div>
 			<div class="chat-room-title">
 				<h6>
 					<img src="/images/logo.svg" width="50" height="20" />
 				</h6>
-				<div class="img_box">
+				<div class="img_box chat_room_add_btn">
 					<img src="/images/chat_add_icon.svg" width="24" height="24" />
 				</div>
 			</div>
@@ -21,24 +20,88 @@
 				</div>
 				<div class="chat-room-content">
 					<div class="content friend_list">
-						<div class="title">친구 220</div>
+						<div class="title">나</div>
 						<div>
 							<div class="item">
-								<img src="/images/user_icon_file1.png" width="24" height="24" />
+								<img th:src="@{|/images/${currentUser.iconFilename}|}" width="24" height="24" />
 								<p>
-									<span class="name">이름</span>
-									<span class="email">이메일</span>
+									<span class="name" th:text="${currentUser.name}"></span>
+									<span class="email" th:text="${currentUser.email}"></span>
 								</p>
+							</div>
+						</div>
+						<div>
+							<div class="title">공동 작업내 멤버&nbsp;<span th:text="${#lists.size(allJiraMemberList)-1}"></span></div>
+							<div th:each="member : ${allJiraMemberList}" th:if="${member.account.idx != currentUser.idx}">
+								<div class="item">
+									<img th:src="@{|/images/${member.account.iconFilename}|}" width="24" height="24" />
+									<p>
+										<span class="name" th:text="${member.account.name}"></span>
+										<span class="email" th:text="${member.account.email}"></span>
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="content room_list show">
 						
 					</div>
+					<div class="content chat_room_add_box">
+						<h6>채팅방 만들기</h6>
+						<div class="input_box">
+							<label for="chatRoomName">채팅방 이름<span class="not_null_check">*</span></label>
+							<input id="chatRoomName" name="" placeholder="채팅방 이름" />
+							<div class="name">
+								<div class="alert_box">
+									<img src="/images/alaret_icon.svg" width="12" height="12">
+									<span>채팅방 이름은 필수 입니다.</span>
+								</div>
+								<div class="chat_room_add_explain show">
+									<img src="/images/exclamation_mark_icon.svg" width="12" height="12"/>
+									<span>채팅방 이름을 지어주세요!</span>
+								</div>
+							</div>
+						</div>
+						<div class="input_box">
+							<label>채팅방 멤버 초대</label>
+							<div class="chat_member_invite_list_box">
+								<label class="item" th:for="|chatMember-${member.idx}|"
+									   th:each="member : ${allJiraMemberList}"
+									   th:if="${member.account.idx != currentUser.idx}">
+									<div class="user_info_box">
+										<img th:src="@{|/images/${member.account.iconFilename}|}" width="24" height="24"/>
+										<p>
+											<span class="name" th:text="${member.account.name}"></span>
+											<span class="email" th:text="${member.account.email}"></span>
+										</p>
+									</div>
+									<div>
+										<input type="checkbox" 
+											   th:id="|chatMember-${member.idx}|" 
+											   th:name="|chatMember-${member.idx}|"
+											   th:account-idx-data="${member.account.idx}"
+										/>
+									</div>
+								</label>
+							</div>
+							<div class="chat_member_selector">
+								<div class="alert_box">
+									<img src="/images/alaret_icon.svg" width="12" height="12">
+									<span>나와의 채팅방은 하나만 만들수 있습니다.</span>
+								</div>
+								<div class="chat_room_add_explain show">
+									<img src="/images/exclamation_mark_icon.svg" width="12" height="12"/>
+									<span>채팅방에 지라 멤버를 초대해보세요!</span>
+								</div>
+							</div>
+						</div>
+						<div class="btn_box">
+							<button>만들기</button>
+						</div>
+					</div>
 					<div class="content dynamic_chat">
 						<div class="chat_detail_container" 
-							 th:account-idx-data="${currentUser.idx}"
-							 th:account-iconFile-name-data="${currentUser.iconFilename}">
+							 th:account-idx-data="${currentUser.idx}">
 
 						</div>
 						<div class="chat_input_box">

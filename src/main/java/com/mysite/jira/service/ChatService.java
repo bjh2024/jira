@@ -2,16 +2,18 @@ package com.mysite.jira.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.mysite.jira.dto.chatroom.ChatMessageDTO;
 import com.mysite.jira.dto.chatroom.ChatMessageListDTO;
 import com.mysite.jira.dto.chatroom.ChatRoomListAccountDTO;
 import com.mysite.jira.dto.chatroom.ChatRoomListChatRoomDTO;
 import com.mysite.jira.dto.chatroom.ChatRoomListDTO;
+import com.mysite.jira.dto.chatroom.RequestChatMessageDTO;
+import com.mysite.jira.dto.chatroom.RequestChatRoomCreateDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.ChatMembers;
 import com.mysite.jira.entity.ChatMessage;
@@ -62,6 +64,7 @@ public class ChatService {
 			for(int j = 0; j < end; j++) {
 				Account account = chatRoomIdxChatMemberList.get(j).getAccount();
 				ChatRoomListAccountDTO dto = ChatRoomListAccountDTO.builder()
+																   .idx(account.getIdx())
 																   .name(account.getName())
 																   .iconFilename(account.getIconFilename())
 																   .build();
@@ -80,6 +83,21 @@ public class ChatService {
 												 .build();
 			result.add(dto);
 		}
+		
+		result.sort(new Comparator<ChatRoomListDTO>() {
+			@Override
+			public int compare(ChatRoomListDTO d1, ChatRoomListDTO d2) {
+				if(d1.getLastSendDate() == null) {
+					return 1;
+				}
+				if(d1.getLastSendDate().isAfter(d2.getLastSendDate())) {
+					return -1;
+				}else {
+					return 1;
+				}
+			}
+		});
+		
 		return result;
 	}
 	
@@ -100,7 +118,7 @@ public class ChatService {
 		return result;
 	}
 	
-	public void createMessage(ChatMessageDTO chatMessageDTO) {
+	public ChatMessage createMessage(RequestChatMessageDTO chatMessageDTO) {
 		Account account = accountService.getAccountByIdx(chatMessageDTO.getAccountIdx());
 		ChatRoom chatRoom = this.getChatRoomByIdx(chatMessageDTO.getChatRoomIdx());
 		
@@ -110,5 +128,29 @@ public class ChatService {
 											 .chatRoom(chatRoom)
 											 .build();
 		chatMessageRepository.save(chatMessage);
+		return chatMessage;
+	}
+	
+	public Integer createChatRoom(RequestChatRoomCreateDTO requestChatRoomCreateDTO) {
+		String chatRoomName = requestChatRoomCreateDTO.getName();
+		ChatRoom chatRoom = ChatRoom.builder()
+								    .name(chatRoomName)
+								    .build();
+		
+		chatRoomRepository.save(chatRoom);
+		
+		Integer[] chatAccountIdxList = requestChatRoomCreateDTO.getChatAccountIdxList();
+		List<ChatMembers> chatMembersList = new ArrayList<>();
+		for(int i = 0; i < chatAccountIdxList.length; i++) {
+			Account account = accountService.getAccountByIdx(chatAccountIdxList[i]);
+			ChatMembers chatMember = ChatMembers.builder()
+												 .chatRoom(chatRoom)
+												 .account(account)
+												 .build();
+			chatMembersList.add(chatMember);
+		}
+		chatMembersRepository.saveAll(chatMembersList);
+		
+		return 1;
 	}
 }

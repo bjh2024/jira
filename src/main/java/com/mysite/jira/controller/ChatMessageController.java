@@ -5,7 +5,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import com.mysite.jira.dto.chatroom.ChatMessageDTO;
+import com.mysite.jira.dto.chatroom.RequestChatMessageDTO;
+import com.mysite.jira.dto.chatroom.ResponseChatMessageDTO;
+import com.mysite.jira.entity.ChatMessage;
 import com.mysite.jira.service.ChatService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,15 @@ public class ChatMessageController {
 	
 	@MessageMapping("/chat/{chatRoomIdx}")
     @SendTo("/topic/chat/{chatRoomIdx}")
-    public ChatMessageDTO sendMessage(ChatMessageDTO chatMessageDTO, @DestinationVariable("chatRoomIdx") Integer chatRoomIdx) throws Exception {
-		chatService.createMessage(chatMessageDTO);
-        return chatMessageDTO;
+    public ResponseChatMessageDTO sendMessage(RequestChatMessageDTO requestChatMessageDTO, @DestinationVariable("chatRoomIdx") Integer chatRoomIdx) throws Exception {
+		ChatMessage chatMessage = chatService.createMessage(requestChatMessageDTO);
+		ResponseChatMessageDTO responseChatMessageDTO = ResponseChatMessageDTO.builder()
+																			  .accountIdx(chatMessage.getAccount().getIdx())
+																			  .iconFilename(chatMessage.getAccount().getIconFilename())
+																			  .content(chatMessage.getContent())
+																			  .sendDate(chatMessage.getSendDate())
+																			  .build();
+        return responseChatMessageDTO;
     }
 	
 }
