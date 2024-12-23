@@ -699,6 +699,7 @@ document.querySelector(".create-status-container").addEventListener("click", fun
 		container.classList.add("show");
 	}else{
 		container.classList.remove("show");
+		document.querySelector(".is-exist-alert").classList.remove("show");
 	}
 });
 
@@ -751,6 +752,12 @@ document.querySelector(".set-status-status").addEventListener("click", function(
 	statusItem.classList.toggle("focus");
 });
 
+document.querySelector(".status-title-input").addEventListener("keydown", function(e){
+	if(window.event.keyCode == 13){
+		event.preventDefault();
+	}
+});
+
 document.querySelector(".status-title-input").addEventListener("keyup", function(e){
 	const inputItem = e.target.closest(".status-title-input");
 	const btnItem = document.querySelector(".status-submit-btn");
@@ -758,12 +765,35 @@ document.querySelector(".status-title-input").addEventListener("keyup", function
 		btnItem.classList.add("action");
 
 		if(window.event.keyCode == 13){
+			event.preventDefault();
 			btnItem.click();
 		}
 	}else{
 		btnItem.classList.remove("action");
 	}
 });
+
+function statusNameCheck(){
+	let url = "/api/project/status_name_check";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createStatusDatas)
+	}).then(response => response.json())
+	.then(isExist => {
+		if(isExist){
+			document.querySelector(".is-exist-alert")?.classList.remove("show");
+			createStatusFetch();
+		}else{
+			document.querySelector(".is-exist-alert").classList.add("show");
+			document.querySelector(".is-exist-alert").children[1].innerText = `${createStatusDatas.name}은(는) 이미 이 프로젝트의 상태 이름입니다`;
+		}
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
 
 function createStatusFetch(){
 	let url = "/api/project/create_projects_status";
@@ -776,7 +806,6 @@ function createStatusFetch(){
 	}).then(response => {
         if (response.ok) {
 			location.reload();
-            return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -791,8 +820,7 @@ function getStatusSubmit(){
 	createStatusDatas.status = document.querySelector(".set-status-left.current").dataset.idx;
 	createStatusDatas.projectIdx = document.querySelector(".status-submit-btn").dataset.projectidx;
 	document.querySelector(".create-status-container").classList.remove("show");
-	createStatusFetch();
-	location.reload();
+	statusNameCheck();
 }
 
 document.querySelectorAll(".issues").forEach(function(btn, index){

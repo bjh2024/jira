@@ -261,6 +261,14 @@ public class BoardMainAPTIController {
 		return answerDTO;
 	}
 	
+	@PostMapping("/status_name_check")
+	public boolean statusNameCheck(@RequestBody CreateStatusDTO createStatusDTO) {
+		Integer projectIdx = createStatusDTO.getProjectIdx();
+		String name = createStatusDTO.getName();
+		
+		return boardMainService.statusNameCheck(projectIdx, name);
+	}
+	
 	@PostMapping("/create_projects_status")
 	public void createStatus(@RequestBody CreateStatusDTO createStatusDTO) {
 		String name = createStatusDTO.getName();

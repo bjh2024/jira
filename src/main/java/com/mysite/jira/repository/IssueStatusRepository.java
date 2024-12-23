@@ -1,6 +1,7 @@
 package com.mysite.jira.repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,7 +33,8 @@ public interface IssueStatusRepository extends JpaRepository<IssueStatus, Intege
 	
 	List<IssueStatus> findAllByProjectIdxAndIdxNotOrderByStatusAsc(Integer projectIdx, Integer idx);
 	
-	List<IssueStatus> findByDivOrderBetweenAndProjectIdx(Integer oldIdx, Integer newIdx, Integer projectIdx);
-		
 	List<IssueStatus> findByName(String name);
+	List<IssueStatus> findByDivOrderBetweenAndProjectIdx(Integer oldIdx, Integer newIdx, Integer projectIdx); 
+	
+	Optional<IssueStatus> findByProjectIdxAndName(Integer projectIdx, String name);
 }

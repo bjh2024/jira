@@ -604,6 +604,10 @@ body{
 	justify-content: center;
 }
 
+.create-status-btn:hover{
+	background-color: #0515240F;
+}
+
 .create-status-container{
 	position: fixed;
 	top: 0px;
@@ -648,6 +652,11 @@ body{
 	gap: 6px;
 	color: #AE2E24;
 	font-size: 12px;
+	display: none;
+}
+
+.is-exist-alert.show{
+	display: block;
 }
 
 .set-statusbox{
