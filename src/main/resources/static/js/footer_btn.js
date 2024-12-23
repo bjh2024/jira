@@ -5,7 +5,7 @@ function connection(chatRoomDTOList){
 		stompClient = Stomp.over(socket);
 		
 		stompClient.connect({}, function(frame){
-			console.log("연결 성공" + frame);
+			/*console.log("연결 성공" + frame);*/
 			
 			chatRoomDTOList.forEach(function(chatRoomDTO){
 				const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`
@@ -241,7 +241,6 @@ async function chatRoomListFetch(uri) {
 	try{
 		const res = await fetch(uri, {method: "get" });
 		const chatRoomDTOList = await res.json();
-		console.log(chatRoomDTOList);
 			if (chatRoomDTOList.length != 0) {
 				container.innerHTML = "";
 				chatRoomDTOList.forEach(function(chatRoomDTO) {
@@ -434,7 +433,6 @@ document.querySelector(".chat-room-title .chat_room_add_btn").addEventListener("
 document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName").addEventListener("keyup", function(){
 	const nameExplainBox = document.querySelector(".chat_room_add_box .name .chat_room_add_explain");
 	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
-	console.log(this.value.trim());
 	if(this.value.trim().length === 0){
 		nameAlertBox.classList.add("show");
 		nameExplainBox.classList.remove("show");

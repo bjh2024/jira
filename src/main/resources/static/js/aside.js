@@ -123,11 +123,7 @@ document
           this.querySelector("span").innerText;
 		  
 		  let url = "";
-		  if(this.querySelector("span").innerText == "보드"){
-			document.querySelector(".like_content_list").classList.add("show");
-			document.querySelector(".like_content_dynamic.show")?.classList.remove("show");
-			return;
-		  }else if(this.querySelector("span").innerText == "필터"){
+		  if(this.querySelector("span").innerText == "필터"){
 		  	url = `/api/aside/like/filter?uri=${window.location.pathname}`
 		  }else if(this.querySelector("span").innerText == "대시보드"){
 		    url = `/api/aside/like/dashboard?uri=${window.location.pathname}`
@@ -283,3 +279,17 @@ document
 
   // 추출한 username을 사용하여 동적으로 링크 생성
   document.getElementById("filter_move").href = "/" + usernames + "/filter/filter_issue";
+  
+document.querySelector("body").addEventListener("click", function(){
+	const asideContianer = document.querySelector(".aside_container");
+	const asideItemBox = document.querySelector(".aside_item_box.view_right_box_btn.active");
+	const moreSubItem = document.querySelector(".more_sub_box.aside_more.show");
+	if(asideItemBox !== null || moreSubItem !== null){
+		asideContianer.style.paddingRight = "600px";
+	}else{
+		asideContianer.style.paddingRight = "0";
+	}
+});
+
+  
+  

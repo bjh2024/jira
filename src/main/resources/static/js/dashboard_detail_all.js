@@ -422,7 +422,7 @@ function drawIssueStatistics(issueStatistics){
 	issueStatisticsFetch(dashboardColIdx, tbody);
 }
 
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", function() {
 	// 나에게 할당
 	const allot = document.querySelectorAll(".dashboard_allot");
 	if (allot !== null) {
@@ -474,7 +474,7 @@ window.onload = function() {
 			// if(item.getAttribute("is-save-data") === "1");
 		});
 	}
-}
+});
 
 // 나에게 할당됨 => 페이징 처리
 document.querySelector(".dashboard_content_container").addEventListener("click", function(e){
