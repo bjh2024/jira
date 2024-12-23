@@ -16,7 +16,7 @@ public class ChatMessageController {
 	
 	private final ChatService chatService;
 	
-	@MessageMapping("/chat/{chatRoomIdx}")
+	@MessageMapping("/chat/{chatRoomIdx}") 
     @SendTo("/topic/chat/{chatRoomIdx}")
     public ChatMessageDTO sendMessage(ChatMessageDTO chatMessageDTO, @DestinationVariable("chatRoomIdx") Integer chatRoomIdx) throws Exception {
 		chatService.createMessage(chatMessageDTO);

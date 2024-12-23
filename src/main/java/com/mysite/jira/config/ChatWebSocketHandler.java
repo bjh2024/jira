@@ -1,8 +1,12 @@
 package com.mysite.jira.config;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+@Configuration
+@EnableWebSocketMessageBroker
 public class ChatWebSocketHandler extends TextWebSocketHandler{
 
 	@Override
