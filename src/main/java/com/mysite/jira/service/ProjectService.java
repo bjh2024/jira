@@ -45,6 +45,10 @@ public class ProjectService {
 
 	private final UtilityService utilityService;
 
+	public List<Project> getByKey(String key){
+		return projectRepository.findByKey(key);
+	}
+	
 	public Optional<Project> getByIdx(Integer idx){
 		return projectRepository.findById(idx);
 	}

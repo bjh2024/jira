@@ -816,6 +816,7 @@
 					<div class="issue_box_end">
 					</div>
 				</div>
+				<th:block th:fragment="filter_issue_detail_fragment">
 				<div class="issue_middle_right" th:each="issueList,loop : ${issue}" style="display: none;" th:data-key="${issueList.key}">
 					<div class="issuedetailbox">
 											 			<div class="issuedetail-headerbar">
@@ -1280,6 +1281,7 @@
 											 			</div>
 											 		</div>
 					</div>
+				</th:block>
 			</div>
 	</div>
 	<div class="modal">
