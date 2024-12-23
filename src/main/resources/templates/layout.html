@@ -31,13 +31,16 @@
 	<!-- team create modal-->
 	<div th:replace="~{team/team_create :: teamCreateFragment}"></div>
 	<div th:replace="~{team/jira_user_add :: jiraUserAddFragment}"></div>
-	
+	<div th:replace="~{toast_message :: toastMessage}"></div>
 	<script src="/js/likeFetch.js"></script>
 	<!-- 실시간 채팅 라이브러리-->
 	<!-- SockJS 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
     <!-- Stomp.js 라이브러리 -->
     <script src="/js/library/stomp.js"></script>
+    <script src="/js/toast.js"></script>
+	
+	
 </body>
 
 </html>

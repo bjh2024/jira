@@ -615,7 +615,7 @@ function issueNameCheck(){
 			console.error("Fetch error:", error);
 	});
 }
-
+let ifCreate = null;
 function createissuefetch(){
 	let url = "/api/project/create_issue";
 	fetch(url, {
@@ -627,6 +627,8 @@ function createissuefetch(){
 	}).then(response => response.json())
 	.then(idx => {
 		location.reload();
+		localStorage.setItem('newIssue', JSON.stringify(issueDatas));
+		sendToastMessage(issueDatas); // 리로드 후 1초 뒤에 토스트 메시지 전송
 		return idx.issueIdx;
 	}).catch(error => {
 			console.error("Fetch error:", error);
@@ -660,6 +662,8 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 		}
 	});
 });
+
+
 
 document.querySelectorAll(".createissuebtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
