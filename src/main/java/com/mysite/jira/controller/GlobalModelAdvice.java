@@ -1,11 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -22,10 +18,13 @@ import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
+import com.mysite.jira.service.ChatService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.FilterService;
+import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.LogDataService;
@@ -43,6 +42,8 @@ public class GlobalModelAdvice {
 	private final AccountService accountService;
 
 	private final JiraService jiraService;
+	
+	private final JiraMembersService jiraMembersService;
 
 	private final ProjectService projectService;
 
@@ -114,6 +115,10 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
+			
+			// chat
+			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
+			
 			// 현재 jiraName url에서 가져오기
 			model.addAttribute("currentJira", uri.split("/")[1]);
 
@@ -143,6 +148,10 @@ public class GlobalModelAdvice {
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
 			model.addAttribute("filterList", filterList);
+			
+			// chat
+			model.addAttribute("allJiraMemberList", allJiraMembersList);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
