@@ -15,7 +15,7 @@ function connection(chatRoomDTOList){
 					const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
 					const chatRoomIdx = chatDetailContainer.getAttribute("chat-room-idx-data");
 					let sendDateTitle = dateTitleFormat(messageInfo.sendDate);
-					if(messageInfo.chatRoomIdx == chatRoomIdx){
+					if(chatRoomDTO.chatRoom.idx == chatRoomIdx){
 						chatDetailContainer.innerHTML += `<div class="chat_detail_box">
 																${prevSendDate === sendDateTitle ?
 															'' :
@@ -26,7 +26,7 @@ function connection(chatRoomDTOList){
 																${messageInfo.accountIdx !== Number(myAccountIdx) ?
 															`<div class="other_chat_box">
 																	<div class="img_box">
-																		<img src="/images/${messageInfo.accountIconFilename}" width="24" height="24" />
+																		<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
 																	</div>
 																	<div class="chat_detail">
 																		<p>${messageInfo.content}</p>
@@ -39,7 +39,7 @@ function connection(chatRoomDTOList){
 																		<p>${messageInfo.content}</p>
 																	</div>
 																	<div class="img_box">
-																		<img src="/images/${messageInfo.accountIconFilename}" width="24" height="24" />
+																		<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
 																	</div>
 																</div>`}
 															</div>`;
@@ -219,7 +219,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 		return;
 	}
 	chatRoomContent.classList.add("show");
-
 });
 
 function lastSendDate(date) {
@@ -235,11 +234,14 @@ function lastSendDate(date) {
 	}
 }
 
+// 나 혼자 방 있는지 확인 변수
+let isAloneChatRoom = false;
 async function chatRoomListFetch(uri) {
 	const container = document.querySelector(".chat-room-content .room_list");
 	try{
 		const res = await fetch(uri, {method: "get" });
 		const chatRoomDTOList = await res.json();
+		console.log(chatRoomDTOList);
 			if (chatRoomDTOList.length != 0) {
 				container.innerHTML = "";
 				chatRoomDTOList.forEach(function(chatRoomDTO) {
@@ -252,13 +254,18 @@ async function chatRoomListFetch(uri) {
 											<p>
 												<span class="title">
 													<span>${chatRoomDTO.chatRoom.name}</span>
-													<span class="last-date">${lastSendDate(chatRoomDTO.lastSendDate)}</span>
+													<span class="last-date">${chatRoomDTO.lastSendDate !== null ? lastSendDate(chatRoomDTO.lastSendDate) : ""}</span>
 												</span>
 												<span class="last-chat">${chatRoomDTO.lastContent}</span>
 											</p>
 										</div>`
 					const imgContainer = itemDiv.querySelector(".img_container");
 					const accountList = chatRoomDTO.accountList;
+					const chatDetailContainer = document.querySelector(".dynamic_chat .chat_detail_container");
+					const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
+					if(!isAloneChatRoom && accountList.length === 1 && accountList[0].idx === Number(myAccountIdx)){
+						isAloneChatRoom = true;
+					}
 					accountList.forEach(function(account) {
 						imgContainer.innerHTML += `<div class="img_box">
 													<img src="/images/${account.iconFilename}" width="24" height="24" />
@@ -277,7 +284,7 @@ async function chatRoomListFetch(uri) {
 document.querySelectorAll(".chat-room-gnb .img_box").forEach(function(btn, gnbIdx) {
 	btn.addEventListener("click", function() {
 		const activeImgBox = document.querySelector(".chat-room-gnb .img_box.active");
-		activeImgBox.classList.remove("active");
+		activeImgBox?.classList.remove("active");
 		this.classList.add("active");
 
 		if (this.className.includes("friend_btn")) {
@@ -399,18 +406,133 @@ document.querySelector(".dynamic_chat .chat_input_box textarea").addEventListene
 		if(sendText.trim().length === 0) return;
 		const chatDetailContainer = document.querySelector(".chat_detail_container");
 		const accountIdx = chatDetailContainer.getAttribute("account-idx-data");
-		const accountIconFilename = chatDetailContainer.getAttribute("account-iconFile-name-data");
 		const chatRoomIdx = chatDetailContainer.getAttribute("chat-room-idx-data");
 		
 		const requestMessageInfo = {
 			"chatRoomIdx": chatRoomIdx,
 			"accountIdx": accountIdx,
-			"accountIconFilename": accountIconFilename,
-			"content": sendText,
-			"sendDate":new Date()
+			"content": sendText
 		}
 		sendMessage(requestMessageInfo, chatRoomIdx);
 		this.value = "";
 	}
 });
+
+document.querySelector(".chat-room-title .chat_room_add_btn").addEventListener("click", function(){
+	const contentBoxs = document.querySelectorAll(".chat-room-content .content");
+	contentBoxs.forEach(function(box) {
+		box.classList.remove("show");
+	});
+	const chatGnbImgBoxs = document.querySelectorAll(".chat-room-gnb .img_box");
+	chatGnbImgBoxs.forEach(function(imgBox) {
+		imgBox.classList.remove("active");
+	});
+	
+	document.querySelector(".chat-room-content .chat_room_add_box").classList.add("show");
+});
+
+document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName").addEventListener("keyup", function(){
+	const nameExplainBox = document.querySelector(".chat_room_add_box .name .chat_room_add_explain");
+	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
+	console.log(this.value.trim());
+	if(this.value.trim().length === 0){
+		nameAlertBox.classList.add("show");
+		nameExplainBox.classList.remove("show");
+		this.classList.add("alert");
+	}else{
+		nameAlertBox.classList.remove("show");
+		nameExplainBox.classList.add("show");
+		this.classList.remove("alert");
+	}
+})
+
+document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("focus", function(){
+	this.classList.add("focusIn");
+});
+
+document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("blur", function(){
+	this.classList.remove("focusIn");
+	
+	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
+	if(nameAlertBox.className.includes("show")){
+		this.classList.add("alert");
+	}else{
+		this.classList.remove("alert");
+	}
+	
+});
+
+document.querySelectorAll(".chat_room_add_box .input_box .chat_member_invite_list_box input").forEach(function(input){
+	input.addEventListener("change", function(){
+		const ChatMemberListAlertBox = document.querySelector(".chat_room_add_box .chat_member_selector .alert_box");
+		const ChatMemberListExplainBox = document.querySelector(".chat_room_add_box .chat_member_selector .chat_room_add_explain");
+		
+		ChatMemberListAlertBox.classList.remove("show");
+		ChatMemberListExplainBox.classList.add("show");
+		
+	});
+});
+
+
+document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", function(){
+	let isCreate = true;
+	const chatRoomNameInput = document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName");
+	const chatRoomName = chatRoomNameInput.value;
+	
+	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
+	const nameExplainBox = document.querySelector(".chat_room_add_box .name .chat_room_add_explain");
+	
+	const ChatMemberListAlertBox = document.querySelector(".chat_room_add_box .chat_member_selector .alert_box");
+	const ChatMemberListExplainBox = document.querySelector(".chat_room_add_box .chat_member_selector .chat_room_add_explain");
+	const ChatMemberList = document.querySelectorAll(".chat_room_add_box .input_box .chat_member_invite_list_box input");
+	
+	const chatDetailContainer = document.querySelector(".chat_detail_container");
+	const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
+	let chatMembersAccountIdx = [myAccountIdx];
+	
+	ChatMemberList.forEach(function(input){
+		const accountIdx = input.getAttribute("account-idx-data");
+		if(input.checked){
+			chatMembersAccountIdx.push(accountIdx);
+		}
+	});
+	
+	let requestChatRoomCreateDTO = {
+		"name" : chatRoomName,
+		"chatAccountIdxList" : chatMembersAccountIdx
+	}
+	
+	
+	if(chatRoomName.trim().length === 0){
+		nameAlertBox.classList.add("show");
+		nameExplainBox.classList.remove("show");
+		chatRoomNameInput.classList.add("alert");
+		chatRoomNameInput.focus();
+		isCreate = false;
+	}
+
+	if(isAloneChatRoom && chatMembersAccountIdx.length === 1){
+		ChatMemberListAlertBox.classList.add("show");
+		ChatMemberListExplainBox.classList.remove("show");
+		isCreate = false;
+	}
+	
+	if(isCreate){
+		const uri = "/api/chat/room/create";
+		fetch(uri, {method:"post", 
+					headers:{"Content-type":"application/json"}, 
+					body:JSON.stringify(requestChatRoomCreateDTO)})
+		.then(res => res.json())
+		.then(res => {
+			if(res === 1){
+				document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
+			}
+		})
+		.catch(err => {
+			console.error(err);
+		});
+	}
+	
+});
+
 
