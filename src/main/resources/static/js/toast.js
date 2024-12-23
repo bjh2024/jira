@@ -10,6 +10,7 @@ function showToast(message) {
   		${message}
   	</div>
   </div>`; // 메시지 설정
+  
 }
 	
 let toastStompClient = null;
