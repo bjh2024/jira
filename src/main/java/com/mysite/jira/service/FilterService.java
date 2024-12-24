@@ -4,9 +4,7 @@ package com.mysite.jira.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.boot.validation.beanvalidation.FilteredMethodValidationPostProcessor;
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.entity.Account;
@@ -159,8 +157,131 @@ public class FilterService {
 	public List<FilterAuth> getFilterAuthAll(){
 		return filterAuthRepository.findAll();
 	}
+// 기본 필터 생성 기능 --------------------------------------------------------------------------------------------
+	public void defaultMyPendingIssues(Jira jira,Account account) {
+		Filter filter = Filter.builder()
+				.name("나의 미해결 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterManager filterManager = FilterManager.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterManagerRepository.save(filterManager);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(0)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+		
+	}
+	
+	public void defaultReporter(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("내가 보고함")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterReporter filterReporter = FilterReporter.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterReporterRepostiory.save(filterReporter);
+		
+	}
+	public void defaultAllIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("모든 이슈")
+				.jira(jira)
+				.explain(null)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+	}
+	public void defaultPendingIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("미결 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(0)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+	}
+	public void defaultDoneIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("완료된 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(1)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+	}
+	public void defaultRecentlyCreated(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 만듦")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterIssueCreateDate filterIssueCreateDate = FilterIssueCreateDate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.BeforeDate(7)
+				.build();
+		this.filterIssueCreateDateRepository.save(filterIssueCreateDate);
+	}
+	public void defaultRecentlyDone(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 해결됨")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDoneDate filterDoneDate = FilterDoneDate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.beforeDate(7)
+				.build();
+		this.filterDoneDateRepository.save(filterDoneDate);
+	}
+	public void defaultRecentlyUpdate(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 업데이트")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterIssueUpdate filterIssueUpdate = FilterIssueUpdate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.BeforeDate(7)
+				.build();
+		this.filterIssueUpdateRepository.save(filterIssueUpdate);
+	}
 	
 	
+// 기본 필터 생성 기능 --------------------------------------------------------------------------------------------
 	public Filter filterCreate(String name, String explain, Account account, Jira jira) {
 		Filter filter = Filter.builder()
 				.name(name)
