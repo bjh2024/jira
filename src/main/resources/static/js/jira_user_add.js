@@ -73,7 +73,7 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 	}
 	// 유효성 검사4 지라에 속한 유저 인지
 	async function jiraMemberDuplicationFetch(email){
-		const uri = `/api/account/duplication/jira_member?email=${email}&uri=${window.location.pathname}`
+		const uri = `/api/account/duplication/jira_member?email=${email}`
 		
 		const res = await fetch(uri, {method:"get"})
 		const data = await res.json();

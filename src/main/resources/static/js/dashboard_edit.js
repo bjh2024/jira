@@ -914,7 +914,7 @@ function debounce(func, timeout = 300) {
 }
 function projectListFetch(searchText) {
 	let projectName = searchText.value;
-	const uri = `/api/project/search?searchName=${projectName}&uri=${window.location.pathname}`
+	const uri = `/api/project/search?searchName=${projectName}`
 	fetch(uri, { method: "get" })
 		.then(res => res.json())
 		.then(projectList => {

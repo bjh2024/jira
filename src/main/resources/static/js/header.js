@@ -53,8 +53,7 @@ let headerInputDatas = {
 	"projectIdxArr": [],
 	"managerIdxArr": [],
 	"isReporter": false,
-	"statusArr": [],
-	"currentUrl" : window.location.pathname
+	"statusArr": []
 }
 
 function fetchInput() {
