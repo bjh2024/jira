@@ -483,7 +483,7 @@ document.querySelectorAll(".issuetype").forEach(function(btn){
 });
 
 let issueDatas = {
-	"jiraName": "",
+	"jiraIdx": "",
 	"projectIdx": "",
 	"issueTypeIdx": "",
 	"reporterIdx": "",
@@ -525,56 +525,6 @@ function createissuefetch(){
 			console.error("Fetch error:", error);
 	});
 }
-
-document.querySelectorAll(".create-issuekey").forEach(function(input){
-	input.addEventListener("keyup", function(e){
-		if(window.event.keyCode == 13){
-			const btnBoxItem = input.nextElementSibling;
-			
-			issueDatas.jiraName = btnBoxItem.dataset.jiraname;
-			issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
-			issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
-			issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
-			issueDatas.statusIdx = btnBoxItem.dataset.statusidx;
-			issueDatas.issueName = input.value;
-			if(issueDatas.issueTypeIdx == 0){
-				alert("반드시 이슈 유형을 지정해야 합니다.")
-				return;
-			}
-			issueNameCheck();
-			
-			// createissuefetch();
-			
-			/*createLogData.userIdx = btnBoxItem.dataset.useridx;
-			createLogData.issueIdx = issueIdx;
-			createLogData.type = issueIdx;
-			createProjectLog();
-			location.reload();*/
-		}
-	});
-});
-
-document.querySelectorAll(".createissuebtn").forEach(function(btn){
-	btn.addEventListener("click", function(e){
-		const btnBoxItem = btn.parentElement;
-		const inputItem = btnBoxItem.previousElementSibling;
-		
-		issueDatas.jiraName = btnBoxItem.dataset.jiraname;
-		issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
-		issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
-		issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
-		issueDatas.statusIdx = btnBoxItem.dataset.statusidx;
-		issueDatas.issueName = inputItem.value;
-		
-		if(issueDatas.issueTypeIdx == 0){
-			alert("반드시 이슈 유형을 지정해야 합니다.")
-			return;
-		}
-		
-		issueNameCheck();
-		// createissuefetch();
-	});
-});
 
 document.querySelectorAll(".issuedetail-option.delete").forEach(function(btn){
 	btn.addEventListener("click", function(e){
@@ -1268,7 +1218,7 @@ document.querySelectorAll(".create-subissue-input").forEach(function(input){
 });
 
 let createSubIssueData = {
-	"jiraName": "",
+	"jiraIdx": "",
 	"projectIdx": "",
 	"parentIdx": "",
 	"reporterIdx": "",
@@ -1339,7 +1289,7 @@ document.querySelectorAll(".create-subissue").forEach(function(btn){
 		
 		if(submitbtn !== null && submitbtn.className.includes("submit") && submitbtn.className.includes("action")){
 			const input = createbox.querySelector(".create-subissue-input");
-			createSubIssueData.jiraName = createbox.dataset.jiraname;
+			createSubIssueData.jiraIdx = createbox.dataset.jiraIdx;
 			createSubIssueData.projectIdx = createbox.dataset.projectidx;
 			createSubIssueData.parentIdx = createbox.dataset.parentidx;
 			createSubIssueData.reporterIdx = createbox.dataset.useridx;

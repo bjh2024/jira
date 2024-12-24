@@ -31,7 +31,7 @@ public class FilterIssueRequestDTO {
 	private Integer createDateBefore;
 	private String explain;
 	private String filterName;
-	private String jiraName;
+	private Integer jiraIdx;
 	private Integer[] isCompleted;
 	private String issueKey;
 }
