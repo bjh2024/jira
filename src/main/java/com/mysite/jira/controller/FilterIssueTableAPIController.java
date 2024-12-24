@@ -1,6 +1,5 @@
 package com.mysite.jira.controller;
 
-import java.nio.file.spi.FileSystemProvider;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,14 +16,12 @@ import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
-import com.mysite.jira.entity.FilterIssuePriority;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
-import com.mysite.jira.repository.FilterIssuePriorityRepository;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.FilterIssueService;
 import com.mysite.jira.service.FilterService;
@@ -35,6 +32,7 @@ import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -51,6 +49,7 @@ public class FilterIssueTableAPIController {
 	private final IssueStatusService issueStatusService;
 	private final IssueTypeService issueTypeService;
 	private final ProjectService projectService;
+	private final HttpSession session;
 
 	@PostMapping("/project_filter")
 	public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
@@ -204,10 +203,12 @@ public class FilterIssueTableAPIController {
 		String username = principal.getName(); // 현재 인증된 사용자 이름 가져오기
 		Optional<Account> optAccount = accountService.getByEmail(username); // 예시: 사용자 이름으로 Account 객체를 조회
 		Account account = optAccount.get();
-		Optional<Jira> jira = jiraService.getIdxByName(filterDto.getJiraName());
+		
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 
 		// 필터 생성시 무조건 생성되는 필터 기본
-		Filter filter = filterService.filterCreate(filterName, explain, account, jira.get());
+		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
 
 		if (filterDto.getIsCompleted().length > 0 && filterDto.getIsCompleted() != null) {
 			for (int i = 0; i < filterDto.getIsCompleted().length; i++) {
@@ -270,7 +271,6 @@ public class FilterIssueTableAPIController {
 	
 	@PostMapping("/filter_delete")
 	public void filterDelete(@RequestBody FilterIssueRequestDTO filterDto) {
-		System.out.println(filterDto.getFilterIdx());
 		for (int i = 0; i < filterService.getAll().size(); i++) {
 			if(filterService.getAll().get(i).getIdx() == filterDto.getFilterIdx()) {
 				filterService.filterDelete(filterDto.getFilterIdx());

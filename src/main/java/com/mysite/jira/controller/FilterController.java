@@ -23,7 +23,6 @@ import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
@@ -36,6 +35,7 @@ import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -51,12 +51,12 @@ public class FilterController {
 	private final BoardMainService boardMainService;
 	private final TeamService teamService;
 	private final JiraService jiraService;
-
+	private final HttpSession session;
+	
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName,
 			Principal principal, HttpServletRequest request){
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		try {
 			
@@ -151,9 +151,8 @@ public class FilterController {
 	}
 
 	@GetMapping("/every_filter")
-	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName, Principal principal) {
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model, Principal principal) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		
 		List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
@@ -170,9 +169,8 @@ public class FilterController {
 
 	@GetMapping("/filter_issue_table")
 	public String filterIssueTable
-	(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName) {
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+	(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);

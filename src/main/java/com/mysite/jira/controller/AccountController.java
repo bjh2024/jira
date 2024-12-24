@@ -111,9 +111,7 @@ public class AccountController {
 	@GetMapping("/reset_code")
 	public String resetCode(@RequestParam("email") String email, AuthCodeForm authCodeForm, Model model) {
 		Account user = accountService.getAccountByEmail(email);
-		System.out.println(user.getAuthCode());
 		Account updatedUser = accountService.resetCode(user);
-		System.out.println(updatedUser.getAuthCode());
 		
 		emailClient.sendEmail(updatedUser.getEmail(), updatedUser.getAuthCode());
 		model.addAttribute("user", updatedUser);

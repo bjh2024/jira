@@ -43,6 +43,7 @@ import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -59,27 +60,13 @@ public class ProjectController {
 	private final FilterService filterService;
 	private final IssueTypeService issueTypeService;
 	private final TeamService teamService;
+	private final HttpSession session;
 	
 	@GetMapping("/{projectKey}/summation")
-	public String summationPage(Model model, HttpServletRequest request, Principal principal, 
-								@PathVariable("jiraName") String jiraName,
-								@PathVariable("projectKey") String projectKey) {
-		Account account = new Account();
-		if(principal.getName().split("@").length < 2) {
-			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
-			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
-			account = accKakao != null ? accKakao : accNaver;
-		}else {
-			account = this.accountService.getAccountByEmail(principal.getName());
-		}
+	public String summationPage(Model model, HttpServletRequest request, Principal principal) {
 		
-		Integer accountIdx = account.getIdx();
-		
-		Jira jira = jiraService.getByNameJira(jiraName);
-		Integer jiraIdx = jira.getIdx();
-		
-		Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
-		Integer projectIdx = project.getIdx();
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		
 		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
 		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
@@ -101,15 +88,13 @@ public class ProjectController {
 	
 	@GetMapping("/list")
 	public String listPage(Model model, 
-						   Principal principal, 
-						   @PathVariable("jiraName") String jiraName,
+						   Principal principal,
 						   @RequestParam(value="page", defaultValue = "0") int page) {
 		// 현재 로그인 계정
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer accountIdx = account.getIdx();
-		// 현재 위치한 지라 페이지
-		Jira jira = jiraService.getByNameJira(jiraName);
-		Integer jiraIdx = jira.getIdx();
+		
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
 		
 		return "project/project_list";
@@ -131,10 +116,8 @@ public class ProjectController {
 	
 	@GetMapping("/{projectKey}/board_main")
 	public String boardMain(HttpServletRequest request, Model model) {
-		String uri = request.getRequestURI(); 
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
-		Integer projectIdx = project.getIdx();
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		
 		// 현재 시간용 변수
 		LocalDateTime now = LocalDateTime.now();
@@ -173,7 +156,7 @@ public class ProjectController {
 		model.addAttribute("orderedPriorityList", orderedPriorityList);
 		
 		// 팀 리스트
-		List<Team> teamList = boardMainService.getJiraTeamList(jira.getIdx());
+		List<Team> teamList = boardMainService.getJiraTeamList(jiraIdx);
 		model.addAttribute("teamList", teamList);
 		
 		// 프로젝트 별 참여자 리스트
@@ -200,12 +183,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/attached_files")
-	public String attachedFiles(HttpServletRequest request, Model model,@PathVariable("projectKey") String projectKey) {
-		String uri = request.getRequestURI(); 
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+	public String attachedFiles(HttpServletRequest request, Model model) {
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
+		
 		// 모든 첨부파일 리스트
-		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(project.getIdx());
+		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(projectIdx);
 		model.addAttribute("fileList", fileList);
 		
 		return "project/attached_files";
@@ -213,11 +195,7 @@ public class ProjectController {
 	
 	@GetMapping("/{projectKey}/chart")
 	public String chart(HttpServletRequest request, Model model) {
-		String uri = request.getRequestURI(); 
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
-		Integer projectIdx = project.getIdx();
-		
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		List<Issue> issueList = issueService.getByProjectIdx(projectIdx);
 		model.addAttribute("issueList", issueList);
 		

@@ -30,8 +30,13 @@ public class JiraService {
 		return jiraRepository.findIdxByName(name);
 	}
 	
-	public Optional<Jira> getByIdx(Integer idx) {
-		return jiraRepository.findByIdx(idx);
+	public Jira getByIdx(Integer idx) {
+		Optional<Jira> opJira = jiraRepository.findByIdx(idx);
+		Jira jira = null;
+		if(!opJira.isEmpty()) {
+			jira = opJira.get();
+		}
+		return jira;
 	}
 	 
 	// kdw
@@ -42,6 +47,7 @@ public class JiraService {
 	public Integer getJiraCount(String jiraName, Integer accountIdx) {
 		return jiraRepository.countByNameAndJiraMembersList_AccountIdx(jiraName, accountIdx);
 	}
+	
 	// 사용자가 지라가 없을경우 지라 추가
 	public void addJira(Integer accountIdx) {
 		Optional<Account> account = accountRepository.findById(accountIdx);
@@ -58,6 +64,9 @@ public class JiraService {
 											     .clickedDate(LocalDateTime.now())
 											     .build();
 			jiraMembersRepository.save(jiraMembers);
+			
+			// 기본값 필터 add
+			
 		}
 	}
 	 

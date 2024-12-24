@@ -7,12 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,12 +26,13 @@ public class TeamController {
 	
 	private final JiraMembersService jiraMembersService;
 	
+	private final HttpSession session;
+	
 	@GetMapping("list")
 	public String listPage(Model model, Principal principal, HttpServletRequest request) {
-		String uri = request.getRequestURI();
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		model.addAttribute("memberList", jiraMembersService.getMembersByJiraIdx(jira.getIdx()));
-		model.addAttribute("teamList", teamService.getTeamListByJiraIdx(jira.getIdx()));
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		model.addAttribute("memberList", jiraMembersService.getMembersByJiraIdx(jiraIdx));
+		model.addAttribute("teamList", teamService.getTeamListByJiraIdx(jiraIdx));
 		return "team/team_list";
 	}
 }

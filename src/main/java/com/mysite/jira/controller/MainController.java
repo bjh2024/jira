@@ -7,10 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
@@ -18,6 +16,7 @@ import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -35,6 +34,8 @@ public class MainController {
 	private final RecentService recentService;
 
 	private final LikeService likeService;
+
+	private final HttpSession session;
 	
 	@GetMapping("/")
 	public String main(Principal principal) {
@@ -57,7 +58,7 @@ public class MainController {
 	
 	
 	@GetMapping("/{jiraName}")
-	public String filter(Model model, Principal principal, @PathVariable("jiraName") String jiraName) {
+	public String filter(Model model, Principal principal) {
 		Account account = new Account();
 		if(principal.getName().split("@").length < 2) {
 			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
@@ -66,10 +67,10 @@ public class MainController {
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}
-		Integer accountIdx = account.getIdx();
 		
-		Jira jira = jiraService.getByNameJira(jiraName);
-		Integer jiraIdx = jira.getIdx();
+		Integer accountIdx = account.getIdx();
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		
 		model.addAttribute("projectList", projectService.getProjectList(accountIdx, jiraIdx));
 		
 		// 작업

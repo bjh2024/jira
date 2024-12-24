@@ -74,7 +74,7 @@ async function validationName(projectName, inputBox) {
 	// 유효성 검사
 	// 프로젝트 이름이 존재하는지 확인 fetch
 	async function projectNameDuplication() {
-		let url = `/api/project/duplication/name?projectName=${projectName}&uri=${window.location.pathname}`;
+		let url = `/api/project/duplication/name?projectName=${projectName}`;
 		try {
 			const res = await fetch(url, { method: "get" });
 			const data = await res.json();

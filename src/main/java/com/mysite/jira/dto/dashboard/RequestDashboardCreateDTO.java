@@ -9,6 +9,5 @@ public class RequestDashboardCreateDTO {
 
 	private String name;
 	private String explain;
-	private String uri;
 	private List<AuthTypeDTO> authItems;
 }

@@ -21,7 +21,6 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
-import com.mysite.jira.service.ChatService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.JiraMembersService;
@@ -32,6 +31,7 @@ import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @ControllerAdvice
@@ -56,6 +56,8 @@ public class GlobalModelAdvice {
 	private final FilterService filterService;
 
 	private final DashboardService dashboardService;
+
+	private final HttpSession session;
 	
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
@@ -67,8 +69,8 @@ public class GlobalModelAdvice {
 		   uri.contains("/error") ||
 		   uri.contains("/account") ||
 		   uri.equals("/favicon.ico")) return;
-		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
-		if (uri.contains("/project") && uri.contains("/create")) return;
+		// 특정 경로 /project/create에서는 공통 모델 속성 추가하지 않기
+		if (uri.contains("/project/create")) return;
 		try {
 			// 현재 로그인한 계정 정보
 			Account currentUser = new Account();
@@ -80,12 +82,11 @@ public class GlobalModelAdvice {
 				currentUser = this.accountService.getAccountByEmail(principal.getName());
 			}
 			
-		    // 현재 들어온 지라 정보
-		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		    
 			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
-			Integer jiraIdx = jira.getIdx();
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			
 			// header
 			// header null 처리 필요
 			List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
@@ -161,13 +162,15 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api"))
+		if (uri.contains("/api") || uri.contains("/project/create"))
 			return;
 		if (uri.contains("/project")) {
-			Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-			Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[3]);
+			session.setAttribute("projectIdx", project.getIdx());
+			
 			model.addAttribute("project", project);
-			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 	}
 	

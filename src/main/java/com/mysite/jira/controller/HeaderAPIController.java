@@ -18,6 +18,7 @@ import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.RecentService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,15 +30,15 @@ public class HeaderAPIController {
     
     private final JiraService jiraService;
     
+    private final HttpSession session;
+    
     // List<Issue> 일경우 엔티티는 json으로 변환시 문제가 발생함
     @PostMapping("/filter")
     public List<HeaderRecentIssueDTO> getInputData(@RequestBody HeaderRequestFilterDTO IssueInputFilterDTO,
     											   HttpServletRequest request,
     											   Principal principal) {
-    	String uri = IssueInputFilterDTO.getCurrentUrl(); 
     	// 지라 idx
-    	Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Integer jiraIdx = jira.getIdx();
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;

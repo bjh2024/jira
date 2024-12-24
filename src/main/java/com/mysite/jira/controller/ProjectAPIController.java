@@ -23,6 +23,7 @@ import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,11 +37,12 @@ public class ProjectAPIController {
 	
 	private final AccountService accountService;
 	
+	private final HttpSession session;
+	
 	@GetMapping("duplication/name")
-	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName,
-											 @RequestParam("uri") String uri) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		if(projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName) == null) {
+	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		if(projectService.getByJiraIdxAndNameProject(jiraIdx, projectName) == null) {
 			return 0;
 		}
 		return 1;
@@ -48,10 +50,9 @@ public class ProjectAPIController {
 	
 	@GetMapping("duplication/key")
 	public ProjectDuplicationKeyDTO getDuplicationProjectKey(@RequestParam("keyName") String keyName,
-															 @RequestParam("uri") String uri,
 															 Principal principal) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), keyName);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, keyName);
 		Integer count = 0;
 		String projectName = "값이 없습니다!";
 		if(project != null) {
@@ -68,7 +69,6 @@ public class ProjectAPIController {
 	// 프로젝트 생성
 	@PostMapping("create")
 	public boolean projectCreate(@RequestBody ProjectCreateDTO projectCreateDTO, Principal principal) {
-		String uri = projectCreateDTO.getUri();
 		String name = projectCreateDTO.getName();
 		String key = projectCreateDTO.getKey();
 		Account account = new Account();
@@ -77,7 +77,9 @@ public class ProjectAPIController {
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 		
 		projectService.createProject(name, key ,jira, account);
 		
@@ -97,28 +99,26 @@ public class ProjectAPIController {
 	}
 	
 	@GetMapping("idx")
-	public Integer getProjecIdx(@RequestParam("projectName") String projectName,
-								@RequestParam("uri") String uri) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		Project project = projectService.getByJiraIdxAndNameProject(jira.getIdx(), projectName);
+	public Integer getProjecIdx(@RequestParam("projectName") String projectName) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Project project = projectService.getByJiraIdxAndNameProject(jiraIdx, projectName);
 		
 		return project.getIdx();
 	}
 	
 	// 프로젝트 이름으로 search
 	@GetMapping("search")
-	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
-										     @RequestParam("uri") String uri){
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		return projectService.getByJiraIdxAndNameLikeProject(jira.getIdx(), searchName);
+	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return projectService.getByJiraIdxAndNameLikeProject(jiraIdx, searchName);
 		
 	}
 	
 	// jiraIdx에 해당하는 모든 프로젝트
 	@GetMapping("dashboard/list")
-	public List<ProjectListDTO> getProjectList(@RequestParam("uri") String uri){
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		return projectService.getByJiraIdxProjectListDTO(jira.getIdx());
+	public List<ProjectListDTO> getProjectList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return projectService.getByJiraIdxProjectListDTO(jiraIdx);
 	}
 	
 	@PostMapping("/update_project_name")

@@ -26,6 +26,8 @@ public class AccountService {
 	
 	private final ProjectMembersRepository projectMembersRepository;
 	
+	private final JiraService jiraService;
+	
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	private final AccountRepository accountRepository;
@@ -126,7 +128,7 @@ public class AccountService {
 		if(existingAccount == null) {
 			throw new NoSuchElementException("Account not found");
 		}
-		
+		jiraService.addJira(existingAccount.getIdx());
 		existingAccount.updateAccount(null, null);
 		this.accountRepository.save(existingAccount);
 	}

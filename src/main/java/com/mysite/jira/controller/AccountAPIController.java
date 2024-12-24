@@ -1,7 +1,7 @@
 package com.mysite.jira.controller;
 
 import java.util.List;
- 
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +15,12 @@ import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.email.JiraInviteEmailClient;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
-import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,30 +38,26 @@ public class AccountAPIController {
 	
 	private final JiraInviteEmailClient jiraInviteEmailClient; 
 
+	private final HttpSession session;
+	
 	// 유저 이름으로 project에 포함된 유저 search
 	@GetMapping("project/members")
-	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName,
-											 @RequestParam("uri") String uri){
-		String jiraName = uri.split("/")[1];
-		String projectKey = uri.split("/")[3];
-		Jira jira = jiraService.getByNameJira(jiraName);
-		Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), projectKey);
+	public List<SearchDTO> projectSearchList(@RequestParam("searchName") String searchName){
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		// key를 accountIdx로 사용
-		return accountService.getProjectMemberList(project.getIdx(), searchName);
+		return accountService.getProjectMemberList(projectIdx, searchName);
 	}
 	
 	@GetMapping("dashboard/list")
-	public List<AccountListDTO> getAccountList(@RequestParam("uri") String uri){
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		return accountService.getAccountListDashboard(jira.getIdx());
+	public List<AccountListDTO> getAccountList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return accountService.getAccountListDashboard(jiraIdx);
 	}
 	
 	@GetMapping("duplication/jira_member")
-	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email,
-												 @RequestParam("uri") String uri) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		 
-		if(jiraMembersService.getByJiraIdxAndEmailJiraMember(jira.getIdx(), email) == null) {
+	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		if(jiraMembersService.getByJiraIdxAndEmailJiraMember(jiraIdx, email) == null) {
 			return 0;
 		}
 		return 1;
@@ -70,17 +66,16 @@ public class AccountAPIController {
 	@GetMapping("add/jira_member")
 	public void addJiraMember(@RequestBody AddJiraMemberDTO addJiraMemberDTO) {
 		String email = addJiraMemberDTO.getEmail();
-		String uri = addJiraMemberDTO.getUri();
-		
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		Account account = accountService.getAccountByEmail(email);
+		
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 		
 		jiraMembersService.addJiraMember(account, jira);
 	}
 	
 	@PostMapping("add/jira_member/send_email")
 	public Integer addJiraMemberSendEmail(@RequestBody String jiraUserEmail) {
-		System.out.println(jiraUserEmail.replaceAll("\"", ""));
 		jiraInviteEmailClient.sendEmail(jiraUserEmail.replaceAll("\"", ""));
 		return 1;
 	}
