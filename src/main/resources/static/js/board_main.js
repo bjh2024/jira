@@ -98,7 +98,6 @@ function createReply(replybox){
 	})
 	.then(response => response.json())
 	.then(reply => {
-		console.log(reply);
 		const newReply = document.createElement("div");
 		newReply.classList.add("issuedetail-reply");
 		newReply.innerHTML = `
@@ -310,7 +309,6 @@ document.querySelector("body").addEventListener("click", function(e){
 		
 		if(menubtn !== null && menubtn.className.includes("name")){
 			const issueStatus = btn.parentElement.previousElementSibling;
-			console.log(issueStatus);
 			issueStatus.classList.add("none");
 			issueStatus.previousElementSibling.classList.add("show");
 			btn.children[0].classList.remove("show");
@@ -422,7 +420,6 @@ document.querySelector(".status-delete-alert-container").addEventListener("mouse
 		if(boxItem == "상태 선택"){
 			alert("반드시 변경할 상태를 선택해야 합니다.");
 		}else{
-			console.log(deleteStatusData);
 			deleteAndUpdateIssueStatus();
 		}
 	}
@@ -480,7 +477,6 @@ document.querySelectorAll(".edit-statustitlebtn.submit").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		updateStatusTitleData.statusIdx = btn.previousElementSibling.dataset.idx;
 		updateStatusTitleData.name = btn.previousElementSibling.value;
-		console.log(updateStatusTitleData);
 		const titleItem = btn.parentElement.nextElementSibling.children[0].children[0];
 		updateStatusTitle(titleItem, btn.previousElementSibling);
 		btn.parentElement.classList.remove("show");
@@ -590,7 +586,6 @@ document.querySelectorAll(".issuetype").forEach(function(btn){
 });
 
 let issueDatas = {
-	"jiraName": "",
 	"projectIdx": "",
 	"issueTypeIdx": "",
 	"reporterIdx": "",
@@ -638,7 +633,6 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 		if(window.event.keyCode == 13){
 			const btnBoxItem = input.nextElementSibling;
 			
-			issueDatas.jiraName = btnBoxItem.dataset.jiraname;
 			issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
 			issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
 			issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
@@ -666,7 +660,6 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 		const btnBoxItem = btn.parentElement;
 		const inputItem = btnBoxItem.previousElementSibling;
 		
-		issueDatas.jiraName = btnBoxItem.dataset.jiraname;
 		issueDatas.projectIdx = btnBoxItem.dataset.projectidx;
 		issueDatas.issueTypeIdx = btnBoxItem.dataset.typeidx;
 		issueDatas.reporterIdx = btnBoxItem.dataset.useridx;
@@ -993,7 +986,6 @@ document.querySelector(".issue-delete-alert-container").addEventListener("moused
 	
 	const submitItem = e.target.closest(".delete-alert-submitbtn");
 	if(submitItem !== null){
-		console.log(deleteIssueData);
 		deleteIssue();
 	}
 	
@@ -1172,7 +1164,6 @@ function getNewEpikIssueList(box){
 				newEpikIssueData.childIdx = item.parentElement.parentElement.parentElement.nextElementSibling.dataset.issueidx;
 				newEpikIssueData.oldParentIdx = updateEpikIssueData.currentIssue;
 				newEpikIssueData.newParentIdx = item.dataset.issueidx;
-				console.log(newEpikIssueData);
 				updateEpikIssuePath(item.parentElement.parentElement.parentElement);
 				
 				const container = e.target.closest(".issuedetail-container");
@@ -1247,7 +1238,6 @@ function getIssueTypeList(box){
 			box.appendChild(item);
 			item.addEventListener("click", function(e){
 				updateIssueTypeData.issueTypeIdx = item.dataset.typeidx;
-				console.log(updateIssueTypeData);
 				updateIssueType(item.parentElement.parentElement.parentElement);
 				
 				const container = e.target.closest(".issuedetail-container");
@@ -1470,7 +1460,6 @@ function deleteVoteData(btn){
 		body: JSON.stringify(getVoterData)
 	}).then(response => {
         if (response.ok) {
-			console.log(btn);
 			btn.children[2].innerText = Number(btn.children[2].innerText) - 1;
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -1521,7 +1510,6 @@ function updateIssueNameFetch(title, input){
 		body: JSON.stringify(updateIssueNameData)
 	}).then(response => {
         if (response.ok) {
-			console.log("업데이트 성공");
             input.value = updateIssueNameData.name;
 			title.innerText = updateIssueNameData.name;
         } else {
@@ -1602,7 +1590,6 @@ document.querySelectorAll(".create-subissue-input").forEach(function(input){
 });
 
 let createSubIssueData = {
-	"jiraName": "",
 	"projectIdx": "",
 	"parentIdx": "",
 	"reporterIdx": "",
@@ -1673,7 +1660,6 @@ document.querySelectorAll(".create-subissue").forEach(function(btn){
 		
 		if(submitbtn !== null && submitbtn.className.includes("submit") && submitbtn.className.includes("action")){
 			const input = createbox.querySelector(".create-subissue-input");
-			createSubIssueData.jiraName = createbox.dataset.jiraname;
 			createSubIssueData.projectIdx = createbox.dataset.projectidx;
 			createSubIssueData.parentIdx = createbox.dataset.parentidx;
 			createSubIssueData.reporterIdx = createbox.dataset.useridx;
@@ -1782,7 +1768,6 @@ function deleteIssueReply(){
 function getReplyDetail(box){
 	const submitItem = document.querySelector(".delete-alert-submitbtn.reply");
 	submitItem.addEventListener("click", function(e){
-		console.log(box);
 		if(deleteReplyData.replyIdx != ""){
 			deleteIssueReply();
 			box.remove();
@@ -1820,7 +1805,6 @@ function updateStatusfetch(btn){
 	})
 	.then(response => response.json())
 	.then(newStatus => {
-		console.log(btn);
 		if(btn.className.includes("issuedetail-statusbtn")){
 			btn.className = '';
 			btn.classList.add("issuedetail-statusbtn");
@@ -1949,12 +1933,11 @@ function getSubIssueTypeFetch(btn, box){
 					btn.children[1].src = `/images/${type.iconFilename}`;
 					btn.children[2].innerText = type.name;
 					btn.setAttribute("data-typeidx", type.idx);
-					box.classList.remove("show");
+					typebox.parentElement.classList.remove("show");
 				});
 				box.appendChild(typebox);
 			}
 		});
-		console.log(box);
 	}).catch(error => {
 			console.error("Fetch error:", error);
 	});
@@ -1971,7 +1954,6 @@ document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, in
 		
 		if(grade == 3){
 			getSubIssueTypeData.projectIdx = btn.dataset.projectidx;
-			console.log(getSubIssueTypeData);
 			getSubIssueTypeFetch(typebtn, typebtn.children[0]);
 			typebtn.classList.add("active");
 			typebtn.style.border = "1px solid #8C8F97";
@@ -2023,7 +2005,6 @@ document.querySelectorAll(".file-input-direct").forEach(function(input){
 	    }).then(response => response.json())
 		.then(fileData => {
 			const path = fileData.name.split(".");
-			console.log(path[1]);
 			
 			const listBox = input.parentElement.parentElement.parentElement.nextElementSibling;
 			const myFile = document.createElement("div");
@@ -2067,7 +2048,6 @@ document.querySelectorAll(".file-input").forEach(function(input){
 			const fileBox = input.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(".attached-files-box");
 			
 			const path = fileData.name.split(".");
-			console.log(path[1]);
 			
 			const listBox = fileBox.querySelector(".file-list-box");
 			const myFile = document.createElement("div");
@@ -2091,6 +2071,9 @@ document.querySelectorAll(".file-input").forEach(function(input){
 
 document.querySelectorAll(".create-subissue-type").forEach(function(btn, index){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".create-subissue-typewindow") !== null){
+			return;
+		}
 		if(e.target.closest(".create-subissue-type.active") !== null){
 			btn.style.border = "2px solid #1868DB";
 			btn.children[0].classList.toggle("show");
@@ -2104,7 +2087,6 @@ document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, 
 			return;
 		}
 		const windowItem = btn.children[0];
-		console.log("hi");
 		currentStatus.projectIdx = btn.dataset.projectidx;
 		currentStatus.statusIdx = btn.dataset.statusidx;
 		fetchStatusList(windowItem.children[0]);
@@ -2191,7 +2173,6 @@ function fetchInput(){
 				labelValue.setAttribute("data-issueidx", labelDatas.issueIdx);
 				labelValue.setAttribute("data-labelidx", value.labelIdx);
 				labelValue.addEventListener("click", function(e){
-					console.log(label.parentElement);
 					newLabelData.issueIdx = labelValue.dataset.issueidx;
 					newLabelData.labelIdx = labelValue.dataset.labelidx;
 					label.classList.remove("show");
@@ -2256,7 +2237,6 @@ function deleteLabelData(){
 document.querySelectorAll(".graphval-delete-labelbtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		removeLabelDataValue.labelDataIdx = btn.parentElement.dataset.labeldataidx;
-		console.log(removeLabelDataValue);
 		btn.parentElement.remove();
 		deleteLabelData();
 	});
@@ -2438,7 +2418,6 @@ function updateUserFetch(graphval){
 	})
 	.then(response => response.json())
 	.then(reporter => {
-		console.log(reporter);
 		graphval.dataset.reporteridx = reporter.reporterIdx;
 		graphval.dataset.projectidx = reporter.projectIdx;
 		graphval.dataset.issueidx = reporter.issueIdx;
@@ -2607,14 +2586,12 @@ columns.forEach((column) => {
 			//드롭했을때 이벤트 실행  	
 			const issueItem = e.item;
 			const issueBoxItem = e.item.parentElement;
-			console.log(issueItem);  
 			
 			const newIndex = e.newIndex; // 드래그 종료 후의 인덱스
 			draggedIssueDatas.issueIdx = issueItem.dataset.idx;
 			draggedIssueDatas.statusIdx = issueBoxItem.dataset.statusidx;
 			draggedIssueDatas.oldIdx = originalIndex;
 			draggedIssueDatas.newIdx = newIndex;
-			console.log(draggedIssueDatas);
 			
 			updateDraggedIssue();
 		}

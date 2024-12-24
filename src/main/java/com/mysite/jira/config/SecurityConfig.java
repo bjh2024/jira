@@ -8,9 +8,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -32,6 +29,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	private KakaoLogoutHandler kakaoLogoutHandler;
+	
+	@Autowired
+	private CustomAuthenticationProvider customAuthenticationProvider;
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

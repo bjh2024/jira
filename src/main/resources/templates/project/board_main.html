@@ -799,7 +799,7 @@
 						 							</div>
 						 						</div>
 												<div class="create-subissue-box" th:attr="data-statusidx=${issueList.IssueStatus.idx}, data-useridx=${currentUser.idx}, 
-												data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-parentidx=${issueList.idx}">
+												data-projectidx=${project.idx}, data-parentidx=${issueList.idx}">
 													<div class="create-subissue-titlebox">
 														<div class="create-subissue-type">
 															<div class="create-subissue-typewindow"></div>
@@ -1085,7 +1085,7 @@
 					<div class="createissue-container">
 						<div class="createissuebox">
 							<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-							<div class="createissue-btnbox" th:attr="data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-useridx=${currentUser.idx}, 
+							<div class="createissue-btnbox" th:attr="data-projectidx=${project.idx}, data-useridx=${currentUser.idx}, 
 							data-typeidx=0, data-statusidx=${statusList1[2]}">
 								<div class="createissue-typebtn">
 									<div class="issuetypeselectbox">

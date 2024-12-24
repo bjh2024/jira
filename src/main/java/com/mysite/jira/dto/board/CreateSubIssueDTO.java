@@ -12,7 +12,6 @@ public class CreateSubIssueDTO {
 	private Integer reporterIdx;
 	private Integer statusIdx;
 	private Integer issueTypeIdx;
-	private String jiraName;
 	private String name;
 	
 	// return 객체에만 추가될 값
