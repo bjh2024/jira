@@ -1473,7 +1473,7 @@ async function addDashboardGarget(tagStr, order) {
 			break;
 	}
 	async function dashboardItemAddFetch(uri){
-		const dashboardIdx = window.location.pathname.split("/")[4];
+		const dashboardIdx = window.location.pathname.split("/")[3];
 		const res = await fetch(uri, {method:"post", 
 									  headers:{"Content-Type":"application/json"}, 
 									  body:JSON.stringify(dashboardIdx)

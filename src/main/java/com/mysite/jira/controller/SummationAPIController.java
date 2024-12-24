@@ -4,15 +4,10 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.ChartDTO;
-import com.mysite.jira.entity.Jira;
-import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

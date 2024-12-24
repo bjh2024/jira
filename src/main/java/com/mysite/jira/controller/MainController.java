@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
@@ -25,8 +25,6 @@ public class MainController {
 	
 	private final AccountService accountService;
 
-	private final JiraService jiraService;
-	
 	private final ProjectService projectService;
 	
 	private final IssueService issueService;
@@ -37,9 +35,14 @@ public class MainController {
 
 	private final HttpSession session;
 	
+	@GetMapping("/setJiraIdx")
+	public String setAttributeJiraIdx(@RequestParam("jiraIdx") Integer jiraIdx) {
+		session.setAttribute("jiraIdx", jiraIdx);
+		return "redirect:/";
+	}
+	
 	@GetMapping("/")
-	public String main(Principal principal) {
-		String jiraName = "";
+	public String filter(Model model, Principal principal) {
 		if(principal == null) {
 			return "redirect:/account/login";
 		}
@@ -51,26 +54,10 @@ public class MainController {
 		}else {
 			account = this.accountService.getAccountByEmail(principal.getName());
 		}
-		Integer accountIdx = account.getIdx();
-		jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
-		return "redirect:/" + jiraName;
-	}
-	
-	
-	@GetMapping("/{jiraName}")
-	public String filter(Model model, Principal principal) {
-		Account account = new Account();
-		if(principal.getName().split("@").length < 2) {
-			Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
-			Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
-			account = accKakao != null ? accKakao : accNaver;
-		}else {
-			account = this.accountService.getAccountByEmail(principal.getName());
-		}
 		
 		Integer accountIdx = account.getIdx();
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		
+		System.out.println(jiraIdx);
 		model.addAttribute("projectList", projectService.getProjectList(accountIdx, jiraIdx));
 		
 		// 작업

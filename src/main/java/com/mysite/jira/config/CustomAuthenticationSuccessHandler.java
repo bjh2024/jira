@@ -43,12 +43,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		
 		// 현재 계정이 가장 최근 방문한 jira
 		Jira jira = jiraService.getRecentTop1Jira(accountIdx);
-		String jiraName = jira.getName();
 		session.setAttribute("jiraIdx", jira.getIdx());
 		
 		// 현재 계정이 가장 최근 방문한 project
 		Project project = projectService.getRecentTop1Project(accountIdx, jira.getIdx());
-		String defaultUri = project == null ? "/" : "/" + jiraName + "/project/"+ project.getKey() +"/summation";
+		String defaultUri = project == null ? "/" : "/project/"+ project.getKey() +"/summation";
 		
 		response.sendRedirect(defaultUri);
 	}

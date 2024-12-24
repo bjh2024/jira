@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.service.JiraMembersService;
-import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +16,8 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{jiraName}/team")
+@RequestMapping("/team")
 public class TeamController {
-	
-	private final JiraService jiraService;
 	
 	private final TeamService teamService;
 	

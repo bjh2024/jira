@@ -175,8 +175,7 @@ document.querySelector(".key_name_input_box input#key").addEventListener("focuso
 
 // 취소 클릭
 document.querySelector(".project_create_btn_box .cancle").addEventListener("click", function() {
-	let url = new URL(window.location.href);
-	location.href = `/${url.pathname.split("/")[1]}`;
+	location.href = `/`;
 })
 
 
@@ -186,8 +185,7 @@ document.querySelector(".project_create_btn_box .create").addEventListener("clic
 	let projectKeyInput = document.querySelectorAll(".project_create_main_box1 input")[1];
 	let projectInfo = {
 		"name": projectNameInput.value,
-		"key": projectKeyInput.value,
-		"uri" : window.location.pathname
+		"key": projectKeyInput.value
 	};
 	// 유효성 검사 1
 	document.querySelectorAll(".alret_project_create_box").forEach(function(alretBox) {
@@ -211,10 +209,9 @@ document.querySelector(".project_create_btn_box .create").addEventListener("clic
 		})
 		.then(res=>res.json())
 		.then(res=>{
-			let jiraName = window.location.pathname.split("/")[1];
 			let projectKey = projectKeyInput.value;
 			if(res){
-				window.location.href=`/${jiraName}/project/${projectKey}/summation`;
+				window.location.href=`/project/${projectKey}/summation`;
 			}else{
 				console.error("프로젝트 생성 실패....")
 			}

@@ -1000,7 +1000,7 @@
 											 							</div>
 											 						</div>
 																	<div class="create-subissue-box" th:attr="data-statusidx=${issueList.IssueStatus.idx}, data-useridx=${currentUser.idx}, 
-																	data-projectidx=${issueList.project.idx}, data-jiraname=${currentJira}, data-parentidx=${issueList.idx}">
+																	data-projectidx=${issueList.project.idx}, data-jiraname=${currentJira.name}, data-parentidx=${issueList.idx}">
 																		<div class="create-subissue-titlebox">
 																			<div class="create-subissue-type">
 																				<div class="create-subissue-typewindow"></div>
@@ -1543,7 +1543,7 @@
 				<!--추가 누르면 내용이 추가될 부분-->
 			</div>
 			<div class="viewer_last_button">
-				<button class="save_button" type="button" th:attr="data-jira-name=${currentJira}">저장</button>
+				<button class="save_button" type="button" th:attr="data-jira-name=${currentJira.name}">저장</button>
 				<button class="cancle_button">취소</button>
 			</div>
 

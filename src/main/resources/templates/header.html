@@ -12,13 +12,13 @@
 			</div>
 			<div class="my_app_content item_lnb">
 				<div class="account_jira_list">
-					<div th:classappend="${currentJira == leader} ? active : '' " th:each="leader : ${leaders}">
-						<div th:text="${#strings.substring(leader, 0, 2)}"></div>
-					</div>
+					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " th:each="jiraMember : ${accountByjiraMemberList}">
+						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}"></span>
+					</a>
 				</div>
 				<div class="my_app_content_detail">
 					<div class="detail_header">
-						<h1 th:text="${currentJira}"></h1>
+						<h1 th:text="${currentJira.name}"></h1>
 						<p th:text="${currentUser.email}"></p>
 					</div>
 					<div class="detail_content1">
@@ -113,7 +113,7 @@
 				</div>
 			</div>
 		</div>
-		<a th:href="@{|/${currentJira}|}" class="logo_box">
+		<a href="/" class="logo_box">
 			<img src="/images/logo.svg" alt="" width="58" height="24">
 		</a>
 	</div>

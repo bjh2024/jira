@@ -55,7 +55,6 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 		jiraUserNameInput.focus();
 		return;
 	}
-	console.log(jiraUserEmail.split("@").length !== 2);
 	// 유효성 검사2 이메일 형식인지
 	if(jiraUserEmail.split("@").length !== 2 || jiraUserEmail.split(".")[jiraUserEmail.split(".").length - 1] !== "com"){
 		jiraUserNameInput.classList.add("alert");

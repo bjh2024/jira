@@ -48,7 +48,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{jiraName}/project")
+@RequestMapping("/project")
 public class ProjectController {
 	@Autowired
 	private BoardMainService boardMainService;

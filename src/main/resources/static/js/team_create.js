@@ -107,8 +107,7 @@ document.querySelector(".team_create_container .create_team_btn").addEventListen
 		.then(res => res.json())
 		.then(res => {
 			if(res){
-				const jiraName = window.location.pathname.split("/")[1];
-				location.href=`/${jiraName}/team/list`
+				location.href=`/team/list`
 			}
 		})
 		.catch(err => {

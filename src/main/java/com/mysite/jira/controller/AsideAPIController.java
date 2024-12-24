@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.LikeContentDTO;
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
@@ -27,8 +26,6 @@ public class AsideAPIController {
 	private final LikeService likeService;
 	
 	private final AccountService accountService;
-	
-	private final JiraService jiraService;
 	
 	private final HttpSession session;
 	

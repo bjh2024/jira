@@ -8,7 +8,7 @@
 		<h2>프로젝트</h2>
 		<div class="btn_box">
 			<button>
-				<a th:href="@{|/${currentJira}/project/create|}">프로젝트 만들기</a>
+				<a th:href="@{|/project/create|}">프로젝트 만들기</a>
 			</button>
 		</div>
 	</div>
@@ -78,7 +78,7 @@
 						</button>
 					</td>
 					<td>
-						<a th:href="@{|/${currentJira}/project/${project.projectKey}/summation|}">
+						<a th:href="@{|/project/${project.projectKey}/summation|}">
 							<img th:src="@{|/images/${project.projectIconFilename}|}"
 								alt="" width="24" height="24" />
 							<span th:text="${project.projectName}"></span>

@@ -30,8 +30,6 @@ public class AccountAPIController {
 
 	private final AccountService accountService;
 
-	private final ProjectService projectService;
-	
 	private final JiraService jiraService;
 	
 	private final JiraMembersService jiraMembersService;

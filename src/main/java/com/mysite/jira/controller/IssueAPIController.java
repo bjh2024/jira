@@ -21,8 +21,6 @@ public class IssueAPIController {
 	
 	private final AccountService accountService;
 	
-	private final JiraService jiraService;
-	
 	private final IssueService issueService;
 	
 	private final HttpSession session;

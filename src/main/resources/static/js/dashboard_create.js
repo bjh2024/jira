@@ -450,8 +450,7 @@ document.querySelector(".dashboard_create_btn_box .create_btn").addEventListener
 		.then(res => res.json())
 		.then(dashboardIdx => {
 			if(dashboardIdx){
-				const jiraName = window.location.pathname.split("/")[1];
-				location.href=`/${jiraName}/dashboard/edit/${dashboardIdx}`;
+				location.href=`/dashboard/edit/${dashboardIdx}`;
 			}
 		})
 		.catch(err => {

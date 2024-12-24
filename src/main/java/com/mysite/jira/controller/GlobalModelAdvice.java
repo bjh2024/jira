@@ -64,7 +64,6 @@ public class GlobalModelAdvice {
 		String uri = request.getRequestURI();
 		if(principal == null ||
 		   uri.length() == 0 ||
-		   uri.equals("/") ||
 		   uri.contains("/api")||
 		   uri.contains("/error") ||
 		   uri.contains("/account") ||
@@ -87,9 +86,13 @@ public class GlobalModelAdvice {
 			Integer accountIdx = currentUser.getIdx();
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			
+			// 현재 jira
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			model.addAttribute("currentJira", jira);
+			
 			// header
 			// header null 처리 필요
-			List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
+			List<JiraMembers> accountByjiraMemberList = jiraService.getJiraByAccountIdxList(accountIdx);
 			List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
 			List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
 			List<Account> allAccountList = accountService.getAccountList(jiraIdx);
@@ -121,11 +124,8 @@ public class GlobalModelAdvice {
 			// chat
 			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
 			
-			// 현재 jiraName url에서 가져오기
-			model.addAttribute("currentJira", uri.split("/")[1]);
-
 			// header
-			model.addAttribute("leaders", leaders);
+			model.addAttribute("accountByjiraMemberList", accountByjiraMemberList);
 			model.addAttribute("issuesRecentList", issuesRecentList);
 			model.addAttribute("allProjectList", allProjectList);
 			model.addAttribute("allAccountList", allAccountList);
@@ -167,7 +167,7 @@ public class GlobalModelAdvice {
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			
-			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[3]);
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
 			session.setAttribute("projectIdx", project.getIdx());
 			
 			model.addAttribute("project", project);

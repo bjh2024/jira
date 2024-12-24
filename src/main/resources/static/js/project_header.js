@@ -1,6 +1,6 @@
 const url = window.location.pathname;
 const urlArr = url.split("/");
-const currentMenu = document.querySelector(`.menu-icon-box.${urlArr[4]}`);
+const currentMenu = document.querySelector(`.menu-icon-box.${urlArr[3]}`);
 
 currentMenu.style.borderBottom = "2px solid #44546f";
 
@@ -8,7 +8,7 @@ document.querySelectorAll(".menu-icon-box").forEach(function(btn){
 	const icon = btn.querySelector(".menu-icon");
 	const text = btn.querySelector(".menu-text");
 	btn.addEventListener("mouseover", function(e){
-		if(btn.className.includes(urlArr[4])){
+		if(btn.className.includes(urlArr[3])){
 			return;
 		}
 		btn.style.borderBottom = "2px solid #44546f";
@@ -19,7 +19,7 @@ document.querySelectorAll(".menu-icon-box").forEach(function(btn){
 	});
 	
 	btn.addEventListener("mouseout", function(e){
-		if(btn.className.includes(urlArr[4])){
+		if(btn.className.includes(urlArr[3])){
 			return;
 		}
 		btn.style.borderBottom = "none";

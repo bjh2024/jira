@@ -321,13 +321,13 @@
 							종속성에 정렬하세요.
 						</p>
 						<div class="relation_project_box">
-							<a th:href="@{|/${currentJira}/project/create|}">
+							<a th:href="@{|/project/create|}">
 								<div class="create_project_box">
 									<img th:src="@{/images/plus_icon2.svg}" width="24" height="24" />
 								</div>
 								<span>프로젝트 만들기</span>
 							</a>
-							<a th:href="@{|/${currentJira}/project/${item.key}/summation|}"
+							<a th:href="@{|/project/${item.key}/summation|}"
 								th:each="item : ${relevantProjectList}" th:if="${item.name != project.name}">
 								<div class="img_box">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="48" height="48">
@@ -338,7 +338,7 @@
 								</p>
 							</a>
 						</div>
-						<a th:href="@{|/${currentJira}/project/list|}" class="go_project_create_btn">모든 프로젝트 보기</a>
+						<a th:href="@{|/project/list|}" class="go_project_create_btn">모든 프로젝트 보기</a>
 					</div>
 				</section>
 			</div>

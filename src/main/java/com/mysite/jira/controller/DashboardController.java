@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
@@ -20,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{jiraName}/dashboard")
+@RequestMapping("/dashboard")
 public class DashboardController {
 	
 	private final AccountService accountService;

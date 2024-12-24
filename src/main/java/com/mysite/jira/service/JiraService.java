@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
+import com.mysite.jira.entity.JiraRecentClicked;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.JiraMembersRepository;
+import com.mysite.jira.repository.JiraRecentClickedRepository;
 import com.mysite.jira.repository.JiraRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class JiraService {
 	private final JiraRepository jiraRepository;
 	
 	private final JiraMembersRepository jiraMembersRepository;
+	
+	private final JiraRecentClickedRepository jiraRecentClickedRepository;
 	
 	
 	public Optional<Jira> getIdxByName(String name){
@@ -40,8 +44,8 @@ public class JiraService {
 	}
 	 
 	// kdw
-	public List<String> getjiraLeaderList(Integer accountIdx) {
-		return jiraRepository.findJiraAndMembersByAccountIdxName(accountIdx);
+	public List<JiraMembers> getJiraByAccountIdxList(Integer accountIdx) {
+		return jiraMembersRepository.findByAccountIdx(accountIdx);
 	}
 	// 사용자가 포함하고 있는 지라의 개수
 	public Integer getJiraCount(String jiraName, Integer accountIdx) {
@@ -64,7 +68,11 @@ public class JiraService {
 											     .clickedDate(LocalDateTime.now())
 											     .build();
 			jiraMembersRepository.save(jiraMembers);
-			
+			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
+																   .jira(jira)
+																   .account(account.get())
+																   .build();
+			jiraRecentClickedRepository.save(jiraRecentClicked);
 			// 기본값 필터 add
 			
 		}

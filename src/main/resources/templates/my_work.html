@@ -9,7 +9,7 @@
 		<div class="work_section1">
 			<div class="section1_title">
 				<h2>최근 프로젝트</h2>
-				<a th:href="@{|/${currentJira}/project/list|}">모든 프로젝트 보기</a>
+				<a th:href="@{|/project/list|}">모든 프로젝트 보기</a>
 			</div>
 			<div class="section1_content" th:style="'min-width:'+${#lists.size(projectList) * 240}+'px'">
 				<div class="no_project_list_box" th:if="${#lists.size(projectList) == 0}">
@@ -17,7 +17,7 @@
 				</div>
 				<div class="project_recent_box" th:style="|border-left: 20px solid ${project.color};|"
 					th:each=" project : ${projectList}">
-					<a th:href="@{|/${currentJira}/project/${project.key}/summation|}" class="recent_header">
+					<a th:href="@{|/project/${project.key}/summation|}" class="recent_header">
 						<img th:src="@{|/images/${project.iconFilename}|}" width="24px" height="24px" alt=""
 							draggable="false" style="border-radius: 4px;">
 						<div>

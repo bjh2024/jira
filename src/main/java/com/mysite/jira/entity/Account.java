@@ -157,4 +157,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<FilterRecentClicked> filterClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<JiraRecentClicked> jiraClickedList;
 }

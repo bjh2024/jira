@@ -116,7 +116,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			ON      ist.idx = i.issue_status_idx
 			WHERE   prc.account_idx = :accountIdx
 			AND     p.jira_idx = :jiraIdx
-			AND     ist.status BETWEEN 1 AND 2 OR i.idx IS NULL
+			AND     (ist.status BETWEEN 1 AND 2 OR i.idx IS NULL)
 			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date, p.key
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
