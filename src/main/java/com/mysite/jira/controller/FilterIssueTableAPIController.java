@@ -189,14 +189,18 @@ public class FilterIssueTableAPIController {
 		return filterIssue;
 	}
 
-	@PostMapping("/filter_create")
-	public boolean filterCreate(@RequestBody FilterIssueRequestDTO filterDto, Principal principal) {
-
+	@PostMapping("/filter_duplicate")
+	public boolean filterDuplicate(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
-			if (filterService.getAll().get(i).getName().equals(filterDto.getFilterName())) {
+			if (filterService.getAll().get(i).getName().equals(filterDto.getFilterName())){
 				return false;
 			}
 		}
+		return true;
+	}
+	
+	@PostMapping("/filter_create")
+	public boolean filterCreate(@RequestBody FilterIssueRequestDTO filterDto, Principal principal) {
 
 		String filterName = filterDto.getFilterName(); // 필터 제목
 		String explain = filterDto.getExplain(); // 필터 설명내용
@@ -209,8 +213,6 @@ public class FilterIssueTableAPIController {
 
 		// 필터 생성시 무조건 생성되는 필터 기본
 		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
-		System.out.println(filterDto);
-		System.out.println(filterDto.getIsCompleted());
 		if (filterDto.getIsCompleted() != null && filterDto.getIsCompleted().length > 0 ) {
 			for (int i = 0; i < filterDto.getIsCompleted().length; i++) {
 				filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);
@@ -237,7 +239,6 @@ public class FilterIssueTableAPIController {
 		}
 		if (filterDto.getIssueManager() != null && filterDto.getIssueManager().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueManager().length; i++) {
-				System.out.println(filterDto.getIssueManager()[i]);
 				Account managerAccount = accountService.getByName(filterDto.getIssueManager()[i]);
 				filterService.filterManagerCreate(filter, managerAccount);
 			}
