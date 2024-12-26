@@ -65,6 +65,9 @@
 						<div class="input_box">
 							<label>채팅방 멤버 초대</label>
 							<div class="chat_member_invite_list_box">
+								<div class="empty_member_box" th:if="${#lists.size(allJiraMemberList) == 1}">
+									현재 지라에 멤버가 없습니다.
+								</div>
 								<label class="item" th:for="|chatMember-${member.idx}|"
 									   th:each="member : ${allJiraMemberList}"
 									   th:if="${member.account.idx != currentUser.idx}">

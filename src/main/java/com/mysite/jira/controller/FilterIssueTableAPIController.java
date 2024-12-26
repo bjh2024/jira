@@ -209,8 +209,6 @@ public class FilterIssueTableAPIController {
 
 		// 필터 생성시 무조건 생성되는 필터 기본
 		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
-		System.out.println(filterDto);
-		System.out.println(filterDto.getIsCompleted());
 		if (filterDto.getIsCompleted() != null && filterDto.getIsCompleted().length > 0 ) {
 			for (int i = 0; i < filterDto.getIsCompleted().length; i++) {
 				filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);

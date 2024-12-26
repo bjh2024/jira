@@ -1,69 +1,79 @@
+function chatMessageAdd(chatRoomDTO, msg){
+	const messageInfo = JSON.parse(msg.body)
+	const chatDetailContainer = document.querySelector(".chat_detail_container");
+	const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
+	const chatRoomIdx = chatDetailContainer.getAttribute("chat-room-idx-data");
+	let sendDateTitle = dateTitleFormat(messageInfo.sendDate);
+	if (chatRoomDTO.chatRoom.idx == chatRoomIdx) {
+		chatDetailContainer.innerHTML += `<div class="chat_detail_box">
+											${prevSendDate === sendDateTitle ?
+				'' :
+				`<div class="date_title">
+													<span>${sendDateTitle}</span>
+												</div>`
+			}
+											${messageInfo.accountIdx !== Number(myAccountIdx) ?
+				`<div class="other_chat_box">
+												<div class="img_box">
+													<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
+												</div>
+												<div class="chat_detail">
+													<p>${messageInfo.content}</p>
+													<span class="date">${dateDetailFormat(messageInfo.sendDate)}</span>
+												</div>
+											</div>`
+				: `<div class="my_chat_box">
+												<div class="chat_detail">
+													<span class="date">${dateDetailFormat(messageInfo.sendDate)}</span>
+													<p>${messageInfo.content}</p>
+												</div>
+												<div class="img_box">
+													<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
+												</div>
+											</div>`}</div>`;
+		if (prevSendDate !== sendDateTitle)
+			prevSendDate = sendDateTitle;
+	}
+	document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
+}
+
+
 let stompClient = null;
-function connection(chatRoomDTOList){
-	if(chatRoomDTOList.length !== 0){
-		let socket = new SockJS("/websocket-endpoint");
-		stompClient = Stomp.over(socket);
-		
-		stompClient.connect({}, function(frame){
-			/*console.log("연결 성공" + frame);*/
-			
-			chatRoomDTOList.forEach(function(chatRoomDTO){
-				const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
-				stompClient.subscribe(topic, function(msg){
-					const messageInfo = JSON.parse(msg.body)
-					const chatDetailContainer = document.querySelector(".chat_detail_container");
-					const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
-					const chatRoomIdx = chatDetailContainer.getAttribute("chat-room-idx-data");
-					let sendDateTitle = dateTitleFormat(messageInfo.sendDate);
-					if(chatRoomDTO.chatRoom.idx == chatRoomIdx){
-						chatDetailContainer.innerHTML += `<div class="chat_detail_box">
-																${prevSendDate === sendDateTitle ?
-															'' :
-															`<div class="date_title">
-																		<span>${sendDateTitle}</span>
-																	</div>`
-																 }
-																${messageInfo.accountIdx !== Number(myAccountIdx) ?
-															`<div class="other_chat_box">
-																	<div class="img_box">
-																		<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
-																	</div>
-																	<div class="chat_detail">
-																		<p>${messageInfo.content}</p>
-																		<span class="date">${dateDetailFormat(messageInfo.sendDate)}</span>
-																	</div>
-																</div>`
-															: `<div class="my_chat_box">
-																	<div class="chat_detail">
-																		<span class="date">${dateDetailFormat(messageInfo.sendDate)}</span>
-																		<p>${messageInfo.content}</p>
-																	</div>
-																	<div class="img_box">
-																		<img src="/images/${messageInfo.iconFilename}" width="24" height="24" />
-																	</div>
-																</div>`}
-															</div>`;
-						if (prevSendDate !== sendDateTitle)
-								prevSendDate = sendDateTitle;
-					}
-					document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
+function connection(chatRoomDTOList) {
+	if (chatRoomDTOList.length !== 0) {
+		if (!stompClient) {
+			let socket = new SockJS("/websocket-endpoint");
+			stompClient = Stomp.over(socket);
+
+			stompClient.connect({}, function(frame) {
+				/*console.log("연결 성공" + frame);*/
+				chatRoomDTOList.forEach(function(chatRoomDTO) {
+					const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
+					stompClient.subscribe(topic, function(msg) {
+						chatMessageAdd(chatRoomDTO, msg);
+					});
 				});
+
 			});
-			
-		});
+		}else{
+			const topic = `/topic/chat/${chatRoomDTOList.chatRoom.idx}`;
+			stompClient.subscribe(topic, function(msg) {
+				chatMessageAdd(chatRoomDTOList, msg);
+			});
+		}
 	}
 }
 
 
 
 function sendMessage(message, chatRoomIdx) {
-    stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
+	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
 }
 
-window.onload = async function(){
+window.onload = async function() {
 	const uri = `/api/chat/room/list`;
 	const chatRoomDTOList = await chatRoomListFetch(uri);
-	
+
 	connection(chatRoomDTOList);
 }
 
@@ -241,16 +251,16 @@ function lastSendDate(date) {
 let isAloneChatRoom = false;
 async function chatRoomListFetch(uri) {
 	const container = document.querySelector(".chat-room-content .room_list");
-	try{
-		const res = await fetch(uri, {method: "get" });
+	try {
+		const res = await fetch(uri, { method: "get" });
 		const chatRoomDTOList = await res.json();
-			if (chatRoomDTOList.length != 0) {
-				container.innerHTML = "";
-				chatRoomDTOList.forEach(function(chatRoomDTO) {
-					const itemDiv = document.createElement("div");
-					itemDiv.classList.add("item");
-					itemDiv.setAttribute("chat-room-idx-data", chatRoomDTO.chatRoom.idx);
-					itemDiv.innerHTML = `<div class="img_container ${chatRoomDTO.accountList.length == 1 ? 'alone' : ''}">
+		if (chatRoomDTOList.length != 0) {
+			container.innerHTML = "";
+			chatRoomDTOList.forEach(function(chatRoomDTO) {
+				const itemDiv = document.createElement("div");
+				itemDiv.classList.add("item");
+				itemDiv.setAttribute("chat-room-idx-data", chatRoomDTO.chatRoom.idx);
+				itemDiv.innerHTML = `<div class="img_container ${chatRoomDTO.accountList.length == 1 ? 'alone' : ''}">
 										</div>
 										<div class="chat-content">
 											<p>
@@ -261,26 +271,28 @@ async function chatRoomListFetch(uri) {
 												<span class="last-chat">${chatRoomDTO.lastContent}</span>
 											</p>
 										</div>`
-					const imgContainer = itemDiv.querySelector(".img_container");
-					const accountList = chatRoomDTO.accountList;
-					const chatDetailContainer = document.querySelector(".dynamic_chat .chat_detail_container");
-					const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
-					if(!isAloneChatRoom && accountList.length === 1 && accountList[0].idx === Number(myAccountIdx)){
-						isAloneChatRoom = true;
-					}
-					accountList.forEach(function(account) {
-						imgContainer.innerHTML += `<div class="img_box">
+				const imgContainer = itemDiv.querySelector(".img_container");
+				const accountList = chatRoomDTO.accountList;
+				const chatDetailContainer = document.querySelector(".dynamic_chat .chat_detail_container");
+				const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
+				if (!isAloneChatRoom && accountList.length === 1 && accountList[0].idx === Number(myAccountIdx)) {
+					isAloneChatRoom = true;
+				}
+				accountList.forEach(function(account) {
+					imgContainer.innerHTML += `<div class="img_box">
 													<img src="/images/${account.iconFilename}" width="24" height="24" />
 													<span>${account.name}</span>
 												</div>`
-					});
-					container.appendChild(itemDiv);
 				});
-			}
-			return chatRoomDTOList;
-		}catch(err){
-			console.error(err);
+				container.appendChild(itemDiv);
+			});
+		} else {
+			container.innerHTML = "오른쪽 상단에 채팅방 만들기 버튼을 눌러 채팅방을 만들어 보세요.";
 		}
+		return chatRoomDTOList;
+	} catch (err) {
+		console.error(err);
+	}
 }
 
 document.querySelectorAll(".chat-room-gnb .img_box").forEach(function(btn, gnbIdx) {
@@ -289,9 +301,7 @@ document.querySelectorAll(".chat-room-gnb .img_box").forEach(function(btn, gnbId
 		activeImgBox?.classList.remove("active");
 		this.classList.add("active");
 
-		if (this.className.includes("friend_btn")) {
-			const uri = `/api/chat/friend/list`;
-		} else {
+		if (this.className.includes("chat_room_btn")) {
 			if (document.querySelector(".chat-room-content .room_list").className.includes("show")) return;
 			const uri = `/api/chat/room/list`;
 			chatRoomListFetch(uri);
@@ -345,7 +355,7 @@ async function chatMessageFetch(uri, chatRoomIdx) {
 		const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
 		chatDetailContainer.setAttribute("chat-room-idx-data", chatRoomIdx);
 		chatDetailContainer.innerHTML = "";
-		
+
 		if (chatMessageList.length !== 0) {
 			prevSendDate = dateTitleFormat(chatMessageList[0].sendDate);
 			chatMessageList.forEach(function(messageInfo, idx) {
@@ -357,7 +367,7 @@ async function chatMessageFetch(uri, chatRoomIdx) {
 						`<div class="date_title">
 									<span>${sendDateTitle}</span>
 								</div>`
-							 }
+					}
 							${messageInfo.accountIdx !== Number(myAccountIdx) ?
 						`<div class="other_chat_box">
 								<div class="img_box">
@@ -382,7 +392,7 @@ async function chatMessageFetch(uri, chatRoomIdx) {
 					prevSendDate = sendDateTitle;
 			});
 		}
-	}catch(err){
+	} catch (err) {
 		console.error(err);
 	}
 }
@@ -401,15 +411,15 @@ document.querySelector(".chat-room-content .room_list").addEventListener("click"
 
 document.querySelector(".dynamic_chat .chat_input_box textarea").addEventListener("keydown", function(e) {
 	const sendText = this.value;
-	
-	if(e.key === "Enter" && !e.shiftKey){
+
+	if (e.key === "Enter" && !e.shiftKey) {
 		e.preventDefault();
 		// 서버에 데이터 보내기
-		if(sendText.trim().length === 0) return;
+		if (sendText.trim().length === 0) return;
 		const chatDetailContainer = document.querySelector(".chat_detail_container");
 		const accountIdx = chatDetailContainer.getAttribute("account-idx-data");
 		const chatRoomIdx = chatDetailContainer.getAttribute("chat-room-idx-data");
-		
+
 		const requestMessageInfo = {
 			"chatRoomIdx": chatRoomIdx,
 			"accountIdx": accountIdx,
@@ -420,7 +430,7 @@ document.querySelector(".dynamic_chat .chat_input_box textarea").addEventListene
 	}
 });
 
-document.querySelector(".chat-room-title .chat_room_add_btn").addEventListener("click", function(){
+document.querySelector(".chat-room-title .chat_room_add_btn").addEventListener("click", function() {
 	const contentBoxs = document.querySelectorAll(".chat-room-content .content");
 	contentBoxs.forEach(function(box) {
 		box.classList.remove("show");
@@ -429,82 +439,82 @@ document.querySelector(".chat-room-title .chat_room_add_btn").addEventListener("
 	chatGnbImgBoxs.forEach(function(imgBox) {
 		imgBox.classList.remove("active");
 	});
-	
+
 	document.querySelector(".chat-room-content .chat_room_add_box").classList.add("show");
 });
 
-document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName").addEventListener("keyup", function(){
+document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName").addEventListener("keyup", function() {
 	const nameExplainBox = document.querySelector(".chat_room_add_box .name .chat_room_add_explain");
 	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
-	if(this.value.trim().length === 0){
+	if (this.value.trim().length === 0) {
 		nameAlertBox.classList.add("show");
 		nameExplainBox.classList.remove("show");
 		this.classList.add("alert");
-	}else{
+	} else {
 		nameAlertBox.classList.remove("show");
 		nameExplainBox.classList.add("show");
 		this.classList.remove("alert");
 	}
 })
 
-document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("focus", function(){
+document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("focus", function() {
 	this.classList.add("focusIn");
 });
 
-document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("blur", function(){
+document.querySelector(".chat_room_add_box .input_box #chatRoomName").addEventListener("blur", function() {
 	this.classList.remove("focusIn");
-	
+
 	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
-	if(nameAlertBox.className.includes("show")){
+	if (nameAlertBox.className.includes("show")) {
 		this.classList.add("alert");
-	}else{
+	} else {
 		this.classList.remove("alert");
 	}
-	
+
 });
 
-document.querySelectorAll(".chat_room_add_box .input_box .chat_member_invite_list_box input").forEach(function(input){
-	input.addEventListener("change", function(){
+document.querySelectorAll(".chat_room_add_box .input_box .chat_member_invite_list_box input").forEach(function(input) {
+	input.addEventListener("change", function() {
 		const ChatMemberListAlertBox = document.querySelector(".chat_room_add_box .chat_member_selector .alert_box");
 		const ChatMemberListExplainBox = document.querySelector(".chat_room_add_box .chat_member_selector .chat_room_add_explain");
-		
+
 		ChatMemberListAlertBox.classList.remove("show");
 		ChatMemberListExplainBox.classList.add("show");
-		
+
 	});
 });
 
 
-document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", function(){
+document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", function() {
 	let isCreate = true;
 	const chatRoomNameInput = document.querySelector(".chat-room-content .chat_room_add_box .input_box #chatRoomName");
 	const chatRoomName = chatRoomNameInput.value;
-	
+
 	const nameAlertBox = document.querySelector(".chat_room_add_box .name .alert_box");
 	const nameExplainBox = document.querySelector(".chat_room_add_box .name .chat_room_add_explain");
-	
+
 	const ChatMemberListAlertBox = document.querySelector(".chat_room_add_box .chat_member_selector .alert_box");
 	const ChatMemberListExplainBox = document.querySelector(".chat_room_add_box .chat_member_selector .chat_room_add_explain");
 	const ChatMemberList = document.querySelectorAll(".chat_room_add_box .input_box .chat_member_invite_list_box input");
-	
+
 	const chatDetailContainer = document.querySelector(".chat_detail_container");
 	const myAccountIdx = chatDetailContainer.getAttribute("account-idx-data");
 	let chatMembersAccountIdx = [myAccountIdx];
-	
-	ChatMemberList.forEach(function(input){
+
+	ChatMemberList.forEach(function(input) {
 		const accountIdx = input.getAttribute("account-idx-data");
-		if(input.checked){
+		if (input.checked) {
 			chatMembersAccountIdx.push(accountIdx);
 		}
 	});
-	
+
 	let requestChatRoomCreateDTO = {
-		"name" : chatRoomName,
-		"chatAccountIdxList" : chatMembersAccountIdx
+		"name": chatRoomName,
+		"chatAccountIdxList": chatMembersAccountIdx
 	}
-	
-	
-	if(chatRoomName.trim().length === 0){
+
+
+	if (chatRoomName.trim().length === 0) {
 		nameAlertBox.classList.add("show");
 		nameExplainBox.classList.remove("show");
 		chatRoomNameInput.classList.add("alert");
@@ -512,28 +522,31 @@ document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", 
 		isCreate = false;
 	}
 
-	if(isAloneChatRoom && chatMembersAccountIdx.length === 1){
+	if (isAloneChatRoom && chatMembersAccountIdx.length === 1) {
 		ChatMemberListAlertBox.classList.add("show");
 		ChatMemberListExplainBox.classList.remove("show");
 		isCreate = false;
 	}
-	
-	if(isCreate){
-		const uri = "/api/chat/room/create";
-		fetch(uri, {method:"post", 
-					headers:{"Content-type":"application/json"}, 
-					body:JSON.stringify(requestChatRoomCreateDTO)})
+
+	//if(isCreate){
+	const uri = "/api/chat/room/create";
+	fetch(uri, {
+		method: "post",
+		headers: { "Content-type": "application/json" },
+		body: JSON.stringify(requestChatRoomCreateDTO)
+	})
 		.then(res => res.json())
-		.then(res => {
-			if(res === 1){
+		.then(chatRoomInfo => {
+			if (chatRoomInfo) {
 				document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
+				connection(chatRoomInfo);
 			}
 		})
 		.catch(err => {
 			console.error(err);
 		});
-	}
-	
+	//}
+
 });
 
 

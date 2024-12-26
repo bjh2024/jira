@@ -162,7 +162,7 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api") || uri.contains("/project/create"))
+		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list"))
 			return;
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");

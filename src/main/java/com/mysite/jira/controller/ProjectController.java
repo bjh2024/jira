@@ -6,15 +6,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.jira.dto.IssueTypeListDTO;
 import com.mysite.jira.dto.ManagerDTO;
+import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.FilterDoneDate;
@@ -95,9 +98,25 @@ public class ProjectController {
 		Integer accountIdx = account.getIdx();
 		
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		model.addAttribute("projectListIsLike", projectService.getProjectListIsLike(accountIdx, jiraIdx, page));
+		List<ProjectListIsLikeDTO> projectListIsLike = projectService.getProjectListIsLike(accountIdx, jiraIdx, page);
+		model.addAttribute("projectListIsLike", projectListIsLike);
 		
-		return "project/project_list";
+		if(page != 0 && projectListIsLike.size() == 0) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		
+		model.addAttribute("currentPage", page);
+		
+		int startBlockPage = (int)Math.floor(page / 10) * 10 + 1;
+		model.addAttribute("startBlockPage", startBlockPage);
+
+		int endBlockPage =  startBlockPage + 9;
+		Integer totalProjectCount = projectService.getProjectAllCount(jiraIdx);
+		int totalBlockEndPage = (int)Math.ceil((double)totalProjectCount/10);
+		model.addAttribute("totalBlockEndPage", totalBlockEndPage);
+		model.addAttribute("endBlockPage", totalBlockEndPage < endBlockPage ? totalBlockEndPage : endBlockPage);
+		
+		return "project/list/project_list";
 	}
 	
 	@GetMapping("/create")

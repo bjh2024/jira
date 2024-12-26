@@ -98,6 +98,13 @@ public class ProjectAPIController {
 		return true;
 	}
 	
+	// 프로젝트 삭제
+	@PostMapping("delete")
+	public boolean projectDelete(@RequestBody Integer projectIdx) {
+		projectService.deleteProject(projectIdx);
+		return true;
+	}
+	
 	@GetMapping("idx")
 	public Integer getProjecIdx(@RequestParam("projectName") String projectName) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
