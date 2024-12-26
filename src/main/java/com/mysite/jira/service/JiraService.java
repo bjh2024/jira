@@ -22,13 +22,12 @@ import lombok.RequiredArgsConstructor;
 public class JiraService {
 	
 	private final AccountRepository accountRepository;
-	
 	private final JiraRepository jiraRepository;
-	
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	private final JiraRecentClickedRepository jiraRecentClickedRepository;
 	
+	private final FilterService filterService;
 	
 	public Optional<Jira> getIdxByName(String name){
 		return jiraRepository.findIdxByName(name);
@@ -73,8 +72,16 @@ public class JiraService {
 																   .account(account.get())
 																   .build();
 			jiraRecentClickedRepository.save(jiraRecentClicked);
-			// 기본값 필터 add
 			
+			// 기본값 필터 add
+			filterService.defaultMyPendingIssues(jira, account.get());
+			filterService.defaultReporter(jira, account.get());
+			filterService.defaultAllIssue(jira, account.get());
+			filterService.defaultPendingIssue(jira, account.get());
+			filterService.defaultDoneIssue(jira, account.get());
+			filterService.defaultRecentlyCreated(jira, account.get());
+			filterService.defaultRecentlyDone(jira, account.get());
+			filterService.defaultRecentlyUpdate(jira, account.get());
 		}
 	}
 	 

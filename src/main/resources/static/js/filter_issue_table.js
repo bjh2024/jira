@@ -885,17 +885,12 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 	}catch(error){
 		console.error(error);
 	}
-	
-		
-	
-	
 	fetchFitlerCreate();
 })
 
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
     let url = "/api/filter_issue_table/filter_create"; 
-
     fetch(url, {
 	        method: 'POST',
 	        headers: {
@@ -927,7 +922,8 @@ function fetchFitlerCreate() {
 				doneDateBefore : doneDateBefore,
 				updateBefore : updateBefore,
 				createDateBefore : createDateBefore,
-				jiraName : jiraName
+				jiraName : jiraName,
+				issueKey: issueKey
 	        })
 	    })
 		.then(response => {

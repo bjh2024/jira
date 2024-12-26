@@ -195,8 +195,7 @@ public class GlobalModelAdvice {
 		String uri = request.getRequestURI();
 		if (uri.contains("/api")) return;
 		if(uri.contains("/setting")) {
-			Jira jira = jiraService.getByNameJira(jiraName);
-			Integer jiraIdx = jira.getIdx();
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			model.addAttribute("currentProject", projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey));
 
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);

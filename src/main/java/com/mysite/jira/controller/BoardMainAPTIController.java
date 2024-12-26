@@ -289,15 +289,11 @@ public class BoardMainAPTIController {
 	@PostMapping("/create_issue")
 	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();
-		String jiraName = createIssueDTO.getJiraName();
 		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
 		Integer projectIdx = createIssueDTO.getProjectIdx();
 		Integer reporterIdx = createIssueDTO.getReporterIdx();
 		Integer StatusIdx = createIssueDTO.getStatusIdx();
-//		System.out.println(createIssueDTO.getIssueName() + " " + createIssueDTO.getJiraName() + " " + 
-//				createIssueDTO.getIssueTypeIdx() + " " + createIssueDTO.getProjectIdx() + " " + 
-//				createIssueDTO.getReporterIdx() + " " + createIssueDTO.getStatusIdx());
-		Integer idx = boardMainService.createIssue(issueName, jiraName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+		Integer idx = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
 		CreateIssueDTO dto = CreateIssueDTO.builder()
 										.issueIdx(idx)
 										.build();
@@ -481,7 +477,7 @@ public class BoardMainAPTIController {
 	@PostMapping("/create_sub_issue")
 	public CreateSubIssueDTO createSubIssue(@RequestBody CreateSubIssueDTO createSubIssueDTO) {
 		Project project = boardMainService.getProjectByIdx(createSubIssueDTO.getProjectIdx());
-		Jira jira = boardMainService.getJiraByJiraName(createSubIssueDTO.getJiraName());
+		Jira jira = project.getJira();
 		IssueType issueType = boardMainService.getIssueTypeByIdx(createSubIssueDTO.getIssueTypeIdx());
 		IssueStatus issueStatus = boardMainService.getOnceIssueStatus(createSubIssueDTO.getStatusIdx());
 		IssuePriority issuePriority = boardMainService.getOnceIssuePriority(3);

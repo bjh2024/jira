@@ -203,51 +203,52 @@ public class FilterIssueTableAPIController {
 		String username = principal.getName(); // 현재 인증된 사용자 이름 가져오기
 		Optional<Account> optAccount = accountService.getByEmail(username); // 예시: 사용자 이름으로 Account 객체를 조회
 		Account account = optAccount.get();
-		
+
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Jira jira = jiraService.getByIdx(jiraIdx);
 
 		// 필터 생성시 무조건 생성되는 필터 기본
 		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
-
-		if (filterDto.getIsCompleted().length > 0 && filterDto.getIsCompleted() != null) {
+		System.out.println(filterDto);
+		System.out.println(filterDto.getIsCompleted());
+		if (filterDto.getIsCompleted() != null && filterDto.getIsCompleted().length > 0 ) {
 			for (int i = 0; i < filterDto.getIsCompleted().length; i++) {
 				filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);
 			}
 		}
 		// 행이 여러개 생길 수 있는 데이터
-		if (filterDto.getIssuePriority().length > 0 && filterDto.getIssuePriority() != null) {
+		if (filterDto.getIssuePriority() != null && filterDto.getIssuePriority().length > 0) {
 			for (int i = 0; i < filterDto.getIssuePriority().length; i++) {
 				Optional<IssuePriority> issuePriority = issuePriorityService.getByName(filterDto.getIssuePriority()[i]);
 				filterService.filterIssuePriorityCreate(filter, issuePriority.get());
 			}
 		}
-		if (filterDto.getIssueStatus().length > 0 && filterDto.getIssueStatus() != null) {
+		if (filterDto.getIssueStatus() != null && filterDto.getIssueStatus().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueStatus().length; i++) {
 				IssueStatus issueStatus = issueStatusService.getByName(filterDto.getIssueStatus()[i]);
 				filterService.filterIssueStatusCreate(filter, issueStatus);
 			}
 		}
-		if (filterDto.getIssueTypes().length > 0 && filterDto.getIssueTypes() != null) {
+		if (filterDto.getIssueTypes() != null && filterDto.getIssueTypes().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueTypes().length; i++) {
 				IssueType issueType = issueTypeService.getByName(filterDto.getIssueTypes()[i]);
 				filterService.filterIssueTypeCreate(filter, issueType);
 			}
 		}
-		if (filterDto.getIssueManager().length > 0 && filterDto.getIssueManager() != null) {
+		if (filterDto.getIssueManager() != null && filterDto.getIssueManager().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueManager().length; i++) {
 				System.out.println(filterDto.getIssueManager()[i]);
 				Account managerAccount = accountService.getByName(filterDto.getIssueManager()[i]);
 				filterService.filterManagerCreate(filter, managerAccount);
 			}
 		}
-		if (filterDto.getProjectIdx().length > 0 && filterDto.getProjectIdx() != null) {
+		if (filterDto.getProjectIdx() != null && filterDto.getProjectIdx().length > 0 ) {
 			for (int i = 0; i < filterDto.getProjectIdx().length; i++) {
 				Optional<Project> project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
 				filterService.filterProjectCreate(filter, project.get());
 			}
 		}
-		if (filterDto.getIssueReporter().length > 0 && filterDto.getIssueReporter() != null) {
+		if (filterDto.getIssueReporter() != null && filterDto.getIssueReporter().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueReporter().length; i++) {
 				Account reporterAccount = accountService.getByName(filterDto.getIssueReporter()[i]);
 				filterService.filterReporterCreate(filter, reporterAccount);

@@ -35,7 +35,6 @@ import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
-import com.mysite.jira.repository.JiraRepository;
 import com.mysite.jira.repository.ProjectLogDataRepository;
 import com.mysite.jira.repository.ProjectLogStatusRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
@@ -62,7 +61,6 @@ public class BoardMainService {
 	private final ProjectLogDataRepository projectLogDataRepository;
 	private final ProjectLogStatusRepository projectLogStatusRepository;
 	private final AccountRepository accountRepository;
-	private final JiraRepository jiraRepository;
 	private final IssueLikeMembersRepository issueLikeMembersRepository;
 	
 	
@@ -262,11 +260,6 @@ public class BoardMainService {
 		return type.get();
 	}
 	
-	public Jira getJiraByJiraName(String name) {
-		Optional<Jira> jira = this.jiraRepository.findByName(name);
-		return jira.get();
-	}
-	
 	public Project getProjectByIdx(Integer idx) {
 		Optional<Project> project = this.projectRepository.findById(idx);
 		return project.get();
@@ -280,17 +273,16 @@ public class BoardMainService {
 		return false;
 	}
 	
-	public Integer createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
+	public Integer createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
-		Optional<Jira> optJira = this.jiraRepository.findByName(jiraName);
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Optional<IssueType> optIssueType = this.issueTypeRepository.findById(issueTypeIdx);
 		Optional<IssueStatus> optIssueStatus = this.issueStatusRepository.findById(statusIdx);
 		Optional<IssuePriority> optIssuePriority = this.issuePriorityRepository.findById(3);
 		Optional<Account> optUser = this.accountRepository.findById(reporteridx);
 		
-		Jira jira = optJira.get();
 		Project project = optProject.get();
+		Jira jira = project.getJira();
 		project.updateSeq(project.getSequence());
 		this.projectRepository.save(project);
 		IssueType issueType = optIssueType.get();

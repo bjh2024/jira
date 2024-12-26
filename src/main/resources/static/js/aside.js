@@ -170,9 +170,8 @@ document
   });
 
 // project/create 이동
-function goProjectCreatePage(element){
-	let jiraName = element.getAttribute("data-jira-name");
-	location.href = `/${jiraName}/project/create`;
+function goProjectCreatePage(){
+	location.href = `/project/create`;
 }
 
 // dashboard create modal창 표시
@@ -285,10 +284,7 @@ document
     this.nextElementSibling.classList.toggle("show");
   });
 
-  let urlPartss = window.location.pathname.split('/');
-  let usernames = urlPartss[1];  // 경로의 첫 번째 부분이 'dahyun0521'
-
   // 추출한 username을 사용하여 동적으로 링크 생성
-  document.getElementById("filter_move").href = "/" + usernames + "/filter/filter_issue";
+  document.getElementById("filter_move").href = "/filter/filter_issue";
   
   

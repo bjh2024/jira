@@ -49,7 +49,6 @@ public class FilterController {
 	private final FilterService filterService;
 	private final BoardMainService boardMainService;
 	private final TeamService teamService;
-	private final JiraService jiraService;
 	private final HttpSession session;
 	
 	@GetMapping("filter_issue")

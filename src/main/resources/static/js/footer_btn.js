@@ -8,7 +8,7 @@ function connection(chatRoomDTOList){
 			/*console.log("연결 성공" + frame);*/
 			
 			chatRoomDTOList.forEach(function(chatRoomDTO){
-				const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`
+				const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
 				stompClient.subscribe(topic, function(msg){
 					const messageInfo = JSON.parse(msg.body)
 					const chatDetailContainer = document.querySelector(".chat_detail_container");
@@ -49,9 +49,12 @@ function connection(chatRoomDTOList){
 					document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
 				});
 			});
+			
 		});
 	}
 }
+
+
 
 function sendMessage(message, chatRoomIdx) {
     stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
