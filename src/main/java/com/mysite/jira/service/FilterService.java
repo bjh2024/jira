@@ -17,6 +17,7 @@ import com.mysite.jira.entity.FilterIssuePriority;
 import com.mysite.jira.entity.FilterIssueStatus;
 import com.mysite.jira.entity.FilterIssueType;
 import com.mysite.jira.entity.FilterIssueUpdate;
+import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.FilterManager;
 import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.FilterReporter;
@@ -34,6 +35,7 @@ import com.mysite.jira.repository.FilterIssuePriorityRepository;
 import com.mysite.jira.repository.FilterIssueStatusRepository;
 import com.mysite.jira.repository.FilterIssueTypeRepository;
 import com.mysite.jira.repository.FilterIssueUpdateRepository;
+import com.mysite.jira.repository.FilterLikeMembersRepository;
 import com.mysite.jira.repository.FilterManagerRepository;
 import com.mysite.jira.repository.FilterProjectRepository;
 import com.mysite.jira.repository.FilterReporterRepository;
@@ -58,13 +60,25 @@ public class FilterService {
 	private final FilterDoneDateRepository filterDoneDateRepository;
 	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
 	private final FilterAuthRepository filterAuthRepository;
+	private final FilterLikeMembersRepository filterLikeMembersRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
 	
+	public FilterLikeMembers getByAccountIdxAndFilterIdx(Integer accountIdx, Integer filterIdx) {
+		return filterLikeMembersRepository.findByAccountIdxAndFilterIdx(accountIdx, filterIdx);
+	}
+	public Filter getByIdx(Integer idx) {
+		return filterRepository.findById(idx).get();
+	}
+	public List<FilterLikeMembers> getByAccountIdx(Integer accountIdx){
+		return filterLikeMembersRepository.findByAccountIdx(accountIdx);
+	}
+	public List<Filter> getByIdxIn(Integer[] idx){
+		return filterRepository.findByIdxIn(idx);
+	}
 	public List<Filter> getAll(){
 		return filterRepository.findAll();
 	}
-	
 	public List<Filter> getByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx){
 		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 	}
@@ -370,5 +384,15 @@ public class FilterService {
 	}
 	public void filterDelete(Integer idx) {
 		this.filterRepository.deleteById(idx);
+	}
+	public void filterLikeAdd(Filter filter, Account account) {
+		FilterLikeMembers filterLikeMembers = FilterLikeMembers.builder()
+				.account(account)
+				.filter(filter)
+				.build();
+		this.filterLikeMembersRepository.save(filterLikeMembers);
+	}
+	public void filterLikeDelete(Integer idx) {
+		this.filterLikeMembersRepository.deleteById(idx);
 	}
 }

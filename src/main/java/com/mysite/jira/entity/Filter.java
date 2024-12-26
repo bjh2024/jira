@@ -83,4 +83,7 @@ public class Filter {
 	@OneToMany(mappedBy = "filter", cascade = CascadeType.REMOVE) 
 	private List<FilterRecentClicked> filterClickedList;
 	
+	@OneToMany(mappedBy = "filter", cascade = CascadeType.REMOVE)
+	private List<FilterIssueCreateDate> filterIssueCreateDates;
+	
 }

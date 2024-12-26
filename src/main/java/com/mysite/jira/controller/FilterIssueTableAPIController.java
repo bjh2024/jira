@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.FilterDTO;
 import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
+import com.mysite.jira.dto.LikeContentDTO;
+import com.mysite.jira.dto.FilterLikeDto;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
+import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
@@ -30,6 +34,7 @@ import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueStatusService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.http.HttpSession;
@@ -50,7 +55,9 @@ public class FilterIssueTableAPIController {
 	private final IssueTypeService issueTypeService;
 	private final ProjectService projectService;
 	private final HttpSession session;
+	private final LikeService likeService;
 
+	
 	@PostMapping("/project_filter")
 	public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
 		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
@@ -189,14 +196,28 @@ public class FilterIssueTableAPIController {
 		return filterIssue;
 	}
 
-	@PostMapping("/filter_create")
-	public boolean filterCreate(@RequestBody FilterIssueRequestDTO filterDto, Principal principal) {
-
+	@PostMapping("/filter_duplicate")
+	public boolean filterDuplicate(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
-			if (filterService.getAll().get(i).getName().equals(filterDto.getFilterName())) {
+			if (filterService.getAll().get(i).getName().equals(filterDto.getFilterName())){
 				return false;
 			}
 		}
+		return true;
+	}
+	
+	@PostMapping("/every_filter")
+	public Integer[] filterLikeMembers(@RequestBody FilterLikeDto filterDto) {
+		List<FilterLikeMembers> filterLikeArr = filterService.getByAccountIdx(filterDto.getAccountIdx());
+		Integer[] filterIdxArr = new Integer[filterLikeArr.size()];
+		for (int i = 0; i < filterLikeArr.size(); i++) {
+			filterIdxArr[i] = filterLikeArr.get(i).getFilter().getIdx();
+		}
+		return filterIdxArr;
+	}
+	
+	@PostMapping("/filter_create")
+	public boolean filterCreate(@RequestBody FilterIssueRequestDTO filterDto, Principal principal) {
 
 		String filterName = filterDto.getFilterName(); // 필터 제목
 		String explain = filterDto.getExplain(); // 필터 설명내용
@@ -235,7 +256,6 @@ public class FilterIssueTableAPIController {
 		}
 		if (filterDto.getIssueManager() != null && filterDto.getIssueManager().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueManager().length; i++) {
-				System.out.println(filterDto.getIssueManager()[i]);
 				Account managerAccount = accountService.getByName(filterDto.getIssueManager()[i]);
 				filterService.filterManagerCreate(filter, managerAccount);
 			}
@@ -276,6 +296,17 @@ public class FilterIssueTableAPIController {
 			}
 		}
 	}
+	@PostMapping("/filterLike")
+	public void filterLikeAdd(@RequestBody FilterLikeDto dto) {
+		Account account = accountService.getAccountByIdx(dto.getAccountIdx());
+		Filter filter = filterService.getByIdx(dto.getFilterIdx());	
+		if(filterService.getByAccountIdxAndFilterIdx(dto.getAccountIdx(), dto.getFilterIdx())== null) {
+			filterService.filterLikeAdd(filter,account);
+		}else {
+			filterService.filterLikeDelete(filterService.getByAccountIdxAndFilterIdx(dto.getAccountIdx(), dto.getFilterIdx()).getIdx());
+		}
+	}
+	
 	@PostMapping("/issue_detail")
 	public List<FilterIssueDTO> issueDetail(@RequestBody FilterIssueRequestDTO filterDto) {
 		List<Issue> issueList = issueService.getByKey(filterDto.getIssueKey());
