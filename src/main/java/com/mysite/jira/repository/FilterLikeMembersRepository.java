@@ -12,4 +12,7 @@ public interface FilterLikeMembersRepository extends JpaRepository<FilterLikeMem
 	List<FilterLikeMembers> findByAccountIdxAndFilter_jiraIdx(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
 	// kdw
 	FilterLikeMembers findByAccountIdxAndFilterIdx(@Param("accountIdx") Integer accountIdx, @Param("filterIdx") Integer filterIdx);
+	
+	List<FilterLikeMembers> findByAccountIdx(Integer idx);
+	
 }
