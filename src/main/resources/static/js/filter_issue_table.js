@@ -873,7 +873,6 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 		})
 		const booleanResult = await res.json();
 		if(!booleanResult){
-			alert("들어옴")
 			document.querySelector(".hover_input").style.border = "2px solid #C9372C";
 			document.querySelector(".hover_input").style.borderRadius = "4px";
 			document.querySelector(".fail_name").innerText = "중복된 이름이 존재합니다.";
@@ -929,7 +928,6 @@ function fetchFitlerCreate() {
 	    })
 		.then(response => {
 				        if (response.ok) {
-							alert("생성 완료");
 							window.location.href = "./every_filter"
 				        } else {
 				            // 응답 상태가 성공 범위를 벗어나는 경우

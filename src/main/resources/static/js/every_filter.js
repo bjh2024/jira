@@ -88,7 +88,6 @@ function fetchIssueDetail() {
 	    })
 		.then(response => {
 		        if (response.ok) {
-					alert("삭제 완료");
 				   window.location.href = window.location.href;
 		        } else {
 		            // 응답 상태가 성공 범위를 벗어나는 경우
