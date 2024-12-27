@@ -138,4 +138,10 @@ public class ProjectAPIController {
 		projectService.updateIssueTypeName(issuetype, issueTypeDTO.getName());
 	}
 	
+	@PostMapping("/update_issueType_content")
+	public void updateIssueTypeContent(@RequestBody IssueTypeDTO issueTypeDTO) {
+		IssueType issuetype = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeContent(issuetype, issueTypeDTO.getContent());
+	}
+	
 }

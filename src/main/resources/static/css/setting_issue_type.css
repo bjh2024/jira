@@ -59,13 +59,23 @@ body{
 	border: 2px solid #0C66E4;
 	font-size: 24px;
 	border-radius: 3px;
-	display: flex;
-	align-items: center;
 	display: none;
 	position: relative;
 }
 
-.edit-issuetype-title.show{
+.edit-issuetype-content{
+	width: 1016px;
+	height: 44px;
+	padding: 2px 6px;
+	margin-bottom: 17px;
+	border: 2px solid #0C66E4;
+	font-size: 14px;
+	border-radius: 3px;
+	display: none;
+	position: relative;
+}
+
+.edit-issuetype-title.show, .edit-issuetype-content.show{
 	display: block;
 }
 
@@ -77,7 +87,15 @@ body{
 	border: none;
 }
 
-.edit-typetitlebtn{
+.edit-issuetype-content-input{
+	width: calc(100% - 10px);
+	height: 36px;
+	font-size: 14px;
+	outline: none;
+	border: none;
+}
+
+.edit-typetitlebtn, .edit-typecontentbtn{
 	position: absolute;
 	top: 52px;
 	width: 32px;
@@ -88,15 +106,15 @@ body{
 	box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 }
 
-.edit-typetitlebtn:hover{
+.edit-typetitlebtn:hover, .edit-typecontentbtn:hover{
 	background-color: #0515240F;
 }
 
-.edit-typetitlebtn.submit{
+.edit-typetitlebtn.submit, .edit-typecontentbtn.submit{
 	right: 36px;
 }
 
-.edit-typetitlebtn.cancel{
+.edit-typetitlebtn.cancel, .edit-typecontentbtn.cancel{
 	right: 0px;
 }
 
@@ -107,7 +125,7 @@ body{
 	font-size: 24px;
 }
 
-.issuetype-settitle.none{
+.issuetype-settitle.none, .issuetype-content.none{
 	display: none;
 }
 
@@ -126,8 +144,7 @@ body{
 }
 
 .issuetype-content{
-	max-width: 1016px;
-	width: 100%;
+	width: 1016px;
 	height: 36px;
 	font-size: 14px;
 	color: #172B4D;

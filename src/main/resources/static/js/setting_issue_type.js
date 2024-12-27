@@ -98,9 +98,10 @@ document.querySelector(".issuetype-settitle").addEventListener("click", function
 	}
 });
 
-let editTypeTitleData = {
+let editTypeData = {
 	"idx": "",
-	"name": ""
+	"name": "", 
+	"content": ""
 }
 
 function editIssueTypeTitle(){
@@ -110,13 +111,14 @@ function editIssueTypeTitle(){
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(editTypeTitleData)
+		body: JSON.stringify(editTypeData)
 	})
 	.then(response => {
         if (response.ok) {
 			document.querySelector(".edit-issuetype-title").classList.remove("show");
 			document.querySelector(".issuetype-settitle").classList.remove("none");
-			document.querySelector(".issuetype-settitle").innerText = editTypeTitleData.name;
+			document.querySelector(".issuetype-settitle").innerText = editTypeData.name;
+			document.querySelector(".edit-issuetype-title-input").value = editTypeData.name;
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -128,13 +130,57 @@ function editIssueTypeTitle(){
 
 document.querySelector(".edit-typetitlebtn.submit").addEventListener("click", function(e){
 	const input = document.querySelector(".edit-issuetype-title-input");
-	editTypeTitleData.idx = input.dataset.idx;
-	editTypeTitleData.name = input.value;
-	console.log(editTypeTitleData);
+	editTypeData.idx = input.dataset.idx;
+	editTypeData.name = input.value;
+	console.log(editTypeData);
 	editIssueTypeTitle();
 });
 
 document.querySelector(".edit-typetitlebtn.cancel").addEventListener("click", function(e){
 	document.querySelector(".edit-issuetype-title").classList.remove("show");
 	document.querySelector(".issuetype-settitle").classList.remove("none");
+});
+
+document.querySelector(".issuetype-content").addEventListener("click", function(e){
+	const contentBtn = e.target.closest(".issuetype-content");
+	if(contentBtn !== null){
+		document.querySelector(".edit-issuetype-content").classList.add("show");
+		contentBtn.classList.add("none");
+	}
+});
+
+function editIssueTypeContent(){
+	let url = "/api/project/update_issueType_content";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(editTypeData)
+	})
+	.then(response => {
+        if (response.ok) {
+			document.querySelector(".edit-issuetype-content").classList.remove("show");
+			document.querySelector(".issuetype-content").classList.remove("none");
+			document.querySelector(".issuetype-content").innerText = editTypeData.content;
+			document.querySelector(".edit-issuetype-content-input").value = editTypeData.content;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+document.querySelector(".edit-typecontentbtn.submit").addEventListener("click", function(e){
+	const input = document.querySelector(".edit-issuetype-content-input");
+	editTypeData.idx = input.dataset.idx;
+	editTypeData.content = input.value;
+	console.log(editTypeData);
+	editIssueTypeContent();
+});
+
+document.querySelector(".edit-typecontentbtn.cancel").addEventListener("click", function(e){
+	document.querySelector(".edit-issuetype-content").classList.remove("show");
+	document.querySelector(".issuetype-content").classList.remove("none");
 });

@@ -33,6 +33,15 @@
 						<img src="/images/three_dots_icon_small.svg">
 					</button>
 				</div>
+				<div class="edit-issuetype-content">
+					<input class="edit-issuetype-content-input" th:value="${IssueType.content}" th:attr="data-idx=${IssueType.idx}">
+					<button class="edit-typecontentbtn submit">
+						<img src="/images/status_complete_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+					</button>
+					<button class="edit-typecontentbtn cancel">
+						<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+					</button>
+				</div>
 				<div class="issuetype-content">
 					<span th:text="${IssueType.content}"></span>
 				</div>
