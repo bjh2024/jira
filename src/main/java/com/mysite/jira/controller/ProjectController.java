@@ -171,6 +171,13 @@ public class ProjectController {
 	public String settingIssueType(@PathVariable("issueTypeIdx") Integer issueTypeIdx, Model model) {
 		IssueType currentType = boardMainService.getIssueTypeByIdx(issueTypeIdx);
 		model.addAttribute("IssueType", currentType);
+		
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
+		List<Issue> issueList = projectService.getIssueListByIssueType(projectIdx, issueTypeIdx);
+		model.addAttribute("issueList", issueList);
+		
+		List<IssueType> issueTypeList = boardMainService.getUpdateIssueTypeList(projectIdx, issueTypeIdx);
+		model.addAttribute("issueTypeList", issueTypeList);
 		return "project/setting/issue_type";
 	}
 	

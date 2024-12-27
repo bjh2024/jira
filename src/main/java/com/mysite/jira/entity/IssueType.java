@@ -70,12 +70,6 @@ public class IssueType {
 		this.content = content;
 	}
 	
-	@OneToOne(mappedBy = "issueType")
-	private IssueTypeExist issTypeExist;
-	
 	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
-	
-	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
-	private List<IssueField> issueFieldList; 
 }

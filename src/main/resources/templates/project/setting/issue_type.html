@@ -29,7 +29,12 @@
 						</div>
 						<div class="issuetype-settitle" th:text="${IssueType.name}"></div>
 					</div>
-					<button class="titlebtn-other">
+					<button class="titlebtn-other" th:if="${IssueType.grade == 2}">
+						<div class="issuetypewindow">
+							<div class="type-deletebtn">
+								<span>이슈 유형 삭제</span>
+							</div>
+						</div>
 						<img src="/images/three_dots_icon_small.svg">
 					</button>
 				</div>
@@ -125,6 +130,44 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="delete-alert-container">
+		<div class="delete-alert-box">
+			<div class="delete-type-title">
+				<img th:src="@{/images/warning_icon.svg}" width="16px" height="16px" style="filter: invert(42%) sepia(82%) saturate(2140%) hue-rotate(10deg) brightness(97%) contrast(101%);">
+				<span style="height: 28px;">이슈 유형 삭제</span>
+			</div>
+			<div class="delete-type-body" th:if="${#lists.size(issueList) > 0}">
+				<div th:text="'프로젝트에 ' + ${#lists.size(issueList)} + '개의 ' + ${IssueType.name} + ' 이슈가 있습니다. &#xa;이 이슈 유형을 삭제하기 전에 ' + ${IssueType.name} + ' 이슈를 다른 유형으로 변경하세요.'"
+				class="delete-alert-content"></div>
+				<div class="delete-alert-move" th:text="'기존 ' + ${IssueType.name} + ' 이슈를 다음으로 이동'"></div>
+				<div class="issuetype-selectbox">
+					<div class="issuetype-selectwindow">
+						<div class="issuetype-option" th:each="typeOption : ${issueTypeList}" th:attr="data-idx=${typeOption.idx}">
+							<img th:src="@{|/images/${typeOption.iconFilename}|}" width="24px" height="24px">
+							<span th:text="${typeOption.name}"></span>
+						</div>
+					</div>
+					<div class="selected-type">
+						<span>이슈 유형 선택</span>
+					</div>
+					<div style="margin-top: 4px;">
+						<img src="/images/arrow_bottom_icon.svg" width="30px" height="30px" style="filter: invert(32%) sepia(8%) saturate(361%) hue-rotate(187deg) brightness(94%) contrast(93%);">
+					</div>
+				</div>
+			</div>
+			<div class="delete-type-body" th:if="${#lists.size(issueList) < 1}">
+				<div class="delete-alert-content">이것은 영구적인 작업입니다. 정말로 실행하시겠습니까?</div>
+			</div>
+			<div class="delete-type-btnbox">
+				<button class="delete-type-btn submit" th:attr="data-key=${IssueType.project.key}, data-oldidx=${IssueType.idx}, data-projectidx=${IssueType.project.idx}">
+					<span th:text="${#lists.size(issueList) > 0 ? '변경 및 삭제' : '삭제'}"></span>
+				</button>
+				<button class="delete-type-btn cancel">
+					<span>취소</span>
+				</button>
 			</div>
 		</div>
 	</div>

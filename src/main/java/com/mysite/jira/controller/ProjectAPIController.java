@@ -15,9 +15,11 @@ import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
+import com.mysite.jira.dto.project.setting.DeleteIssueTypeDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
@@ -134,14 +136,25 @@ public class ProjectAPIController {
 	
 	@PostMapping("/update_issueType_name")
 	public void updateIssueTypeName(@RequestBody IssueTypeDTO issueTypeDTO) {
-		IssueType issuetype = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
-		projectService.updateIssueTypeName(issuetype, issueTypeDTO.getName());
+		IssueType issueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeName(issueType, issueTypeDTO.getName());
 	}
 	
 	@PostMapping("/update_issueType_content")
 	public void updateIssueTypeContent(@RequestBody IssueTypeDTO issueTypeDTO) {
-		IssueType issuetype = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
-		projectService.updateIssueTypeContent(issuetype, issueTypeDTO.getContent());
+		IssueType issueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeContent(issueType, issueTypeDTO.getContent());
 	}
 	
+	@PostMapping("/delete_issueType")
+	public void deleteIssueType(@RequestBody DeleteIssueTypeDTO issueTypeDTO) {
+		Integer oldTypeIdx = issueTypeDTO.getIssueTypeIdx();
+		IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
+		List<Issue> issueList = projectService.getIssueListByIssueType(issueTypeDTO.getProjectIdx(), oldTypeIdx);
+		System.out.println(oldTypeIdx);
+		for(Issue issue : issueList) {
+			projectService.updateIssueListType(issue, newIssueType);
+		}
+		projectService.deleteIssueType(oldTypeIdx);
+	}
 }

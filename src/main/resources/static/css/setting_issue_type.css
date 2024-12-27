@@ -137,10 +137,41 @@ body{
 	justify-content: center;
 	margin-top: 4px;
 	border-radius: 3px;
+	position: relative;
 }
 
 .titlebtn-other:hover{
 	background-color: #091E420F;
+}
+
+.issuetypewindow{
+	position: absolute;
+	top: 40px;
+	right: 0px;
+	width: 123px;
+	padding: 6px 0px;
+	background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+	display: none;
+}
+
+.issuetypewindow.show{
+	display: block;
+}
+
+.type-deletebtn{
+	width: 123px;
+	height: 40px;
+	padding: 8px 15px;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.type-deletebtn:hover{
+	background-color: #0515240F;
 }
 
 .issuetype-content{
@@ -556,4 +587,140 @@ body{
 
 .suggestissuebtn:hover{
 	background-color: #F1F2F4;
+}
+
+.delete-alert-container{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color:  #050c1f75;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	display: none;
+}
+
+.delete-alert-container.show{
+	display: block;
+}
+
+.delete-alert-box{
+	width: 400px;
+	background-color: white;
+	border-radius: 3px;
+	margin: 60px auto;
+}
+
+.delete-type-title{
+	width: 400px;
+	height: 66px;
+	padding: 22px 24px 16px 28px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.delete-type-body{
+	width: 400px;
+	padding: 2px 24px;
+}
+
+.delete-alert-content{
+	font-size: 14px;
+	white-space: pre-wrap;
+	line-height: 20px;
+}
+
+.delete-alert-move{
+	font-size: 12px;
+	margin-top: 16px;
+	margin-bottom: 8px;
+}
+
+.issuetype-selectbox{
+	width: 352px;
+	height: 40px;
+	border-radius: 3px;
+	border: 1px solid #172B4D;
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.issuetype-selectwindow{
+	position: absolute;
+	top: 46px;
+	left: 0px;
+	width: 352px;
+	max-height: 250px;
+	background-color: white;
+	overflow: auto;
+	overflow-x: hidden;
+	padding: 8px 0px;
+	display: none;
+}
+
+.issuetype-selectwindow.show{
+	display: block;
+}
+
+.issuetype-option{
+	width: 352px;
+	height: 40px;
+	font-size: 14px;
+	color: #292A2E;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 0px 10px;
+}
+
+.issuetype-option:hover{
+	background-color: #0515240F;
+	border-left: 2px solid #1868DB;
+	padding-left: 8px;
+}
+
+.selected-type{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding-left: 8px;
+	padding-right: 4px;
+	font-size: 14px;
+}
+
+.delete-type-btnbox{
+	width: 400px;
+	height: 72px;
+	padding: 16px 24px 24px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	gap: 8px;
+}
+
+.delete-type-btn{
+	height: 32px;
+	padding: 0px 10px;
+	font-size: 14px;
+	border-radius: 3px;
+}
+
+.delete-type-btn.submit{
+	background-color: #FBC828;
+}
+
+.delete-type-btn.submit:hover{
+	background-color: #FCA700;
+}
+
+.delete-type-btn.cancel:hover{
+	background-color: #0515240F;
 }

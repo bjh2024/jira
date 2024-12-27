@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +17,14 @@ import com.mysite.jira.dto.mywork.RecentProjectDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.ProjectRecentClicked;
+import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
@@ -42,6 +46,8 @@ public class ProjectService {
 	private final IssueTypeRepository issueTypeRepository;
 
 	private final IssueStatusRepository issueStatusRepository;
+	
+	private final IssueRepository issueRepository;
 
 	private final UtilityService utilityService;
 
@@ -238,5 +244,18 @@ public class ProjectService {
 	public void updateIssueTypeContent(IssueType issueType, String content) {
 		issueType.updateContent(content);
 		this.issueTypeRepository.save(issueType);
+	}
+	
+	public List<Issue> getIssueListByIssueType(Integer projectIdx, Integer issueTypeIdx){
+		return this.issueRepository.findByProjectIdxAndIssueTypeIdx(projectIdx, issueTypeIdx);
+	}
+	
+	public void updateIssueListType(Issue issue, IssueType issueType) {
+        issue.updateIssueType(issueType);
+        this.issueRepository.save(issue);
+	}
+	
+	public void deleteIssueType(Integer issueTypeIdx) {
+		this.issueTypeRepository.deleteById(issueTypeIdx);
 	}
 }
