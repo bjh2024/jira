@@ -186,7 +186,7 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/{projectKey}/setting/issue_type")
+	@GetMapping("/{projectKey}/setting/issue_type/{issueTypeIdx}")
 	public String settingIssueType() {
 		return "project/setting/issue_type";
 	}

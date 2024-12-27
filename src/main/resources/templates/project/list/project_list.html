@@ -127,7 +127,7 @@
 			</li>
 		</ul>
 		<a class="block_move_btn"
-		   th:if="${endBlockPage != totalBlockEndPage}"
+		   th:if="${endBlockPage != totalBlockEndPage && totalBlockEndPage != 0}"
 		   th:href="@{|/project/list?page=${endBlockPage}|}">
 			<img th:src="@{/images/paging_right_icon.svg}" alt="" />
 		</a>
