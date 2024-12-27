@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysite.jira.dto.FilterDTO;
 import com.mysite.jira.dto.FilterIssueDTO;
 import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
-import com.mysite.jira.dto.LikeContentDTO;
 import com.mysite.jira.dto.FilterLikeDto;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
@@ -55,12 +53,11 @@ public class FilterIssueTableAPIController {
 	private final IssueTypeService issueTypeService;
 	private final ProjectService projectService;
 	private final HttpSession session;
-	private final LikeService likeService;
-
 	
 	@PostMapping("/project_filter")
 	public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
-		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		List<Issue> issueList = issueService.getIssuesByJiraIdx(jiraIdx);
 
 		Integer[] projectIdx = filterRequest.getProjectIdx();
 		String[] issueTypes = filterRequest.getIssueTypes();

@@ -110,11 +110,11 @@ public class ProjectController {
 		int startBlockPage = (int)Math.floor(page / 10) * 10 + 1;
 		model.addAttribute("startBlockPage", startBlockPage);
 
-		int endBlockPage =  startBlockPage + 9;
 		Integer totalProjectCount = projectService.getProjectAllCount(jiraIdx);
 		int totalBlockEndPage = (int)Math.ceil((double)totalProjectCount/10);
+		int endBlockPage =  totalBlockEndPage < startBlockPage + 9 ? totalBlockEndPage : startBlockPage + 9;
 		model.addAttribute("totalBlockEndPage", totalBlockEndPage);
-		model.addAttribute("endBlockPage", totalBlockEndPage < endBlockPage ? totalBlockEndPage : endBlockPage);
+		model.addAttribute("endBlockPage", endBlockPage != 0 ? endBlockPage : 1);
 		
 		return "project/list/project_list";
 	}

@@ -70,12 +70,12 @@ function sendMessage(message, chatRoomIdx) {
 	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
 }
 
-window.onload = async function() {
+document.addEventListener("DOMContentLoaded", async function(){
 	const uri = `/api/chat/room/list`;
 	const chatRoomDTOList = await chatRoomListFetch(uri);
 
 	connection(chatRoomDTOList);
-}
+});
 
 let isFooterClick = false;
 document.querySelector(".footer-btn").addEventListener("click", function() {

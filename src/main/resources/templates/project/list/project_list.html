@@ -1,10 +1,9 @@
 <html layout:decorate="~{layout}">
-
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/project_list.css}">
 </head>
 <div layout:fragment="content" class="project_list_container">
-	<div th:replace="~{/project/list/project_delete :: projectDelete}"></div>
+	<div th:replace="~{project/list/project_delete :: projectDelete}"></div>
 	<div class="project_list_header">
 		<h2>프로젝트</h2>
 		<div class="btn_box">
@@ -123,7 +122,8 @@
 		<ul>
 			<li th:classappend="${num-1 == currentPage} ? active : ''"
 				th:each="num : ${#numbers.sequence(startBlockPage, endBlockPage)}">
-				<a th:href="@{|/project/list?page=${num-1}|}" th:text="${num}"></a>
+				<a th:href="@{|/project/list?page=${num-1}|}" 
+				   th:text="${num}"></a>
 			</li>
 		</ul>
 		<a class="block_move_btn"
