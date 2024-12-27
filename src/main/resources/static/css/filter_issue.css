@@ -135,6 +135,11 @@
 	display: flex;
 	align-items: center;
 }
+.filter_category_div.check{
+	border: 1px solid #0C66E4;
+	color: #0C66E4;
+	background-color: #E9F2FF;
+}
 .filter_category_div:hover {
 	background-color: var(--ds-background-neutral-subtle-hovered, rgba(9, 30, 66, 0.13));
 	border:1px solid var(--ds-background-neutral-subtle-pressed, rgba(9, 30, 66, 0.25));

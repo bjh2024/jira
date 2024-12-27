@@ -62,12 +62,7 @@ public class IssueType {
 		this.project = project;
 	}
 	
-	@OneToOne(mappedBy = "issueType")
-	private IssueTypeExist issTypeExist;
 	
 	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 
-	
-	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
-	private List<IssueField> issueFieldList; 
 }
