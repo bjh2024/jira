@@ -88,3 +88,53 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 
 });
+
+document.querySelector(".issuetype-settitle").addEventListener("click", function(e){
+	const titleBtn = e.target.closest(".issuetype-settitle");
+	const inputBox = document.querySelector(".edit-issuetype-title");
+	if(titleBtn !== null){
+		inputBox.classList.add("show");
+		titleBtn.classList.add("none");
+	}
+});
+
+let editTypeTitleData = {
+	"idx": "",
+	"name": ""
+}
+
+function editIssueTypeTitle(){
+	let url = "/api/project/update_issueType_name";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(editTypeTitleData)
+	})
+	.then(response => {
+        if (response.ok) {
+			document.querySelector(".edit-issuetype-title").classList.remove("show");
+			document.querySelector(".issuetype-settitle").classList.remove("none");
+			document.querySelector(".issuetype-settitle").innerText = editTypeTitleData.name;
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    }).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelector(".edit-typetitlebtn.submit").addEventListener("click", function(e){
+	const input = document.querySelector(".edit-issuetype-title-input");
+	editTypeTitleData.idx = input.dataset.idx;
+	editTypeTitleData.name = input.value;
+	console.log(editTypeTitleData);
+	editIssueTypeTitle();
+});
+
+document.querySelector(".edit-typetitlebtn.cancel").addEventListener("click", function(e){
+	document.querySelector(".edit-issuetype-title").classList.remove("show");
+	document.querySelector(".issuetype-settitle").classList.remove("none");
+});

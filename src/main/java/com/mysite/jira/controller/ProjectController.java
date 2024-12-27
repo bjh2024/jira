@@ -167,8 +167,10 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/{projectKey}/setting/issue_type")
-	public String settingIssueType() {
+	@GetMapping("/{projectKey}/setting/issue_type/{issueTypeIdx}")
+	public String settingIssueType(@PathVariable("issueTypeIdx") Integer issueTypeIdx, Model model) {
+		IssueType currentType = boardMainService.getIssueTypeByIdx(issueTypeIdx);
+		model.addAttribute("IssueType", currentType);
 		return "project/setting/issue_type";
 	}
 	

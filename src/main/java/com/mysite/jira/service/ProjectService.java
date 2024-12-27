@@ -229,4 +229,9 @@ public class ProjectService {
 		project.updateProjectName(name);
 		projectRepository.save(project);
 	}
+	
+	public void updateIssueTypeName(IssueType issueType, String name) {
+		issueType.updateName(name);
+		this.issueTypeRepository.save(issueType);
+	}
 }

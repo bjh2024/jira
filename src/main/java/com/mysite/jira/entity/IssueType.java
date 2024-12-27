@@ -62,6 +62,10 @@ public class IssueType {
 		this.project = project;
 	}
 	
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
 	@OneToOne(mappedBy = "issueType")
 	private IssueTypeExist issTypeExist;
 	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
@@ -17,9 +18,11 @@ import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
+import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
@@ -38,6 +41,8 @@ public class ProjectAPIController {
 	private final AccountService accountService;
 	
 	private final HttpSession session;
+	
+	private final BoardMainService boardMainService;
 	
 	@GetMapping("duplication/name")
 	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName) {
@@ -125,6 +130,12 @@ public class ProjectAPIController {
 	public void updateProjectName(@RequestBody UpdateProjectNameDTO nameDTO) {
 		Project project = projectService.getProjectByIdx(nameDTO.getProjectIdx());
 		projectService.updateProjectName(project, nameDTO.getName());
+	}
+	
+	@PostMapping("/update_issueType_name")
+	public void updateIssueTypeName(@RequestBody IssueTypeDTO issueTypeDTO) {
+		IssueType issuetype = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeName(issuetype, issueTypeDTO.getName());
 	}
 	
 }
