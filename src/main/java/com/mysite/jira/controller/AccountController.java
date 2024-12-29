@@ -102,12 +102,7 @@ public class AccountController {
 		
 		return "redirect:/account/login";
 	}
-	
-	@GetMapping("/send_email")
-	public String emailTest() {
-		return "account/send_email";
-	}
-	
+
 	@GetMapping("/reset_code")
 	public String resetCode(@RequestParam("email") String email, AuthCodeForm authCodeForm, Model model) {
 		Account user = accountService.getAccountByEmail(email);

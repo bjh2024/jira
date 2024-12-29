@@ -186,7 +186,7 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
-	@GetMapping("/{projectKey}/setting/issue_type/{issueTypeIdx}")
+	@GetMapping("/{projectKey}/setting/issue_type")
 	public String settingIssueType() {
 		return "project/setting/issue_type";
 	}
@@ -359,12 +359,13 @@ public class ProjectController {
 	
 	@GetMapping("/profile")
 	public String profile(Model model) {
-		List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		List<Issue> issueList = issueService.getIssuesByJiraIdx(jiraIdx);
 		model.addAttribute("issue", issueList);
 		
-		List<Project> projectList = projectService.getProjectByJiraIdx(1);
+		List<Project> projectList = projectService.getProjectByJiraIdx(jiraIdx);
 		model.addAttribute("projectList", projectList);
-		return "account/profile.html";
+		return "account/profile";
 	}
 
 }

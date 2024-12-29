@@ -112,7 +112,7 @@ public class ProjectService {
 				IssueType.builder().name("작업").content("A small, distinct piece of work.").subContent("")
 						.iconFilename("issue_task.svg").grade(2).project(project).build(),
 				IssueType.builder().name("하위 작업").content("A small piece of work that''s part of a larger task.")
-						.subContent("").iconFilename("issue_sub_task.svg").grade(2).project(project).build());
+						.subContent("").iconFilename("issue_sub_task.svg").grade(1).project(project).build());
 		issueTypeRepository.saveAll(issueTypes);
 		// 기본 이슈상태
 		List<IssueStatus> issueStatuses = Arrays.asList(
