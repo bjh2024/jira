@@ -5,7 +5,7 @@
 </head>
 <div layout:fragment="content">
 	<div class="dashboard_container">
-		<div th:replace="~{/dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
+		<div th:replace="~{dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
 		<div class="dashboard_content_container">
 			<div class="box1"
 				 th:if="${#lists.size(dashboardItemList[0]) != 0}">

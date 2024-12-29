@@ -11,5 +11,4 @@ function likeFetch(type, idx, isLike) {
 	.catch(e => {
 		console.error(e);
 	});
-	location.reload(true);
 }

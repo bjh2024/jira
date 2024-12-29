@@ -38,4 +38,8 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	
 	List<Filter> findByJiraIdx(Integer idx);
 	
+	List<Filter> findByIdxIn(Integer[] idx);
+	
+	List<Filter> findByIdxInAndAccountIdx(Integer[] idx, Integer accountIdx);
+	
 }

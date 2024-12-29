@@ -88,7 +88,6 @@ function fetchIssueDetail() {
 	    })
 		.then(response => {
 		        if (response.ok) {
-					alert("삭제 완료");
 				   window.location.href = window.location.href;
 		        } else {
 		            // 응답 상태가 성공 범위를 벗어나는 경우
@@ -98,3 +97,66 @@ function fetchIssueDetail() {
         console.error("Fetch error:", error);  // 에러 처리
 	    });
 	}
+let filterLikeData ={
+	"accountIdx" : null,
+	"filterIdx" : null
+}
+
+window.addEventListener("load",function(){
+	filterLikeData.accountIdx = document.querySelector(".second_tr").dataset.accountIdx;
+	fetchFilterLikeMember()
+})
+
+document.querySelectorAll(".like_start_icon").forEach(function(item){
+	item.addEventListener("click",function(){
+		let img = this.querySelector("img");
+		filterLikeData.accountIdx = this.dataset.accountIdx;
+		filterLikeData.filterIdx = this.dataset.filterIdx;
+		if(img.getAttribute("src") == "/images/star_icon_yellow.svg"){
+			img.setAttribute("src", "/images/star_icon_empty.svg");
+		}
+		fetchfilterLikeAdd()
+		
+	})
+	
+})
+function fetchfilterLikeAdd(){
+	let url = "/api/filter_issue_table/filterLike"
+	fetch(url,{
+			method : "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(filterLikeData)
+			
+		})
+		.then(response => {
+			fetchFilterLikeMember()
+	    }).catch(error => {
+	    console.error("Fetch error:", error);  // 에러 처리
+	    });
+}
+function fetchFilterLikeMember(){
+	let url = "/api/filter_issue_table/every_filter";
+	fetch(url,{
+		method : "POST",
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(filterLikeData)
+		
+	})
+	.then(response => response.json()) 
+	.then(filterLike => {
+		document.querySelectorAll(".second_tr").forEach(function(item){
+			for(let i = 0; i < filterLike.length; i++){
+				if(item.dataset.filterIdx == filterLike[i]){
+					item.querySelector(".like_start_icon").innerHTML = 
+					`<img src="/images/star_icon_yellow.svg" width="14">`
+				}
+			}
+		})
+    }).catch(error => {
+    console.error("Fetch error:", error);  // 에러 처리
+    });
+}

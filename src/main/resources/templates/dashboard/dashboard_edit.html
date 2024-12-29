@@ -5,10 +5,10 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_all.css}">
 </head>
 <div layout:fragment="content">
-	<div th:replace="~{/dashboard/dashboard_detail_delete :: dashboardDetailDelete}"></div>
+	<div th:replace="~{dashboard/dashboard_detail_delete :: dashboardDetailDelete}"></div>
 	<div class="dashboard_container">
 		<div class="dashboard_box">
-			<div th:replace="~{/dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
+			<div th:replace="~{dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
 			<div class="edit_alaram_comment">
 				<img th:src="@{/images/question_mark_icon_purple.svg}" style="color: aliceblue;" />
 				<p>현재 대시보드를 편집하고 있습니다. 변경 사항은 자동으로 저장됩니다.</p>

@@ -845,7 +845,7 @@ let isCompleted = [];
 let doneDateBefore = null;
 let updateBefore = null;
 let createDateBefore = null;
-let jiraName = null;
+let jiraIdx = null;
 
 document.querySelector(".save_button")?.addEventListener("click",async function(){
 	filterName = document.querySelector(".hover_input")?.value;
@@ -859,10 +859,10 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 	if(document.querySelector(".done_input_list2").checked){
 		isCompleted.push(0);
 	}
-	jiraName = this.dataset.jiraName;
+	jiraIdx = this.dataset.jiraIdx;
 	
 	try{
-		const res = await fetch("/api/filter_issue_table/filter_create",{
+		const res = await fetch("/api/filter_issue_table/filter_duplicate",{
 			method: 'POST',
 			headers:{
 				'Content-Type': 'application/json' // JSON 데이터를 전송
@@ -873,7 +873,6 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 		})
 		const booleanResult = await res.json();
 		if(!booleanResult){
-			alert("들어옴")
 			document.querySelector(".hover_input").style.border = "2px solid #C9372C";
 			document.querySelector(".hover_input").style.borderRadius = "4px";
 			document.querySelector(".fail_name").innerText = "중복된 이름이 존재합니다.";
@@ -887,6 +886,7 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 	}
 	fetchFitlerCreate();
 })
+
 
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
@@ -922,13 +922,12 @@ function fetchFitlerCreate() {
 				doneDateBefore : doneDateBefore,
 				updateBefore : updateBefore,
 				createDateBefore : createDateBefore,
-				jiraName : jiraName,
+				jiraIdx : jiraIdx,
 				issueKey: issueKey
 	        })
 	    })
 		.then(response => {
 				        if (response.ok) {
-							alert("생성 완료");
 							window.location.href = "./every_filter"
 				        } else {
 				            // 응답 상태가 성공 범위를 벗어나는 경우

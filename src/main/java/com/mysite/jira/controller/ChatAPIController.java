@@ -40,7 +40,7 @@ public class ChatAPIController {
 	}
 	
 	@PostMapping("room/create")
-	public Integer createChatRoom(@RequestBody RequestChatRoomCreateDTO requestChatRoomCreateDTO){
+	public ChatRoomListDTO createChatRoom(@RequestBody RequestChatRoomCreateDTO requestChatRoomCreateDTO){
 		return chatService.createChatRoom(requestChatRoomCreateDTO);
 	}
 	

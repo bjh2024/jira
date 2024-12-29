@@ -59,6 +59,10 @@ public class ProjectService {
 		return projectRepository.findById(idx);
 	}
 	
+	public Integer getProjectAllCount(Integer jiraIdx) {
+		return projectRepository.findByJira_idx(jiraIdx).size();
+	}
+	
 	public Project getProjectByIdx(Integer idx) {
 		Optional<Project> project = projectRepository.findById(idx);
 		if (!project.isEmpty()) {
@@ -114,7 +118,7 @@ public class ProjectService {
 				IssueType.builder().name("작업").content("A small, distinct piece of work.").subContent("")
 						.iconFilename("issue_task.svg").grade(2).project(project).build(),
 				IssueType.builder().name("하위 작업").content("A small piece of work that''s part of a larger task.")
-						.subContent("").iconFilename("issue_sub_task.svg").grade(2).project(project).build());
+						.subContent("").iconFilename("issue_sub_task.svg").grade(1).project(project).build());
 		issueTypeRepository.saveAll(issueTypes);
 		// 기본 이슈상태
 		List<IssueStatus> issueStatuses = Arrays.asList(
@@ -140,6 +144,10 @@ public class ProjectService {
 		
 		project.updateProject(name, key, account);
 		projectRepository.save(project);
+	}
+	
+	public void deleteProject(Integer projectIdx) {
+		projectRepository.deleteById(projectIdx);
 	}
 	
 	public List<Project> getProjectByJiraIdx(Integer jiraIdx) {
@@ -175,12 +183,12 @@ public class ProjectService {
 
 	// kdw 프로젝트 리스트(project/list, 즐겨찾기인지 확인한 프로젝트)
 	public List<ProjectListIsLikeDTO> getProjectListIsLike(Integer accountIdx, Integer jiraIdx, int page) {
-		int startRow = page * 10;
-		int endRow = (startRow + (page + 1) * 10) - 1;
-		List<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, startRow,
-				endRow);
+		int startRow = page * 10 + 1;
+		int endRow = (page + 1) * 10;
+		
+		List<Map<String, Object>> projectPage = projectRepository.findByProjectListIsLike(accountIdx, jiraIdx, startRow, endRow);
 		List<ProjectListIsLikeDTO> result = new ArrayList<>();
-
+		
 		for (Map<String, Object> project : projectPage) {
 			Integer projectIdx = (Integer) project.get("projectIdx");
 			String projectName = project.get("projectName").toString();

@@ -13,14 +13,65 @@
 		</div>
 	</div>
 	<div class="setting_lnb">
-		<a th:href="@{|/project/${currentProject.key}/setting/info|}" class="info accent_btn">
+		<a th:href="@{|/project/${currentProject.key}/setting/info|}" class="setting_aside_btn paddingLeft info accent_btn">
 			<div class="accent_border"></div>
-			세부 사항
+			<span>세부 사항</span>
 		</a>
-		<a th:href="@{|/project/${currentProject.key}/setting/access|}" class="access accent_btn">
+		<a th:href="@{|/project/${currentProject.key}/setting/access|}" class="setting_aside_btn paddingLeft access accent_btn">
 			<div class="accent_border"></div>
-			액세스
+			<span>액세스</span>
 		</a>
+		<div class="setting_aside_btn issue_type accent_btn">
+			<div class="img_box">
+				<img src="/images/arrow_right_icon.svg" width="12" height="12"/>
+			</div>
+			<span>이슈 유형</span>
+		</div>
+		<div class="issue_type_box">
+			<div class="epik_box">
+				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
+				   th:each="issueType : ${issueTypeList}"
+				   th:if="${issueType.grade == 3}"
+				   class="setting_aside_btn accent_btn">
+					<div class="accent_border"></div>
+					<div class="img_box">
+						<img th:src="@{|/images/${issueType.iconFilename}|}" width="14" height="14"/>
+					</div>
+					<span th:text="${issueType.name}"></span>
+				</a>
+			</div>
+			<div class="middle_box">
+				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
+				   th:each="issueType : ${issueTypeList}"
+				   th:if="${issueType.grade == 2}"
+				   class="setting_aside_btn accent_btn">
+					<div class="accent_border"></div>
+					<div class="img_box">
+						<img th:src="@{|/images/${issueType.iconFilename}|}" width="14" height="14"/>
+					</div>
+					<span th:text="${issueType.name}"></span>
+				</a>
+			</div>
+			<div class="sub_box">
+				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
+				   th:each="issueType : ${issueTypeList}"
+				   th:if="${issueType.grade == 1}"
+				   class="setting_aside_btn accent_btn">
+					<div class="accent_border"></div>
+					<div class="img_box">
+						<img th:src="@{|/images/${issueType.iconFilename}|}" width="14" height="14"/>
+					</div>
+					<span th:text="${issueType.name}"></span>
+				</a>
+			</div>
+			<div class="setting_aside_btn">
+				<div class="img_box">
+					<img src="/images/plus_icon.svg" width="16" height="16"/>
+				</div>
+				<span>이슈 유형 추가</span>
+			</div>
+		</div>
+		
 	</div>
 	<script src="/js/setting_aside.js"></script>
 </div>

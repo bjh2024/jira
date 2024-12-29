@@ -2,8 +2,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const menu = e.target.closest(".filter_menu");  // 클릭된 메뉴 찾기
 	const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
 	const menuBoxWithActive = document.querySelector(".filter_category_div.active");  // 활성화된 메뉴 찾기
-	const button = document.querySelector(".filter_category_div")
-	console.log(e.target);
+	const button = document.querySelector(".filter_category_div");
 	
 	// 이미 열린 .filter_issue_box를 클릭한 경우 아무 작업도 하지 않음
 	if (menuWithShow && menuWithShow.contains(e.target)) {

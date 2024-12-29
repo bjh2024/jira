@@ -88,6 +88,7 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 		alertBox.classList.add("show");
 		alertBox.querySelector(".comment").innerText = "이미 지라에 존재하는 사용자 입니다.";
 		jiraUserNameInput.focus();
+		return;
 	}
 	
 	function addJiraUserFetch(jiraUserEmail){

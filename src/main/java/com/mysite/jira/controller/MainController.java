@@ -57,7 +57,6 @@ public class MainController {
 		
 		Integer accountIdx = account.getIdx();
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		System.out.println(jiraIdx);
 		model.addAttribute("projectList", projectService.getProjectList(accountIdx, jiraIdx));
 		
 		// 작업
