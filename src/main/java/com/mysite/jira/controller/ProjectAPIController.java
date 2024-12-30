@@ -165,6 +165,13 @@ public class ProjectAPIController {
 		projectService.deleteIssueType(oldTypeIdx);
 	}
 	
+	@PostMapping("/verification_issueType")
+	public boolean verificationIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Integer projectIdx = issueTypeDTO.getProjectIdx();
+		String name = issueTypeDTO.getName();
+		return projectService.verificationIssueType(projectIdx, name);
+	}
+	
 	@PostMapping("/create_issueType")
 	public void createIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
 		Project project = projectService.getProjectByIdx(issueTypeDTO.getProjectIdx());

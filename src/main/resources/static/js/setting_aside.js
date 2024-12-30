@@ -100,6 +100,27 @@ let createIssueTypeData = {
 	"iconFilename": ""
 }
 
+function verificationIssueType(){
+	let url = "/api/project/verification_issueType";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createIssueTypeData)
+	}).then(response => response.json())
+	.then(isExist => {
+		if(isExist){
+			document.querySelector(".issuetype_duplicate_alert")?.classList.remove("show");
+			createIssueType();
+		}else{
+			document.querySelector(".issuetype_duplicate_alert").classList.add("show");
+		}
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
 function createIssueType(){
 	let url = "/api/project/create_issueType";
 	fetch(url, {
@@ -128,6 +149,6 @@ document.querySelector(".create_issuetype_btn.submit").addEventListener("click",
 		createIssueTypeData.projectIdx = document.querySelector(".issuetype_icon_selected").dataset.projectidx;
 		createIssueTypeData.iconFilename = document.querySelector(".issuetype_icon_selected").dataset.iconfilename;
 		console.log(createIssueTypeData);
-		createIssueType();
+		verificationIssueType();
 	}
 });

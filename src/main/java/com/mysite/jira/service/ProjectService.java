@@ -267,6 +267,14 @@ public class ProjectService {
 		this.issueTypeRepository.deleteById(issueTypeIdx);
 	}
 	
+	public boolean verificationIssueType(Integer projectIdx, String name) {
+		Optional<IssueType> issueType = this.issueTypeRepository.findByProjectIdxAndName(projectIdx, name);
+		if(issueType.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void createIssueType(Project project, String name, String content, String iconFilename) {
 		IssueType issueType = IssueType.builder()
 									.name(name)

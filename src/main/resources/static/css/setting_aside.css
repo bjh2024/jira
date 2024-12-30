@@ -189,6 +189,20 @@
 	cursor: text;
 }
 
+.issuetype_duplicate_alert{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12px;
+	color: #AE2E24;
+	margin-top: 10px;
+	display: none;
+}
+
+.issuetype_duplicate_alert.show{
+	display: block;
+}
+
 .set_issuetype_content_area{
 	width: 376px;
 	min-height: 114px;
