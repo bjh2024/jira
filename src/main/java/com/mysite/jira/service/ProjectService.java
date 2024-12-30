@@ -266,4 +266,15 @@ public class ProjectService {
 	public void deleteIssueType(Integer issueTypeIdx) {
 		this.issueTypeRepository.deleteById(issueTypeIdx);
 	}
+	
+	public void createIssueType(Project project, String name, String content, String iconFilename) {
+		IssueType issueType = IssueType.builder()
+									.name(name)
+									.content(content)
+									.iconFilename(iconFilename)
+									.project(project)
+									.grade(2)
+									.build();
+		this.issueTypeRepository.save(issueType);
+	}
 }

@@ -164,4 +164,16 @@ public class ProjectAPIController {
 		}
 		projectService.deleteIssueType(oldTypeIdx);
 	}
+	
+	@PostMapping("/create_issueType")
+	public void createIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Project project = projectService.getProjectByIdx(issueTypeDTO.getProjectIdx());
+		String name = issueTypeDTO.getName();
+		String content = issueTypeDTO.getContent();
+		String iconFilename = issueTypeDTO.getIconFilename();
+		if(content.equals("")) {
+			content = "이 이슈 유형을 사용하는 경우를 사용자들에게 알리기";
+		}
+		projectService.createIssueType(project, name, content, iconFilename);
+	}
 }
