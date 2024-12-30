@@ -1,13 +1,5 @@
 package com.mysite.jira.dto;
 
-import java.time.LocalDateTime;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysite.jira.service.UtilityService;
-
 import lombok.Builder;
 import lombok.Getter;
 

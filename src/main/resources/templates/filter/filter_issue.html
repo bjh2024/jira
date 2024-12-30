@@ -42,7 +42,7 @@
 							<input id="search_box"style="margin-left:4px;font-size: 14px; align-items: center;" placeholder="이슈 검색">
 						</div>
 							<div class="filter_menu" >
-								<div class="filter_category_div" style="width: 98px; cursor: pointer;">                      
+								<div class="filter_category_div" name="project" style="width: 98px; cursor: pointer;">                      
 									프로젝트
 									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 										<path fill="currentcolor" fill-rule="evenodd"
@@ -103,7 +103,7 @@
 								</div>
 							</div>
 							<div class="filter_menu">
-								<div class="filter_category_div" style="width: 70px; cursor: pointer;">
+								<div class="filter_category_div" name="issuetype" style="width: 70px; cursor: pointer;">
 									유형
 									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 										<path fill="currentcolor" fill-rule="evenodd"
@@ -166,7 +166,7 @@
 								</div>
 							</div>
 							<div class="filter_menu">
-								<div class="filter_category_div" style="width: 70px; cursor: pointer;">
+								<div class="filter_category_div" name="issueStatus"style="width: 70px; cursor: pointer;">
 									상태
 									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 										<path fill="currentcolor" fill-rule="evenodd"
@@ -219,7 +219,7 @@
 								</div>
 							</div>
 							<div class="filter_menu">
-								<div class="filter_category_div" style="width: 84px; cursor: pointer;">
+								<div class="filter_category_div" name="issueManager" style="width: 84px; cursor: pointer;">
 									담당자
 									<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
 										<path fill="currentcolor" fill-rule="evenodd"
@@ -485,7 +485,7 @@
 											</div>
 										</div>
 					<!----------------------------------display none으로 해놓고 체크박스 받아서 보여줄 필터 끝----------------------------------------->
-					<!---------------------------상태 범주 박스----------------------------------------------->
+					<!---------------------------업데이트 박스----------------------------------------------->
 										<div class="updateDate">
 											<div class="filter_menu">
 												<div class="filter_category_div" style="width: 104px; cursor: pointer;">
@@ -513,20 +513,20 @@
 														th:checked="${updateDate == null? false:updateDate.startDate != null? updateDate.startDate: null}">&nbsp<b>사이</b>
 													</div>
 													<div class="update_date_box_2">
-														<input  type="date"
+														<input type="date"
 														        id="update_start_date"
 														        max="2080-06-20"
 														        min="2000-01-01"
 																th:value="${updateDate == null? '': updateDate.startDate != null? updateDate.startDate: ''}">
 																&nbsp&nbsp&nbsp
-														<input type="date"
+														<input  type="date"
 														        id="update_last_date"
 														        max="2077-06-20"
 														        min="2000-01-01" 
 																th:value="${updateDate == null? '': updateDate.endDate != null? updateDate.endDate:''}">
 													</div>
 													<div class="date_button_box">
-														<input class="reset_button" id="update_date_reset" value="초기화">
+														<input class="reset_button" id="update_date_reset" type="reset" value="초기화">
 													</div>
 													</form>
 												</div>

@@ -74,6 +74,10 @@ public class Account {
 		this.authCode = authCode;
 		this.codeExpDate = codeExpDate;
 	}
+	
+	public void updateAccountPw(String pw) {
+		this.pw = pw;
+	}
 
 	// 지라 생성자 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)

@@ -122,3 +122,18 @@
 	margin: -91px 0px 0px;
 	margin-left: 40px;
 }
+.newPassword {
+	margin-left: 200px;
+	width: 60px;
+	height: 24px;
+	background-color: #0C66E4;
+	color: white;
+	border: none;
+	border-radius: 4px;
+}
+.newPasswordCancle {
+	border: none;
+	background-color: white;
+	width: 60px;
+	height: 24x;
+}
