@@ -14,12 +14,16 @@ import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
+import com.mysite.jira.entity.JiraRecentClicked;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.JiraMembersRepository;
+import com.mysite.jira.repository.JiraRecentClickedRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,6 +35,8 @@ public class AccountService {
 	private final JiraService jiraService;
 	
 	private final JiraMembersRepository jiraMembersRepository;
+	
+	private final JiraRecentClickedRepository jiraRecentClickedRepository;
 	
 	private final AccountRepository accountRepository;
 	
@@ -115,8 +121,6 @@ public class AccountService {
 		Account account = null;
 		if(optAccount.isPresent()) {
 			account = optAccount.get();
-		}else {
-			throw new NoSuchElementException("Account not found");
 		}
 		return account;
 	}
@@ -184,6 +188,26 @@ public class AccountService {
 			account = optAcc.get();
 		}
 		return account;
+	}
+	
+	public boolean getIsLoginJiraAdd(String email, String password, Integer jiraIdx, HttpSession session) {
+		Account account = this.getAccountByEmail(email);
+		if(passwordEncoder.matches(password, account.getPw())) {
+			session.setAttribute("jiraIdx", jiraIdx);
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			JiraMembers jiraMembers = JiraMembers.builder()
+												 .jira(jira)
+												 .account(account)
+												 .build();
+			jiraMembersRepository.save(jiraMembers);
+			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
+																   .jira(jira)
+																   .account(account)
+																   .build();
+			jiraRecentClickedRepository.save(jiraRecentClicked);
+			return true;
+		}
+		return false;
 	}
 	
 	// 비밀번호 변경 메서드

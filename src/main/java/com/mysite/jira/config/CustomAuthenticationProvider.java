@@ -26,15 +26,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-
+        
         Account account = accountService.getAccountByEmail(email);
         
-        if (account.getAuthCode() != null) {
-        	System.out.println("인증 안 됨!!!!!!!!");
-        	throw new LockedException("Account is not authorized to login");
-        }
         if (account == null || !passwordEncoder.matches(authentication.getCredentials().toString(), account.getPw())) {
             throw new BadCredentialsException("Invalid email or password");
+        }
+        if (account.getAuthCode() != null) {
+        	throw new LockedException("Account is not authorized to login");
         }
 
         return new UsernamePasswordAuthenticationToken(email, password, authentication.getAuthorities());
