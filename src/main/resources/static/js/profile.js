@@ -16,16 +16,37 @@ document.querySelector("body").addEventListener("click", function(e) {
 
 let changePw = {
 	"oldPw" : null,
-	"newPw" : null
+	"newPw" : null,
+	"email" : null
 }
 document.querySelector(".newPassword").addEventListener("click",function(){
 	changePw.oldPw = document.querySelector("input[name=oldpw]").value
 	changePw.newPw = document.querySelector("input[name=newpw]").value
+	changePw.email = document.querySelector(".newPassword").dataset.email
 	UpdatePassword()
 })
 
 function UpdatePassword(){
-	let url = "/api/filter_issue_table/project_filter";
+	let url = "/api/account/password";
+	fetch(url,{
+		method : 'POST',
+		headers : {
+			'Content-Type' : 'application/json'
+		},
+		body : JSON.stringify({
+			oldPw : changePw.oldPw,
+			newPw : changePw.newPw,
+			email : changePw.email
+		})
+	}).then(res => res.json())
+	  .then(pw => {
+		if(pw === true){
+			window.location.href = "/account/logout";
+		}else{
+			alert("변경에 실패했습니다")
+		}
+	  }).catch(err => {
+		console.error("Fetch error:", err);
+	  })
 }
-
 

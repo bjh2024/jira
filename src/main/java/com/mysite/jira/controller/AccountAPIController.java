@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.AddJiraMemberDTO;
+import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.email.JiraInviteEmailClient;
@@ -18,7 +19,6 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -76,5 +76,14 @@ public class AccountAPIController {
 	public Integer addJiraMemberSendEmail(@RequestBody String jiraUserEmail) {
 		jiraInviteEmailClient.sendEmail(jiraUserEmail.replaceAll("\"", ""));
 		return 1;
+	}
+	
+	@PostMapping("/password")
+	public boolean updatePassword(@RequestBody NewPwDTO newPw) {
+		if(accountService.changePassword(newPw)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

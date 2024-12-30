@@ -38,7 +38,7 @@
 								<input type="password" name="oldpw" style="height: 32px; border:none; padding-left: 4px; " placeholder="현재 비밀번호">
 								<h5>새로운 비밀번호 </h5>
 								<input type="password" name="newpw" style="height: 32px; border:none; padding-left: 4px; " placeholder="새로운 비밀번호">
-								<input class="newPassword" type="button" value="변경">
+								<input class="newPassword" type="button" value="변경" th:data-email="${currentUser.email}">
 								<input class="newPasswordCancle" type="reset" value="취소">
 								</form>
 							</div>
