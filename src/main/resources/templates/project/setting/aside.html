@@ -30,7 +30,7 @@
 		<div class="issue_type_box">
 			<div class="epik_box">
 				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
-				   th:each="issueType : ${issueTypeList}"
+				   th:each="issueType : ${issueTypeInfoList}"
 				   th:if="${issueType.grade == 3}"
 				   class="setting_aside_btn accent_btn">
 					<div class="accent_border"></div>
@@ -42,7 +42,7 @@
 			</div>
 			<div class="middle_box">
 				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
-				   th:each="issueType : ${issueTypeList}"
+				   th:each="issueType : ${issueTypeInfoList}"
 				   th:if="${issueType.grade == 2}"
 				   class="setting_aside_btn accent_btn">
 					<div class="accent_border"></div>
@@ -54,7 +54,7 @@
 			</div>
 			<div class="sub_box">
 				<a th:href="@{|/project/${currentProject.key}/setting/issue_type/${issueType.idx}|}"
-				   th:each="issueType : ${issueTypeList}"
+				   th:each="issueType : ${issueTypeInfoList}"
 				   th:if="${issueType.grade == 1}"
 				   class="setting_aside_btn accent_btn">
 					<div class="accent_border"></div>

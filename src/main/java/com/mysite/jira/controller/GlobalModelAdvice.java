@@ -205,7 +205,7 @@ public class GlobalModelAdvice {
 			Integer projectIdx = project.getIdx();
 			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
 			
-			model.addAttribute("issueTypeList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
+			model.addAttribute("issueTypeInfoList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
 		}
 	}
 }
