@@ -71,6 +71,7 @@ public class BoardMainAPTIController {
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
 	
+	// 해당 Jira 에 존재하는 레이블 리스트를 반환
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
 		List<IssueLabelData> labelList = new ArrayList<>();
@@ -91,6 +92,7 @@ public class BoardMainAPTIController {
 		return alterLabelList;
 	}
 	
+	// 해당 프로젝트에 존재하는 상태 리스트를 현재 상태 제외하여 반환
 	@PostMapping("/get_status_list")
 	public List<StatusListDTO> getStatusList(@RequestBody GetCurrentStatusDTO getCurrentStatusDTO){
 		List<IssueStatus> statusList = boardMainService.getSortedIssueStatus(getCurrentStatusDTO.getProjectIdx(), getCurrentStatusDTO.getStatusIdx());
@@ -107,6 +109,7 @@ public class BoardMainAPTIController {
 		return alterStatusList;
 	}
 	
+	// 레이블 데이터를 생성
 	@PostMapping("/create_label_data")
 	public LabelListDTO addLabelData(@RequestBody GetNewLabelDataDTO getNewLabelDataDTO) {
 		Issue currentIssue = boardMainService.getIssueByIdx(getNewLabelDataDTO.getIssueIdx());
@@ -121,11 +124,13 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 레이블 데이터를 삭제
 	@PostMapping("/delete_label_data")
 	public void deleteLabelData(@RequestBody DeleteLabelDataDTO deleteLabelDataDTO) {
 		boardMainService.deleteIssueLabelData(deleteLabelDataDTO.getLabelDataIdx());
 	}
 	
+	// 해당 이슈의 상태 정보를 업데이트
 	@PostMapping("/update_current_status")
 	public StatusListDTO updateIssueStatus(@RequestBody GetStatusDataDTO getStatusDTO){
 		IssueStatus newStatus =	boardMainService.getOnceIssueStatus(getStatusDTO.getStatusIdx());
@@ -140,6 +145,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// Start date, 기한 정보를 업데이트
 	@PostMapping("/update_date")
 	public void updateStartDate(@RequestBody UpdateDateDTO updateDateDTO) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -152,6 +158,7 @@ public class BoardMainAPTIController {
 		}
 	}
 
+	// 현재 값이 아닌 이슈 중요도 리스트를 반환
 	@PostMapping("/get_priority_list")
 	public List<GetPriorityDTO> getPriorityList(@RequestBody GetPriorityDTO getPriorityDTO) {
 		List<IssuePriority> arrList = boardMainService.getAlterIssuePriority(getPriorityDTO.getPriorityIdx());
@@ -168,6 +175,7 @@ public class BoardMainAPTIController {
 		return priorityList;
 	}
 	
+	// 해당 이슈의 중요도 정보를 업데이트
 	@PostMapping("/update_priority")
 	public GetPriorityDTO updatePriority(@RequestBody GetPriorityDTO getPriorityDTO) {
 		IssuePriority priority = boardMainService.getOnceIssuePriority(getPriorityDTO.getPriorityIdx());
@@ -183,6 +191,7 @@ public class BoardMainAPTIController {
 		return newPriority;
 	}
 	
+	// 해당 Jira에 존재하는 팀 리스트를 반환
 	@PostMapping("/get_team_list")
 	public List<GetTeamDTO> getTeamList(@RequestBody GetTeamDTO getTeamDTO){
 		List<Team> arrList = boardMainService.getJiraTeamList(getTeamDTO.getJiraIdx());
@@ -201,6 +210,7 @@ public class BoardMainAPTIController {
 		return teamList;
 	}
 	
+	// 해당 이슈의 팀 정보를 업데이트
 	@PostMapping("/update_team")
 	public GetTeamDTO updateTeam(@RequestBody GetTeamDTO getTeamDTO) {
 		Team team = boardMainService.getOnceTeam(getTeamDTO.getTeamIdx());
@@ -214,6 +224,7 @@ public class BoardMainAPTIController {
 		return newTeam;
 	}
 	
+	// 자신을 제외한 해당 프로젝트 구성원 리스트를 반환
 	@PostMapping("/get_user_list")
 	public List<ReporterDTO> getReporterList(@RequestBody ReporterDTO reporterDTO){
 		List<ProjectMembers> arrList = boardMainService.getReporterList(reporterDTO.getProjectIdx(), reporterDTO.getUserIdx());
@@ -231,6 +242,7 @@ public class BoardMainAPTIController {
 		return reporterList;
 	}
 	
+	// 해당 이슈의 담당자, 보고자 정보를 업데이트
 	@PostMapping("/update_user")
 	public ReporterDTO updateReporter(@RequestBody ReporterDTO reporterDTO) {
 		Account account = boardMainService.getAccountById(reporterDTO.getUserIdx());
@@ -252,6 +264,7 @@ public class BoardMainAPTIController {
 		return newReporter;
 	}
 	
+	// 요청한 질문에 대한 ai의 답변 값을 반환
 	@PostMapping("/get_ai_answer")
 	public AIQuestionDTO getAiAnswer(@RequestBody AIQuestionDTO aiQuestionDTO) {
 		String answer = aiService.send(aiQuestionDTO.getQuestion());
@@ -261,6 +274,16 @@ public class BoardMainAPTIController {
 		return answerDTO;
 	}
 	
+	// 상태 생성 시의 중복 확인
+	@PostMapping("/status_name_check")
+	public boolean statusNameCheck(@RequestBody CreateStatusDTO createStatusDTO) {
+		Integer projectIdx = createStatusDTO.getProjectIdx();
+		String name = createStatusDTO.getName();
+		
+		return boardMainService.statusNameCheck(projectIdx, name);
+	}
+	
+	// 해당 프로젝트에 상태 생성
 	@PostMapping("/create_projects_status")
 	public void createStatus(@RequestBody CreateStatusDTO createStatusDTO) {
 		String name = createStatusDTO.getName();
@@ -270,24 +293,31 @@ public class BoardMainAPTIController {
 		boardMainService.createIssueStatus(name, status, projectIdx);
 	}
 	
+	// 이슈 생성 시의 중복 확인
+	@PostMapping("/issue_name_check")
+	public boolean duplicateCheck(@RequestBody CreateIssueDTO createIssueDTO) {
+		Integer projectIdx = createIssueDTO.getProjectIdx();
+		String name = createIssueDTO.getIssueName();
+		
+		return boardMainService.IssueNameCheck(projectIdx, name);
+	}
+	
+	// 해당 프로젝트에 이슈 생성
 	@PostMapping("/create_issue")
 	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();
-		String jiraName = createIssueDTO.getJiraName();
 		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
 		Integer projectIdx = createIssueDTO.getProjectIdx();
 		Integer reporterIdx = createIssueDTO.getReporterIdx();
 		Integer StatusIdx = createIssueDTO.getStatusIdx();
-//		System.out.println(createIssueDTO.getIssueName() + " " + createIssueDTO.getJiraName() + " " + 
-//				createIssueDTO.getIssueTypeIdx() + " " + createIssueDTO.getProjectIdx() + " " + 
-//				createIssueDTO.getReporterIdx() + " " + createIssueDTO.getStatusIdx());
-		Integer idx = boardMainService.createIssue(issueName, jiraName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+		Integer idx = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
 		CreateIssueDTO dto = CreateIssueDTO.builder()
 										.issueIdx(idx)
 										.build();
 		return dto;
 	}
 	
+	// 프로젝트 - 보드 탭의 이슈 상태 정렬 순서를 업데이트
 	@PostMapping("/update_issue_box_order")
 	public void updateIssueBoxOrder(@RequestBody DragIssueBoxDTO dragIssueBoxDTO) {
 		Integer oldIdx = dragIssueBoxDTO.getOldIdx();
@@ -300,6 +330,7 @@ public class BoardMainAPTIController {
 		}
 	}
 	
+	// 프로젝트 - 보드 탭의 이슈 정렬 순서를 업데이트
 	@PostMapping("/update_issue_order")
 	public void updateIssueOrder(@RequestBody DragIssueDTO dragIssueDTO) {
 		Integer newIdx = dragIssueDTO.getNewIdx();
@@ -313,6 +344,7 @@ public class BoardMainAPTIController {
 		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
 	}
 	
+	// 해당 이슈를 삭제
 	@PostMapping("/delete_issue_data")
 	public void deleteIssueData(@RequestBody DeleteIssueDTO deleteIssueDTO) {
 		List<IssueExtends> extendsList = boardMainService.getIssueExtendsByParentIdx(deleteIssueDTO.getIssueIdx());
@@ -323,6 +355,7 @@ public class BoardMainAPTIController {
 		
 	}
 	
+	// 해당 이슈의 이름을 업데이트
 	@PostMapping("/update_issue_name")
 	public void updateIssueName(@RequestBody UpdateIssueNameDTO updateIssueNameDTO) {
 		Integer idx = updateIssueNameDTO.getIssueIdx();
@@ -331,6 +364,7 @@ public class BoardMainAPTIController {
 		boardMainService.updateIssueName(issue, name);
 	}
 	
+	// 해당 이슈의 설명을 업데이트
 	@PostMapping("/update_issue_content")
 	public void updateIssueExarea(@RequestBody UpdateIssueExareaDTO updateIssueExareaDTO) {
 		Integer idx = updateIssueExareaDTO.getIssueIdx();
@@ -339,6 +373,7 @@ public class BoardMainAPTIController {
 		boardMainService.updateIssueContent(issue, content);
 	}
 	
+	// 해당 이슈에 대한 생성 / 수정 / 변경 내역 리스트를 반환
 	@PostMapping("/get_issue_log_list")
 	public List<IssueLogDTO> getIssueLogList(@RequestBody IssueLogDTO issueLogDTO){
 		Integer issueIdx = issueLogDTO.getIssueIdx();
@@ -359,26 +394,7 @@ public class BoardMainAPTIController {
 		return logList;
 	}
 	
-	@PostMapping("/get_all_issue_log_list")
-	public List<IssueLogDTO> getAllIssueLogList(@RequestBody IssueLogDTO issueLogDTO){
-		Integer issueIdx = issueLogDTO.getIssueIdx();
-		String order = issueLogDTO.getOrder();
-		List<ProjectLogData> getLogList = boardMainService.getAllLogDataList(issueIdx, order);
-		List<IssueLogDTO> logList = new ArrayList<>();
-		for(int i = 0; i < getLogList.size(); i++) {
-			LocalDateTime dateTime = getLogList.get(i).getCreateDate();
-			String date = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-			IssueLogDTO dto = IssueLogDTO.builder()
-									.username(getLogList.get(i).getAccount().getName())
-									.iconFilename(getLogList.get(i).getAccount().getIconFilename())
-									.logType(getLogList.get(i).getProjectLogStatus().getContent())
-									.date(date)
-									.build();
-			logList.add(dto);
-		}
-		return logList;
-	}
-
+	// 해당 상태의 이름을 업데이트
 	@PostMapping("/update_status_title")
 	public void updateStatusTitle(@RequestBody StatusTitleDTO statusTitleDTO) {
 		Integer idx = statusTitleDTO.getStatusIdx();
@@ -387,6 +403,7 @@ public class BoardMainAPTIController {
 		boardMainService.updateStatusTitle(currentStatus, name);
 	}
 	
+	// 이슈 상태 데이터를 삭제
 	@PostMapping("/delete_issue_status")
 	public void deleteIssueStatus(@RequestBody DeleteStatusDTO deleteStatusDTO) {
 		Integer projectIdx = deleteStatusDTO.getProjectIdx();
@@ -400,6 +417,7 @@ public class BoardMainAPTIController {
 		boardMainService.deleteIssueStatus(oldIdx);
 	}
 	
+	// 해당 이슈에 댓글 작성
 	@PostMapping("/create_reply")
 	public CreateReplyDTO createReply(@RequestBody CreateReplyDTO createReplyDTO) {
 		Issue issue = boardMainService.getIssueByIdx(createReplyDTO.getIssueIdx());
@@ -419,6 +437,7 @@ public class BoardMainAPTIController {
 		return result;
 	}
 	
+	// 해당 댓글 내용을 업데이트
 	@PostMapping("/update_reply")
 	public void updateReply(@RequestBody UpdateReplyDTO updateReplyDTO) {
 		IssueReply reply = boardMainService.getIssueReplyByIdx(updateReplyDTO.getReplyIdx());
@@ -426,12 +445,14 @@ public class BoardMainAPTIController {
 		boardMainService.updateIssueReply(reply, content);
 	}
 	
+	// 해당 댓글을 삭제
 	@PostMapping("/delete_reply")
 	public void deleteReply(@RequestBody UpdateReplyDTO updateReplyDTO) {
 		Integer replyIdx = updateReplyDTO.getReplyIdx();
 		boardMainService.deleteIssueReply(replyIdx);
 	}
 	
+	// 서브 이슈 추가 시 새로운 이슈를 생성할 때 지정할 유형 리스트 반환
 	@PostMapping("/get_subissue_type")
 	public List<IssueTypeDTO> getSubissueTypeList(@RequestBody IssueTypeDTO issueTypeDTO){
 		Integer projectIdx = issueTypeDTO.getProjectIdx();
@@ -449,6 +470,7 @@ public class BoardMainAPTIController {
 		return dtoList;
 	}
 	
+	// 해당 프로젝트의 고유한 서브 이슈 정보를 반환
 	@PostMapping("/get_sub_task_idx")
 	public IssueTypeDTO getSubTaskIDx(@RequestBody IssueTypeDTO issueTypeDTO) {
 		Integer projectIdx = issueTypeDTO.getProjectIdx();
@@ -462,10 +484,11 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 서브 이슈 생성
 	@PostMapping("/create_sub_issue")
 	public CreateSubIssueDTO createSubIssue(@RequestBody CreateSubIssueDTO createSubIssueDTO) {
 		Project project = boardMainService.getProjectByIdx(createSubIssueDTO.getProjectIdx());
-		Jira jira = boardMainService.getJiraByJiraName(createSubIssueDTO.getJiraName());
+		Jira jira = project.getJira();
 		IssueType issueType = boardMainService.getIssueTypeByIdx(createSubIssueDTO.getIssueTypeIdx());
 		IssueStatus issueStatus = boardMainService.getOnceIssueStatus(createSubIssueDTO.getStatusIdx());
 		IssuePriority issuePriority = boardMainService.getOnceIssuePriority(3);
@@ -489,6 +512,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 부모 이슈로 지정할 에픽 이슈 리스트를 반환
 	@PostMapping("/get_epik_issue_list")
 	public List<EpikIssueDTO> getEpikIssueList(@RequestBody EpikIssueDTO epikIssueDTO){
 		Integer projectIdx = epikIssueDTO.getProjectIdx();
@@ -506,6 +530,7 @@ public class BoardMainAPTIController {
 		return epikList;
 	}
 	
+	// 현재 부모로 지정된 이슈가 아닌 에픽 이슈 리스트를 반환
 	@PostMapping("/get_other_epik_list")
 	public List<EpikIssueDTO> getUpdateEpikIssueList(@RequestBody EpikIssueDTO epikIssueDTO){
 		Integer projectIdx = epikIssueDTO.getProjectIdx();
@@ -524,6 +549,7 @@ public class BoardMainAPTIController {
 		return epikList;
 	}
 	
+	// 해당 이슈의 부모 경로를 업데이트
 	@PostMapping("/update_epik_issuepath")
 	public UpdateIssuePathDTO updateEpikIssuePath(@RequestBody UpdateIssuePathDTO updateIssuePathDTO) {
 		Integer projectIdx = updateIssuePathDTO.getProjectIdx();
@@ -542,6 +568,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 이슈 상속 관계 생성
 	@PostMapping("/create_issue_path")
 	public EpikIssueDTO createIssuePath(@RequestBody EpikIssueDTO epikIssueDTO) {
 		Project project = boardMainService.getProjectByIdx(epikIssueDTO.getProjectIdx());
@@ -557,6 +584,7 @@ public class BoardMainAPTIController {
 		return epik;
 	}
 	
+	// 해당 프로젝트의 이슈 변동 사항에 대한 로그 생성
 	@PostMapping("/create_project_log")
 	public void createProjectLog(@RequestBody ProjectLogDTO projectLogDTO) {
 		ProjectLogStatus status = boardMainService.getLogStatusByIdx(projectLogDTO.getType());
@@ -566,6 +594,7 @@ public class BoardMainAPTIController {
 		boardMainService.createProjectLogData(issue, creator, status);
 	}
 	
+	// 해당 프로젝트의 이슈 유형 리스트 반환
 	@PostMapping("/get_issue_type_list")
 	public List<UpdateIssueTypeDTO> getIssueTypeList(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO){
 		Integer projectIdx = updateIssueTypeDTO.getProjectIdx();
@@ -583,6 +612,7 @@ public class BoardMainAPTIController {
 		return dtoList;
 	}
 	
+	// 해당 이슈의 이슈 유형 업데이트
 	@PostMapping("/update_issue_type")
 	public UpdateIssueTypeDTO updateIssueType(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO) {
 		Issue issue = boardMainService.getIssueByIdx(updateIssueTypeDTO.getIssueIdx());
@@ -597,6 +627,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 해당 이슈에 투표한 사용자 리스트 반환
 	@PostMapping("/get_voter_list")
 	public List<VoterListDTO> getVoterList(@RequestBody VoterListDTO voterListDTO){
 		Integer issueIdx = voterListDTO.getIssueIdx();
@@ -613,6 +644,7 @@ public class BoardMainAPTIController {
 		return dtoList;
 	}
 	
+	// 투표 버튼 클릭 시 데이터 생성
 	@PostMapping("/create_vote_data")
 	public void createVoteData(@RequestBody VoterListDTO voterListDTO) {
 		Account user = boardMainService.getAccountById(voterListDTO.getUserIdx());
@@ -620,12 +652,14 @@ public class BoardMainAPTIController {
 		boardMainService.createVoteData(user, issue);
 	}
 	
+	// 투표 기록 삭제
 	@PostMapping("/delete_vote_data")
 	public void deleteVoteData(@RequestBody VoterListDTO voterListDTO) {
 		IssueLikeMembers voteData = boardMainService.getOnceVoteData(voterListDTO.getUserIdx(), voterListDTO.getIssueIdx());
 		boardMainService.deleteVoteData(voteData.getIdx());
 	}
 	
+	// 해당 이슈에 첨부된 파일 리스트 반환
 	@PostMapping("/get_file_list")
 	public List<FileRequestDTO> getFileList(@RequestBody FileRequestDTO fileRequestDTO){
 		Integer issueIdx = fileRequestDTO.getIssueIdx();

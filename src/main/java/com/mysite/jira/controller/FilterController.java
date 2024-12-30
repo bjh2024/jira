@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +21,7 @@ import com.mysite.jira.entity.FilterIssueCreateDate;
 import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AccountService;
@@ -32,11 +33,13 @@ import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{jiraName}/filter")
+@RequestMapping("/filter")
 public class FilterController {
 
 	private final IssueService issueService;
@@ -44,33 +47,15 @@ public class FilterController {
 	private final IssueTypeService issueTypeService;
 	private final AccountService accountService;
 	private final FilterService filterService;
-	private final BoardMainService boradMainService;
+	private final BoardMainService boardMainService;
 	private final TeamService teamService;
-	private final JiraService jiraService;
-
-//	@GetMapping("filter_issue")
-//	public String filterIssueMain(Model model, HttpServletRequest request) {
-//	    // Jira에서 문제 목록을 가져옴
-//	    List<Issue> issueList = issueService.getIssuesByJiraIdx(1);
-//	    // 첫 번째 이슈의 Key를 사용하여 리다이렉트
-//	    String issueKey = issueList.get(0).getKey();
-//
-//	    String requestUrl = request.getRequestURL().toString();
-//	    String queryString = request.getQueryString();
-//
-//	    // 쿼리 스트링이 있으면, issueKey를 그 사이에 추가
-//	    if (queryString != null) {
-//	        // URL의 끝에 '?'가 포함되어 있는지 확인하고 issueKey를 추가
-//	        return "redirect:" + requestUrl + "/" + issueKey + "?" + queryString;
-//	    }
-//
-//	    // 쿼리 스트링이 없으면, 그냥 issueKey만 추가
-//	    return "redirect:" + requestUrl + "/" + issueKey;
-//	}
+	private final HttpSession session;
+	
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName){
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+			Principal principal, HttpServletRequest request){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		try {
 			
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
@@ -149,9 +134,13 @@ public class FilterController {
 			List<Team> teamList = teamService.getByJiraIdx(jiraIdx);
 			model.addAttribute("teamList", teamList);
 			
-			List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+			List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
 			model.addAttribute("filterList", filterList);
 			model.addAttribute("filterIdx", filterIdx);
+			
+			// 전체 댓글 리스트
+			List<IssueReply> replyList = boardMainService.getFilterIssueReply();
+			model.addAttribute("replyList", replyList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -160,11 +149,11 @@ public class FilterController {
 	}
 
 	@GetMapping("/every_filter")
-	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName) {
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+	public String everyfilter(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model, Principal principal) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		
-		List<Filter> filterList = filterService.getByJiraIdx(jiraIdx);
+		List<Filter> filterList = filterService.getByJiraIdx_AccountIdx(jiraIdx, accountIdx);
 		model.addAttribute("filterList", filterList);
 		
 		List<FilterAuth> filterAuth = filterService.getFilterAuthAll();
@@ -178,12 +167,10 @@ public class FilterController {
 
 	@GetMapping("/filter_issue_table")
 	public String filterIssueTable
-	(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			@PathVariable("jiraName") String jiraName) {
-		Integer jiraIdx = jiraService.getByNameJira(jiraName).getIdx();
+	(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		try {
 			
-
 			List<Issue> issue = issueService.getIssuesByJiraIdx(jiraIdx);
 			model.addAttribute("issue", issue);
  

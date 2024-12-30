@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.dashboard.create.TeamListDTO;
-import com.mysite.jira.dto.team.TeamCreateDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.TeamService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,29 +31,29 @@ public class TeamAPIController {
 
 	private final JiraService jiraService;
 	
+	private final HttpSession session;
+	
 	@GetMapping("dashboard/list")
-	public List<TeamListDTO> getTeamList(@RequestParam("uri") String uri){
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		return teamService.getTeamListByJiraIdxDashboard(jira.getIdx());
+	public List<TeamListDTO> getTeamList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return teamService.getTeamListByJiraIdxDashboard(jiraIdx);
 	}
 	
 	@GetMapping("duplication/name")
-	public Integer getDuplicationTeamName(@RequestParam("teamName") String teamName,
-										  @RequestParam("uri") String uri){
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-		if(teamService.getByJiraIdxAndNameTeam(jira.getIdx(), teamName) == null) {
+	public Integer getDuplicationTeamName(@RequestParam("teamName") String teamName){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		if(teamService.getByJiraIdxAndNameTeam(jiraIdx, teamName) == null) {
 			return 0;
 		}
 		return 1;
 	}
 	
 	@PostMapping("create")
-	public boolean createTeam(@RequestBody TeamCreateDTO teamCreateDTO, Principal principal){
-		String teamName = teamCreateDTO.getName();
-		String uri = teamCreateDTO.getUri();
+	public boolean createTeam(@RequestBody String teamName, Principal principal){
 		
 		Account account = accountService.getAccountByEmail(principal.getName());
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 		return teamService.createTeam(account, jira, teamName);
 	}
 }

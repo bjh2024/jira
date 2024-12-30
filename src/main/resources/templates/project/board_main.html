@@ -10,29 +10,19 @@
 		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
 		<div class="board-top-container">
 			<div class="boardbar">
-				<div class="board-searchbox">
+				<!--<div class="board-searchbox">
 					<span class="board-searchbtn">
 						<img th:src="@{/images/search_icon.svg}" class="board-searchbtn-img">
 					</span>
 					<input placeholder="보드 검색" class="board-searchkey" value="">
-				</div>
+				</div>-->
 				<div class="profilebox">
-					<div class="myprofileimgbox">
+					<div class="myprofileimgbox" th:attr="data-useridx=${currentUser.idx}, data-projectidx=${project.idx}">
 						<img class="myprofileimg" th:src="@{|/images/${currentUser.iconFilename}|}">
 					</div>
-					<div class="profileimgbox">
-						<img class="profileimg"
-							src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
-					</div>
-					<div class="profileimgbox" style="z-index: 1; border-color: white;">
-						<img class="profileimg"
-							src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png"
-							alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true">
-					</div>
-					<div class="invitebox">
-						<img th:src="@{/images/invite_icon.svg}"
-							style="margin: 0px auto; filter: invert(29%) sepia(6%) saturate(2629%) hue-rotate(180deg) brightness(98%) contrast(89%);">
+					<div class="profileimgbox" th:each="member, loop : ${prjMemberList}"
+					th:if="${loop.index < 5 && member.account.idx != currentUser.idx}" th:style="'z-index:' + ${#lists.size(prjMemberList) - loop.index} + ';'">
+						<img class="profileimg" th:src="@{|/images/${member.account.iconFilename}|}">
 					</div>
 				</div>
 			</div>
@@ -809,7 +799,7 @@
 						 							</div>
 						 						</div>
 												<div class="create-subissue-box" th:attr="data-statusidx=${issueList.IssueStatus.idx}, data-useridx=${currentUser.idx}, 
-												data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-parentidx=${issueList.idx}">
+												data-projectidx=${project.idx}, data-parentidx=${issueList.idx}">
 													<div class="create-subissue-titlebox">
 														<div class="create-subissue-type">
 															<div class="create-subissue-typewindow"></div>
@@ -1095,7 +1085,7 @@
 					<div class="createissue-container">
 						<div class="createissuebox">
 							<input placeholder="무엇을 완료해야 합니까?" class="create-issuekey">
-							<div class="createissue-btnbox" th:attr="data-projectidx=${project.idx}, data-jiraname=${currentJira}, data-useridx=${currentUser.idx}, 
+							<div class="createissue-btnbox" th:attr="data-projectidx=${project.idx}, data-useridx=${currentUser.idx}, 
 							data-typeidx=0, data-statusidx=${statusList1[2]}">
 								<div class="createissue-typebtn">
 									<div class="issuetypeselectbox">
@@ -1108,7 +1098,7 @@
 											</div>
 										</div>
 										<div class="issuetype-set">
-											<a th:href="@{#}" class="issuetype-setbtn">유형 관리</a>
+											<a th:href="@{|/project/${project.key}/setting/issue_type|}" class="issuetype-setbtn">유형 관리</a>
 										</div>
 									</div>
 									<span style="height: 16px;">이슈 유형 선택</span>
@@ -1147,6 +1137,10 @@
 									<div class="set-status-option">이름</div>
 									<div class="set-status-title" >
 										<input type="text" class="status-title-input">
+									</div>
+									<div class="is-exist-alert">
+										<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
+										<span>은(는) 이미 이 프로젝트의 상태 이름입니다</span>
 									</div>
 								</div>
 								<div class="set-status-option">범주</div>
@@ -1283,7 +1277,7 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>
 <script th:inline="javascript"></script>
-
+<script src="/js/toast.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
@@ -1300,6 +1294,5 @@
 		}
 	}); 
 </script>
-
 </div>
 </html>

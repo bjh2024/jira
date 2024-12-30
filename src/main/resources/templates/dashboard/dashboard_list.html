@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_list.css}">
 </head>
 <div layout:fragment="content">
-	<div th:replace="~{/dashboard/dashboard_delete :: dashboardDelete}"></div>
+	<div th:replace="~{dashboard/dashboard_delete :: dashboardDelete}"></div>
 	<div class="dashboard_list_container">
 		<div class="dashboard_list_title">
 			<h2>대시보드</h2>
@@ -117,7 +117,7 @@
 						</div>
 					</td>
 					<td>
-						<a th:href="@{|/${currentJira}/dashboard/detail/${dashboardList.dashboard.idx}|}">
+						<a th:href="@{|/dashboard/detail/${dashboardList.dashboard.idx}|}">
 							<div class="dashboard_list_item_box" th:text="${dashboardList.dashboard.name}"></div>
 						</a>
 					</td>

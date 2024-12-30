@@ -18,14 +18,14 @@ document.querySelector(".gnb_btn2.gadget_add_btn").addEventListener("click", fun
 
 // 프로젝트 idx 가져오기
 async function projectIdxFetch(name) {
-	const res = await fetch(`/api/project/idx?projectName=${name}&uri=${window.location.pathname}`, { method: "get" });
+	const res = await fetch(`/api/project/idx?projectName=${name}`, { method: "get" });
 	const idx = await res.json();
 	return idx;
 }
 
 // 나에게 할당된 모든 이슈의 개수 가져오기
 async function isseuTotalFetch(){
-	const res = await fetch(`/api/issue/allot/count?uri=${window.location.pathname}`, { method: "get" });
+	const res = await fetch(`/api/issue/allot/count`, { method: "get" });
 	const total = await res.json();
 	return total;
 }
@@ -914,7 +914,7 @@ function debounce(func, timeout = 300) {
 }
 function projectListFetch(searchText) {
 	let projectName = searchText.value;
-	const uri = `/api/project/search?searchName=${projectName}&uri=${window.location.pathname}`
+	const uri = `/api/project/search?searchName=${projectName}`
 	fetch(uri, { method: "get" })
 		.then(res => res.json())
 		.then(projectList => {
@@ -1473,7 +1473,7 @@ async function addDashboardGarget(tagStr, order) {
 			break;
 	}
 	async function dashboardItemAddFetch(uri){
-		const dashboardIdx = window.location.pathname.split("/")[4];
+		const dashboardIdx = window.location.pathname.split("/")[3];
 		const res = await fetch(uri, {method:"post", 
 									  headers:{"Content-Type":"application/json"}, 
 									  body:JSON.stringify(dashboardIdx)

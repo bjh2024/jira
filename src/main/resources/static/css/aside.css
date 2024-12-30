@@ -16,7 +16,6 @@ aside {
 	width: 216px;
 	height: calc(100vh - 48px);
 	padding-left: 12px;
-	padding-right: 560px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	scrollbar-width: none;

@@ -2,10 +2,12 @@ package com.mysite.jira.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.jira.dto.IssueStatusListDTO;
+import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.ProjectRepository;
 
@@ -16,8 +18,12 @@ import lombok.RequiredArgsConstructor;
 public class IssueStatusService {
 
 	private final IssueStatusRepository issueStatusRepository;
-	private final ProjectRepository projectRepository;
 	
+	public IssueStatus getByName(String name){
+		List<IssueStatus> issueStatusList = issueStatusRepository.findByName(name);
+		IssueStatus result = issueStatusList.get(0);
+		return result;
+	}
 	// issueStatus를 name과 status만 뽑아 만든 DTO
 	 public List<IssueStatusListDTO> getDistinctIssueStatus(Integer jiraIdx) {
 	        List<IssueStatusListDTO> issueStatusListDTO = new ArrayList<>();

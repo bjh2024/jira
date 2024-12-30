@@ -22,10 +22,8 @@ body{
 
 .board-top-container{
 	display: flex;
-	height:80px;
-	padding-top: 14px;
+	padding-top: 15px;
 	padding-left: 23px;
-	padding-bottom: 16px;
 	padding-right: 26px;
 	background-color: #F1F2F4;
 }
@@ -36,59 +34,18 @@ body{
 	gap: 8px;
 }
 
-.board-searchbox{
-	display: flex;
-	align-items: center;
-	box-sizing: border-box;
-	border: 1px solid rgba(9, 30, 66, 0.13);
-	border-radius: 3px;
-	background-color: white;
-	color: #626f86;
-	width: 184px;
-	height: 32px;
-}
-
-.board-searchbox:focus{
-	border: 2px solid #0C66E4;
-}
-
-.board-searchkey{
-	outline: 0;
-	border: 0;
-	width: 160px;
-	height: 28px;
-	padding: 6px 4px 6px 6px;
-	color: #626f86;
-	font-size: 14px;
-	cursor: text;
-}
-
-.board-searchbtn{
-	color: #626F86;
-	width: 16px;
-	height: 16px;
-	margin-left: 6px;
-}
-
-.board-searchbtn-img{
-	filter: invert(14%) sepia(5%) saturate(861%) hue-rotate(191deg) brightness(95%) contrast(91%);
-	width: 16px;
-	height: 16px;
-}
-
 .profilebox{
 	display: flex;
 	align-items: center;
 }
 
 .myprofileimgbox{
-	height: 28px;
-	z-index: 3;
+	height: 32px;
+	z-index: 5;
 }
 
 .profileimgbox{
-	height: 28px;
-	z-index: 2; 
+	height: 32px;
 	border-color: white;
 }
 
@@ -109,16 +66,16 @@ body{
 	background-color: rgba(9, 30, 66, 0.13);
 }
 .profileimg{
-	width: 28px;
-	height: 28px;
+	width: 32px;
+	height: 32px;
 	border: 2px solid white;
 	border-radius: 50%;
 	margin-right: -8px;
 }
 
 .myprofileimg{
-	width: 28px;
-	height: 28px;
+	width: 32px;
+	height: 32px;
 	border: 2px solid #6B778C;
 	border-radius: 50%;
 	margin-right: -8px;
@@ -647,6 +604,10 @@ body{
 	justify-content: center;
 }
 
+.create-status-btn:hover{
+	background-color: #0515240F;
+}
+
 .create-status-container{
 	position: fixed;
 	top: 0px;
@@ -665,7 +626,6 @@ body{
 
 .create-statusbox{
 	width: 400px;
-	height: 296px;
 	background-color: white;
 	margin: 60px auto;
 	border-radius: 3px;
@@ -682,6 +642,21 @@ body{
 .create-status-title > h1{
 	font-size: 20px;
 	color: #292A2E;
+}
+
+.is-exist-alert{
+	height: 16px;
+	margin-top: 4px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: #AE2E24;
+	font-size: 12px;
+	display: none;
+}
+
+.is-exist-alert.show{
+	display: block;
 }
 
 .set-statusbox{
@@ -1128,13 +1103,9 @@ body{
 	margin-top: 0px;
 }
 
-.status-menubtn:hover .status-menuwindow{
-	top: 41px;
-}
-
 .status-menuwindow{
-	position: absolute;
-	top: 40px;
+	position: fixed;
+	top: 41px;
 	right: 0px;
 	width: 106px;
 	color: #505258;

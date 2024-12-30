@@ -13,15 +13,9 @@ import com.mysite.jira.entity.Jira;
 
 public interface JiraRepository extends JpaRepository<Jira, Integer> {
 
+	Optional<Jira> findIdxByName(String name);
 	// kdw
 	Optional<Jira> findByName(String name);
-
-	// kdw account_idx로 name(jira 리더) 가져오기
-	@Query("""
-			SELECT j.name FROM Jira j JOIN JiraMembers jm ON j.idx = jm.jira.idx
-			   WHERE jm.account.idx = :accountIdx
-			""")
-	List<String> findJiraAndMembersByAccountIdxName(@Param("accountIdx") Integer accountIdx);
 
 	// kdw jira로그인정보와 지라이름이 같은 지라의 개수
 	Integer countByNameAndJiraMembersList_AccountIdx(String name, Integer accountIdx);
@@ -74,11 +68,11 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 	@Query("""
 			SELECT  al.jira as jira
 			FROM
-			(SELECT  jm.jira as jira,
+			(SELECT  jrc.jira as jira,
 				     rownum as rnum
-			 FROM    JiraMembers jm
-			 WHERE   jm.account.idx = :accountIdx
-			 ORDER BY jm.clickedDate DESC
+			 FROM    JiraRecentClicked jrc
+			 WHERE   jrc.account.idx = :accountIdx
+			 ORDER BY jrc.clickedDate DESC
 			) al
 				WHERE al.rnum = 1
 			""")

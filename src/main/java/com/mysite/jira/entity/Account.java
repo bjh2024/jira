@@ -74,6 +74,10 @@ public class Account {
 		this.authCode = authCode;
 		this.codeExpDate = codeExpDate;
 	}
+	
+	public void updateAccountPw(String pw) {
+		this.pw = pw;
+	}
 
 	// 지라 생성자 FK
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
@@ -157,4 +161,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<FilterRecentClicked> filterClickedList;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+	private List<JiraRecentClicked> jiraClickedList;
 }

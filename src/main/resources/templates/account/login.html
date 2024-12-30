@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
-	<title>jira_project</title>
+	<link rel="icon" href="/images/favicon.svg">
+	<title>JIRA</title>
 </head>
 <div style="display: flex;">
 	<div class="login-container">
@@ -17,7 +18,6 @@
 		</div>
 		<div class="login-content">
 			<form th:action="@{/account/login}" method="post">
-				
 				<div class="top-input" >
 					<label for="email" class="form-label">이메일</label>
 					<input type="email" name="username" id="email" placeholder="이메일을 입력하세요" class="borderline">
@@ -28,7 +28,7 @@
 				</div>
 				<div>
 					<button class="next-btn">계속</button>
-					<div th:if="${param.error}" class="alert-box" style="">
+					<div th:if="${param.error}" class="alert-box">
 						<img src="/images/alaret_icon.svg" width="12" height="12" style="filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);">
 			            <div class="alert alert-danger">
 			                사용자ID 또는 비밀번호를 확인해 주세요.
@@ -46,7 +46,7 @@
 						<span class="social-title">Kakao</span>
 					</button>
 				</a>
-				<a th:href="${naverLocation}">
+				<a href="/oauth2/authorization/naver">
 					<button class="social-btn">
 						<span class="social-img">
 							<img src="/images/naver.png">

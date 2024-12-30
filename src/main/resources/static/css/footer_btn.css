@@ -480,6 +480,12 @@
 	overflow-y: auto;
 }
 
+.chat-room-content .chat_room_add_box .chat_member_invite_list_box .empty_member_box{
+	padding: 8px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
 .chat-room-content .chat_room_add_box .chat_member_invite_list_box .item{
 	padding: 8px 16px;
 	justify-content: space-between;

@@ -1,9 +1,9 @@
 package com.mysite.jira.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
+	
+	List<Issue> findByKey(String key);
 	
 	List<Issue> findIssuesByProjectIdx(Integer idx);
 	
@@ -265,7 +267,11 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	
 	List<Issue> findByProjectIdxAndIssueStatusIdx(Integer projectIdx, Integer issueIdx);
 	
+	List<Issue> findByProjectIdxAndIssueTypeIdx(Integer projectIdx, Integer issueTypeIdx);
+	
 	List<Issue> findByProjectIdxAndIssueTypeGrade(Integer projectIdx, Integer grade);
 	
 	List<Issue> findByProjectIdxAndIssueTypeGradeAndIdxNot(Integer projectIdx, Integer grade, Integer idx);
+	
+	Optional<Issue> findByProjectIdxAndName(Integer projectIdx, String name);
 }

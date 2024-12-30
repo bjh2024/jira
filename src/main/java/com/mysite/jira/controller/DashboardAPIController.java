@@ -27,6 +27,7 @@ import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -42,15 +43,18 @@ public class DashboardAPIController {
 	
 	private final IssueService issueService;
 	
+	private final HttpSession session;
+	
 	@PostMapping("create")
 	public Integer dashboardCreate(@RequestBody RequestDashboardCreateDTO requestDashboardCreateDTO, Principal principal) {
+		
 		String name = requestDashboardCreateDTO.getName();
 		String explain = requestDashboardCreateDTO.getExplain();
-		String uri = requestDashboardCreateDTO.getUri();
-		List<AuthTypeDTO> authItems = requestDashboardCreateDTO.getAuthItems();
 		
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 		Account account = accountService.getAccountByEmail(principal.getName());
+		List<AuthTypeDTO> authItems = requestDashboardCreateDTO.getAuthItems();
 		
 		return dashboardService.createDashboard(name, explain, jira, account, authItems);
 	}
@@ -61,9 +65,9 @@ public class DashboardAPIController {
 	}
 	
 	@GetMapping("duplication/name")
-	public Integer getDuplicationDashboardName(@RequestParam("dashboardName") String dashboardName,
-											   @RequestParam("uri") String uri) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
+	public Integer getDuplicationDashboardName(@RequestParam("dashboardName") String dashboardName) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
 		if(dashboardService.getByJiraIdxAndNameDashboard(jira.getIdx(), dashboardName) == null) {
 			return 0;
 		}
@@ -71,14 +75,15 @@ public class DashboardAPIController {
 	}
 	
 	@GetMapping("allot")
-	public List<AllotDTO> getAllot(@RequestParam("uri") String uri,
-								   @RequestParam("pageNum") Integer pageNum,
+	public List<AllotDTO> getAllot(@RequestParam("pageNum") Integer pageNum,
 								   @RequestParam("col") Integer col,
 								   Principal principal) {
-		Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		Account account = accountService.getAccountByEmail(principal.getName());
 		
-		List<AllotDTO> result = issueService.getManagerByIssueStatusIn(jira.getIdx(), account.getIdx(), pageNum, col);
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer accountIdx = account.getIdx();
+		
+		List<AllotDTO> result = issueService.getManagerByIssueStatusIn(jiraIdx, accountIdx, pageNum, col);
 		return result;
 	}
 

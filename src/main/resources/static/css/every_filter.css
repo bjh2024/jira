@@ -146,10 +146,9 @@
 	width: 6px;
 	height: 6px;
 }
+
 .second_tr td{
-	
 	padding : 0px 8px;
-	
 }
 .second_tr:hover{
 	background-color: #091E420F;
@@ -157,7 +156,6 @@
 	border-radius: 5px;
 }
 .second_tr div:nth-of-type(1){
-	
 	font-size: 14px;
 }
 
@@ -168,11 +166,102 @@
 
 .second_tr td:nth-of-type(7){
 	padding: 0px 0px 0px 8px;
-	text-align: center;
 }
 table{
     border-spacing: 1px;
 }
 a:hover {
 	text-decoration: underline;
+}
+.delete_button{
+	width: 40px;
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+.delete_button_1{
+	width: 60px;
+	height: 32px;
+	border-radius:4px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: white;
+	position: absolute;
+	right: 30px;
+	top: 16px;
+}
+.delete_button_1_text{
+	height: 24px;
+	line-height: 24px;
+}
+.delete_button_1_text:hover {
+	background-color: #0515240F;
+}
+.delete_modal {
+    position: fixed;
+    z-index: 10; /* 가장 위에 표시되도록 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color:#050C1F75;
+}
+.delete_modal_contents{
+	height: 300px;
+	width: 600px;	
+	background-color: white;
+	border-radius: 3px;
+	margin: 60px auto 0px auto;
+}
+.delete_alert_title{
+	padding: 22px 24px 16px 28px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-weight: bold;
+	font-size: 19px;
+	color: #292A2E;
+}
+
+.delete_alert_body{
+	padding: 2px 24px;
+	font-size: 14px;
+	color: #292A2E;
+	text-align: left;
+}
+
+.delete_alert_btnbar{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: right;
+	padding: 16px 24px 24px 24px;
+}
+
+.delete_alert_cancelbtn, .delete_alert_submitbtn{
+	width: 52px;
+	height: 32px;
+	padding: 0px 10px;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 3px;
+}
+
+.delete_alert_submitbtn{
+	background-color: #C9372C;
+	color: white;
+}
+
+.delete_alert_cancelbtn:hover{
+	background-color: #0515240F;
+}
+
+.delete_alert_submitbtn:hover{
+	background-color: #AE2E24;
+}
+.delete_button:hover{
+	background-color: #091E420F;
 }

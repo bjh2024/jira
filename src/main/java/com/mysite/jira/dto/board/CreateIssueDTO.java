@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CreateIssueDTO {
-	private String jiraName;
 	private Integer projectIdx;
 	private Integer issueTypeIdx;
 	private Integer reporterIdx;
@@ -15,6 +14,7 @@ public class CreateIssueDTO {
 	private String issueName;
 	
 	private Integer issueIdx;
+	
 	@Builder
 	public CreateIssueDTO(Integer issueIdx) {
 		this.issueIdx = issueIdx;

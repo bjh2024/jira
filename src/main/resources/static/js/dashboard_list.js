@@ -84,11 +84,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 	}
 });
 
-document.querySelectorAll(".dashboard_list_filter_item .select_top_menue_list .item").forEach(function(item) {
-	item.addEventListener("click", function(e) {
-	})
-})
-
 // 대시보드 삭제 모달창 이벤트
 document.querySelector("body").addEventListener("mousedown", function(e){
 	const deleteModal = document.querySelector(".dashboard_delete_modal.list");

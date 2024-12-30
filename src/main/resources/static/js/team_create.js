@@ -77,7 +77,7 @@ document.querySelector(".team_create_container .create_team_btn").addEventListen
 	
 	// 유효성 검사3 => 중복
 	async function teamDuplicationFetch(){
-		const uri = `/api/team/duplication/name?teamName=${teamName}&uri=${window.location.pathname}`;
+		const uri = `/api/team/duplication/name?teamName=${teamName}`;
 		const res = await fetch(uri, {method:"get"})
 		const data = await res.json();
 		
@@ -101,15 +101,13 @@ document.querySelector(".team_create_container .create_team_btn").addEventListen
 		const uri = "/api/team/create";
 		fetch(uri, {method:"post",
 					headers:{"Content-Type" : "application/json"}, 
-					body:JSON.stringify({"name" : teamName, 
-										 "uri" : window.location.pathname})
+					body:JSON.stringify(teamName)
 				 	}
 		)
 		.then(res => res.json())
 		.then(res => {
 			if(res){
-				const jiraName = window.location.pathname.split("/")[1];
-				location.href=`/${jiraName}/team/list`
+				location.href=`/team/list`
 			}
 		})
 		.catch(err => {

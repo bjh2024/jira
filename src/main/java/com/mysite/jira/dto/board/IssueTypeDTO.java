@@ -12,6 +12,7 @@ public class IssueTypeDTO {
 	private Integer idx;
 	private String name;
 	private String iconFilename;
+	private String content;
 	
 	@Builder
 	public IssueTypeDTO(Integer projectIdx, Integer idx, String name,String iconFilename) {

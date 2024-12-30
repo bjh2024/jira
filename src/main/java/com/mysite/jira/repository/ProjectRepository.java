@@ -2,6 +2,7 @@ package com.mysite.jira.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.mysite.jira.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
+	
 	
 	List<Project> findByJira_idx(Integer jiraIdx);
 	
@@ -114,7 +116,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			ON      ist.idx = i.issue_status_idx
 			WHERE   prc.account_idx = :accountIdx
 			AND     p.jira_idx = :jiraIdx
-			AND     ist.status BETWEEN 1 AND 2 OR i.idx IS NULL
+			AND     (ist.status BETWEEN 1 AND 2 OR i.idx IS NULL)
 			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date, p.key
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)

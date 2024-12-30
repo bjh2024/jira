@@ -4,7 +4,6 @@ package com.mysite.jira.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,10 +17,15 @@ import com.mysite.jira.entity.FilterIssuePriority;
 import com.mysite.jira.entity.FilterIssueStatus;
 import com.mysite.jira.entity.FilterIssueType;
 import com.mysite.jira.entity.FilterIssueUpdate;
+import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.FilterManager;
 import com.mysite.jira.entity.FilterProject;
 import com.mysite.jira.entity.FilterReporter;
+import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueStatus;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.FilterAuthRepository;
 import com.mysite.jira.repository.FilterDoneDateRepository;
@@ -31,6 +35,7 @@ import com.mysite.jira.repository.FilterIssuePriorityRepository;
 import com.mysite.jira.repository.FilterIssueStatusRepository;
 import com.mysite.jira.repository.FilterIssueTypeRepository;
 import com.mysite.jira.repository.FilterIssueUpdateRepository;
+import com.mysite.jira.repository.FilterLikeMembersRepository;
 import com.mysite.jira.repository.FilterManagerRepository;
 import com.mysite.jira.repository.FilterProjectRepository;
 import com.mysite.jira.repository.FilterReporterRepository;
@@ -55,14 +60,33 @@ public class FilterService {
 	private final FilterDoneDateRepository filterDoneDateRepository;
 	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
 	private final FilterAuthRepository filterAuthRepository;
+	private final FilterLikeMembersRepository filterLikeMembersRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
 	
+	public FilterLikeMembers getByAccountIdxAndFilterIdx(Integer accountIdx, Integer filterIdx) {
+		return filterLikeMembersRepository.findByAccountIdxAndFilterIdx(accountIdx, filterIdx);
+	}
+	public Filter getByIdx(Integer idx) {
+		return filterRepository.findById(idx).get();
+	}
+	public List<FilterLikeMembers> getByAccountIdx(Integer accountIdx){
+		return filterLikeMembersRepository.findByAccountIdx(accountIdx);
+	}
+	public List<Filter> getByIdxIn(Integer[] idx){
+		return filterRepository.findByIdxIn(idx);
+	}
+	public List<Filter> getAll(){
+		return filterRepository.findAll();
+	}
 	public List<Filter> getByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx){
 		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
 	}
-	public List<Filter> getByJiraIdx(Integer idx){
-		return filterRepository.findByJiraIdx(idx);
+	public List<Filter> getByJiraIdx(Integer jiraIdx){
+		return filterRepository.findByJiraIdx(jiraIdx);
+	}
+	public List<Filter> getByJiraIdx_AccountIdx(Integer jiraIdx,Integer accountIdx){
+		return filterRepository.findByJiraIdxAndAccountIdx(jiraIdx,accountIdx);
 	}
 	public List<Integer> getProjectIdxArrByFilterIdx(Integer idx){
 		List<FilterProject> filterProject = filterProjectRepository.findByFilterIdx(idx);
@@ -147,8 +171,131 @@ public class FilterService {
 	public List<FilterAuth> getFilterAuthAll(){
 		return filterAuthRepository.findAll();
 	}
+// 기본 필터 생성 기능 --------------------------------------------------------------------------------------------
+	public void defaultMyPendingIssues(Jira jira,Account account) {
+		Filter filter = Filter.builder()
+				.name("나의 미해결 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterManager filterManager = FilterManager.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterManagerRepository.save(filterManager);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(0)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+		
+	}
+	
+	public void defaultReporter(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("내가 보고함")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterReporter filterReporter = FilterReporter.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterReporterRepostiory.save(filterReporter);
+		
+	}
+	public void defaultAllIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("모든 이슈")
+				.jira(jira)
+				.explain(null)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+	}
+	public void defaultPendingIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("미결 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(0)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+	}
+	public void defaultDoneIssue(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("완료된 이슈")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDone filterDone = FilterDone.builder()
+				.filter(filter)
+				.isCompleted(1)
+				.build();
+		this.filterDoneRepository.save(filterDone);
+	}
+	public void defaultRecentlyCreated(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 만듦")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterIssueCreateDate filterIssueCreateDate = FilterIssueCreateDate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.BeforeDate(7)
+				.build();
+		this.filterIssueCreateDateRepository.save(filterIssueCreateDate);
+	}
+	public void defaultRecentlyDone(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 해결됨")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterDoneDate filterDoneDate = FilterDoneDate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.beforeDate(7)
+				.build();
+		this.filterDoneDateRepository.save(filterDoneDate);
+	}
+	public void defaultRecentlyUpdate(Jira jira, Account account) {
+		Filter filter = Filter.builder()
+				.name("최근에 업데이트")
+				.explain(null)
+				.jira(jira)
+				.account(account)
+				.build();
+		this.filterRepository.save(filter);
+		FilterIssueUpdate filterIssueUpdate = FilterIssueUpdate.builder()
+				.filter(filter)
+				.startDate(null)
+				.endDate(null)
+				.BeforeDate(7)
+				.build();
+		this.filterIssueUpdateRepository.save(filterIssueUpdate);
+	}
 	
 	
+// 기본 필터 생성 기능 --------------------------------------------------------------------------------------------
 	public Filter filterCreate(String name, String explain, Account account, Jira jira) {
 		Filter filter = Filter.builder()
 				.name(name)
@@ -174,5 +321,78 @@ public class FilterService {
 				.beforeDate(beforeDate)
 				.build();
 		this.filterDoneDateRepository.save(filterDoneDate);
+	}
+	public void filterCreateDateCreate(Filter filter,LocalDateTime startDate, LocalDateTime endDate, Integer beforeDate) {
+		FilterIssueCreateDate filterIssueCreateDate = FilterIssueCreateDate.builder()
+				.filter(filter)
+				.startDate(startDate)
+				.endDate(endDate)
+				.BeforeDate(beforeDate)
+				.build();
+		this.filterIssueCreateDateRepository.save(filterIssueCreateDate);
+	}
+	public void filterIssueUpdateCreate(Filter filter, LocalDateTime startDate, LocalDateTime endDate, Integer beforeDate) {
+		FilterIssueUpdate filterIssueUpdate = FilterIssueUpdate.builder()
+				.filter(filter)
+				.startDate(startDate)
+				.endDate(endDate)
+				.BeforeDate(beforeDate)
+				.build();
+		this.filterIssueUpdateRepository.save(filterIssueUpdate);
+	}
+	public void filterIssuePriorityCreate(Filter filter, IssuePriority issuePriority) {
+		FilterIssuePriority filterIssuePriority = FilterIssuePriority.builder()
+				.filter(filter)
+				.issuePriority(issuePriority)
+				.build();
+		this.filterIssuePriorityRepository.save(filterIssuePriority);
+	}
+	public void filterIssueStatusCreate(Filter filter, IssueStatus issueStatus) {
+		FilterIssueStatus filterIssueStatus = FilterIssueStatus.builder()
+				.filter(filter)
+				.issueStatus(issueStatus)
+				.build();
+		this.filterIssueStatusRepository.save(filterIssueStatus);
+	}
+	public void filterIssueTypeCreate(Filter filter,IssueType issueType) {
+		FilterIssueType filterIssueType = FilterIssueType.builder()
+				.filter(filter)
+				.issutype(issueType)
+				.build();
+		this.filterIssueTypeRepository.save(filterIssueType);
+	}
+	public void filterManagerCreate(Filter filter, Account account) {
+		FilterManager filterManager = FilterManager.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterManagerRepository.save(filterManager);
+	}
+	public void filterProjectCreate(Filter filter, Project project) {
+		FilterProject filterProject = FilterProject.builder()
+				.filter(filter)
+				.project(project)
+				.build();
+		this.filterProjectRepository.save(filterProject);
+	}
+	public void filterReporterCreate(Filter filter, Account account) {
+		FilterReporter filterReporter = FilterReporter.builder()
+				.filter(filter)
+				.account(account)
+				.build();
+		this.filterReporterRepostiory.save(filterReporter);
+	}
+	public void filterDelete(Integer idx) {
+		this.filterRepository.deleteById(idx);
+	}
+	public void filterLikeAdd(Filter filter, Account account) {
+		FilterLikeMembers filterLikeMembers = FilterLikeMembers.builder()
+				.account(account)
+				.filter(filter)
+				.build();
+		this.filterLikeMembersRepository.save(filterLikeMembers);
+	}
+	public void filterLikeDelete(Integer idx) {
+		this.filterLikeMembersRepository.deleteById(idx);
 	}
 }

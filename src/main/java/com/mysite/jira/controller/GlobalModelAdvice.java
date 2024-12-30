@@ -21,9 +21,9 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
-import com.mysite.jira.service.ChatService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.FilterService;
+import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
@@ -32,6 +32,7 @@ import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @ControllerAdvice
@@ -53,41 +54,48 @@ public class GlobalModelAdvice {
 
 	private final LikeService likeService;
 	
+	private final IssueTypeService issueTypeService;
+	
 	private final FilterService filterService;
 
 	private final DashboardService dashboardService;
+
+	private final HttpSession session;
 	
 	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
 		if(principal == null ||
 		   uri.length() == 0 ||
-		   uri.equals("/") ||
 		   uri.contains("/api")||
 		   uri.contains("/error") ||
 		   uri.contains("/account") ||
 		   uri.equals("/favicon.ico")) return;
-		// 특정 경로 (/project/create)에서는 공통 모델 속성 추가하지 않기
-		if (uri.contains("/project") && uri.contains("/create")) return;
+		// 특정 경로 /project/create에서는 공통 모델 속성 추가하지 않기
+		if (uri.contains("/project/create")) return;
 		try {
 			// 현재 로그인한 계정 정보
 			Account currentUser = new Account();
-			
 			if(principal.getName().split("@").length < 2) {
-				currentUser = this.accountService.getAccountByKakaoKey(principal.getName());
+				Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
+				Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
+				currentUser = accKakao != null ? accKakao : accNaver;
 			}else {
 				currentUser = this.accountService.getAccountByEmail(principal.getName());
 			}
 			
-		    // 현재 들어온 지라 정보
-		    Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 		    
 			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
-			Integer jiraIdx = jira.getIdx();
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			
+			// 현재 jira
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			model.addAttribute("currentJira", jira);
+			
 			// header
 			// header null 처리 필요
-			List<String> leaders = jiraService.getjiraLeaderList(accountIdx);
+			List<JiraMembers> accountByjiraMemberList = jiraService.getJiraByAccountIdxList(accountIdx);
 			List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
 			List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
 			List<Account> allAccountList = accountService.getAccountList(jiraIdx);
@@ -119,11 +127,8 @@ public class GlobalModelAdvice {
 			// chat
 			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
 			
-			// 현재 jiraName url에서 가져오기
-			model.addAttribute("currentJira", uri.split("/")[1]);
-
 			// header
-			model.addAttribute("leaders", leaders);
+			model.addAttribute("accountByjiraMemberList", accountByjiraMemberList);
 			model.addAttribute("issuesRecentList", issuesRecentList);
 			model.addAttribute("allProjectList", allProjectList);
 			model.addAttribute("allAccountList", allAccountList);
@@ -160,13 +165,15 @@ public class GlobalModelAdvice {
 	@ModelAttribute
 	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api"))
+		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list") || uri.contains("/project/profile"))
 			return;
 		if (uri.contains("/project")) {
-			Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
-			Project project = projectService.getByJiraIdxAndKeyProject(jira.getIdx(), uri.split("/")[3]);
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
+			session.setAttribute("projectIdx", project.getIdx());
+			
 			model.addAttribute("project", project);
-			model.addAttribute("currentJira", uri.split("/")[1]);
 		}
 	}
 	
@@ -191,13 +198,14 @@ public class GlobalModelAdvice {
 		String uri = request.getRequestURI();
 		if (uri.contains("/api")) return;
 		if(uri.contains("/setting")) {
-			Jira jira = jiraService.getByNameJira(jiraName);
-			Integer jiraIdx = jira.getIdx();
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			model.addAttribute("currentProject", projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey));
 
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
 			Integer projectIdx = project.getIdx();
 			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
+			
+			model.addAttribute("issueTypeInfoList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
 		}
 	}
 }

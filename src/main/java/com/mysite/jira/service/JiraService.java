@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
+import com.mysite.jira.entity.JiraRecentClicked;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.JiraMembersRepository;
+import com.mysite.jira.repository.JiraRecentClickedRepository;
 import com.mysite.jira.repository.JiraRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,23 +22,35 @@ import lombok.RequiredArgsConstructor;
 public class JiraService {
 	
 	private final AccountRepository accountRepository;
-	
 	private final JiraRepository jiraRepository;
-	
 	private final JiraMembersRepository jiraMembersRepository;
 	
-	public Optional<Jira> getByIdx(Integer idx) {
-		return jiraRepository.findByIdx(idx);
+	private final JiraRecentClickedRepository jiraRecentClickedRepository;
+	
+	private final FilterService filterService;
+	
+	public Optional<Jira> getIdxByName(String name){
+		return jiraRepository.findIdxByName(name);
+	}
+	
+	public Jira getByIdx(Integer idx) {
+		Optional<Jira> opJira = jiraRepository.findByIdx(idx);
+		Jira jira = null;
+		if(!opJira.isEmpty()) {
+			jira = opJira.get();
+		}
+		return jira;
 	}
 	 
 	// kdw
-	public List<String> getjiraLeaderList(Integer accountIdx) {
-		return jiraRepository.findJiraAndMembersByAccountIdxName(accountIdx);
+	public List<JiraMembers> getJiraByAccountIdxList(Integer accountIdx) {
+		return jiraMembersRepository.findByAccountIdx(accountIdx);
 	}
 	// 사용자가 포함하고 있는 지라의 개수
 	public Integer getJiraCount(String jiraName, Integer accountIdx) {
 		return jiraRepository.countByNameAndJiraMembersList_AccountIdx(jiraName, accountIdx);
 	}
+	
 	// 사용자가 지라가 없을경우 지라 추가
 	public void addJira(Integer accountIdx) {
 		Optional<Account> account = accountRepository.findById(accountIdx);
@@ -53,6 +67,21 @@ public class JiraService {
 											     .clickedDate(LocalDateTime.now())
 											     .build();
 			jiraMembersRepository.save(jiraMembers);
+			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
+																   .jira(jira)
+																   .account(account.get())
+																   .build();
+			jiraRecentClickedRepository.save(jiraRecentClicked);
+			
+			// 기본값 필터 add
+			filterService.defaultMyPendingIssues(jira, account.get());
+			filterService.defaultReporter(jira, account.get());
+			filterService.defaultAllIssue(jira, account.get());
+			filterService.defaultPendingIssue(jira, account.get());
+			filterService.defaultDoneIssue(jira, account.get());
+			filterService.defaultRecentlyCreated(jira, account.get());
+			filterService.defaultRecentlyDone(jira, account.get());
+			filterService.defaultRecentlyUpdate(jira, account.get());
 		}
 	}
 	 

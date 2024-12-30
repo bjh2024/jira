@@ -1,27 +1,28 @@
-<!doctype html>
 <html lang="ko">
 
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>JIRA</title>
-	<style>
-		
-	</style>
-</head>
+	</head>
 <body>
-	<div class="jira_invite_email_box">
-		<h1>
-			<img src="/images/logo.svg"/>
-		</h1>
-		<h2>관리자가 당신을 Jira에 초대했습니다.</h2>
-		<p>관리자 및 팀과 함께 계획 및 추적 작업을 시작하세요. 당신의 작업을 공유하고 팀이 무엇을 하고 있는지 볼 수 있습니다.</p>
-		<button>초대 수락</button>
+	<div class="jira_invite_email_container" style="align-items:center; background-color:#f1f2f4; display:flex; height:380px" bgcolor="#f1f2f4" height="380">
+		<div class="jira_invite_email_box" style="background-color:#fff; border:1px solid #ddd; border-radius:12px; margin:0 auto; width:520px" bgcolor="#ffffff" width="520">
+			<h1 style="padding:16px 24px; margin: 0">
+				<img src="https://kritac-jira.site/images/logo.svg">
+			</h1>
+			<div class="content" style="display:flex; flex-direction:column; gap:12px; justify-content:flex-start; padding:0 24px; padding-top:18px">
+				<h2 style="font-size:24px; margin: 0; padding: 0">관리자가 당신을 Jira에 초대했습니다.</h2>
+				<p style="font-size:12px; margin: 0;">관리자 및 팀과 함께 계획 및 추적 작업을 시작하세요. 당신의 작업을 공유하고 팀이 무엇을 하고 있는지 볼 수 있습니다.</p>
+				<button class="agree_btn" style="background-color:transparent; border:none; padding:8px 0">
+					<a th:href="@{|https://kritac-jira.site/account/jira/add/login?userEmail=${userEmail}&jiraIdx=${jiraIdx}|}" style="background-color:#0c66e4; border:none; border-radius:4px; color:#fff; font-size:14px; margin-bottom:12px; padding:6px 4px; text-align:center; text-decoration:none" bgcolor="#0c66e4" align="center">초대 수락</a>
+				</button>
+			</div>
+			<div class="footer" style="align-items:center; color:#172b4d; display:flex; flex-direction:column; font-size:12px; gap:4px; padding:24px 0">
+				<span>코리아 IT 아카데미 정처산기B 4조</span>
+				<span>김대완, 남다현, 방준혁</span>
+			</div>
+		</div>
 	</div>
 </body>
-<script>
-	document.querySelector(".jira_invite_email_box button").addEventListener("click", function(){
-		console.log("추가");
-	});
-</script>
 </html>

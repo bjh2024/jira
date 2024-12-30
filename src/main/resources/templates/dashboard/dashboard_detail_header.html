@@ -15,7 +15,7 @@
 				<span class="bold">Refresh</span>
 				<img th:src="@{/images/refresh_icon.svg}" width="16" height="16" />
 			</button>
-			<a th:href="@{|/${currentJira}/dashboard/edit/${currentDashboard.idx}|}" class="gnb_btn2">
+			<a th:href="@{|/dashboard/edit/${currentDashboard.idx}|}" class="gnb_btn2">
 				<span>편집</span>
 				<img th:src="@{/images/pencil_icon.svg}" width="16" height="16" />
 			</a>
@@ -27,7 +27,7 @@
 			<button class="gnb_btn2">
 				레이아웃 변경
 			</button>
-			<a th:href="@{|/${currentJira}/dashboard/detail/${currentDashboard.idx}|}" class="gnb_btn2 complete">
+			<a th:href="@{|/dashboard/detail/${currentDashboard.idx}|}" class="gnb_btn2 complete">
 				<span>완료</span>
 			</a>
 		</th:block>

@@ -8,16 +8,22 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
+import com.mysite.jira.entity.JiraRecentClicked;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.JiraMembersRepository;
+import com.mysite.jira.repository.JiraRecentClickedRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,12 +32,28 @@ public class AccountService {
 	
 	private final ProjectMembersRepository projectMembersRepository;
 	
+	private final JiraService jiraService;
+	
 	private final JiraMembersRepository jiraMembersRepository;
+	
+	private final JiraRecentClickedRepository jiraRecentClickedRepository;
 	
 	private final AccountRepository accountRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
+	public Optional<Account> getByEmail(String email) {
+		return accountRepository.findByEmail(email);
+	}
+	
+	public Account getByName(String name){
+		List<Account> accountList = accountRepository.findByName(name);
+		if(accountList.size() > 0) {
+		Account result = accountList.get(0);
+		return result;
+		}
+		return null;
+	}
 	public Account getAccountByIdx(Integer idx) {
 		Optional<Account> opAccount = accountRepository.findById(idx);
 		Account account = null;
@@ -41,7 +63,7 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account getByUserName(String name) {
+	public List<Account> getByUserName(String name) {
 		return accountRepository.findByName(name);
 	}
 	
@@ -82,11 +104,12 @@ public class AccountService {
 			int tempCode = (int) (Math.random() * 26) + 65;
 			code += (char)tempCode;
 		}
+		Integer iconNum = (int) (Math.random() * 10) + 1;
 		Account newUser = Account.builder()
 								.name(username)
 								.email(email)
 								.pw(passwordEncoder.encode(pw))
-								.iconFilename("user_icon_file5.png")
+								.iconFilename("user_icon_file"+iconNum+".png")
 								.authCode(code)
 								.build();
 		this.accountRepository.save(newUser);
@@ -98,8 +121,6 @@ public class AccountService {
 		Account account = null;
 		if(optAccount.isPresent()) {
 			account = optAccount.get();
-		}else {
-			throw new NoSuchElementException("Account not found");
 		}
 		return account;
 	}
@@ -113,7 +134,7 @@ public class AccountService {
 		if(existingAccount == null) {
 			throw new NoSuchElementException("Account not found");
 		}
-		
+		jiraService.addJira(existingAccount.getIdx());
 		existingAccount.updateAccount(null, null);
 		this.accountRepository.save(existingAccount);
 	}
@@ -152,8 +173,56 @@ public class AccountService {
 	}
 	
 	public Account getAccountByKakaoKey(String key){
-		Optional<Account> account = this.accountRepository.findByKakaoSocialKey(key);
-		return account.get();
+		Optional<Account> optAcc = this.accountRepository.findByKakaoSocialKey(key);
+		Account account = null;
+		if(optAcc.isPresent()) {
+			account = optAcc.get();
+		}
+		return account;
 	}
 	
+	public Account getAccountByNaverKey(String key) {
+		Optional<Account> optAcc = this.accountRepository.findByNaverSocialKey(key);
+		Account account = null;
+		if(optAcc.isPresent()) {
+			account = optAcc.get();
+		}
+		return account;
+	}
+	
+	public boolean getIsLoginJiraAdd(String email, String password, Integer jiraIdx, HttpSession session) {
+		Account account = this.getAccountByEmail(email);
+		if(passwordEncoder.matches(password, account.getPw())) {
+			session.setAttribute("jiraIdx", jiraIdx);
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			JiraMembers jiraMembers = JiraMembers.builder()
+												 .jira(jira)
+												 .account(account)
+												 .build();
+			jiraMembersRepository.save(jiraMembers);
+			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
+																   .jira(jira)
+																   .account(account)
+																   .build();
+			jiraRecentClickedRepository.save(jiraRecentClicked);
+			return true;
+		}
+		return false;
+	}
+	
+	// 비밀번호 변경 메서드
+	  public boolean changePassword(@RequestBody NewPwDTO newPw) {
+		  System.out.println(newPw.getEmail());
+	        Account account = getByEmail(newPw.getEmail()).get();
+
+	        if (account == null || !passwordEncoder.matches(newPw.getOldPw(), account.getPw())) {
+	            return false; // 계정을 찾을 수 없거나 기존 비밀번호가 틀린 경우
+	        }
+
+	        // 새로운 비밀번호로 변경
+	        account.updateAccountPw(passwordEncoder.encode(newPw.getNewPw()));
+	        accountRepository.save(account); // 변경된 비밀번호를 저장
+
+	        return true; // 비밀번호 변경 성공
+	    }
 }

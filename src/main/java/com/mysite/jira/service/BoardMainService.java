@@ -35,7 +35,6 @@ import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
-import com.mysite.jira.repository.JiraRepository;
 import com.mysite.jira.repository.ProjectLogDataRepository;
 import com.mysite.jira.repository.ProjectLogStatusRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
@@ -62,8 +61,8 @@ public class BoardMainService {
 	private final ProjectLogDataRepository projectLogDataRepository;
 	private final ProjectLogStatusRepository projectLogStatusRepository;
 	private final AccountRepository accountRepository;
-	private final JiraRepository jiraRepository;
 	private final IssueLikeMembersRepository issueLikeMembersRepository;
+	
 	
 	// project_header 프로젝트명 불러오기
 	public Project getProjectNameById(Integer idx) {
@@ -133,6 +132,10 @@ public class BoardMainService {
 		return this.issueReplyRepository.findByIssueProjectIdxOrderByCreateDateDesc(idx);
 	}
 	
+	public List<IssueReply> getFilterIssueReply(){
+		return this.issueReplyRepository.findAll();
+	}
+	
 	public IssuePriority getOnceIssuePriority(Integer idx) {
 		Optional<IssuePriority> optPriority = this.issuePriorityRepository.findById(idx);
 		IssuePriority priority = null;
@@ -182,8 +185,8 @@ public class BoardMainService {
 		this.issueRepository.save(issue);
 	}
 
-	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
-		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
+	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer idx){
+		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, idx);
 		return updatedStatusList;
 	}
 	
@@ -222,6 +225,15 @@ public class BoardMainService {
 		this.issueRepository.save(issue);
 	}
 	
+	public boolean statusNameCheck(Integer projectIdx, String name) {
+		Optional<IssueStatus> status = this.issueStatusRepository.findByProjectIdxAndName(projectIdx, name);
+		if(status.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public void createIssueStatus(String name, Integer status, Integer projectIdx) {
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Project project = optProject.get();
@@ -248,27 +260,29 @@ public class BoardMainService {
 		return type.get();
 	}
 	
-	public Jira getJiraByJiraName(String name) {
-		Optional<Jira> jira = this.jiraRepository.findByName(name);
-		return jira.get();
-	}
-	
 	public Project getProjectByIdx(Integer idx) {
 		Optional<Project> project = this.projectRepository.findById(idx);
 		return project.get();
 	}
 	
-	public Integer createIssue(String issueName, String jiraName, Integer projectIdx, Integer issueTypeIdx, 
+	public boolean IssueNameCheck(Integer projectIdx, String issueName) {
+		Optional<Issue> issue = this.issueRepository.findByProjectIdxAndName(projectIdx, issueName);
+		if(issue.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Integer createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
-		Optional<Jira> optJira = this.jiraRepository.findByName(jiraName);
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Optional<IssueType> optIssueType = this.issueTypeRepository.findById(issueTypeIdx);
 		Optional<IssueStatus> optIssueStatus = this.issueStatusRepository.findById(statusIdx);
 		Optional<IssuePriority> optIssuePriority = this.issuePriorityRepository.findById(3);
 		Optional<Account> optUser = this.accountRepository.findById(reporteridx);
 		
-		Jira jira = optJira.get();
 		Project project = optProject.get();
+		Jira jira = project.getJira();
 		project.updateSeq(project.getSequence());
 		this.projectRepository.save(project);
 		IssueType issueType = optIssueType.get();

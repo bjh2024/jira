@@ -20,5 +20,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// 웹소켓을 지원하지 않는 환경에서 대신할수있는 폴백
 		registry.addEndpoint("/websocket-endpoint").withSockJS();
+		registry.addEndpoint("/toast-websocket-endpoint").withSockJS();
 	}
 }

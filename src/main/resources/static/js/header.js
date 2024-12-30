@@ -53,8 +53,7 @@ let headerInputDatas = {
 	"projectIdxArr": [],
 	"managerIdxArr": [],
 	"isReporter": false,
-	"statusArr": [],
-	"currentUrl" : window.location.pathname
+	"statusArr": []
 }
 
 function fetchInput() {
@@ -87,7 +86,6 @@ function fetchInput() {
 				const aElement = document.createElement("a");
 				let url = new URL(window.location.href);
 				aElement.classList.add("input_recent_content");
-				aElement.setAttribute("href", `/${url.pathname.split("/")[2]}`);
 				aElement.innerHTML = `<img src="/images/${issue.iconFilename}"></img>
 									  <div>
 										  <div class='issue_info1'>
@@ -106,7 +104,6 @@ function fetchInput() {
 		.catch(error => {
 			console.error("Fetch error:", error);
 		});
-		console.log(headerInputDatas);
 }
 
 
@@ -217,9 +214,17 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 		});
 	});
 });
-// 현재 페이지 URL에서 username 추출
-let urlParts = window.location.pathname.split('/');
-let username = urlParts[1];  // 경로의 첫 번째 부분이 'dahyun0521'
 
-// 추출한 username을 사용하여 동적으로 링크 생성
-document.getElementById("profileLink").href = "/" + username + "/project/profile";
+document.getElementById("profileLink").href = "/project/profile";
+
+document.querySelectorAll(".account_jira_list a").forEach(function(jiraBtn){
+	jiraBtn.addEventListener("click", function(){
+		const jiraIdx = this.getAttribute("idx-data");
+		const uri = `/api/header/setJiraIdx`
+		fetch(uri, {method:"post", headers:{"Content-Type" : "application/json"}, body:JSON.stringify(jiraIdx)})
+		.catch(err => {
+			console.error(err);
+		})
+		location.href="/";
+	});
+});

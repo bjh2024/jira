@@ -134,10 +134,12 @@ public class Issue {
 	
 	public void updateName(String name) {
 		this.name = name;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updatecontent(String content) {
 		this.content = content;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateProjectLogDataList(List<ProjectLogData> projectLogDataList) {
@@ -146,30 +148,37 @@ public class Issue {
 	
 	public void updateIssueStatus(IssueStatus newStatus) {
 		this.issueStatus = newStatus;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateStartDate(LocalDateTime date) {
 		this.startDate = date;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateDeadlineDate(LocalDateTime date) {
 		this.deadlineDate = date;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updatePriority(IssuePriority priority) {
 		this.issuePriority = priority;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateTeam(Team team) {
 		this.team = team;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateReporter(Account reporter) {
 		this.reporter = reporter;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateManager(Account manager) {
 		this.manager = manager;
+		this.editDate = LocalDateTime.now();
 	}
 	
 	public void updateDivOrder(Integer idx) {
@@ -178,5 +187,6 @@ public class Issue {
 	
 	public void updateIssueType(IssueType issueType) {
 		this.issueType = issueType;
+		this.editDate = LocalDateTime.now();
 	}
 }

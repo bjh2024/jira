@@ -9,12 +9,20 @@
 		</div>
 		<div class="project-titlebox">
 			<div style="display: flex; align-items: center;">
-				<div style="display: flex; align-items: center;">
+				<div style="display: flex; align-items: center; height: 32px;">
 					<div>
 						<span class="header-titleimg">
-							<img src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10412?size=xlarge"
-								alt="">
+							<img th:src="@{|/images/${project.iconFilename}|}">
 						</span>
+					</div>
+					<div class="project-title-editbox">
+						<input type="text" class="project-title-input" th:value="${project.name}" th:attr="data-projectidx=${project.idx}">
+						<button class="edit-prjtitlebtn submit">
+							<img src="/images/status_complete_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						</button>
+						<button class="edit-prjtitlebtn cancel">
+							<img src="/images/cancel_icon.svg" style="filter: invert(14%) sepia(10%) saturate(4925%) hue-rotate(184deg) brightness(96%) contrast(94%);">
+						</button>
 					</div>
 					<div>
 						<h1 class="header-title" th:text="${project.name}"></h1>
@@ -31,7 +39,7 @@
 		</div>
 		<nav class="header-menubar">
 			<div class="menu-icon-box summation">
-				<a th:href="@{|/${currentJira}/project/${project.key}/summation|}">
+				<a th:href="@{|/project/${project.key}/summation|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/summation_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -40,7 +48,7 @@
 				</a>
 			</div>
 			<div class="menu-icon-box board_main">
-				<a th:href="@{|/${currentJira}/project/${project.key}/board_main|}">
+				<a th:href="@{|/project/${project.key}/board_main|}">
 					<span class="menu-icon" style="width: 24px;">
 						<img th:src="@{/images/board_icon.svg}"
 							style="width: 24px; filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -49,7 +57,7 @@
 				</a>
 			</div>
 			<div class="menu-icon-box chart">
-				<a th:href="@{|/${currentJira}/project/${project.key}/chart|}">
+				<a th:href="@{|/project/${project.key}/chart|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/list_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -58,7 +66,7 @@
 				</a>
 			</div>
 			<div class="menu-icon-box attached_files">
-				<a th:href="@{|/${currentJira}/project/${project.key}/attached_files|}">
+				<a th:href="@{|/project/${project.key}/attached_files|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/attachment_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -66,8 +74,8 @@
 					<span class="menu-text">첨부 파일</span>
 				</a>
 			</div>
-			<div class="menu-icon-box issue">
-				<a>
+			<div class="menu-icon-box project_issue">
+				<a th:href="@{|/project/${project.key}/project_issue|}">
 					<span class="menu-icon">
 						<img th:src="@{/images/project_issue_icon.svg}"
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
@@ -86,74 +94,9 @@
 					<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}" style="width: 16px; height: 16px;"></span>
 					<span style="margin-bottom: 2px;">사용자 추가</span>
 				</button>
-				<button th:onclick="|location.href='@{|/${currentJira}/project/${project.key}/setting_issue_type|}'|" class="menuwindow-optionbtn">
+				<button th:onclick="|location.href='@{|/project/${project.key}/setting/info|}'|" class="menuwindow-optionbtn">
 					<span style="height: 16px;"><img th:src="@{/images/setting_icon.svg}" style="width: 16px; height: 16px;"></span>
 					<span style="margin-bottom: 2px;">프로젝트 설정</span>
-				</button>
-				<button class="menuwindow-optionbtn-bg" style="gap: 12px;">
-					<div class="header-setbgbox">
-						<div class="setbg-headbar">
-							<span>프로젝트 배경</span>
-							<span class="header-setbgbtn" style="height: 24px;"><svg width="24" height="24"
-									viewBox="0 0 24 24" role="presentation">
-									<path fill="currentcolor"
-										d="M12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414z">
-									</path>
-								</svg></span>
-						</div>
-						<div class="setbg-title">색상</div>
-						<div class="setbg-colorpalette">
-							<span style="background-color: #F1F2F4;"
-								class="colorpalette-currentcolor colorpallette-colorbtn"></span>
-							<span style="background-color: #F3F0FF;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #E9F2FF;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #E7F9FF;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #DCFFF1;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #EFFFD6;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FFF7D6;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FFF3EB;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FFECEB;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FFECF8;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #DCDFE4;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #DFD8FD;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #CCE0FF;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #C6EDFB;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #BAF3DB;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #D3F1A7;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #F8E6A0;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FEDEC8;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FFD5D2;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #FDD0EC;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #44546F;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #5E4DB2;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #0055CC;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #206A83;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #216E4E;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #4C6B1F;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #7F5F01;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #A54800;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #AE2E24;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #943D73;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #172B4D;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #352C63;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #09326C;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #164555;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #164B35;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #37471F;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #533F04;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #702E00;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #5D1F1A;" class="colorpallette-colorbtn"></span>
-							<span style="background-color: #50253F;" class="colorpallette-colorbtn"></span>
-							<span style="width: 90px; display: flex; align-items: center; gap: 8px;">
-								<span class="colorpallette-colorbtn"></span>
-								<span style="font-size: 11px; ">배경 없음</span>
-							</span>
-						</div>
-					</div>
-					<span style="height: 24px; margin-left: -4px;"><img th:src="@{/images/set_bg_icon.svg}" style="width: 24px; height: 24px;"></span>
-					<span style="margin-bottom: 2px;">프로젝트 배경 설정</span>
-					<span style="height: 12px; margin-left: 34px;"><img th:src="@{/images/arrow_right_icon.svg}" style="width: 12px; height: 12px;"</span>
-					
 				</button>
 			</div>
 			<div class="menuwindow-deletebox">

@@ -4,7 +4,7 @@ function drawAllot(allot, pageNum = 0) {
 	const rowNum = allot.getAttribute("row-num-data");
 	const tbody = allot.querySelector("tbody");
 	const total = allot.getAttribute("issue-total");
-	const uri = `/api/dashboard/allot?pageNum=${pageNum}&col=${rowNum}&uri=${window.location.pathname}`;
+	const uri = `/api/dashboard/allot?pageNum=${pageNum}&col=${rowNum}`;
 	fetch(uri, { method: "get" })
 		.then(res => res.json())
 		.then(issueList => {
@@ -422,7 +422,7 @@ function drawIssueStatistics(issueStatistics){
 	issueStatisticsFetch(dashboardColIdx, tbody);
 }
 
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", function() {
 	// 나에게 할당
 	const allot = document.querySelectorAll(".dashboard_allot");
 	if (allot !== null) {
@@ -474,7 +474,7 @@ window.onload = function() {
 			// if(item.getAttribute("is-save-data") === "1");
 		});
 	}
-}
+});
 
 // 나에게 할당됨 => 페이징 처리
 document.querySelector(".dashboard_content_container").addEventListener("click", function(e){

@@ -53,6 +53,17 @@ body{
 	gap: 12px;
 }
 
+.no_project_list_box{
+	width: 100%;
+	height: 188px;
+	
+	font-size: 14px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .project_recent_box {
 	width: 240px;
 	padding-top: 12px;

@@ -17,6 +17,7 @@ import com.mysite.jira.service.ProjectService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -27,6 +28,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private JiraService jiraService;
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private HttpSession session;
 
 	// 로그인 성공시 호출 메서드
 	// 로그인 성공시 jiraIdx 암호화 세션 저장(가장 최근에 방문한)
@@ -37,18 +40,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		// 현재 로그인된 계정
 		Account account = accountService.getAccountByEmail(authentication.getName());
 		Integer accountIdx = account.getIdx();
+		
 		// 현재 계정이 가장 최근 방문한 jira
 		Jira jira = jiraService.getRecentTop1Jira(accountIdx);
-		String jiraName = jira.getName();
+		session.setAttribute("jiraIdx", jira.getIdx());
+		
 		// 현재 계정이 가장 최근 방문한 project
 		Project project = projectService.getRecentTop1Project(accountIdx, jira.getIdx());
-		String projectKey = project.getKey();
-		String defaultUri = "/" + jiraName + "/project/"+ projectKey +"/summation";
-		if (jiraName == null){
-			jiraService.addJira(accountIdx);
-			jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
-			defaultUri = "/" + jiraName + "/project/create";
-		}
+		String defaultUri = project == null ? "/" : "/project/"+ project.getKey() +"/summation";
+		
 		response.sendRedirect(defaultUri);
 	}
 }

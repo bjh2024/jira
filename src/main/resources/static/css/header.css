@@ -77,7 +77,7 @@ body{
     align-items: center;
 }
 
-.account_jira_list>div {
+.account_jira_list>a {
 	width: 100%;
 	border-left: 2px solid transparent;
 	margin-bottom: 12px;
@@ -88,7 +88,7 @@ body{
 	cursor: pointer;
 }
 
-.account_jira_list>div >div{
+.account_jira_list>a >span{
 	width: 32px;
 	line-height: 32px;
 	border-radius: 8px;
@@ -97,11 +97,11 @@ body{
 	font-size: 14px;
 }
 
-.account_jira_list>div.active{
+.account_jira_list>a.active{
 	border-left: 2px solid #0c66e4;
 }
 
-.account_jira_list>div.active > div{
+.account_jira_list>a.active > span{
 	border: 2px solid #0c66e4;
 	line-height: calc(32px - 2px * 2);
 }

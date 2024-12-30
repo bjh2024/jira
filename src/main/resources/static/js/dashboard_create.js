@@ -138,7 +138,7 @@ document.querySelectorAll(".role_project_input").forEach(function(projectInput){
 	projectInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function projectListFetch(lnbContainer){
-			const uri = `/api/project/dashboard/list?uri=${window.location.pathname}`
+			const uri = `/api/project/dashboard/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const projectList = await res.json();
@@ -170,7 +170,7 @@ document.querySelectorAll(".role_group_input").forEach(function(groupInput){
 	groupInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function teamListFetch(lnbContainer){
-			const uri = `/api/team/dashboard/list?uri=${window.location.pathname}`
+			const uri = `/api/team/dashboard/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const teamList = await res.json();
@@ -202,7 +202,7 @@ document.querySelectorAll(".role_user_input").forEach(function(groupInput){
 	groupInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function userListFetch(lnbContainer){
-			const uri = `/api/account/dashboard/list?uri=${window.location.pathname}`
+			const uri = `/api/account/dashboard/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const userList = await res.json();
@@ -413,7 +413,7 @@ document.querySelector(".dashboard_create_btn_box .create_btn").addEventListener
 	
 	// fetch 중복인지 확인
 	async function duplicationDashboardNameFetch(){
-		const uri = `/api/dashboard/duplication/name?dashboardName=${dashboardName}&uri=${window.location.pathname}`;
+		const uri = `/api/dashboard/duplication/name?dashboardName=${dashboardName}`;
 		
 		try{
 			const res = await fetch(uri, {method:"get"});
@@ -439,8 +439,7 @@ document.querySelector(".dashboard_create_btn_box .create_btn").addEventListener
 		const requestDashboardCreate = {
 			"name": name,
 			"explain": explain,
-			"authItems" : authItems,
-			"uri" : window.location.pathname
+			"authItems" : authItems
 		}
 		
 		const uri = "/api/dashboard/create"
@@ -451,8 +450,7 @@ document.querySelector(".dashboard_create_btn_box .create_btn").addEventListener
 		.then(res => res.json())
 		.then(dashboardIdx => {
 			if(dashboardIdx){
-				const jiraName = window.location.pathname.split("/")[1];
-				location.href=`/${jiraName}/dashboard/edit/${dashboardIdx}`;
+				location.href=`/dashboard/edit/${dashboardIdx}`;
 			}
 		})
 		.catch(err => {

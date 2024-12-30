@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/check_authcode.css}">
-	<title>jira_project</title>
+	<link rel="icon" href="/images/favicon.svg">
+	<title>JIRA</title>
 </head>
 <div layout:fragment="content" style="display: flex;">
 	<div class="login-container">
@@ -49,7 +50,7 @@
 		        </div>
 			</form>
 			<div class="retry">
-				<a href="login">이메일을 받지 못하셨나요?</a>
+				<a>이메일을 받지 못하셨나요?</a>
 				<a style="color: black; margin: 0 4px;">•</a>
 				<a th:href="@{reset_code(email=${user.email})}">코드 재전송</a>	
 				<hr class="line">

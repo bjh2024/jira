@@ -57,7 +57,7 @@ function debounce(func, timeout = 300) {
 }
 
 async function projectMembersListFetch(searchName){
-	const uri = `/api/account/project/members?searchName=${searchName}&uri=${window.location.pathname}`;
+	const uri = `/api/account/project/members?searchName=${searchName}`;
 	try {
 		const res = await fetch(uri, {method: "get"});
 		const datas = await res.json();
@@ -192,7 +192,7 @@ async function validationName(projectName, inputBox) {
 	// 유효성 검사
 	// 프로젝트 이름이 존재하는지 확인 fetch
 	async function projectNameDuplication() {
-		let url = `/api/project/duplication/name?projectName=${projectName}&uri=${window.location.pathname}`;
+		let url = `/api/project/duplication/name?projectName=${projectName}`;
 		try {
 			const res = await fetch(url, { method: "get" });
 			const data = await res.json();
@@ -246,7 +246,7 @@ async function validationKey(keyName, inputBox) {
 	// 유효성 검사
 	// 키 이름이 존재하는지 확인 fetch
 	async function keyNameDuplication() {
-		let url = `/api/project/duplication/key?keyName=${keyName}&uri=${window.location.pathname}`;
+		let url = `/api/project/duplication/key?keyName=${keyName}`;
 		try {
 			const res = await fetch(url, { method: "get" });
 			const data = await res.json();

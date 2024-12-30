@@ -2,6 +2,7 @@ package com.mysite.jira.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,4 +41,11 @@ public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {
 	List<IssueType> findByProjectIdxAndGrade(Integer projectIdx, Integer grade);
 	
 	List<IssueType> findByProjectIdxAndGradeAndIdxNot(Integer projectIdx, Integer grade, Integer idx);
+	
+	List<IssueType> findByName(String name);
+	
+	List<IssueType> findByProjectIdx(Integer projectIdx);
+	
+	Optional<IssueType> findByProjectIdxAndName(Integer projectIdx, String name);
+	
 }

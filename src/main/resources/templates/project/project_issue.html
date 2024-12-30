@@ -1,0 +1,326 @@
+<html layout:decorate="~{layout}">
+<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_aside.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filter_issue_table.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/issue_detail.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/project_header.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/filterIssueDetail.css}">
+		<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+</head>
+<div layout:fragment="content" style="display: flex;">
+	<div class="header-container">
+		<header th:replace="~{project/project_header :: prjHeaderFragment}"></header>
+		<th:block th:replace="~{project/project_issue :: filter_issue_detail_fragment}"></th:block>
+							<div class="modal">
+									<form>
+									<div class="modal_content">
+										<div class="content_div_1">
+											필터 저장
+										</div>
+										<div style="height: 20px;">
+											<span style="font-size: 14px; color:#44546F;">필수 필드는 별표로 표시되어 있습니다<span
+													style="color:#AE2E24; margin-left: 6px;">*</span></span>
+										</div>
+										<div class="filter_save_font">
+											이름<span style="color:#AE2E24; margin-left: 3px;">*</span>
+											<input class="hover_input" type="text" style="height: 40px; width: 552px; margin-top:4px; padding:8px 6px;" required>
+											<div class="fail_name" style="color : #AE2E24;"></div>
+										</div> 
+										<div class="filter_save_font">
+											설명
+											<textarea class="textArea_1" rows="2"></textarea>
+										</div>
+										<div class="filter_save_font" style="margin-top: 7px;">
+											조회자
+										</div>
+										<div class="viewer_div">
+											<div style="display: flex;"> 
+												<div class="viewer_div_1">
+													<div class="label">
+														<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																비공개
+													</div>
+													<div style="margin-left: 46px;">
+														<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+															<path fill="currentcolor" fill-rule="evenodd"
+															d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+														</svg>
+													</div>
+													<div class="viewer_div_1_category">
+														<div class="optionItem">
+															<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															프로젝트
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															그룹
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															사용자
+														</div>
+														<div class="optionItem">
+															<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															비공개
+														</div>
+													</div>
+													</div>
+													<div>
+														<div class="project_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="projectLabel" style="margin-left: 4px; z-index: 0;">
+																<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																프로젝트 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+															</svg>
+															</div>
+															<div class="project_div_category" >
+																<div class="projectItem" th:each="project :${project}">
+																	<div>
+																		<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+																	</div>
+																	<div>
+																		<span th:text="${project.name}"></span>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="team_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="teamLabel" style="margin-left: 4px; z-index: 0;">
+																	<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																	그룹 선택
+																</div>
+																<div>
+																	<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																	<path fill="currentcolor" fill-rule="evenodd"
+																		d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																	</path>
+																</svg>
+																</div>
+																<div class="team_div_category" >
+																	<div class="teamItem" th:each="team :${teamList}">
+																		<div style="display: flex; align-items: center;">
+																			<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																			<span th:text="${team.name}"></span>
+																		</div>
+																</div>
+															</div>	
+														</div>
+														<div class="user_div_1" style="width: auto;">
+															<div style="width: 2px;"></div>
+															<div class="userLabel" style="margin-left: 4px; z-index: 0;">
+																	<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																	사용자 선택
+																</div>
+																<div>
+																	<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																	<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+																</svg>
+																</div>
+																<div class="user_div_category" >
+																	<div class="userItem" th:each="jiraMembers :${jiraMembers}">
+																		<div>
+																			<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+																		</div>
+																		<div>
+																			<span th:text="${jiraMembers.name}"></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+											<div style="display: flex;">
+											<button type="button" class="filter_save_reset" style="border:none; color: #6B778C; margin-right: 4px;">
+												초기화</button>
+											<div class="viewer_div_2">
+												추가
+											</div>
+											</div>
+										</div>
+										<div class="viewer_list_box">
+												<!--필터조건 추가될 부분-->
+										</div>
+										<div class="filter_save_font" style="margin-top: 12px;">
+											편집기
+										</div>
+										<div class="viewer_div">
+											<div style="display: flex;">
+											<div class="viewer_div_1">
+												<div class="label2">
+													<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+													비공개
+												</div>
+												<div style="margin-left: 46px;">
+													<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+														<path fill="currentcolor" fill-rule="evenodd"
+															d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+														</path>
+													</svg>
+												</div>
+											<div class="viewer_div_1_category">
+															<div class="optionItem2">
+																<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																프로젝트
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																그룹
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																사용자
+															</div>
+															<div class="optionItem2">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																비공개
+															</div>
+														</div>
+													</div>
+												<div>
+													<div class="project_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+														<div class="projectLabel2" style="margin-left: 4px; z-index: 0;">
+															<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+															프로젝트 선택
+														</div>
+														<div>
+															<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+															<path fill="currentcolor" fill-rule="evenodd"
+																d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+														</svg>
+														</div>
+														<div class="project_div_category" >
+															<div class="projectItem2" th:each="project :${project}">
+																<div>
+																	<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+																</div>
+																<div>
+																	<span th:text="${project.name}"></span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="team_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+															<div class="teamLabel2" style="margin-left: 4px; z-index: 0; ">
+																<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																그룹 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																	d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+																</path>
+															</svg>
+															</div>
+															<div class="team_div_category" >
+																<div class="teamItem2" th:each="team :${teamList}">
+																	<div>
+																		<span th:text="${team.name}"></span>
+																	</div>
+															</div>
+														</div>	
+													</div>
+													<div class="user_div_2" style="width: auto;">
+														<div style="width: 2px;"></div>
+															<div class="userLabel2" style="margin-left: 4px; z-index: 0;">
+																<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+																사용자 선택
+															</div>
+															<div>
+																<svg width="24" height="24" viewBox="0 0 24 24" role="presentation">
+																<path fill="currentcolor" fill-rule="evenodd"
+																d="M8.292 10.293a1.01 1.01 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0">
+															</path>
+															</svg>
+															</div>
+															<div class="user_div_category" >
+																<div class="userItem2" th:each="jiraMembers :${jiraMembers}">
+																	<div>
+																		<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+																	</div>
+																	<div>
+																		<span th:text="${jiraMembers.name}"></span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													</div>
+											<div style="display: flex;">
+											<button class="filter_save_reset2" type="button"style="border:none; color: #6B778C; margin-right: 4px;">
+												초기화</button>
+											<div class="viewer_div_2">
+												추가
+											</div>
+											</div>
+										</div>
+										<div class="viewer_list_box2">
+											<!--추가 누르면 내용이 추가될 부분-->
+										</div>
+										<div class="viewer_last_button">
+											<button class="save_button" type="button" th:attr="data-jira-name=${currentJira.name}">저장</button>
+											<button class="cancle_button">취소</button>
+										</div>
+
+									</div>
+									</form>
+									<div class="reply-delete-alert-container">
+											<div class="delete-alert-box">
+												<div class="delete-alert-title">
+													<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+													<span class="delete-alert-titletext">이 댓글을 삭제하시겠습니까?</span>
+												</div>
+												<div class="delete-alert-body">
+													<span>
+														삭제하면 영구적으로 제거됩니다.
+													</span>
+												</div>
+												<div class="delete-alert-btnbar">
+													<button class="delete-alert-cancelbtn">
+														<span>취소</span>
+													</button>
+													<button class="delete-alert-submitbtn reply">
+														<span>삭제</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+	</div>
+	<script th:src="@{/js/filter_issue.js}"></script>
+		<script th:src="@{/js/filter_issue_table.js}"></script>
+		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+		<script th:src="@{/js/filter_issue_detail.js}"></script>
+		<script th:inline="javascript"></script>
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script>
+			flatpickr(".datepicker", {
+				dateFormat: 'Y-m-d',
+				onChange: function(selectedDates, dateStr, instance) {
+					// selectedDates: [Thu Dec 05 2024 00:00:00 GMT+0900 (한국 표준시)]
+					// dateStr: 2024-12-11
+					// instance: {config: {…}, l10n: {…}, _handlers: Array(13), pluginElements: Array(0), parseDate: ƒ, …}
+					const issueIdx = instance.input.dataset.issueidx;
+					const date = dateStr;
+					const type = instance.input.classList[1];
+					loadDateData(issueIdx, date, type);
+				}
+			}); 
+		</script>
+</div>
+</html>

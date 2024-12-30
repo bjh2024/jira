@@ -1,4 +1,4 @@
-<html layout:decorate="~{/project/setting/layout}">
+<html layout:decorate="~{project/setting/layout}">
 
 <head>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/setting_access.css}">
@@ -18,7 +18,7 @@
 			<h2>프로젝트 액세스 권한</h2>
 			<div class="explanation_box">
 				<img src="/images/exclamation_mark_icon_blue.svg" width="20" height="20"/>
-				<p>"<span th:text="${currentJira}"></span>" Jira 사이트에 대한 액세스 권한이 있는 사용자는 이 프로젝트의 이슈를 검색하고 조회하며 만들고 편집할 수 있습니다.</p>
+				<p>"<span th:text="${currentJira.name}"></span>" Jira 사이트에 대한 액세스 권한이 있는 사용자는 이 프로젝트의 이슈를 검색하고 조회하며 만들고 편집할 수 있습니다.</p>
 			</div>
 			<div class="search_box">
 				<div class="input_box">

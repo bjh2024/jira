@@ -28,53 +28,59 @@ import lombok.RequiredArgsConstructor;
 public class UploadService {
 	private final IssueFileRepository issueFileRepository;
 	
-	@Value("${upload.path}") 
-    private String uploadPath;
-	
-    public FileRequestDTO saveFile(MultipartFile file, Account user, Issue issue){
-        // 파일 저장
-        String originalFilename = file.getOriginalFilename();
-        Path filePath = Paths.get(uploadPath, originalFilename);
-        String[] splitedFilename = originalFilename.split("\\.");
-        
-        try {
-        	if(splitedFilename.length > 2) {
-        		return null;
-        	}
-        	Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
-        if(splitedFilename[splitedFilename.length - 1].equals("txt")) {
-        	this.convertTxtToImg(filePath.toAbsolutePath().toString(), splitedFilename[0]);
-        }
-        
-        if(originalFilename.equals("error")) {
-        	System.out.println("텍스트 파일 변환 중 에러 발생");
-        	return null;
-        }
-        
-        // 데이터베이스에 저장
-        IssueFile issueFile = IssueFile.builder()
-            .name(originalFilename)
-            .uploadDate(LocalDateTime.now())
-            .account(user)
-            .issue(issue)
-            .build();
-        this.issueFileRepository.save(issueFile);
-        
-        FileRequestDTO dto = FileRequestDTO.builder()
-						        		.userIdx(user.getIdx())
-						        		.fileIdx(issueFile.getIdx())
-						        		.issueIdx(issue.getIdx())
-        								.name(originalFilename)
-        								.createDate(issueFile.getUploadDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-        								.build();
-        return dto;
-    }
+		@Value("${upload.path}") 
+	    private String uploadPath;
+		
+	    public FileRequestDTO saveFile(MultipartFile file, Account user, Issue issue){
+	        // 파일 저장
+	        String originalFilename = file.getOriginalFilename();
+	        Path filePath = Paths.get(uploadPath, originalFilename);
+	        String[] splitedFilename = originalFilename.split("\\.");
+	        
+	        try {
+	        	// 폴더가 없는 경우 생성
+	            Path directoryPath = Paths.get(uploadPath);
+	            if (!Files.exists(directoryPath)) {
+	                Files.createDirectories(directoryPath); // 경로에 폴더 생성
+	            }	
+	        	
+	        	if(splitedFilename.length > 2) {
+	        		return null;
+	        	}
+	        	Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	        
+	        if(splitedFilename[splitedFilename.length - 1].equals("txt")) {
+	        	this.convertTxtToImg(filePath.toAbsolutePath().toString(), splitedFilename[0]);
+	        }
+	        
+	        if(originalFilename.equals("error")) {
+	        	System.out.println("텍스트 파일 변환 중 에러 발생");
+	        	return null;
+	        }
+	        
+	        // 데이터베이스에 저장
+	        IssueFile issueFile = IssueFile.builder()
+	            .name(originalFilename)
+	            .uploadDate(LocalDateTime.now())
+	            .account(user)
+	            .issue(issue)
+	            .build();
+	        this.issueFileRepository.save(issueFile);
+	        
+	        FileRequestDTO dto = FileRequestDTO.builder()
+							        		.userIdx(user.getIdx())
+							        		.fileIdx(issueFile.getIdx())
+							        		.issueIdx(issue.getIdx())
+	        								.name(originalFilename)
+	        								.createDate(issueFile.getUploadDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+	        								.build();
+	        return dto;
+	    }
     
     public String convertTxtToImg(String path, String filename) {
     	try {

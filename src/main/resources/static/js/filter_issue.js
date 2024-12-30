@@ -2,8 +2,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const menu = e.target.closest(".filter_menu");  // 클릭된 메뉴 찾기
 	const menuWithShow = document.querySelector(".filter_issue_box.show");  // 열린 .filter_issue_box 찾기
 	const menuBoxWithActive = document.querySelector(".filter_category_div.active");  // 활성화된 메뉴 찾기
-	const button = document.querySelector(".filter_category_div")
-	console.log(e.target);
+	const button = document.querySelector(".filter_category_div");
 	
 	// 이미 열린 .filter_issue_box를 클릭한 경우 아무 작업도 하지 않음
 	if (menuWithShow && menuWithShow.contains(e.target)) {
@@ -59,7 +58,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 		
 });
 
-document.querySelector(".button_div").addEventListener("click", function(e) {
+document.querySelector(".button_div")?.addEventListener("click", function(e) {
 	const issueListFilter = e.target.closest(".button_div");
 	const issueListFilterbox = document.querySelector(".button_div_box");
 	const issueListFiltershow = document.querySelector(".button_div_box.show");
@@ -69,7 +68,7 @@ document.querySelector(".button_div").addEventListener("click", function(e) {
 	}
 		
 });
-document.querySelector(".user_div_1").addEventListener("click",function(e){
+document.querySelector(".user_div_1")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".user_div_1"); 
 	let view3 = view.querySelector(".user_div_category");
@@ -85,7 +84,7 @@ document.querySelector(".user_div_1").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelector(".user_div_2").addEventListener("click",function(e){
+document.querySelector(".user_div_2")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".user_div_2"); 
 	let view3 = view.querySelector(".user_div_category");
@@ -101,7 +100,7 @@ document.querySelector(".user_div_2").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelector(".project_div_1").addEventListener("click",function(e){
+document.querySelector(".project_div_1")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".project_div_1"); 
 	let view3 = view.querySelector(".project_div_category");
@@ -117,7 +116,7 @@ document.querySelector(".project_div_1").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelector(".project_div_2").addEventListener("click",function(e){
+document.querySelector(".project_div_2")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".project_div_2"); 
 	let view3 = view.querySelector(".project_div_category");
@@ -133,7 +132,7 @@ document.querySelector(".project_div_2").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelector(".team_div_1").addEventListener("click",function(e){
+document.querySelector(".team_div_1")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".team_div_1"); 
 	let view3 = view.querySelector(".team_div_category");
@@ -149,7 +148,7 @@ document.querySelector(".team_div_1").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelector(".team_div_2").addEventListener("click",function(e){
+document.querySelector(".team_div_2")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	let view = e.target.closest(".team_div_2"); 
 	let view3 = view.querySelector(".team_div_category");
@@ -165,7 +164,7 @@ document.querySelector(".team_div_2").addEventListener("click",function(e){
 	      }
 	    }
 })
-document.querySelectorAll(".viewer_div_1").forEach(function(item){
+document.querySelectorAll(".viewer_div_1")?.forEach(function(item){
   item.addEventListener("click", function(e){
     let view = e.target.closest(".viewer_div_1");  // 클릭된 요소를 바로 가져옵니다.
 
@@ -422,7 +421,7 @@ document.querySelectorAll(".viewer_div_1_category").forEach(function(item) {
  	  }
   });
 });
-document.querySelector(".project_div_category").addEventListener("click",function(e){
+document.querySelector(".project_div_category")?.addEventListener("click",function(e){
 	event.stopPropagation()
 	if(document.querySelector(".project_div_category").style.display === "block"){
 		document.querySelector(".project_div_category").style.display = "none"
@@ -494,19 +493,19 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
     });
 });
 
-document.querySelector(".filter_save_reset").addEventListener("click",function(){
+document.querySelector(".filter_save_reset")?.addEventListener("click",function(){
 	let viewerListBox = document.querySelector('.viewer_list_box');
 	viewerListBox.innerHTML = '';
 })
-document.querySelector(".filter_save_reset2").addEventListener("click",function(){
+document.querySelector(".filter_save_reset2")?.addEventListener("click",function(){
 	let viewerListBox = document.querySelector('.viewer_list_box2');
 	viewerListBox.innerHTML = '';
 })
 
-document.querySelector(".save_button").addEventListener("click",function(){
+document.querySelector(".save_button")?.addEventListener("click",function(){
 	let name = document.querySelector(".hover_input").value;
 })
-document.querySelector(".cancle_button").addEventListener("click",function(){
+document.querySelector(".cancle_button")?.addEventListener("click",function(){
 	document.querySelector(".hover_input").value = '';
 	document.querySelector(".viewer_list_box2").innerHTML = '';
 	document.querySelector(".viewer_list_box").innerHTML = '';
