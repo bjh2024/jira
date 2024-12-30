@@ -1,14 +1,11 @@
 package com.mysite.jira.service;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.hibernate.Hibernate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,7 +115,9 @@ public class ProjectService {
 				IssueType.builder().name("작업").content("A small, distinct piece of work.").subContent("")
 						.iconFilename("issue_task.svg").grade(2).project(project).build(),
 				IssueType.builder().name("하위 작업").content("A small piece of work that''s part of a larger task.")
-						.subContent("").iconFilename("issue_sub_task.svg").grade(1).project(project).build());
+						.subContent("").iconFilename("issue_sub_task.svg").grade(1).project(project).build(),
+				IssueType.builder().name("에픽").content("에픽은 작업의 큰 부분을 추적합니다.")
+				.subContent("").iconFilename("issue_epik.svg").grade(3).project(project).build());
 		issueTypeRepository.saveAll(issueTypes);
 		// 기본 이슈상태
 		List<IssueStatus> issueStatuses = Arrays.asList(

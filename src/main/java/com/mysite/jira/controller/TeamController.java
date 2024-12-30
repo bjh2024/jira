@@ -32,4 +32,5 @@ public class TeamController {
 		model.addAttribute("teamList", teamService.getTeamListByJiraIdx(jiraIdx));
 		return "team/team_list";
 	}
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.AddJiraMemberDTO;
+import com.mysite.jira.dto.account.LoginAddJiraDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.email.JiraInviteEmailClient;
@@ -18,7 +19,6 @@ import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +52,14 @@ public class AccountAPIController {
 		return accountService.getAccountListDashboard(jiraIdx);
 	}
 	
+	@GetMapping("isExist")
+	public Integer getIsExistInJira(@RequestParam("email") String email) {
+		if(accountService.getAccountByEmail(email) != null) {
+			return 0;
+		}
+		return 1;
+	}
+	
 	@GetMapping("duplication/jira_member")
 	public Integer getDuplicationJiraMembersName(@RequestParam("email") String email) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
@@ -74,7 +82,17 @@ public class AccountAPIController {
 	
 	@PostMapping("add/jira_member/send_email")
 	public Integer addJiraMemberSendEmail(@RequestBody String jiraUserEmail) {
-		jiraInviteEmailClient.sendEmail(jiraUserEmail.replaceAll("\"", ""));
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		jiraInviteEmailClient.sendEmail(jiraUserEmail.replaceAll("\"", ""), jiraIdx);
 		return 1;
 	}
+	
+	@PostMapping("jira/add/login")
+	public boolean addJiraMemberLogin(@RequestBody LoginAddJiraDTO LoginDTO) {
+		String email = LoginDTO.getEmail();
+		String password = LoginDTO.getPassword();
+		Integer jiraIdx = LoginDTO.getJiraIdx();
+		return accountService.getIsLoginJiraAdd(email, password, jiraIdx, session);
+	}
+	
 }
