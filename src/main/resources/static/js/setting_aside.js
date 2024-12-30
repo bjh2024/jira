@@ -39,9 +39,10 @@ document.querySelector(".setting_aside_btn.insert").addEventListener("click", fu
 document.querySelector(".create_issuetype_container").addEventListener("mousedown", function(e) {
 	document.querySelector(".create_issuetype_container")?.classList.remove("show");
 	
+	const bgItem = e.target.closest(".create_issuetype_btn.cancel");
 	const detailItem = e.target.closest(".create_issuetype_box");
 	
-	if(detailItem !== null){
+	if(bgItem == null && detailItem !== null){
 		document.querySelector(".create_issuetype_container").classList.add("show");
 	}else{
 		document.querySelector(".create_issuetype_container").classList.remove("show");
