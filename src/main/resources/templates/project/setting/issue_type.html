@@ -150,7 +150,7 @@
 							<span th:text="${typeOption.name}"></span>
 						</div>
 					</div>
-					<div class="selected-type">
+					<div class="selected-type" th:attr="data-listsize=${#lists.size(issueList)}">
 						<span>이슈 유형 선택</span>
 					</div>
 					<div style="margin-top: 4px;">

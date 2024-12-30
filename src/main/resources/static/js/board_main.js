@@ -1300,34 +1300,6 @@ function getIssueLogList(logbox){
 	});
 }
 
-function getAllIssueLogList(logbox){
-	let url = "/api/project/get_all_issue_log_list";
-	fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json' // JSON 데이터를 전송
-		},
-		body: JSON.stringify(issueLogData)
-	})
-	.then(response => response.json())
-		.then(logList => {
-			logbox.innerHTML = "";
-			logbox.nextElementSibling.style.display = "none";
-			logbox.nextElementSibling.nextElementSibling.style.display = "none";
-			logbox.nextElementSibling.nextElementSibling.nextElementSibling.style.display = "none";
-			logList.forEach(function(log){
-				const logItem = document.createElement("div");
-				logItem.classList.add("issuedetail-log");
-				logItem.innerHTML = `<img src="/images/${log.iconFilename}" width="32" height="32">
-										<span>${log.username} ${log.logType}</span>
-										<span>${log.date}</span>`;
-				logbox.appendChild(logItem);
-			});
-		}).catch(error => {
-			console.error("Fetch error:", error);
-	});
-}
-
 document.querySelectorAll(".issuedetail-atvbtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		const container = e.target.closest(".issuedetail-container");

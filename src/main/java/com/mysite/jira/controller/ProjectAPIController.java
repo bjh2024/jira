@@ -156,11 +156,13 @@ public class ProjectAPIController {
 	@PostMapping("/delete_issueType")
 	public void deleteIssueType(@RequestBody DeleteIssueTypeDTO issueTypeDTO) {
 		Integer oldTypeIdx = issueTypeDTO.getIssueTypeIdx();
-		IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
 		List<Issue> issueList = projectService.getIssueListByIssueType(issueTypeDTO.getProjectIdx(), oldTypeIdx);
 		System.out.println(oldTypeIdx);
-		for(Issue issue : issueList) {
-			projectService.updateIssueListType(issue, newIssueType);
+		if(issueTypeDTO.getNewTypeIdx() != null) {
+			IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
+			for(Issue issue : issueList) {
+				projectService.updateIssueListType(issue, newIssueType);
+			}
 		}
 		projectService.deleteIssueType(oldTypeIdx);
 	}
