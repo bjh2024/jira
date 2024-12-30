@@ -32,8 +32,31 @@ document.querySelector("body").addEventListener("click", function(e) {
             menuBox.classList.add("active");  // 메뉴 스타일 활성화
         }
     }
+	filterDatas = {
+			"projectIdxArr" : [],
+			"issueTypeArr" : [],
+			"issueStatusArr" : [],
+			"issueManagersArr" : [],
+			"issueReporterArr" : [],
+			"issuePriorityArr" : [],
+			"updateStartDate" : null,
+			"updateLastDate" : null,
+			"updateBeforeDate": null,
+			"createStartDate" : null,
+			"createLastDate" : null,
+			"createBeforeDate": null,
+			"doneStartDate" : null,
+			"doneLastDate" : null,
+			"doneBeforeDate": null,
+			"searchBox" : null,
+			"doneCheck" : null,
+			"notDoneCheck" : null,
+			"filterIdx": null
+			}
+	loadUpdate();
 });
 
+// input에서 엔터키 이벤트가 발생해도 submit으로 넘어가지 않게 막기
 document.querySelectorAll("input").forEach(function(input){
 	input.addEventListener("keydown",function(){
 		if(event.key==="Enter"){
@@ -42,6 +65,7 @@ document.querySelectorAll("input").forEach(function(input){
 	})
 })
 
+// 필터링을 위한 데이터들
 let filterDatas = {
 			"projectIdxArr" : [],
 			"issueTypeArr" : [],
@@ -426,109 +450,152 @@ document.querySelector("#all_reset")?.addEventListener("click",function(){
 		fetchInputFilter();
 		fetchInputFilterIssue();
 })
-
+function loadUpdate() {
+		document.querySelectorAll(".project_input_list").forEach(function(item) {
+	       if (item.checked) {
+	           filterDatas.projectIdxArr.push(item.value);  // 체크된 값 추가
+			    document.querySelector('[name="project"]').classList.add("check")
+		       }
+		   if(filterDatas.projectIdxArr.length === 0){
+			    document.querySelector('[name="project"]').classList.remove("check")
+			   }
+	    })
+		document.querySelectorAll(".issue_type_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.issueTypeArr.push(item.value);
+			    document.querySelector('[name="issuetype"]').classList.add("check")
+			}
+			if(filterDatas.issueTypeArr.length === 0){
+			    document.querySelector('[name="issuetype"]').classList.remove("check")
+			}
+		})
+		document.querySelectorAll(".issue_status_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.issueStatusArr.push(item.value);
+			    document.querySelector('[name="issueStatus"]').classList.add("check")
+			}
+			if(filterDatas.issueStatusArr.length === 0){
+			    document.querySelector('[name="issueStatus"]').classList.remove("check")
+			}
+		})
+		document.querySelectorAll(".issue_manager_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.issueManagersArr.push(item.value);
+			    document.querySelector('[name="issueManager"]').classList.add("check")
+			}
+			if(filterDatas.issueManagersArr.length === 0){
+			    document.querySelector('[name="issueManager"]').classList.remove("check")
+			}
+		})
+		document.querySelectorAll(".filter_reporter_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.issueReporterArr.push(item.value);
+				document.querySelector(".issueReporter").style.display = "block";
+				document.querySelector(".issueReporter").querySelector(".filter_category_div").classList.add("check")
+			}
+			if(filterDatas.issueReporterArr.length === 0){
+				document.querySelector(".issueReporter").querySelector(".filter_category_div").classList.remove("check")
+			}
+		})
+		document.querySelectorAll(".done_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.doneCheck = item.value;
+				document.querySelector(".done_check").style.display = "block";
+				document.querySelector(".done_check").querySelector(".filter_category_div").classList.add("check")
+			}
+		})
+		document.querySelectorAll(".done_input_list2").forEach(function(item){
+			if(item.checked){
+				filterDatas.notDoneCheck = item.value;
+				document.querySelector(".done_check").style.display = "block";
+				document.querySelector(".done_check").querySelector(".filter_category_div").classList.add("check")
+			}
+			if(filterDatas.notDoneCheck === null && filterDatas.doneCheck === null){
+				document.querySelector(".done_check").querySelector(".filter_category_div").classList.remove("check")
+			}
+		})
+		document.querySelectorAll(".issue_priority_input_list").forEach(function(item){
+			if(item.checked){
+				filterDatas.issuePriorityArr.push(item.value);
+				document.querySelector(".issuePriority").style.display = "block";
+				document.querySelector(".issuePriority").querySelector(".filter_category_div").classList.add("check");
+			}
+			if(filterDatas.issuePriorityArr.length === 0){
+				document.querySelector(".issuePriority").querySelector(".filter_category_div").classList.remove("check");
+			}
+		})
+		document.querySelectorAll(".update_date_input_list").forEach(function(item){
+			let value = document.getElementById("update_before_date").value;
+			let date = new Date();
+				if(item.checked && item.id === "radio_days"){
+					date.setDate(date.getDate() - value);
+				    filterDatas.updateBeforeDate = date;
+					document.querySelector(".update_date_box_1").classList.add("show")
+					document.querySelector(".update_date_box_2").classList.remove("show")
+					document.querySelector(".updateDate").style.display = "block"
+					document.querySelector(".updateDate").querySelector(".filter_category_div").classList.add("check");
+				}else if(item.checked && item.id === "radio_range"){
+					filterDatas.updateStartDate = new Date(document.getElementById("update_start_date").value);
+					filterDatas.updateLastDate = new Date(document.getElementById("update_last_date").value);
+					document.querySelector(".update_date_box_2").classList.add("show")
+					document.querySelector(".update_date_box_1").classList.remove("show")
+					document.querySelector(".updateDate").style.display = "block"
+					document.querySelector(".updateDate").querySelector(".filter_category_div").classList.add("check");
+				}
+				if(filterDatas.updateBeforeDate === null && filterDatas.updateStartDate === null){
+					document.querySelector(".updateDate").querySelector(".filter_category_div").classList.remove("check");
+				}
+			})
+		document.querySelectorAll(".create_date_input_list").forEach(function(item){
+			let value = document.getElementById("create_before_date").value;
+			let date = new Date();
+				if(item.checked && item.id === "create_date"){
+					date.setDate(date.getDate() - value);
+				    filterDatas.createBeforeDate = date;
+					document.querySelector(".create_date_box_1").classList.add("show")
+					document.querySelector(".create_date_box_2").classList.remove("show")
+					document.querySelector(".createDate").style.display = "block"
+					document.querySelector(".createDate").querySelector(".filter_category_div").classList.add("check");
+				}else if(item.checked && item.id === "create_between"){
+					filterDatas.createStartDate = new Date(document.getElementById("create_start_date").value);
+					filterDatas.createLastDate = new Date(document.getElementById("creat_last_date").value);
+					document.querySelector(".create_date_box_2").classList.add("show")
+					document.querySelector(".create_date_box_1").classList.remove("show")
+					document.querySelector(".createDate").style.display = "block"
+					document.querySelector(".createDate").querySelector(".filter_category_div").classList.add("check");
+				}
+				if(filterDatas.createBeforeDate === null && filterDatas.createStartDate === null){
+					document.querySelector(".createDate").querySelector(".filter_category_div").classList.remove("check");
+				}
+			})
+		document.querySelectorAll(".done_date_input_list").forEach(function(item){
+			let value = document.getElementById("done_before_date").value;
+			let date = new Date();
+				if(item.checked && item.id === "done_date"){
+					date.setDate(date.getDate() - value);
+				    filterDatas.doneBeforeDate = date;
+					document.querySelector(".done_date_box_1").classList.add("show")
+					document.querySelector(".done_date_box_2").classList.remove("show")
+					document.querySelector(".doneDate").style.display = "block"
+					document.querySelector(".doneDate").querySelector(".filter_category_div").classList.add("check");
+				}else if(item.checked && item.id === "done_between"){
+					filterDatas.doneStartDate = new Date(document.getElementById("done_start_date").value);
+					filterDatas.doneLastDate = new Date(document.getElementById("done_last_date").value);
+					document.querySelector(".done_date_box_2").classList.add("show")
+					document.querySelector(".done_date_box_1").classList.remove("show")
+					document.querySelector(".doneDate").style.display = "block"
+					document.querySelector(".doneDate").querySelector(".filter_category_div").classList.add("check");
+				}
+				if(filterDatas.doneBeforeDate === null && filterDatas.doneStartDate === null){
+					document.querySelector(".doneDate").querySelector(".filter_category_div").classList.remove("check");
+				}
+			})
+			fetchInputFilter();
+			fetchInputFilterIssue();
+			fetchIssueDetail();
+	}
 // 전체리셋버튼 끝 ========================================================================================
-window.addEventListener("load", function() {
-		
-			document.querySelectorAll(".project_input_list").forEach(function(item) {
-		       if (item.checked) {
-			           filterDatas.projectIdxArr.push(item.value);  // 체크된 값 추가
-			       }
-		    })
-			document.querySelectorAll(".issue_type_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.issueTypeArr.push(item.value);
-				}
-			})
-			document.querySelectorAll(".issue_status_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.issueStatusArr.push(item.value);
-				}
-			})
-			document.querySelectorAll(".issue_manager_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.issueManagersArr.push(item.value);
-				}
-			})
-			document.querySelectorAll(".filter_reporter_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.issueReporterArr.push(item.value);
-					document.querySelector(".issueReporter").style.display = "block";
-				}
-			})
-			document.querySelectorAll(".done_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.doneCheck = item.value;
-					document.querySelector(".done_check").style.display = "block";
-				}
-			})
-			document.querySelectorAll(".done_input_list2").forEach(function(item){
-				if(item.checked){
-					filterDatas.notDoneCheck = item.value;
-					document.querySelector(".done_check").style.display = "block";
-				}
-			})
-			document.querySelectorAll(".issue_priority_input_list").forEach(function(item){
-				if(item.checked){
-					filterDatas.issuePriorityArr.push(item.value);
-					document.querySelector(".issuePriority").style.display = "block";
-				}
-			})
-			document.querySelectorAll(".update_date_input_list").forEach(function(item){
-				let value = document.getElementById("update_before_date").value;
-				let date = new Date();
-					if(item.checked && item.id === "radio_days"){
-						date.setDate(date.getDate() - value);
-					    filterDatas.updateBeforeDate = date;
-						document.querySelector(".update_date_box_1").classList.add("show")
-						document.querySelector(".update_date_box_2").classList.remove("show")
-						document.querySelector(".updateDate").style.display = "block"
-					}else if(item.checked && item.id === "radio_range"){
-						filterDatas.updateStartDate = new Date(document.getElementById("update_start_date").value);
-						filterDatas.updateLastDate = new Date(document.getElementById("update_last_date").value);
-						document.querySelector(".update_date_box_2").classList.add("show")
-						document.querySelector(".update_date_box_1").classList.remove("show")
-						document.querySelector(".updateDate").style.display = "block"
-					}
-				})
-			document.querySelectorAll(".create_date_input_list").forEach(function(item){
-				let value = document.getElementById("create_before_date").value;
-				let date = new Date();
-					if(item.checked && item.id === "create_date"){
-						date.setDate(date.getDate() - value);
-					    filterDatas.updateBeforeDate = date;
-						document.querySelector(".create_date_box_1").classList.add("show")
-						document.querySelector(".create_date_box_2").classList.remove("show")
-						document.querySelector(".createDate").style.display = "block"
-					}else if(item.checked && item.id === "create_between"){
-						filterDatas.updateStartDate = new Date(document.getElementById("create_start_date").value);
-						filterDatas.updateLastDate = new Date(document.getElementById("creat_last_date").value);
-						document.querySelector(".create_date_box_2").classList.add("show")
-						document.querySelector(".create_date_box_1").classList.remove("show")
-						document.querySelector(".createDate").style.display = "block"
-					}
-				})
-			document.querySelectorAll(".done_date_input_list").forEach(function(item){
-				let value = document.getElementById("done_before_date").value;
-				let date = new Date();
-					if(item.checked && item.id === "done_date"){
-						date.setDate(date.getDate() - value);
-					    filterDatas.updateBeforeDate = date;
-						document.querySelector(".done_date_box_1").classList.add("show")
-						document.querySelector(".done_date_box_2").classList.remove("show")
-						document.querySelector(".doneDate").style.display = "block"
-					}else if(item.checked && item.id === "done_between"){
-						filterDatas.updateStartDate = new Date(document.getElementById("done_start_date").value);
-						filterDatas.updateLastDate = new Date(document.getElementById("done_last_date").value);
-						document.querySelector(".done_date_box_2").classList.add("show")
-						document.querySelector(".done_date_box_1").classList.remove("show")
-						document.querySelector(".doneDate").style.display = "block"
-					}
-				})
-				fetchInputFilter();
-				fetchInputFilterIssue();
-				fetchIssueDetail();
-		});
+window.addEventListener("load",loadUpdate);
 // ajex 데이터 보내기 ========================================================================================
 function fetchInputFilter() {
 	// fetch()를 사용하여 AJAX 요청
@@ -565,7 +632,6 @@ function fetchInputFilter() {
 		.then(issueListByProjectKey => {
 			if(document.querySelector("tbody") == null) return;
 			document.querySelector("tbody").innerHTML = ""
-			
 			issueListByProjectKey.forEach(function(item){
 				
 				document.querySelector("tbody").innerHTML +=

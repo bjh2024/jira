@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.entity.Account;
@@ -207,4 +209,20 @@ public class AccountService {
 		}
 		return false;
 	}
+	
+	// 비밀번호 변경 메서드
+	  public boolean changePassword(@RequestBody NewPwDTO newPw) {
+		  System.out.println(newPw.getEmail());
+	        Account account = getByEmail(newPw.getEmail()).get();
+
+	        if (account == null || !passwordEncoder.matches(newPw.getOldPw(), account.getPw())) {
+	            return false; // 계정을 찾을 수 없거나 기존 비밀번호가 틀린 경우
+	        }
+
+	        // 새로운 비밀번호로 변경
+	        account.updateAccountPw(passwordEncoder.encode(newPw.getNewPw()));
+	        accountRepository.save(account); // 변경된 비밀번호를 저장
+
+	        return true; // 비밀번호 변경 성공
+	    }
 }

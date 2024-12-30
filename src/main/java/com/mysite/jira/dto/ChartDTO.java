@@ -2,7 +2,6 @@ package com.mysite.jira.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class ChartDTO {

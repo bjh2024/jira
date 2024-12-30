@@ -156,12 +156,33 @@ public class ProjectAPIController {
 	@PostMapping("/delete_issueType")
 	public void deleteIssueType(@RequestBody DeleteIssueTypeDTO issueTypeDTO) {
 		Integer oldTypeIdx = issueTypeDTO.getIssueTypeIdx();
-		IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
 		List<Issue> issueList = projectService.getIssueListByIssueType(issueTypeDTO.getProjectIdx(), oldTypeIdx);
 		System.out.println(oldTypeIdx);
-		for(Issue issue : issueList) {
-			projectService.updateIssueListType(issue, newIssueType);
+		if(issueTypeDTO.getNewTypeIdx() != null) {
+			IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
+			for(Issue issue : issueList) {
+				projectService.updateIssueListType(issue, newIssueType);
+			}
 		}
 		projectService.deleteIssueType(oldTypeIdx);
+	}
+	
+	@PostMapping("/verification_issueType")
+	public boolean verificationIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Integer projectIdx = issueTypeDTO.getProjectIdx();
+		String name = issueTypeDTO.getName();
+		return projectService.verificationIssueType(projectIdx, name);
+	}
+	
+	@PostMapping("/create_issueType")
+	public void createIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Project project = projectService.getProjectByIdx(issueTypeDTO.getProjectIdx());
+		String name = issueTypeDTO.getName();
+		String content = issueTypeDTO.getContent();
+		String iconFilename = issueTypeDTO.getIconFilename();
+		if(content.equals("")) {
+			content = "이 이슈 유형을 사용하는 경우를 사용자들에게 알리기";
+		}
+		projectService.createIssueType(project, name, content, iconFilename);
 	}
 }

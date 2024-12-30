@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.AddJiraMemberDTO;
+import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.account.LoginAddJiraDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
@@ -95,4 +96,12 @@ public class AccountAPIController {
 		return accountService.getIsLoginJiraAdd(email, password, jiraIdx, session);
 	}
 	
+	@PostMapping("/password")
+	public boolean updatePassword(@RequestBody NewPwDTO newPw) {
+		if(accountService.changePassword(newPw)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

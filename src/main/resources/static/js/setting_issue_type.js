@@ -185,11 +185,11 @@ document.querySelector(".edit-typecontentbtn.cancel").addEventListener("click", 
 	document.querySelector(".issuetype-content").classList.remove("none");
 });
 
-document.querySelector(".titlebtn-other").addEventListener("click", function(e){
+document.querySelector(".titlebtn-other")?.addEventListener("click", function(e){
 	this.children[0].classList.toggle("show");
 });
 
-document.querySelector(".type-deletebtn").addEventListener("click", function(e){
+document.querySelector(".type-deletebtn")?.addEventListener("click", function(e){
 	const btn = e.target.closest(".type-deletebtn");
 	if(btn !== null){
 		document.querySelector(".delete-alert-container").classList.add("show");
@@ -255,14 +255,22 @@ function deleteIssueType(key){
 
 document.querySelector(".delete-type-btn.submit").addEventListener("click", function(e){
 	const selectedType = document.querySelector(".selected-type");
-	if(selectedType.dataset.idx == null){
-		alert("반드시 이동할 이슈 유형을 선택해야 합니다.");
-		return;
+	if(selectedType !== null){
+		if(selectedType.dataset.idx == null && selectedType.dataset.listsize > 0){
+			alert("반드시 이동할 이슈 유형을 선택해야 합니다.");
+			return;
+		}else{
+			const btn = document.querySelector(".delete-type-btn.submit");
+			deleteIssueTypeData.projectIdx = btn.dataset.projectidx;
+			deleteIssueTypeData.issueTypeIdx = btn.dataset.oldidx;
+			deleteIssueTypeData.newTypeIdx = selectedType.dataset.idx;
+			console.log(deleteIssueTypeData);
+			deleteIssueType(btn.dataset.key);
+		}
 	}else{
 		const btn = document.querySelector(".delete-type-btn.submit");
 		deleteIssueTypeData.projectIdx = btn.dataset.projectidx;
 		deleteIssueTypeData.issueTypeIdx = btn.dataset.oldidx;
-		deleteIssueTypeData.newTypeIdx = selectedType.dataset.idx;
 		console.log(deleteIssueTypeData);
 		deleteIssueType(btn.dataset.key);
 	}
