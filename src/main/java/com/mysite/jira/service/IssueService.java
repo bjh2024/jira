@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -46,8 +47,6 @@ public class IssueService {
 
 	private final IssueRepository issueRepository;
 
-	private final IssueStatusRepository issueStatusRepository;
-
 	private final IssuePriorityRepository issuePriorityRepository;
 
 	private final IssueTypeRepository issueTypeRepository;
@@ -64,6 +63,11 @@ public class IssueService {
 	private final FilterIssueUpdateRepository filterIssueUpdateRepository;
 	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
 	private final FilterReporterRepository filterReporterRepository;
+	
+	public Issue getByIdx(Integer idx) {
+		Optional<Issue> issue = issueRepository.findById(idx);
+		return issue.get();
+	}
 	
 	public List<Issue> getByKey(String key){
 		return issueRepository.findByKey(key);

@@ -1,3 +1,5 @@
+
+// 토스트 메시지를 받아서 띄워줄 메서드
 function showToast(message) {
   let toast = document.querySelector(".toast_message");
   toast.classList.add("show");
@@ -14,15 +16,17 @@ function showToast(message) {
 	 }, 5000);
 }
 	
-let toastStompClient = null;
+let toastStompClient = null; 
+// 윈도우 로드 후 웹 소켓 연결
 window.addEventListener("load",function(){
+	let jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx")
 	toastConnect();
 	function toastConnect(){
 		let socket = new SockJS("/toast-websocket-endpoint");
 		toastStompClient = Stomp.over(socket);
 		toastStompClient.connect({}, function(frame){
 			console.log("연결 성공" + frame);
-			const topic2 = `/topic/toast/${window.location.pathname.split("/")[1]}`
+			const topic2 = `/topic/toast/${jiraIdx}`
 			toastStompClient.subscribe(topic2, function(issueDatas){
 				showToast(issueDatas.body);
 			})
@@ -30,7 +34,8 @@ window.addEventListener("load",function(){
 	}
 })
 
-
+// 소켓으로 보낼 메시지
 function sendToastMessage(toast){
-	stompClient.send(`/app/toast/${window.location.pathname.split("/")[1]}`, {}, JSON.stringify(toast));
+	let jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx")
+	toastStompClient.send(`/app/toast/${jiraIdx}`, {}, JSON.stringify(toast));
 }

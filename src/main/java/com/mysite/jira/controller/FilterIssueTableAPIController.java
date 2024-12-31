@@ -32,7 +32,6 @@ import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueStatusService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.http.HttpSession;

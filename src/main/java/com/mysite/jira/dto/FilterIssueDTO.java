@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 public class FilterIssueDTO {
 	
+	// 이슈를 위한 값들
+	
 	private String issueIconFilename;
 	private String issueKey;
 	private String issueName;
