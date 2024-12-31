@@ -2654,7 +2654,7 @@ new Sortable(containers, {
 	// 드래그 시작 시 요소의 초기 인덱스를 저장
     onStart: function (evt) {
         originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
-    },
+    }, 
 
     // 드래그 종료 후 새로운 위치를 확인
     onEnd: function (evt) {
