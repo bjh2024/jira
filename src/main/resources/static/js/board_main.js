@@ -613,6 +613,10 @@ function issueNameCheck(){
 let ifCreate = null;
 function createissuefetch(){
 	let url = "/api/project/create_issue";
+	toastInfo.isCreate = 1;
+	toastInfo.issueName = issueDatas.issueName;
+	toastInfo.projectIdx = issueDatas.projectIdx;
+	toastInfo.reporterIdx = issueDatas.reporterIdx;
 	fetch(url, {
 		method: 'POST',
 		headers: {
@@ -623,7 +627,7 @@ function createissuefetch(){
 	.then(idx => {
 		location.reload();
 		localStorage.setItem('newIssue', JSON.stringify(issueDatas));
-		sendToastMessage(issueDatas); // 리로드 후 1초 뒤에 토스트 메시지 전송
+		sendToastMessage(toastInfo); // 리로드 후 1초 뒤에 토스트 메시지 전송
 		return idx.issueIdx;
 	}).catch(error => {
 			console.error("Fetch error:", error);
@@ -940,9 +944,19 @@ document.querySelectorAll(".issue-menubtnbox").forEach(function(btn){
 let deleteIssueData = {
 	"issueIdx": ""
 }
+let toastInfo = {
+	"issueName" : "",
+	"isCreate": false,
+	"projectIdx": "",
+	"reporterIdx": ""
+}
 
 function deleteIssue(){
 	let url = "/api/project/delete_issue_data";
+	toastInfo.isCreate = 0;
+	document.querySelectorAll
+	toastInfo.projectIdx = document.querySelector(".myprofileimgbox").dataset.projectidx;
+	
 	fetch(url, {
 		method: 'POST',
 		headers: {
@@ -952,6 +966,7 @@ function deleteIssue(){
 	})
 	.then(response => {
         if (response.ok) {
+			sendToastMessage(toastInfo);
 			console.log("삭제 성공");
 			location.reload();
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
@@ -969,6 +984,7 @@ document.querySelectorAll(".menuwindow-option.main").forEach(function(btn){
 		const container = document.querySelector(".issue-delete-alert-container");
 		container.classList.add("show");
 		container.children[0].children[0].children[1].innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
+		toastInfo.issueName = btn.dataset.issuename;
 		deleteIssueData.issueIdx = btn.dataset.issueidx;
 	});
 });
