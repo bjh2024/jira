@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FilterDTO {
 
+	// 필터링 할 목록들의 값들
+	
 	private Integer filterIdx;
 	private Integer jiraIdx;
 	private Integer accountIdx;

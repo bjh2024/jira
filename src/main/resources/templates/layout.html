@@ -16,6 +16,7 @@
 	<!-- 네비게이션바 -->
 	<div th:replace="~{header :: headerFragment}"></div>
 	<main>
+	<div th:replace="~{toast_message :: toastMessage}"></div>
 		<div th:replace="~{aside :: asideFragment}"></div>
 		<!-- 기본 템플릿 안에 삽입될 내용 Start -->
 		<div id="main_content" layout:fragment="content"></div>
@@ -30,7 +31,6 @@
 	<!-- team create modal-->
 	<div th:replace="~{team/team_create :: teamCreateFragment}"></div>
 	<div th:replace="~{team/jira_user_add :: jiraUserAddFragment}"></div>
-	<div th:replace="~{toast_message :: toastMessage}"></div>
 	<script src="/js/likeFetch.js"></script>
 	<!-- 실시간 채팅 라이브러리-->
 	<!-- SockJS 라이브러리 -->

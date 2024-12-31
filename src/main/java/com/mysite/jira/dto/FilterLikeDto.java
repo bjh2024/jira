@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FilterLikeDto {
 	
+	// 필터 즐겨찾기를 위한 값
+	
 	private Integer accountIdx;
 	private Integer filterIdx;
 }

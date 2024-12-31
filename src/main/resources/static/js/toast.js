@@ -1,3 +1,5 @@
+
+// 토스트 메시지를 받아서 띄워줄 메서드
 function showToast(message) {
   let toast = document.querySelector(".toast_message");
   toast.classList.add("show");
@@ -14,7 +16,8 @@ function showToast(message) {
 	 }, 5000);
 }
 	
-let toastStompClient = null;
+let toastStompClient = null; 
+// 윈도우 로드 후 웹 소켓 연결
 window.addEventListener("load",function(){
 	toastConnect();
 	function toastConnect(){
@@ -30,7 +33,7 @@ window.addEventListener("load",function(){
 	}
 })
 
-
-function sendToastMessage(toast){
+// 소켓으로 보낼 메시지
+/*function sendToastMessage(toast){
 	stompClient.send(`/app/toast/${window.location.pathname.split("/")[1]}`, {}, JSON.stringify(toast));
-}
+}*/
