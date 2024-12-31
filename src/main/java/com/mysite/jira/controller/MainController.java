@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
@@ -25,6 +27,8 @@ public class MainController {
 	
 	private final AccountService accountService;
 
+	private final JiraService jiraService;
+	
 	private final ProjectService projectService;
 	
 	private final IssueService issueService;
@@ -36,8 +40,11 @@ public class MainController {
 	private final HttpSession session;
 	
 	@GetMapping("/setJiraIdx")
-	public String setAttributeJiraIdx(@RequestParam("jiraIdx") Integer jiraIdx) {
+	public String setAttributeJiraIdx(@RequestParam("jiraIdx") Integer jiraIdx, Principal principal) {
 		session.setAttribute("jiraIdx", jiraIdx);
+		Jira jira = jiraService.getByIdx(jiraIdx);
+		Account account = accountService.getAccountByEmail(principal.getName());
+		jiraService.addJiraRecentClicked(jira, account);
 		return "redirect:/";
 	}
 	

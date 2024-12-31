@@ -51,6 +51,14 @@ public class JiraService {
 		return jiraRepository.countByNameAndJiraMembersList_AccountIdx(jiraName, accountIdx);
 	}
 	
+	public void addJiraRecentClicked(Jira jira, Account account) {
+		JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
+				   .jira(jira)
+				   .account(account)
+				   .build();
+		jiraRecentClickedRepository.save(jiraRecentClicked);
+	}
+	
 	// 사용자가 지라가 없을경우 지라 추가
 	public void addJira(Integer accountIdx) {
 		Optional<Account> account = accountRepository.findById(accountIdx);
@@ -67,12 +75,8 @@ public class JiraService {
 											     .clickedDate(LocalDateTime.now())
 											     .build();
 			jiraMembersRepository.save(jiraMembers);
-			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
-																   .jira(jira)
-																   .account(account.get())
-																   .build();
-			jiraRecentClickedRepository.save(jiraRecentClicked);
 			
+			this.addJiraRecentClicked(jira ,account.get());
 			// 기본값 필터 add
 			filterService.defaultMyPendingIssues(jira, account.get());
 			filterService.defaultReporter(jira, account.get());
