@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.AIQuestionDTO;
+import com.mysite.jira.dto.board.ClickedIssueDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateReplyDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
@@ -61,6 +62,8 @@ import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +71,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
+	private final JiraService jiraService;
+	private final ProjectService projectService;
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
 	
@@ -676,5 +681,14 @@ public class BoardMainAPTIController {
 			dtoList.add(dto);
 		}
 		return dtoList;
+	}
+	
+	// 이슈 클릭 기록 데이터 생성
+	@PostMapping("/create_issue_recent_clicked")
+	public void createIssueRecentClicked(@RequestBody ClickedIssueDTO clickedIssueDTO) {
+		Jira jira = jiraService.getByIdx(clickedIssueDTO.getJiraIdx());
+		Account user = boardMainService.getAccountById(clickedIssueDTO.getUserIdx());
+		Issue issue = boardMainService.getIssueByIdx(clickedIssueDTO.getIssueIdx());
+		boardMainService.createIssueRecentClicked(jira, user, issue);
 	}
 }

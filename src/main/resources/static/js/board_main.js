@@ -820,8 +820,42 @@ function getStatusSubmit(){
 	statusNameCheck();
 }
 
-document.querySelectorAll(".issues").forEach(function(btn, index){
+let recentClickedData = {
+	"jiraIdx": "",
+	"userIdx": "",
+	"issueIdx": ""
+}
+
+function createRecentClickedData(){
+	let url = "/api/project/create_issue_recent_clicked";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(recentClickedData)
+	}).then(response => {
+        if (response.ok) {
+			console.log("최근 클릭 데이터 생성 완료");
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".issues").forEach(function(btn){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".issuedetail-container") == null){
+			recentClickedData.jiraIdx = btn.dataset.jiraidx;
+			recentClickedData.userIdx = btn.dataset.useridx;
+			recentClickedData.issueIdx = btn.dataset.idx;
+			console.log(recentClickedData);
+			createRecentClickedData();
+		}
+		
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
 			|| e.target.closest(".subissuebox") !== null || e.target.closest(".issue-menuwindow") !== null
 			|| e.target.closest(".menuwindow-option") !== null || e.target.closest(".insertwindow-btn") !== null
