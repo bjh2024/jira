@@ -126,6 +126,4 @@ public class AccountController {
 
 		return "account/login_need_password";
 	}
-	
-	
 }

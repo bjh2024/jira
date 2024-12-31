@@ -20,7 +20,7 @@ public class ChatMessageController {
 	
 	@MessageMapping("/chat/{chatRoomIdx}") 
     @SendTo("/topic/chat/{chatRoomIdx}")
-    public ResponseChatMessageDTO sendMessage(RequestChatMessageDTO requestChatMessageDTO, @DestinationVariable("chatRoomIdx") Integer chatRoomIdx) throws Exception {
+    public ResponseChatMessageDTO sendMessage(RequestChatMessageDTO requestChatMessageDTO) throws Exception {
 		ChatMessage chatMessage = chatService.createMessage(requestChatMessageDTO);
 		ResponseChatMessageDTO responseChatMessageDTO = ResponseChatMessageDTO.builder()
 																			  .accountIdx(chatMessage.getAccount().getIdx())

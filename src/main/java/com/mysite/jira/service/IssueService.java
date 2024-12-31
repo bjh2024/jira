@@ -369,7 +369,7 @@ public class IssueService {
 		return this.getChartDTO(priorityDTOList);
 	}
 	
-	// kdw (작업 유형에 따른 이슈의 개수: 작업유형)
+	// kdw (작업 유형에 따른 총 이슈의 개수: 작업유형)
 	public List<PercentTableDTO> getTaskTypeDTO(Integer projectIdx) {
 		List<Map<String, Object>> taskDTOList = issueTypeRepository.findByTypeByIssueCount(projectIdx);
 		List<PercentTableDTO> result = new ArrayList<>();

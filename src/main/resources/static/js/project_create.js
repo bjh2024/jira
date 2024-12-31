@@ -126,12 +126,12 @@ async function validationKey(keyName, inputBox) {
 	// 유효성 검사
 	// 키 이름이 존재하는지 확인 fetch
 	async function keyNameDuplication() {
-		let url = `/api/project/duplication/key?keyName=${keyName}&uri=${window.location.pathname}`;
+		let url = `/api/project/duplication/key?keyName=${keyName}`;
 		try {
 			const res = await fetch(url, { method: "get" });
-			const data = await res.json();
-			if (data.count != 0) {
-				projectName = data.projectName;
+			const data = await res.text();
+			if (data !== "") {
+				projectName = data;
 				return true;
 			}
 		} catch (err) {

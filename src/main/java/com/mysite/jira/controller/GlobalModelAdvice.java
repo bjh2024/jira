@@ -83,7 +83,6 @@ public class GlobalModelAdvice {
 			}else {
 				currentUser = this.accountService.getAccountByEmail(principal.getName());
 			}
-			
 		    
 			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
@@ -94,7 +93,6 @@ public class GlobalModelAdvice {
 			model.addAttribute("currentJira", jira);
 			
 			// header
-			// header null 처리 필요
 			List<JiraMembers> accountByjiraMemberList = jiraService.getJiraByAccountIdxList(accountIdx);
 			List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
 			List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
@@ -102,8 +100,7 @@ public class GlobalModelAdvice {
 			List<HeaderAlaramLogDataDTO> alarmLogData = logDataService.getJiraLogData(jiraIdx);
 			List<AllRecentDTO> allRecentList = recentService.getAllRecentList(accountIdx, jiraIdx, LocalDateTime.now().minusDays(30),LocalDateTime.now());
 			
-			// aside null 처리 필요
-			
+			// aside
 			List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
 			
 			List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);

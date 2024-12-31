@@ -42,6 +42,7 @@ public class DashboardController {
 		model.addAttribute("dashboardList", dashboardService.getDashboardList(accountIdx, jiraIdx));
 		return "dashboard/dashboard_list";
 	}
+	
 	@GetMapping("detail/{dashboardIdx}")
 	public String detailPage(Model model,
 							 @PathVariable("dashboardIdx") Integer dashboardIdx, 
@@ -54,6 +55,7 @@ public class DashboardController {
 		model.addAttribute("allotIssueCount", issueService.getMangerByIssueStatusInCount(jiraIdx, accountIdx));
 		return "dashboard/dashboard_detail";
 	}
+	
 	@GetMapping("edit/{dashboardIdx}")
 	public String detailEditPage(Model model, 
 								 @PathVariable("dashboardIdx") Integer dashboardIdx,

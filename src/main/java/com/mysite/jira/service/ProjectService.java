@@ -125,12 +125,6 @@ public class ProjectService {
 				IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
 				IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build());
 		issueStatusRepository.saveAll(issueStatuses);
-		// 기본 필터
-//		List<Filter> issueStatuses = Arrays.asList(
-//			    IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
-//			    IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
-//			    IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build()
-//		);
 	}
 
 	public void updateProject(Integer projectIdx, String name, String key, Account account) {

@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.IssueTypeDTO;
-import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
-import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
 import com.mysite.jira.dto.project.setting.DeleteIssueTypeDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
@@ -56,22 +54,16 @@ public class ProjectAPIController {
 	}
 	
 	@GetMapping("duplication/key")
-	public ProjectDuplicationKeyDTO getDuplicationProjectKey(@RequestParam("keyName") String keyName,
+	public String getDuplicationProjectKey(@RequestParam("keyName") String keyName,
 															 Principal principal) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, keyName);
-		Integer count = 0;
-		String projectName = "값이 없습니다!";
+		String projectName = "";
 		if(project != null) {
-			count = 1;
 			projectName = project.getName();
 			
 		}
-		ProjectDuplicationKeyDTO dto = ProjectDuplicationKeyDTO.builder()
-														       .count(count)
-														       .projectName(projectName)
-														       .build();
-		return dto;
+		return projectName;
 	}
 	// 프로젝트 생성
 	@PostMapping("create")
@@ -126,13 +118,6 @@ public class ProjectAPIController {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		return projectService.getByJiraIdxAndNameLikeProject(jiraIdx, searchName);
 		
-	}
-	
-	// jiraIdx에 해당하는 모든 프로젝트
-	@GetMapping("dashboard/list")
-	public List<ProjectListDTO> getProjectList(){
-		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		return projectService.getByJiraIdxProjectListDTO(jiraIdx);
 	}
 	
 	@PostMapping("/update_project_name")
