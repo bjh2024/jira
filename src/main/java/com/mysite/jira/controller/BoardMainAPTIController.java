@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.AIQuestionDTO;
+import com.mysite.jira.dto.board.ClickedIssueDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateReplyDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
@@ -61,6 +62,8 @@ import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +71,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
+	private final JiraService jiraService;
+	private final ProjectService projectService;
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
 	
@@ -568,6 +573,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 이슈 상속 관계 생성
 	@PostMapping("/create_issue_path")
 	public EpikIssueDTO createIssuePath(@RequestBody EpikIssueDTO epikIssueDTO) {
 		Project project = boardMainService.getProjectByIdx(epikIssueDTO.getProjectIdx());
@@ -583,6 +589,7 @@ public class BoardMainAPTIController {
 		return epik;
 	}
 	
+	// 해당 프로젝트의 이슈 변동 사항에 대한 로그 생성
 	@PostMapping("/create_project_log")
 	public void createProjectLog(@RequestBody ProjectLogDTO projectLogDTO) {
 		ProjectLogStatus status = boardMainService.getLogStatusByIdx(projectLogDTO.getType());
@@ -592,6 +599,7 @@ public class BoardMainAPTIController {
 		boardMainService.createProjectLogData(issue, creator, status);
 	}
 	
+	// 해당 프로젝트의 이슈 유형 리스트 반환
 	@PostMapping("/get_issue_type_list")
 	public List<UpdateIssueTypeDTO> getIssueTypeList(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO){
 		Integer projectIdx = updateIssueTypeDTO.getProjectIdx();
@@ -609,6 +617,7 @@ public class BoardMainAPTIController {
 		return dtoList;
 	}
 	
+	// 해당 이슈의 이슈 유형 업데이트
 	@PostMapping("/update_issue_type")
 	public UpdateIssueTypeDTO updateIssueType(@RequestBody UpdateIssueTypeDTO updateIssueTypeDTO) {
 		Issue issue = boardMainService.getIssueByIdx(updateIssueTypeDTO.getIssueIdx());
@@ -623,6 +632,7 @@ public class BoardMainAPTIController {
 		return dto;
 	}
 	
+	// 해당 이슈에 투표한 사용자 리스트 반환
 	@PostMapping("/get_voter_list")
 	public List<VoterListDTO> getVoterList(@RequestBody VoterListDTO voterListDTO){
 		Integer issueIdx = voterListDTO.getIssueIdx();
@@ -639,6 +649,7 @@ public class BoardMainAPTIController {
 		return dtoList;
 	}
 	
+	// 투표 버튼 클릭 시 데이터 생성
 	@PostMapping("/create_vote_data")
 	public void createVoteData(@RequestBody VoterListDTO voterListDTO) {
 		Account user = boardMainService.getAccountById(voterListDTO.getUserIdx());
@@ -646,12 +657,14 @@ public class BoardMainAPTIController {
 		boardMainService.createVoteData(user, issue);
 	}
 	
+	// 투표 기록 삭제
 	@PostMapping("/delete_vote_data")
 	public void deleteVoteData(@RequestBody VoterListDTO voterListDTO) {
 		IssueLikeMembers voteData = boardMainService.getOnceVoteData(voterListDTO.getUserIdx(), voterListDTO.getIssueIdx());
 		boardMainService.deleteVoteData(voteData.getIdx());
 	}
 	
+	// 해당 이슈에 첨부된 파일 리스트 반환
 	@PostMapping("/get_file_list")
 	public List<FileRequestDTO> getFileList(@RequestBody FileRequestDTO fileRequestDTO){
 		Integer issueIdx = fileRequestDTO.getIssueIdx();
@@ -668,5 +681,14 @@ public class BoardMainAPTIController {
 			dtoList.add(dto);
 		}
 		return dtoList;
+	}
+	
+	// 이슈 클릭 기록 데이터 생성
+	@PostMapping("/create_issue_recent_clicked")
+	public void createIssueRecentClicked(@RequestBody ClickedIssueDTO clickedIssueDTO) {
+		Jira jira = jiraService.getByIdx(clickedIssueDTO.getJiraIdx());
+		Account user = boardMainService.getAccountById(clickedIssueDTO.getUserIdx());
+		Issue issue = boardMainService.getIssueByIdx(clickedIssueDTO.getIssueIdx());
+		boardMainService.createIssueRecentClicked(jira, user, issue);
 	}
 }

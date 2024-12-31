@@ -35,11 +35,6 @@ public class AccountController {
 		return "account/login";
 	}
 
-//	@GetMapping("/login/naver")
-//    public CustomResponseEntity<UserResponse.Login> loginByNaver(@RequestParam(name = "code") String code) {
-//        return CustomResponseEntity.success(userService.loginByOAuth(code, NAVER));
-//    }
-
 	@GetMapping("/signup")
 	public String signup(CreateUserForm createUserForm) {
 		return "account/signup";

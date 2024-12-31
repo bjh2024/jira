@@ -214,7 +214,7 @@ public class ProjectController {
 	public String attachedFiles(HttpServletRequest request, Model model) {
 		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		
-		// 모든 첨부파일 리스트
+		// 프로젝트 별 첨부파일 리스트
 		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(projectIdx);
 		model.addAttribute("fileList", fileList);
 		
