@@ -185,8 +185,8 @@ public class BoardMainService {
 		this.issueRepository.save(issue);
 	}
 
-	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer issueIdx){
-		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, issueIdx);
+	public List<IssueStatus> getSortedIssueStatus(Integer projectIdx, Integer idx){
+		List<IssueStatus> updatedStatusList = this.issueStatusRepository.findAllByProjectIdxAndIdxNotOrderByStatusAsc(projectIdx, idx);
 		return updatedStatusList;
 	}
 	

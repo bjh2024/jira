@@ -5,11 +5,9 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysite.jira.entity.Account;
 
 import lombok.RequiredArgsConstructor;
 

@@ -10,16 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
 import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
+import com.mysite.jira.dto.project.setting.DeleteIssueTypeDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
+import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 
@@ -38,6 +43,8 @@ public class ProjectAPIController {
 	private final AccountService accountService;
 	
 	private final HttpSession session;
+	
+	private final BoardMainService boardMainService;
 	
 	@GetMapping("duplication/name")
 	public Integer getDuplicationProjectName(@RequestParam("projectName") String projectName) {
@@ -134,4 +141,48 @@ public class ProjectAPIController {
 		projectService.updateProjectName(project, nameDTO.getName());
 	}
 	
+	@PostMapping("/update_issueType_name")
+	public void updateIssueTypeName(@RequestBody IssueTypeDTO issueTypeDTO) {
+		IssueType issueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeName(issueType, issueTypeDTO.getName());
+	}
+	
+	@PostMapping("/update_issueType_content")
+	public void updateIssueTypeContent(@RequestBody IssueTypeDTO issueTypeDTO) {
+		IssueType issueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getIdx());
+		projectService.updateIssueTypeContent(issueType, issueTypeDTO.getContent());
+	}
+	
+	@PostMapping("/delete_issueType")
+	public void deleteIssueType(@RequestBody DeleteIssueTypeDTO issueTypeDTO) {
+		Integer oldTypeIdx = issueTypeDTO.getIssueTypeIdx();
+		List<Issue> issueList = projectService.getIssueListByIssueType(issueTypeDTO.getProjectIdx(), oldTypeIdx);
+		System.out.println(oldTypeIdx);
+		if(issueTypeDTO.getNewTypeIdx() != null) {
+			IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
+			for(Issue issue : issueList) {
+				projectService.updateIssueListType(issue, newIssueType);
+			}
+		}
+		projectService.deleteIssueType(oldTypeIdx);
+	}
+	
+	@PostMapping("/verification_issueType")
+	public boolean verificationIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Integer projectIdx = issueTypeDTO.getProjectIdx();
+		String name = issueTypeDTO.getName();
+		return projectService.verificationIssueType(projectIdx, name);
+	}
+	
+	@PostMapping("/create_issueType")
+	public void createIssueType(@RequestBody IssueTypeDTO issueTypeDTO) {
+		Project project = projectService.getProjectByIdx(issueTypeDTO.getProjectIdx());
+		String name = issueTypeDTO.getName();
+		String content = issueTypeDTO.getContent();
+		String iconFilename = issueTypeDTO.getIconFilename();
+		if(content.equals("")) {
+			content = "이 이슈 유형을 사용하는 경우를 사용자들에게 알리기";
+		}
+		projectService.createIssueType(project, name, content, iconFilename);
+	}
 }

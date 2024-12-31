@@ -187,7 +187,16 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectKey}/setting/issue_type/{issueTypeIdx}")
-	public String settingIssueType() {
+	public String settingIssueType(@PathVariable("issueTypeIdx") Integer issueTypeIdx, Model model) {
+		IssueType currentType = boardMainService.getIssueTypeByIdx(issueTypeIdx);
+		model.addAttribute("IssueType", currentType);
+		
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
+		List<Issue> issueList = projectService.getIssueListByIssueType(projectIdx, issueTypeIdx);
+		model.addAttribute("issueList", issueList);
+		
+		List<IssueType> issueTypeList = boardMainService.getUpdateIssueTypeList(projectIdx, issueTypeIdx);
+		model.addAttribute("issueTypeList", issueTypeList);
 		return "project/setting/issue_type";
 	}
 	
@@ -360,7 +369,6 @@ public class ProjectController {
 	@GetMapping("/profile")
 	public String profile(Model model) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		
 		List<Issue> issueList = issueService.getIssuesByJiraIdx(jiraIdx);
 		model.addAttribute("issue", issueList);
 		

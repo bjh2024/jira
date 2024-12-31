@@ -1,6 +1,5 @@
 package com.mysite.jira.service;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,12 +14,14 @@ import com.mysite.jira.dto.mywork.RecentProjectDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.list.ProjectListIsLikeDTO;
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.ProjectRecentClicked;
+import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
@@ -42,6 +43,8 @@ public class ProjectService {
 	private final IssueTypeRepository issueTypeRepository;
 
 	private final IssueStatusRepository issueStatusRepository;
+	
+	private final IssueRepository issueRepository;
 
 	private final UtilityService utilityService;
 
@@ -112,7 +115,9 @@ public class ProjectService {
 				IssueType.builder().name("작업").content("A small, distinct piece of work.").subContent("")
 						.iconFilename("issue_task.svg").grade(2).project(project).build(),
 				IssueType.builder().name("하위 작업").content("A small piece of work that''s part of a larger task.")
-						.subContent("").iconFilename("issue_sub_task.svg").grade(2).project(project).build());
+						.subContent("").iconFilename("issue_sub_task.svg").grade(1).project(project).build(),
+				IssueType.builder().name("에픽").content("에픽은 작업의 큰 부분을 추적합니다.")
+				.subContent("").iconFilename("issue_epik.svg").grade(3).project(project).build());
 		issueTypeRepository.saveAll(issueTypes);
 		// 기본 이슈상태
 		List<IssueStatus> issueStatuses = Arrays.asList(
@@ -236,5 +241,47 @@ public class ProjectService {
 	public void updateProjectName(Project project, String name) {
 		project.updateProjectName(name);
 		projectRepository.save(project);
+	}
+	
+	public void updateIssueTypeName(IssueType issueType, String name) {
+		issueType.updateName(name);
+		this.issueTypeRepository.save(issueType);
+	}
+	
+	public void updateIssueTypeContent(IssueType issueType, String content) {
+		issueType.updateContent(content);
+		this.issueTypeRepository.save(issueType);
+	}
+	
+	public List<Issue> getIssueListByIssueType(Integer projectIdx, Integer issueTypeIdx){
+		return this.issueRepository.findByProjectIdxAndIssueTypeIdx(projectIdx, issueTypeIdx);
+	}
+	
+	public void updateIssueListType(Issue issue, IssueType issueType) {
+        issue.updateIssueType(issueType);
+        this.issueRepository.save(issue);
+	}
+	
+	public void deleteIssueType(Integer issueTypeIdx) {
+		this.issueTypeRepository.deleteById(issueTypeIdx);
+	}
+	
+	public boolean verificationIssueType(Integer projectIdx, String name) {
+		Optional<IssueType> issueType = this.issueTypeRepository.findByProjectIdxAndName(projectIdx, name);
+		if(issueType.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void createIssueType(Project project, String name, String content, String iconFilename) {
+		IssueType issueType = IssueType.builder()
+									.name(name)
+									.content(content)
+									.iconFilename(iconFilename)
+									.project(project)
+									.grade(2)
+									.build();
+		this.issueTypeRepository.save(issueType);
 	}
 }

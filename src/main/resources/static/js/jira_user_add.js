@@ -70,7 +70,27 @@ document.querySelector(".jira_user_add_container .jira_user_add_btn").addEventLi
 		jiraUserNameInput.focus();
 		return;
 	}
-	// 유효성 검사4 지라에 속한 유저 인지
+	
+	// 유효성 검사4 지라 회원인지 검증
+	async function isJiraUser(email){
+		const uri = `/api/account/isExist?email=${email}`
+		const res = await fetch(uri, {method:"get"})
+		const data = await res.json();
+		
+		if(data === 1){
+			return false;
+		}
+		return true;
+	}
+	if(!await isJiraUser(jiraUserEmail)){
+		jiraUserNameInput.classList.add("alert");
+		alertBox.classList.add("show");
+		alertBox.querySelector(".comment").innerText = "jira에 없는 사용자 입니다(회원가입을 먼저 해주세요)";
+		jiraUserNameInput.focus();
+		return;
+	}
+	
+	// 유효성 검사5 지라에 속한 유저 인지
 	async function jiraMemberDuplicationFetch(email){
 		const uri = `/api/account/duplication/jira_member?email=${email}`
 		

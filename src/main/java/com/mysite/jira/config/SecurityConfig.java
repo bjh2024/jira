@@ -46,7 +46,8 @@ public class SecurityConfig {
         .formLogin((formLogin) -> formLogin
             .loginPage("/account/login")
             .successHandler(customAuthenticationSuccessHandler)
-		).logout((logout) -> logout
+		)
+        .logout((logout) -> logout
 			.logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
 			.logoutSuccessHandler((request, response, authentication) -> {
 			    kakaoLogoutHandler.handleLogout(request, response, authentication);
@@ -64,7 +65,9 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .successHandler(socialAuthenticationHandler)
                 .userInfoEndpoint()
-                .userService(oAuth2UserService));
+                .userService(oAuth2UserService)
+        );
+		
 	    return http.build();
 	}
 	

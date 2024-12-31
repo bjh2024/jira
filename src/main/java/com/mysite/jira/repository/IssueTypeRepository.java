@@ -1,6 +1,5 @@
 package com.mysite.jira.repository;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,4 +43,9 @@ public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {
 	List<IssueType> findByProjectIdxAndGradeAndIdxNot(Integer projectIdx, Integer grade, Integer idx);
 	
 	List<IssueType> findByName(String name);
+	
+	List<IssueType> findByProjectIdx(Integer projectIdx);
+	
+	Optional<IssueType> findByProjectIdxAndName(Integer projectIdx, String name);
+	
 }

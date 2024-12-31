@@ -62,6 +62,13 @@ public class IssueType {
 		this.project = project;
 	}
 	
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
+	public void updateContent(String content) {
+		this.content = content;
+	}
 	
 	@OneToMany(mappedBy = "issueType", cascade = CascadeType.REMOVE) 
 	private List<Issue> issueList; 

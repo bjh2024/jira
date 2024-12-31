@@ -19,6 +19,10 @@ public class IssueTypeService {
 	
 	private final IssueTypeRepository issueTypeRepository;
 	
+	public List<IssueType> getByProjectIdxIssueTypeList(Integer projectIdx){
+		return issueTypeRepository.findByProjectIdx(projectIdx);
+	}
+	
 	public IssueType getByName(String name){
 		List<IssueType> issueTypeList = issueTypeRepository.findByName(name);
 		IssueType result = issueTypeList.get(0);

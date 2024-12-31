@@ -23,6 +23,7 @@ import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.FilterService;
+import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
@@ -52,6 +53,8 @@ public class GlobalModelAdvice {
 	private final RecentService recentService;
 
 	private final LikeService likeService;
+	
+	private final IssueTypeService issueTypeService;
 	
 	private final FilterService filterService;
 
@@ -201,6 +204,8 @@ public class GlobalModelAdvice {
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, projectKey);
 			Integer projectIdx = project.getIdx();
 			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
+			
+			model.addAttribute("issueTypeInfoList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
 		}
 	}
 }
