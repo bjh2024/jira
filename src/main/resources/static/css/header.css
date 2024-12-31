@@ -972,6 +972,7 @@ font-size: 14px;
 }
 
 .alarm_content_item1 .item1_box {
+	padding: 12px 0;
 	font-size: 14px;
 	
 	display: flex;
@@ -993,23 +994,6 @@ font-size: 14px;
 	padding-top: 4px;
 	display: flex;
 	align-items: center;
-}
-
-.alarm_content_item1 .item1_box_sub {
-	padding: 12px 0;
-
-	display: flex;
-	gap: 12px;
-	align-items: center;
-}
-
-.alarm_content_item1 .item1_box_sub span {
-	font-size: 14px;
-	color: #0c66e4
-}
-
-.alarm_content_item1 .item1_box_sub span:hover {
-	text-decoration: underline;
 }
 
 .end_flag_comment {

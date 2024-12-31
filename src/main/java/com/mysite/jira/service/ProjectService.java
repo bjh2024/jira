@@ -90,6 +90,15 @@ public class ProjectService {
 		return result;
 	}
 	
+	public void addProjectRecentClicked(Account account, Jira jira, Project project) {
+		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder()
+																		.account(account)
+																		.jira(jira)
+																		.project(project)
+																		.build();
+		projectRecentClickedRepository.save(projectRecentClicked);
+	}
+	
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
 	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
@@ -102,9 +111,7 @@ public class ProjectService {
 				.jira(jira).account(account).sequence(sequence).build();
 		projectRepository.save(project);
 		// 프로젝트 클릭 로그
-		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder().account(account).jira(jira)
-				.project(project).build();
-		projectRecentClickedRepository.save(projectRecentClicked);
+		this.addProjectRecentClicked(account, jira, project);
 
 		// 프로젝트 멤버,권한 추가
 		ProjectMembers projectMembers = ProjectMembers.builder().project(project).account(account).auth_type(3).build();

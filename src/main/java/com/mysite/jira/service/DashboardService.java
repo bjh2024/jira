@@ -86,6 +86,16 @@ public class DashboardService {
 		return null;
 	}
 	
+	public void addDashboardRecentClicked(Dashboard dashboard, Jira jira, Account account) {
+		// 대시보드 최근 방문 추가
+		DashboardRecentClicked dashboardRecentClicked = DashboardRecentClicked.builder()
+																			  .dashboard(dashboard)
+																			  .jira(jira)
+																			  .account(account)
+																			  .build();
+		dashboardRecentClickedRepository.save(dashboardRecentClicked);
+	}
+	
 	@Transactional
 	public Integer createDashboard(String name, String explain, Jira jira, Account account, List<AuthTypeDTO> authItems) {
 		// 대시보드 추가
@@ -98,12 +108,7 @@ public class DashboardService {
 		dashboardRepository.save(dashboard);
 		
 		// 대시보드 최근 방문 추가
-		DashboardRecentClicked dashboardRecentClicked = DashboardRecentClicked.builder()
-																			  .dashboard(dashboard)
-																			  .jira(jira)
-																			  .account(account)
-																			  .build();
-		dashboardRecentClickedRepository.save(dashboardRecentClicked);
+		this.addDashboardRecentClicked(dashboard, jira, account);
 		
 		// 대시보드 보기, 편집 권한 추가
 		List<DashboardAuth> authList = new ArrayList<>();
@@ -171,6 +176,7 @@ public class DashboardService {
 	
 	// 대시보드 디테일
 	public List<List<Object>> getDashboardDetail(Integer dashboardIdx){
+		
 		List<Map<String, Object>> dashboardDetail = dashboardRepository.findByDashboardDetail(dashboardIdx);
 		List<List<Object>> result = new ArrayList<>();
 		List<Object> divOrder1List = new ArrayList<>();
@@ -451,13 +457,6 @@ public class DashboardService {
 	// 대시보드 필터링된 이슈 삭제
 	public void deleteIssueFilter(Integer idx) {
 		dashboardIssueFilterRepository.deleteById(idx);
-	}
-	
-	public Dashboard getDashboard(Integer dashboardIdx) {
-		Optional<Dashboard> dashboard = dashboardRepository.findById(dashboardIdx);
-		if(!dashboard.isEmpty())
-			return dashboard.get();
-		return null;
 	}
 	
 }

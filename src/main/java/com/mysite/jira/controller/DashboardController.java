@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Dashboard;
+import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
@@ -22,9 +24,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/dashboard")
 public class DashboardController {
 	
-	private final AccountService accountService;
-	
 	private final JiraService jiraService;
+	
+	private final AccountService accountService;
 	
 	private final DashboardService dashboardService;
 	
@@ -49,7 +51,13 @@ public class DashboardController {
 							 Principal principal) {
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer accountIdx = account.getIdx();
+		
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Jira jira = jiraService.getByIdx(jiraIdx);
+		
+		Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
+		
+		dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 		
 		model.addAttribute("dashboardItemList", dashboardService.getDashboardDetail(dashboardIdx));
 		model.addAttribute("allotIssueCount", issueService.getMangerByIssueStatusInCount(jiraIdx, accountIdx));

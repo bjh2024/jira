@@ -904,7 +904,7 @@ function getFileListFetch(box){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : file.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : file.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${file.name}</div>
@@ -1986,7 +1986,7 @@ document.querySelectorAll(".file-input-direct").forEach(function(input){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${fileData.name}</div>
@@ -2029,7 +2029,7 @@ document.querySelectorAll(".file-input").forEach(function(input){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${fileData.name}</div>

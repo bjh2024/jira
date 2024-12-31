@@ -160,15 +160,19 @@ public class GlobalModelAdvice {
 	}
 
 	@ModelAttribute
-	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
+	public void addProjectHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
 		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list") || uri.contains("/project/profile"))
 			return;
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
 			
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
 			session.setAttribute("projectIdx", project.getIdx());
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			projectService.addProjectRecentClicked(account, jira, project);
 			
 			model.addAttribute("project", project);
 		}

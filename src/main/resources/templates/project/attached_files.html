@@ -21,7 +21,7 @@
 					<img class="file-previewimg" th:src="@{|/attached_files/${file.name.endsWith('.txt') ? (file.name.substring(0, file.name.lastIndexOf('.')) + '_converted.png') : file.name}|}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
 				</div>
 				<div class="attached-file-options" th:attr="data-fileidx=${file.idx}">
-					<a th:href="@{|/attached_files/${file.name}|}" download>
+					<a th:href="@{|/jira_files/${file.name}|}" download>
 						<button class="attached-file-btn download">
 							<span style="height: 24px; margin: 0px auto;"><img th:src="@{/images/download_icon.svg}"></span>
 						</button>
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 						<div class="file-detail-btnbar">
-							<a th:href="@{|/attached_files/${file.name}|}" download>
+							<a th:href="@{|/jira_files/${file.name}|}" download>
 								<button class="file-download-btn">
 									<img style="filter: invert(79%) sepia(15%) saturate(176%) hue-rotate(169deg) brightness(108%) contrast(83%);" th:src="@{/images/download_icon.svg}">
 								</button>
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					<div class="file-detail-body">
-						<img class="file-detail" th:src="@{|/attached_files/${file.name.endsWith('.txt') ? (file.name.substring(0, file.name.lastIndexOf('.')) + '_converted.png') : file.name}|}">
+						<img class="file-detail" th:src="@{|/jira_files/${file.name.endsWith('.txt') ? (file.name.substring(0, file.name.lastIndexOf('.')) + '_converted.png') : file.name}|}">
 					</div>
 					<div class="file-detail-footer">
 						<div class="footer-resize-bar">
