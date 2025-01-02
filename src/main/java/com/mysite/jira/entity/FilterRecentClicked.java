@@ -14,8 +14,10 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class FilterRecentClicked {
@@ -43,6 +45,10 @@ public class FilterRecentClicked {
 	this.filter = filter;
 	this.jira = jira;
 	this.clickedDate = LocalDateTime.now();
+	}
+	
+	public void updateDate() {
+		this.clickedDate = LocalDateTime.now();
 	}
    
    
