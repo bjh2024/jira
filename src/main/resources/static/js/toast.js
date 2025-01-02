@@ -18,15 +18,15 @@ function showToast(message) {
 let toastStompClient = null; 
 // 윈도우 로드 후 웹 소켓 연결
 window.addEventListener("load",function(){
-	let jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx")
+	let jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx");
 	toastConnect();
 	function toastConnect(){
-		let socket = new SockJS("/toast-websocket-endpoint");
+		let socket = new SockJS("/websocket-endpoint");
 		toastStompClient = Stomp.over(socket);
 		toastStompClient.connect({}, function(frame){
 			console.log("연결 성공" + frame);
-			const topic2 = `/topic/toast/${jiraIdx}`
-			toastStompClient.subscribe(topic2, function(issueDatas){
+			const topic = `/topic/${jiraIdx}`
+			toastStompClient.subscribe(topic, function(issueDatas){
 				showToast(issueDatas.body);
 			})
 		})

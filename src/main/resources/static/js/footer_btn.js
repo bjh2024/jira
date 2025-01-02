@@ -37,45 +37,41 @@ function chatMessageAdd(chatRoomDTO, msg){
 	document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
 }
 
-
 let stompClient = null;
 function connection(chatRoomDTOList) {
-	if (chatRoomDTOList.length !== 0) {
-		if (!stompClient) {
-			let socket = new SockJS("/websocket-endpoint");
-			stompClient = Stomp.over(socket);
+	let socket = new SockJS("/websocket-endpoint");
+	stompClient = Stomp.over(socket);
 
-			stompClient.connect({}, function(frame) {
-				/*console.log("연결 성공" + frame);*/
-				chatRoomDTOList.forEach(function(chatRoomDTO) {
-					const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
-					stompClient.subscribe(topic, function(msg) {
-						chatMessageAdd(chatRoomDTO, msg);
-					});
-				});
-
-			});
-		}else{
-			const topic = `/topic/chat/${chatRoomDTOList.chatRoom.idx}`;
+	stompClient.connect({}, function(frame) {
+		console.log("연결 성공" + frame);
+		chatRoomDTOList.forEach(function(chatRoomDTO) {
+			const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
 			stompClient.subscribe(topic, function(msg) {
-				chatMessageAdd(chatRoomDTOList, msg);
+				chatMessageAdd(chatRoomDTO, msg);
 			});
-		}
-	}
-}
-
-
-
-function sendMessage(message, chatRoomIdx) {
-	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
+		});
+		const jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx");
+		const topic = `/topic/chat/room/${jiraIdx}`;
+		stompClient.subscribe(topic, function(msg) {
+			 const chatRoomIdx = JSON.parse(msg.body);
+			 console.log(chatRoomIdx);
+		});
+	});
 }
 
 document.addEventListener("DOMContentLoaded", async function(){
 	const uri = `/api/chat/room/list`;
 	const chatRoomDTOList = await chatRoomListFetch(uri);
-
 	connection(chatRoomDTOList);
 });
+
+function sendMessage(message, chatRoomIdx) {
+	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
+}
+
+function sendCreateChatRoom(chatRoomCreateDTO) {
+	stompClient.send(`/app/chat/room/create`, {}, JSON.stringify(chatRoomCreateDTO));
+}
 
 let isFooterClick = false;
 document.querySelector(".footer-btn").addEventListener("click", function() {
@@ -306,7 +302,6 @@ document.querySelectorAll(".chat-room-gnb .img_box").forEach(function(btn, gnbId
 			if (document.querySelector(".chat-room-content .room_list").className.includes("show")) return;
 			const uri = `/api/chat/room/list`;
 			chatRoomListFetch(uri);
-
 		}
 
 		const contentBoxs = document.querySelectorAll(".chat-room-content .content");
@@ -531,24 +526,9 @@ document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", 
 	}
 
 	if(isCreate){
-		const uri = "/api/chat/room/create";
-		fetch(uri, {
-			method: "post",
-			headers: { "Content-type": "application/json" },
-			body: JSON.stringify(requestChatRoomCreateDTO)
-		})
-			.then(res => res.json())
-			.then(chatRoomInfo => {
-				if (chatRoomInfo) {
-					document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
-					connection(chatRoomInfo);
-				}
-			})
-			.catch(err => {
-				console.error(err);
-			});
+		sendCreateChatRoom(requestChatRoomCreateDTO);
+		document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
 	}
-
 });
 
 

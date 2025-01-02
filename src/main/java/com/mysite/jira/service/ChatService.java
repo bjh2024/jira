@@ -131,7 +131,6 @@ public class ChatService {
 		ChatRoom chatRoom = ChatRoom.builder().name(chatRoomName).build();
 
 		chatRoomRepository.save(chatRoom);
-
 		Integer[] chatAccountIdxList = requestChatRoomCreateDTO.getChatAccountIdxList();
 		List<ChatMembers> chatMembersList = new ArrayList<>();
 		for (int i = 0; i < chatAccountIdxList.length; i++) {
