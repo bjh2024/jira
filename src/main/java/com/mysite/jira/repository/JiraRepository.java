@@ -66,15 +66,13 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 	// 가장 최근에 방문했던 지라
 	// rownum as rownum하면 오류가 남
 	@Query("""
-			SELECT  al.jira as jira
-			FROM
-			(SELECT  jrc.jira as jira,
-				     rownum as rnum
-			 FROM    JiraRecentClicked jrc
-			 WHERE   jrc.account.idx = :accountIdx
-			 ORDER BY jrc.clickedDate DESC
-			) al
-				WHERE al.rnum = 1
+			SELECT  al.jira
+			FROM    (SELECT Jira as jira, 
+					        Account as account 
+					 FROM JiraRecentClicked 
+					 WHERE account.idx = :accountIdx 
+					 ORDER BY clickedDate DESC) al
+			WHERE  rownum = 1
 			""")
 	Jira findByRecentClickedJira(@Param("accountIdx") Integer accountIdx);
 	

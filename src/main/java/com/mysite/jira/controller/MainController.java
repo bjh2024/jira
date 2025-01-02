@@ -39,15 +39,6 @@ public class MainController {
 
 	private final HttpSession session;
 	
-	@GetMapping("/setJiraIdx")
-	public String setAttributeJiraIdx(@RequestParam("jiraIdx") Integer jiraIdx, Principal principal) {
-		session.setAttribute("jiraIdx", jiraIdx);
-		Jira jira = jiraService.getByIdx(jiraIdx);
-		Account account = accountService.getAccountByEmail(principal.getName());
-		jiraService.addJiraRecentClicked(jira, account);
-		return "redirect:/";
-	}
-	
 	@GetMapping("/")
 	public String filter(Model model, Principal principal) {
 		if(principal == null) {

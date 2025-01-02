@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/websocket-endpoint/**").setAllowedOriginPatterns("https://kritac-jira.site").withSockJS();
-		registry.addEndpoint("/toast-websocket-endpoint/**").setAllowedOriginPatterns("https://kritac-jira.site").withSockJS();
+		registry.addEndpoint("/websocket-endpoint").setAllowedOriginPatterns("https://kritac-jira.site").withSockJS();
+		registry.addEndpoint("/toast-websocket-endpoint").setAllowedOriginPatterns("https://kritac-jira.site").withSockJS();
 	}
 }

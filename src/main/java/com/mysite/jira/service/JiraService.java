@@ -29,10 +29,6 @@ public class JiraService {
 	
 	private final FilterService filterService;
 	
-	public Optional<Jira> getIdxByName(String name){
-		return jiraRepository.findIdxByName(name);
-	}
-	
 	public Jira getByIdx(Integer idx) {
 		Optional<Jira> opJira = jiraRepository.findByIdx(idx);
 		Jira jira = null;
@@ -55,12 +51,12 @@ public class JiraService {
 		JiraRecentClicked jiraRecentClicked = jiraRecentClickedRepository.findByJira_idxAndAccount_idx(jira.getIdx(), account.getIdx());
 		if(jiraRecentClicked != null) {
 			jiraRecentClicked.updateDate();
-			return;
+		}else {
+			jiraRecentClicked = JiraRecentClicked.builder()
+												 .jira(jira)
+												 .account(account)
+												 .build();
 		}
-		jiraRecentClicked = JiraRecentClicked.builder()
-											 .jira(jira)
-											 .account(account)
-											 .build();
 		jiraRecentClickedRepository.save(jiraRecentClicked);
 	}
 	

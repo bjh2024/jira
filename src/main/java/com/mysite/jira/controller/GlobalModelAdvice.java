@@ -184,7 +184,7 @@ public class GlobalModelAdvice {
 											 Principal principal,
 											 @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api") && uri.contains("/list")) return;
+		if (uri.contains("/api") || uri.contains("/dashboard/list")) return;
 		if(uri.contains("/dashboard")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;
 			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
