@@ -87,12 +87,18 @@ public class DashboardService {
 	}
 	
 	public void addDashboardRecentClicked(Dashboard dashboard, Jira jira, Account account) {
+		DashboardRecentClicked dashboardRecentClicked = dashboardRecentClickedRepository.findByDashboard_IdxAndAccount_Idx(dashboard.getIdx(), account.getIdx());
+		
+		if(dashboardRecentClicked != null) {
+			dashboardRecentClicked.updateDate();
+			return;
+		}
 		// 대시보드 최근 방문 추가
-		DashboardRecentClicked dashboardRecentClicked = DashboardRecentClicked.builder()
-																			  .dashboard(dashboard)
-																			  .jira(jira)
-																			  .account(account)
-																			  .build();
+		dashboardRecentClicked = DashboardRecentClicked.builder()
+													   .dashboard(dashboard)
+													   .jira(jira)
+													   .account(account)
+													   .build();
 		dashboardRecentClickedRepository.save(dashboardRecentClicked);
 	}
 	

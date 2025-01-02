@@ -179,13 +179,22 @@ public class GlobalModelAdvice {
 	}
 	
 	@ModelAttribute
-	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
+	public void addDashboardHeaderAttributes(HttpServletRequest request, 
+											 Model model, 
+											 Principal principal,
+											 @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api")) return;
-		if(uri.contains("/dashboard") && 
-		  !uri.contains("/list")) {
+		if (uri.contains("/api") && uri.contains("/list")) return;
+		if(uri.contains("/dashboard")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;
 			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
+			
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			 
+			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
 		}

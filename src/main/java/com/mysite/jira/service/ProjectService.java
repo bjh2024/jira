@@ -91,11 +91,16 @@ public class ProjectService {
 	}
 	
 	public void addProjectRecentClicked(Account account, Jira jira, Project project) {
-		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder()
-																		.account(account)
-																		.jira(jira)
-																		.project(project)
-																		.build();
+		ProjectRecentClicked projectRecentClicked = projectRecentClickedRepository.findByProject_idxAndAccount_idx(project.getIdx(), account.getIdx());
+		if(projectRecentClicked != null) {
+			projectRecentClicked.updateDate();
+			return;
+		}
+		projectRecentClicked = ProjectRecentClicked.builder()
+												   .account(account)
+												   .jira(jira)
+												   .project(project)
+												   .build();
 		projectRecentClickedRepository.save(projectRecentClicked);
 	}
 	

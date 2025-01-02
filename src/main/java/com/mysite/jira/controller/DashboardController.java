@@ -53,11 +53,6 @@ public class DashboardController {
 		Integer accountIdx = account.getIdx();
 		
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		Jira jira = jiraService.getByIdx(jiraIdx);
-		
-		Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
-		
-		dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 		
 		model.addAttribute("dashboardItemList", dashboardService.getDashboardDetail(dashboardIdx));
 		model.addAttribute("allotIssueCount", issueService.getMangerByIssueStatusInCount(jiraIdx, accountIdx));

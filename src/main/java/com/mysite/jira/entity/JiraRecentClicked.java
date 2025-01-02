@@ -43,6 +43,10 @@ public class JiraRecentClicked {
 		this.clickedDate = LocalDateTime.now();
 	}
 	
+	public void updateDate() {
+		this.clickedDate = LocalDateTime.now();
+	}
+	
 	
 	
 }

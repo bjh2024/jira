@@ -52,10 +52,15 @@ public class JiraService {
 	}
 	
 	public void addJiraRecentClicked(Jira jira, Account account) {
-		JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
-				   .jira(jira)
-				   .account(account)
-				   .build();
+		JiraRecentClicked jiraRecentClicked = jiraRecentClickedRepository.findByJira_idxAndAccount_idx(jira.getIdx(), account.getIdx());
+		if(jiraRecentClicked != null) {
+			jiraRecentClicked.updateDate();
+			return;
+		}
+		jiraRecentClicked = JiraRecentClicked.builder()
+											 .jira(jira)
+											 .account(account)
+											 .build();
 		jiraRecentClickedRepository.save(jiraRecentClicked);
 	}
 	

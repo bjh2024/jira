@@ -44,4 +44,8 @@ public class ProjectRecentClicked {
 		this.jira = jira;
 		this.clickedDate = LocalDateTime.now();
 	}
+	
+	public void updateDate() {
+		this.clickedDate = LocalDateTime.now();
+	}
 }

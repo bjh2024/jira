@@ -590,7 +590,8 @@ let issueDatas = {
 	"issueTypeIdx": "",
 	"reporterIdx": "",
 	"statusIdx": "",
-	"issueName": ""
+	"issueName": "",
+	"issueIdx": ""
 }
 
 function issueNameCheck(){

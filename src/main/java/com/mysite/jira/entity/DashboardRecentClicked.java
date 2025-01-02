@@ -46,5 +46,9 @@ public class DashboardRecentClicked {
 		this.clickedDate = LocalDateTime.now();
 	}
 	
+	public void updateDate() {
+		this.clickedDate = LocalDateTime.now();
+	}
+	
 	
 }

@@ -1,4 +1,3 @@
-
 // 토스트 메시지를 받아서 띄워줄 메서드
 function showToast(message) {
   let toast = document.querySelector(".toast_message");
