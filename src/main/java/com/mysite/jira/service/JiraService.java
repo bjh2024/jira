@@ -22,16 +22,14 @@ import lombok.RequiredArgsConstructor;
 public class JiraService {
 	
 	private final AccountRepository accountRepository;
+	
 	private final JiraRepository jiraRepository;
+	
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	private final JiraRecentClickedRepository jiraRecentClickedRepository;
 	
 	private final FilterService filterService;
-	
-	public Optional<Jira> getIdxByName(String name){
-		return jiraRepository.findIdxByName(name);
-	}
 	
 	public Jira getByIdx(Integer idx) {
 		Optional<Jira> opJira = jiraRepository.findByIdx(idx);
@@ -51,6 +49,19 @@ public class JiraService {
 		return jiraRepository.countByNameAndJiraMembersList_AccountIdx(jiraName, accountIdx);
 	}
 	
+	public void addJiraRecentClicked(Jira jira, Account account) {
+		JiraRecentClicked jiraRecentClicked = jiraRecentClickedRepository.findByJira_idxAndAccount_idx(jira.getIdx(), account.getIdx());
+		if(jiraRecentClicked != null) {
+			jiraRecentClicked.updateDate();
+		}else {
+			jiraRecentClicked = JiraRecentClicked.builder()
+												 .jira(jira)
+												 .account(account)
+												 .build();
+		}
+		jiraRecentClickedRepository.save(jiraRecentClicked);
+	}
+	
 	// 사용자가 지라가 없을경우 지라 추가
 	public void addJira(Integer accountIdx) {
 		Optional<Account> account = accountRepository.findById(accountIdx);
@@ -67,12 +78,8 @@ public class JiraService {
 											     .clickedDate(LocalDateTime.now())
 											     .build();
 			jiraMembersRepository.save(jiraMembers);
-			JiraRecentClicked jiraRecentClicked = JiraRecentClicked.builder()
-																   .jira(jira)
-																   .account(account.get())
-																   .build();
-			jiraRecentClickedRepository.save(jiraRecentClicked);
 			
+			this.addJiraRecentClicked(jira ,account.get());
 			// 기본값 필터 add
 			filterService.defaultMyPendingIssues(jira, account.get());
 			filterService.defaultReporter(jira, account.get());
@@ -85,8 +92,9 @@ public class JiraService {
 		}
 	}
 	 
-	public Jira getRecentTop1Jira(Integer accountIdx) {
-		return jiraRepository.findByRecentClickedJira(accountIdx);
+	public List<Jira> getRecentTop1Jira(Integer accountIdx) {
+		return jiraRepository.findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx);
+		
 	}
 	
 	public Optional<Jira> getJiraByName(String name) {

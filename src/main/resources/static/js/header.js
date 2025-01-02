@@ -1,4 +1,14 @@
-
+document.querySelectorAll(".account_jira_list a").forEach(function(jiraBtn){
+	jiraBtn.addEventListener("click", function(){
+		const jiraIdx = this.getAttribute("idx-data");
+		const uri = `/api/header/setJiraIdx`
+		fetch(uri, {method:"post", headers:{"Content-Type" : "application/json"}, body:JSON.stringify(jiraIdx)})
+		.catch(err => {
+			console.error(err);
+		})
+		location.href="/";
+	});
+});
 let prevBtn = "";
 document.querySelector("body").addEventListener("mousedown", function(e) {
 	if (e.target.closest(".my_app_btn") === null) {
@@ -216,15 +226,3 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 });
 
 document.getElementById("profileLink").href = "/project/profile";
-
-document.querySelectorAll(".account_jira_list a").forEach(function(jiraBtn){
-	jiraBtn.addEventListener("click", function(){
-		const jiraIdx = this.getAttribute("idx-data");
-		const uri = `/api/header/setJiraIdx`
-		fetch(uri, {method:"post", headers:{"Content-Type" : "application/json"}, body:JSON.stringify(jiraIdx)})
-		.catch(err => {
-			console.error(err);
-		})
-		location.href="/";
-	});
-});

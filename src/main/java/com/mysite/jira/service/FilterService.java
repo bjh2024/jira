@@ -20,6 +20,7 @@ import com.mysite.jira.entity.FilterIssueUpdate;
 import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.FilterManager;
 import com.mysite.jira.entity.FilterProject;
+import com.mysite.jira.entity.FilterRecentClicked;
 import com.mysite.jira.entity.FilterReporter;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueStatus;
@@ -38,10 +39,12 @@ import com.mysite.jira.repository.FilterIssueUpdateRepository;
 import com.mysite.jira.repository.FilterLikeMembersRepository;
 import com.mysite.jira.repository.FilterManagerRepository;
 import com.mysite.jira.repository.FilterProjectRepository;
+import com.mysite.jira.repository.FilterRecentClickedRepository;
 import com.mysite.jira.repository.FilterReporterRepository;
 import com.mysite.jira.repository.FilterRepository;
 import com.mysite.jira.repository.JiraRepository;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -61,8 +64,10 @@ public class FilterService {
 	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
 	private final FilterAuthRepository filterAuthRepository;
 	private final FilterLikeMembersRepository filterLikeMembersRepository;
+	private final FilterRecentClickedRepository filterRecentClickedRepository;
 	private final AccountRepository accountRepository;
 	private final JiraRepository jiraRepository;
+	private final HttpSession session;
 	
 	public FilterLikeMembers getByAccountIdxAndFilterIdx(Integer accountIdx, Integer filterIdx) {
 		return filterLikeMembersRepository.findByAccountIdxAndFilterIdx(accountIdx, filterIdx);
@@ -394,5 +399,25 @@ public class FilterService {
 	}
 	public void filterLikeDelete(Integer idx) {
 		this.filterLikeMembersRepository.deleteById(idx);
+	}
+	
+	public void filterRecentClickedAddOrUpdate(Integer filterIdx, Integer accountIdx) {
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Filter filter = filterRepository.findById(filterIdx).get();
+		Account account = accountRepository.findById(accountIdx).get();
+		Jira jira = jiraRepository.findById(jiraIdx).get();
+		FilterRecentClicked filterRecentUpdate = filterRecentClickedRepository.findByFilterIdxAndAccountIdx(filterIdx, accountIdx);
+		FilterRecentClicked filterRecentClicked = FilterRecentClicked.builder()
+				.filter(filter)
+				.account(account)
+				.jira(jira)
+				.build();
+		if(filterRecentUpdate != null) {
+			filterRecentUpdate.updateDate();
+			this.filterRecentClickedRepository.save(filterRecentUpdate);
+		}else {
+			this.filterRecentClickedRepository.save(filterRecentClicked);
+		}
+				
 	}
 }

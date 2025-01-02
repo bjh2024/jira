@@ -42,6 +42,8 @@ public class AccountService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
+	private final FilterService filterService;
+	
 	public Optional<Account> getByEmail(String email) {
 		return accountRepository.findByEmail(email);
 	}
@@ -205,6 +207,15 @@ public class AccountService {
 																   .account(account)
 																   .build();
 			jiraRecentClickedRepository.save(jiraRecentClicked);
+			// 기본값 필터 add
+			filterService.defaultMyPendingIssues(jira, account);
+			filterService.defaultReporter(jira, account);
+			filterService.defaultAllIssue(jira, account);
+			filterService.defaultPendingIssue(jira, account);
+			filterService.defaultDoneIssue(jira, account);
+			filterService.defaultRecentlyCreated(jira, account);
+			filterService.defaultRecentlyDone(jira, account);
+			filterService.defaultRecentlyUpdate(jira, account);
 			return true;
 		}
 		return false;

@@ -23,13 +23,11 @@ public class ToastAPIController {
 	
 	private final AccountService accountService;
 	private final ProjectService projectService;
-	private final IssueService issueService;
 	
 	@MessageMapping("/toast/{jiraIdx}")
-	@SendTo("/topic/toast/{jiraIdx}")
+	@SendTo("/topic/{jiraIdx}")
 	public String issueToastMessage(@RequestBody ToastInfoDTO toastInfoDTO) {
 		String result = "";
-		System.out.println(toastInfoDTO.getIsCreate());
 		try {
 		if(toastInfoDTO.getIsCreate() == 1) {
 			Account account = accountService.getAccountByIdx(toastInfoDTO.getReporterIdx());
@@ -46,5 +44,4 @@ public class ToastAPIController {
 			return e.getMessage();
 		}
 	}
-	
 }

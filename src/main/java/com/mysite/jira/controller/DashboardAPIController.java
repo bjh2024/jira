@@ -20,12 +20,17 @@ import com.mysite.jira.dto.dashboard.RequestCompleteRecentDTO;
 import com.mysite.jira.dto.dashboard.RequestDashboardCreateDTO;
 import com.mysite.jira.dto.dashboard.RequestPieChartDTO;
 import com.mysite.jira.dto.dashboard.RequestStatisticsDTO;
+import com.mysite.jira.dto.dashboard.create.AccountListDTO;
+import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
+import com.mysite.jira.dto.dashboard.create.TeamListDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +42,15 @@ public class DashboardAPIController {
 
 	private final DashboardService dashboardService;
 	
+	private final TeamService teamService;
+	
 	private final AccountService accountService;
 	
 	private final JiraService jiraService;
 	
 	private final IssueService issueService;
+	
+	private final ProjectService projectService;
 	
 	private final HttpSession session;
 	
@@ -57,6 +66,24 @@ public class DashboardAPIController {
 		List<AuthTypeDTO> authItems = requestDashboardCreateDTO.getAuthItems();
 		
 		return dashboardService.createDashboard(name, explain, jira, account, authItems);
+	}
+	
+	@GetMapping("create/project/list")
+	public List<ProjectListDTO> getProjectList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return projectService.getByJiraIdxProjectListDTO(jiraIdx);
+	}
+	
+	@GetMapping("create/team/list")
+	public List<TeamListDTO> getTeamList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return teamService.getTeamListByJiraIdxDashboard(jiraIdx);
+	}
+	
+	@GetMapping("create/account/list")
+	public List<AccountListDTO> getAccountList(){
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		return accountService.getAccountListDashboard(jiraIdx);
 	}
 	
 	@PostMapping("delete")
@@ -130,13 +157,13 @@ public class DashboardAPIController {
 	}
 	
 	@GetMapping("issue_recent/begin")
-	public List<IssueCompleteChartDTO> getCompleteIssueRecentChart(@RequestParam("projectIdx") Integer projectIdx,
+	public List<IssueCompleteChartDTO> getNotCompleteIssueRecentChart(@RequestParam("projectIdx") Integer projectIdx,
 													  			   @RequestParam("startDate") LocalDateTime startDate){
 		return issueService.getIssueNotCompleteCountBetweenCreateDate(projectIdx, startDate);
 	}
 	
 	@GetMapping("issue_recent/finish")
-	public List<IssueCompleteChartDTO> getNotCompleteIssueRecentChart(@RequestParam("projectIdx") Integer projectIdx,
+	public List<IssueCompleteChartDTO> getCompleteIssueRecentChart(@RequestParam("projectIdx") Integer projectIdx,
 													  			      @RequestParam("startDate") LocalDateTime startDate){
 		return issueService.getIssueCompleteCountBetweenCreateDate(projectIdx, startDate);
 	}
@@ -214,7 +241,6 @@ public class DashboardAPIController {
 		Integer projectIdx = requestStatisticsDTO.getProjectIdx();
 		Integer dashboardColIdx = requestStatisticsDTO.getDashboardColIdx();
 		Integer rowNum = requestStatisticsDTO.getRowNum();
-		System.out.println("idx : " + idx + ", projectIdx : " + projectIdx + ", dashboardColIdx : " + dashboardColIdx + ", rowNum : " + rowNum);
 		dashboardService.updateIssueStatistics(idx, projectIdx, dashboardColIdx, rowNum);
 	}
 	

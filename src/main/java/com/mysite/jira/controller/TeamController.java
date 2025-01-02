@@ -26,7 +26,7 @@ public class TeamController {
 	private final HttpSession session;
 	
 	@GetMapping("list")
-	public String listPage(Model model, Principal principal, HttpServletRequest request) {
+	public String listPage(Model model, Principal principal) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		model.addAttribute("memberList", jiraMembersService.getMembersByJiraIdx(jiraIdx));
 		model.addAttribute("teamList", teamService.getTeamListByJiraIdx(jiraIdx));

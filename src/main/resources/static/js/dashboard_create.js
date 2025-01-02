@@ -138,7 +138,7 @@ document.querySelectorAll(".role_project_input").forEach(function(projectInput){
 	projectInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function projectListFetch(lnbContainer){
-			const uri = `/api/project/dashboard/list`
+			const uri = `/api/dashboard/create/project/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const projectList = await res.json();
@@ -170,7 +170,7 @@ document.querySelectorAll(".role_group_input").forEach(function(groupInput){
 	groupInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function teamListFetch(lnbContainer){
-			const uri = `/api/team/dashboard/list`
+			const uri = `/api/dashboard/create/team/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const teamList = await res.json();
@@ -202,7 +202,7 @@ document.querySelectorAll(".role_user_input").forEach(function(groupInput){
 	groupInput.addEventListener("focus", function(e){
 		const lnbContainer = this.nextElementSibling;
 		async function userListFetch(lnbContainer){
-			const uri = `/api/account/dashboard/list`
+			const uri = `/api/dashboard/create/account/list`
 			try{
 				const res = await fetch(uri, {method : "get"})
 				const userList = await res.json();

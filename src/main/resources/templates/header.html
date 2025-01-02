@@ -12,7 +12,8 @@
 			</div>
 			<div class="my_app_content item_lnb">
 				<div class="account_jira_list">
-					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " th:each="jiraMember : ${accountByjiraMemberList}">
+					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " 
+					   th:each="jiraMember : ${accountByjiraMemberList}">
 						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}"></span>
 					</a>
 				</div>
@@ -347,11 +348,6 @@
 											 • 
 											<span th:text="${logData.issueStatusName}"></span>
 										 </div>
-										<div class="item1_box_sub">
-											<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-												alt="" style="border-radius: 50%;" width="26" height="26">
-											<span>+다현 님의 업데이트 2\</span>
-										</div>
 									</div>
 								</div>
 								<img th:src="@{/images/check_unread_icon.svg}" width="24" height="24" />

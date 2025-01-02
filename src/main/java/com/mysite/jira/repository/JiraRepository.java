@@ -19,7 +19,10 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 
 	// kdw jira로그인정보와 지라이름이 같은 지라의 개수
 	Integer countByNameAndJiraMembersList_AccountIdx(String name, Integer accountIdx);
-
+	
+	// kdw 최근 방문 jira
+	List<Jira> findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(Integer accountIdx);
+	
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
 			SELECT iconFilename as iconFilename,
@@ -63,20 +66,6 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 			@Param("jiraIdx") Integer jiraIdx, @Param("startDate") LocalDateTime startDate,
 			@Param("endDate") LocalDateTime endDate);
 
-	// 가장 최근에 방문했던 지라
-	// rownum as rownum하면 오류가 남
-	@Query("""
-			SELECT  al.jira as jira
-			FROM
-			(SELECT  jrc.jira as jira,
-				     rownum as rnum
-			 FROM    JiraRecentClicked jrc
-			 WHERE   jrc.account.idx = :accountIdx
-			 ORDER BY jrc.clickedDate DESC
-			) al
-				WHERE al.rnum = 1
-			""")
-	Jira findByRecentClickedJira(@Param("accountIdx") Integer accountIdx);
 	
 	Optional<Jira> findByIdx(Integer idx);
 }

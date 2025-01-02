@@ -323,7 +323,6 @@ public class BoardMainService {
 							.build();
 		
 		this.issueRepository.save(issue);
-		
 		return issue.getIdx();
 	}
 	

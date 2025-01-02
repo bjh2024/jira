@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysite.jira.dto.AddJiraMemberDTO;
 import com.mysite.jira.dto.NewPwDTO;
 import com.mysite.jira.dto.account.LoginAddJiraDTO;
-import com.mysite.jira.dto.dashboard.create.AccountListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.email.JiraInviteEmailClient;
 import com.mysite.jira.entity.Account;
@@ -45,12 +44,6 @@ public class AccountAPIController {
 		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		// key를 accountIdx로 사용
 		return accountService.getProjectMemberList(projectIdx, searchName);
-	}
-	
-	@GetMapping("dashboard/list")
-	public List<AccountListDTO> getAccountList(){
-		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		return accountService.getAccountListDashboard(jiraIdx);
 	}
 	
 	@GetMapping("isExist")

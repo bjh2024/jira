@@ -1,6 +1,7 @@
 package com.mysite.jira.config;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,13 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
     	Account account = accKakao != null ? accKakao : accNaver;
 	    Integer accountIdx = account.getIdx();
 	    
-	    Jira jira = jiraService.getRecentTop1Jira(accountIdx);
+	    List<Jira> jiraList = jiraService.getRecentTop1Jira(accountIdx);
+	    Jira jira = jiraList.get(0);
 	    String jiraName = "";
 	    String defaultUri = "";
 	    if (jira == null) {
 	    	jiraService.addJira(accountIdx);
-	    	jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
+	    	jiraName = jiraList.get(0).getName();
 	    	defaultUri = "/" + jiraName;
 	    }else {
 	    	jiraName = jira.getName();
