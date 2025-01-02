@@ -610,7 +610,7 @@ function issueNameCheck(){
 			console.error("Fetch error:", error);
 	});
 }
-let ifCreate = null;
+
 function createissuefetch(){
 	let url = "/api/project/create_issue";
 	toastInfo.isCreate = 1;
