@@ -115,6 +115,7 @@ public class AccountController {
 	public String isJiraUser(@RequestParam("userEmail") String userEmail,
 							 @RequestParam("jiraIdx") Integer jiraIdx,
 							 Model model) {
+		
 		Account account = accountService.getAccountByEmail(userEmail);
 		model.addAttribute("account", account);
 		model.addAttribute("jiraIdx", jiraIdx);

@@ -217,7 +217,7 @@ function submitForm(e) {
 }
 
 // chat-room 이벤트
-document.querySelector("body").addEventListener("click", function(e) {
+document.querySelector("body").addEventListener("click", async function(e) {
 	const chatRoomBtn = e.target.closest(".chat-room");
 	const chatRoomContent = document.querySelector(".chat-room-conatiner");
 	if (chatRoomBtn === null) {
@@ -232,6 +232,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 		return;
 	}
 	chatRoomContent.classList.add("show");
+	
 });
 
 function lastSendDate(date) {
@@ -254,7 +255,7 @@ async function chatRoomListFetch(uri) {
 	try {
 		const res = await fetch(uri, { method: "get" });
 		const chatRoomDTOList = await res.json();
-		if (chatRoomDTOList.length != 0) {
+		if (chatRoomDTOList.length !== 0) {
 			container.innerHTML = "";
 			chatRoomDTOList.forEach(function(chatRoomDTO) {
 				const itemDiv = document.createElement("div");
@@ -305,6 +306,7 @@ document.querySelectorAll(".chat-room-gnb .img_box").forEach(function(btn, gnbId
 			if (document.querySelector(".chat-room-content .room_list").className.includes("show")) return;
 			const uri = `/api/chat/room/list`;
 			chatRoomListFetch(uri);
+
 		}
 
 		const contentBoxs = document.querySelectorAll(".chat-room-content .content");
@@ -528,24 +530,24 @@ document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", 
 		isCreate = false;
 	}
 
-	//if(isCreate){
-	const uri = "/api/chat/room/create";
-	fetch(uri, {
-		method: "post",
-		headers: { "Content-type": "application/json" },
-		body: JSON.stringify(requestChatRoomCreateDTO)
-	})
-		.then(res => res.json())
-		.then(chatRoomInfo => {
-			if (chatRoomInfo) {
-				document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
-				connection(chatRoomInfo);
-			}
+	if(isCreate){
+		const uri = "/api/chat/room/create";
+		fetch(uri, {
+			method: "post",
+			headers: { "Content-type": "application/json" },
+			body: JSON.stringify(requestChatRoomCreateDTO)
 		})
-		.catch(err => {
-			console.error(err);
-		});
-	//}
+			.then(res => res.json())
+			.then(chatRoomInfo => {
+				if (chatRoomInfo) {
+					document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
+					connection(chatRoomInfo);
+				}
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
 
 });
 

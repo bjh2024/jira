@@ -22,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 public class JiraService {
 	
 	private final AccountRepository accountRepository;
+	
 	private final JiraRepository jiraRepository;
+	
 	private final JiraMembersRepository jiraMembersRepository;
 	
 	private final JiraRecentClickedRepository jiraRecentClickedRepository;
@@ -90,8 +92,9 @@ public class JiraService {
 		}
 	}
 	 
-	public Jira getRecentTop1Jira(Integer accountIdx) {
-		return jiraRepository.findByRecentClickedJira(accountIdx);
+	public List<Jira> getRecentTop1Jira(Integer accountIdx) {
+		return jiraRepository.findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx);
+		
 	}
 	
 	public Optional<Jira> getJiraByName(String name) {

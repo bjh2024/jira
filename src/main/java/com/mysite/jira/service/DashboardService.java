@@ -34,7 +34,6 @@ import com.mysite.jira.repository.DashboardIssueStatisticsRepository;
 import com.mysite.jira.repository.DashboardPieChartRepository;
 import com.mysite.jira.repository.DashboardRecentClickedRepository;
 import com.mysite.jira.repository.DashboardRepository;
-import com.mysite.jira.repository.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
 

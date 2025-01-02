@@ -224,11 +224,11 @@ public class GlobalModelAdvice {
 	public void updateOrAddFilterRecent(HttpServletRequest request,@RequestParam(value= "filter", required = false) Integer filterIdx,
 			Principal principal) {
 		String uri = request.getRequestURI();
-		if(uri.contains("/account/login"))return;
+		if(uri.contains("/account"))return;
 		Account accountIdx = accountService.getByEmail(principal.getName()).get();
 		if(uri.contains("/filter")) {
 			if(filterIdx != null) {
-			filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
+				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
 			}
 		}
 	}

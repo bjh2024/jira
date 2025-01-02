@@ -7,13 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LikeService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.RecentService;
@@ -27,8 +24,6 @@ public class MainController {
 	
 	private final AccountService accountService;
 
-	private final JiraService jiraService;
-	
 	private final ProjectService projectService;
 	
 	private final IssueService issueService;

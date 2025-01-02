@@ -12,7 +12,8 @@
 			</div>
 			<div class="my_app_content item_lnb">
 				<div class="account_jira_list">
-					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " th:each="jiraMember : ${accountByjiraMemberList}">
+					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " 
+					   th:each="jiraMember : ${accountByjiraMemberList}">
 						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}"></span>
 					</a>
 				</div>
