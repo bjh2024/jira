@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.LikeContentDTO;
@@ -216,6 +217,19 @@ public class GlobalModelAdvice {
 			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
 			
 			model.addAttribute("issueTypeInfoList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
+		}
+	}
+	
+	@ModelAttribute
+	public void updateOrAddFilterRecent(HttpServletRequest request,@RequestParam(value= "filter", required = false) Integer filterIdx,
+			Principal principal) {
+		String uri = request.getRequestURI();
+		if(uri.contains("/account/login"))return;
+		Account accountIdx = accountService.getByEmail(principal.getName()).get();
+		if(uri.contains("/filter")) {
+			if(filterIdx != null) {
+			filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
+			}
 		}
 	}
 }
