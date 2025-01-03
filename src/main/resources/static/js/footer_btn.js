@@ -37,45 +37,50 @@ function chatMessageAdd(chatRoomDTO, msg){
 	document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
 }
 
+function subscribeChatRoom(chatRoomDTO){
+	console.log(chatRoomDTO);
+	const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
+	stompClient.subscribe(topic, function(msg) {
+		chatMessageAdd(chatRoomDTO, msg);
+	});
+}
 
 let stompClient = null;
 function connection(chatRoomDTOList) {
-	if (chatRoomDTOList.length !== 0) {
-		if (!stompClient) {
-			let socket = new SockJS("/websocket-endpoint");
-			stompClient = Stomp.over(socket);
+	let socket = new SockJS("/websocket-endpoint");
+	stompClient = Stomp.over(socket);
 
-			stompClient.connect({}, function(frame) {
-				/*console.log("연결 성공" + frame);*/
-				chatRoomDTOList.forEach(function(chatRoomDTO) {
-					const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
-					stompClient.subscribe(topic, function(msg) {
-						chatMessageAdd(chatRoomDTO, msg);
-					});
-				});
-
-			});
-		}else{
-			const topic = `/topic/chat/${chatRoomDTOList.chatRoom.idx}`;
-			stompClient.subscribe(topic, function(msg) {
-				chatMessageAdd(chatRoomDTOList, msg);
-			});
-		}
-	}
-}
-
-
-
-function sendMessage(message, chatRoomIdx) {
-	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
+	stompClient.connect({}, function(frame) {
+		console.log("연결 성공" + frame);
+		chatRoomDTOList.forEach(function(chatRoomDTO) {
+			subscribeChatRoom(chatRoomDTO);
+		});
+		const jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx");
+		const chatRoomtopic = `/user/topic/chat/room/${jiraIdx}`;
+		stompClient.subscribe(chatRoomtopic, function(msg) {
+			const chatRoomDTO = JSON.parse(msg.body)
+			subscribeChatRoom(chatRoomDTO);
+			const chatRoomIdx = chatRoomDTO.chatRoom.idx;
+			const uri = `/api/chat/room/detail?chatRoomIdx=${chatRoomIdx}`;
+			chatMessageFetch(uri, chatRoomIdx);
+			document.querySelector(".chat-room-content .chat_room_add_box").classList.remove("show");
+		});
+	});
 }
 
 document.addEventListener("DOMContentLoaded", async function(){
 	const uri = `/api/chat/room/list`;
 	const chatRoomDTOList = await chatRoomListFetch(uri);
-
 	connection(chatRoomDTOList);
 });
+
+function sendMessage(message, chatRoomIdx) {
+	stompClient.send(`/app/chat/${chatRoomIdx}`, {}, JSON.stringify(message));
+}
+
+function sendCreateChatRoom(chatRoomCreateDTO) {
+	stompClient.send(`/app/chat/room/create`, {}, JSON.stringify(chatRoomCreateDTO));
+}
 
 let isFooterClick = false;
 document.querySelector(".footer-btn").addEventListener("click", function() {
@@ -217,7 +222,7 @@ function submitForm(e) {
 }
 
 // chat-room 이벤트
-document.querySelector("body").addEventListener("click", function(e) {
+document.querySelector("body").addEventListener("click", async function(e) {
 	const chatRoomBtn = e.target.closest(".chat-room");
 	const chatRoomContent = document.querySelector(".chat-room-conatiner");
 	if (chatRoomBtn === null) {
@@ -232,6 +237,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 		return;
 	}
 	chatRoomContent.classList.add("show");
+	
 });
 
 function lastSendDate(date) {
@@ -254,7 +260,7 @@ async function chatRoomListFetch(uri) {
 	try {
 		const res = await fetch(uri, { method: "get" });
 		const chatRoomDTOList = await res.json();
-		if (chatRoomDTOList.length != 0) {
+		if (chatRoomDTOList.length !== 0) {
 			container.innerHTML = "";
 			chatRoomDTOList.forEach(function(chatRoomDTO) {
 				const itemDiv = document.createElement("div");
@@ -528,25 +534,9 @@ document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", 
 		isCreate = false;
 	}
 
-	//if(isCreate){
-	const uri = "/api/chat/room/create";
-	fetch(uri, {
-		method: "post",
-		headers: { "Content-type": "application/json" },
-		body: JSON.stringify(requestChatRoomCreateDTO)
-	})
-		.then(res => res.json())
-		.then(chatRoomInfo => {
-			if (chatRoomInfo) {
-				document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
-				connection(chatRoomInfo);
-			}
-		})
-		.catch(err => {
-			console.error(err);
-		});
-	//}
-
+	if(isCreate){
+		sendCreateChatRoom(requestChatRoomCreateDTO);
+	}
 });
 
 

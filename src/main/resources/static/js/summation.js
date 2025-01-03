@@ -174,7 +174,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const url = `/api/summation/priority_chart`;
 		const res = await fetch(url, { method: "get"});
         const priorityCharDTO = await res.json();
-		console.log(priorityCharDTO);
 		
 		priorityCharDTO.forEach(function(item){
 			priorityLabelArr.push(item.name);

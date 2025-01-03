@@ -102,25 +102,30 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
 	// kdw
 	@Query(value = """
-			SELECT  p.name,
-			        p.color,
-			        p.icon_filename,
-			        p.key,
-			        count(i.idx) AS issue_count
-			FROM    project p
-			JOIN    project_recent_clicked prc
-			ON      p.idx = prc.project_idx
-			LEFT JOIN issue i
-			ON      p.idx = i.project_idx
-			LEFT JOIN issue_status ist
-			ON      ist.idx = i.issue_status_idx
-			WHERE   prc.account_idx = :accountIdx
-			AND     p.jira_idx = :jiraIdx
-			AND     (ist.status BETWEEN 1 AND 2 OR i.idx IS NULL)
+			SELECT p.name,
+			       p.color,
+			       p.icon_filename,
+			       p.key,
+			       count(i.idx) AS issue_count
+			FROM project p
+			JOIN (
+			    SELECT project_idx, clicked_date, account_idx
+			    FROM (
+			        SELECT project_idx, clicked_date, account_idx,
+			               ROW_NUMBER() OVER (PARTITION BY project_idx ORDER BY clicked_date DESC) AS rn
+			        FROM project_recent_clicked
+			    )
+			    WHERE rn = 1
+			) prc 
+			ON p.idx = prc.project_idx
+			LEFT JOIN issue i ON (p.idx = i.project_idx AND i.manager_idx = :accountIdx)
+			LEFT JOIN issue_status ist ON ist.idx = i.issue_status_idx
+			WHERE prc.account_idx = :accountIdx
+			AND p.jira_idx = :jiraIdx
+			AND (ist.status BETWEEN 1 AND 2 OR i.idx IS NULL)
 			GROUP BY p.name, p.color, p.icon_filename, prc.clicked_date, p.key
 			ORDER BY prc.clicked_date DESC
 			""", nativeQuery = true)
-	
 	List<Map<String, Object>> findProjectIssueCounts(@Param("accountIdx") Integer accountIdx,
 			@Param("jiraIdx") Integer jiraIdx);
 	

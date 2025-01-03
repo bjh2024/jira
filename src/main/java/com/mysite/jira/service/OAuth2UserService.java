@@ -41,7 +41,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
         	String name = (String) ((Map) attributes.get("response")).get("name");
             String email = (String) ((Map) attributes.get("response")).get("email");
             String naverKey = (String) ((Map) attributes.get("response")).get("id");
-            System.out.println("OAuth2UserService naver: " + email + " " + name + " " + naverKey);
         	
         	Optional<Account> optAccount = this.accountRepository.findByEmail(email);
         	
@@ -70,7 +69,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
         	String email = (String) ((Map<String, Object>) attributes.get("kakao_account")).get("email");
         	String name = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname");
         	String kakaoKey = attributes.get("id").toString();
-        	System.out.println("OAuth2UserService kakao: " + email + " " + name + " " + kakaoKey);
         	
         	Optional<Account> optAccount = this.accountRepository.findByEmail(email);
         	

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysite.jira.dto.dashboard.create.TeamListDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
@@ -32,12 +31,6 @@ public class TeamAPIController {
 	private final JiraService jiraService;
 	
 	private final HttpSession session;
-	
-	@GetMapping("dashboard/list")
-	public List<TeamListDTO> getTeamList(){
-		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		return teamService.getTeamListByJiraIdxDashboard(jiraIdx);
-	}
 	
 	@GetMapping("duplication/name")
 	public Integer getDuplicationTeamName(@RequestParam("teamName") String teamName){

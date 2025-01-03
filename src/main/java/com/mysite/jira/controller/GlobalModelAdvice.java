@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.dto.AllRecentDTO;
 import com.mysite.jira.dto.LikeContentDTO;
@@ -83,7 +84,6 @@ public class GlobalModelAdvice {
 			}else {
 				currentUser = this.accountService.getAccountByEmail(principal.getName());
 			}
-			
 		    
 			// 가져올 값들
 			Integer accountIdx = currentUser.getIdx();
@@ -94,7 +94,6 @@ public class GlobalModelAdvice {
 			model.addAttribute("currentJira", jira);
 			
 			// header
-			// header null 처리 필요
 			List<JiraMembers> accountByjiraMemberList = jiraService.getJiraByAccountIdxList(accountIdx);
 			List<Issue> issuesRecentList = recentService.getRecentIssueList(accountIdx, jiraIdx);
 			List<Project> allProjectList = projectService.getProjectByJiraIdx(jiraIdx);
@@ -102,8 +101,7 @@ public class GlobalModelAdvice {
 			List<HeaderAlaramLogDataDTO> alarmLogData = logDataService.getJiraLogData(jiraIdx);
 			List<AllRecentDTO> allRecentList = recentService.getAllRecentList(accountIdx, jiraIdx, LocalDateTime.now().minusDays(30),LocalDateTime.now());
 			
-			// aside null 처리 필요
-			
+			// aside
 			List<AllRecentDTO> todayRecentList = recentService.getTodayAllRecentList(accountIdx, jiraIdx);
 			
 			List<AllRecentDTO> yesterdayRecentList = recentService.getYesterdayAllRecentList(accountIdx, jiraIdx);
@@ -163,28 +161,45 @@ public class GlobalModelAdvice {
 	}
 
 	@ModelAttribute
-	public void addProjectHeaderAttributes(HttpServletRequest request, Model model) {
+	public void addProjectHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
 		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list") || uri.contains("/project/profile"))
 			return;
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			List<JiraMembers> jiraMemberList = jiraService.getJiraMemberListByJiraIdx(jiraIdx);
 			
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
 			session.setAttribute("projectIdx", project.getIdx());
+			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			projectService.addProjectRecentClicked(account, jira, project);
 			
 			model.addAttribute("project", project);
+			model.addAttribute("jiraMemberList", jiraMemberList);
+			model.addAttribute("memberAccList", memberAccList);
 		}
 	}
 	
 	@ModelAttribute
-	public void addDashboardHeaderAttributes(HttpServletRequest request, Model model, @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
+	public void addDashboardHeaderAttributes(HttpServletRequest request, 
+											 Model model, 
+											 Principal principal,
+											 @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
 		String uri = request.getRequestURI();
-		if (uri.contains("/api")) return;
-		if(uri.contains("/dashboard") && 
-		  !uri.contains("/list")) {
+		if (uri.contains("/api") || uri.contains("/dashboard/list")) return;
+		if(uri.contains("/dashboard")) {
 			boolean isDetail = uri.contains("/detail") ? true : false;
 			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
+			
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			 
+			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
 		}
@@ -206,6 +221,19 @@ public class GlobalModelAdvice {
 			model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectIdx(projectIdx));
 			
 			model.addAttribute("issueTypeInfoList", issueTypeService.getByProjectIdxIssueTypeList(projectIdx));
+		}
+	}
+	
+	@ModelAttribute
+	public void updateOrAddFilterRecent(HttpServletRequest request,@RequestParam(value= "filter", required = false) Integer filterIdx,
+			Principal principal) {
+		String uri = request.getRequestURI();
+		if(uri.contains("/account"))return;
+		Account accountIdx = accountService.getAccountByEmail(principal.getName());
+		if(uri.contains("/filter")) {
+			if(filterIdx != null) {
+				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
+			}
 		}
 	}
 }

@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.IssueTypeDTO;
-import com.mysite.jira.dto.dashboard.create.ProjectListDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
-import com.mysite.jira.dto.project.create.ProjectDuplicationKeyDTO;
+import com.mysite.jira.dto.project.create.ProjectMemberCreateDTO;
 import com.mysite.jira.dto.project.setting.DeleteIssueTypeDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
@@ -56,22 +55,16 @@ public class ProjectAPIController {
 	}
 	
 	@GetMapping("duplication/key")
-	public ProjectDuplicationKeyDTO getDuplicationProjectKey(@RequestParam("keyName") String keyName,
+	public String getDuplicationProjectKey(@RequestParam("keyName") String keyName,
 															 Principal principal) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, keyName);
-		Integer count = 0;
-		String projectName = "값이 없습니다!";
+		String projectName = "";
 		if(project != null) {
-			count = 1;
 			projectName = project.getName();
 			
 		}
-		ProjectDuplicationKeyDTO dto = ProjectDuplicationKeyDTO.builder()
-														       .count(count)
-														       .projectName(projectName)
-														       .build();
-		return dto;
+		return projectName;
 	}
 	// 프로젝트 생성
 	@PostMapping("create")
@@ -128,13 +121,6 @@ public class ProjectAPIController {
 		
 	}
 	
-	// jiraIdx에 해당하는 모든 프로젝트
-	@GetMapping("dashboard/list")
-	public List<ProjectListDTO> getProjectList(){
-		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		return projectService.getByJiraIdxProjectListDTO(jiraIdx);
-	}
-	
 	@PostMapping("/update_project_name")
 	public void updateProjectName(@RequestBody UpdateProjectNameDTO nameDTO) {
 		Project project = projectService.getProjectByIdx(nameDTO.getProjectIdx());
@@ -157,7 +143,6 @@ public class ProjectAPIController {
 	public void deleteIssueType(@RequestBody DeleteIssueTypeDTO issueTypeDTO) {
 		Integer oldTypeIdx = issueTypeDTO.getIssueTypeIdx();
 		List<Issue> issueList = projectService.getIssueListByIssueType(issueTypeDTO.getProjectIdx(), oldTypeIdx);
-		System.out.println(oldTypeIdx);
 		if(issueTypeDTO.getNewTypeIdx() != null) {
 			IssueType newIssueType = boardMainService.getIssueTypeByIdx(issueTypeDTO.getNewTypeIdx());
 			for(Issue issue : issueList) {
@@ -184,5 +169,14 @@ public class ProjectAPIController {
 			content = "이 이슈 유형을 사용하는 경우를 사용자들에게 알리기";
 		}
 		projectService.createIssueType(project, name, content, iconFilename);
+	}
+	
+	@PostMapping("/create_project_member")
+	public void createProjectMember(@RequestBody ProjectMemberCreateDTO memberDTO) {
+		System.out.println("여기 오나?");
+		System.out.println(memberDTO.getUserIdx() + "ddddddd" + memberDTO.getProjectIdx());
+		Account user = boardMainService.getAccountById(memberDTO.getUserIdx());
+		Project project = projectService.getProjectByIdx(memberDTO.getProjectIdx());
+		projectService.createProjectMember(user, project);
 	}
 }

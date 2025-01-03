@@ -15,6 +15,7 @@ import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueLikeMembers;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueRecentClicked;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
@@ -31,6 +32,7 @@ import com.mysite.jira.repository.IssueLabelDataRepository;
 import com.mysite.jira.repository.IssueLabelRepository;
 import com.mysite.jira.repository.IssueLikeMembersRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
+import com.mysite.jira.repository.IssueRecentClickedRepository;
 import com.mysite.jira.repository.IssueReplyRepository;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
@@ -62,6 +64,7 @@ public class BoardMainService {
 	private final ProjectLogStatusRepository projectLogStatusRepository;
 	private final AccountRepository accountRepository;
 	private final IssueLikeMembersRepository issueLikeMembersRepository;
+	private final IssueRecentClickedRepository issueRecentClickedRepository;
 	
 	
 	// project_header 프로젝트명 불러오기
@@ -273,7 +276,7 @@ public class BoardMainService {
 		return false;
 	}
 	
-	public Integer createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
+	public Issue createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Optional<IssueType> optIssueType = this.issueTypeRepository.findById(issueTypeIdx);
@@ -318,10 +321,10 @@ public class BoardMainService {
 							.reporter(user)
 							.divOrder(max + 1)
 							.build();
-		
 		this.issueRepository.save(issue);
 		
-		return issue.getIdx();
+		this.createIssueRecentClicked(jira, user, issue);
+		return issue;
 	}
 	
 	public void updateIssueBoxOrder(Integer oldIdx, Integer newIdx, Integer projectIdx, boolean reverse) {
@@ -612,5 +615,24 @@ public class BoardMainService {
 	public List<IssueFile> getFileListByIssueIdx(Integer idx){
 		List<IssueFile> fileList = this.issueFileRepository.findByIssueIdx(idx);
 		return fileList;
+	}
+	
+	public Optional<IssueRecentClicked> verificationIssueRecentClicked(Integer jiraIdx, Integer accountIdx, Integer issueIdx) {
+		Optional<IssueRecentClicked> recentClicked = this.issueRecentClickedRepository.findByJiraIdxAndAccountIdxAndIssueIdx(jiraIdx, accountIdx, issueIdx);
+		return recentClicked;
+	}
+	
+	public void createIssueRecentClicked(Jira jira, Account user, Issue issue) {
+		IssueRecentClicked clicked = IssueRecentClicked.builder()
+													.jira(jira)
+													.account(user)
+													.issue(issue)
+													.build();
+		this.issueRecentClickedRepository.save(clicked);
+	}
+	
+	public void updateIssueRecentClicked(IssueRecentClicked clicked) {
+		clicked.updateClickedDate();
+		this.issueRecentClickedRepository.save(clicked);
 	}
 }

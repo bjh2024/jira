@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.header.HeaderRecentIssueDTO;
 import com.mysite.jira.dto.header.HeaderRequestFilterDTO;
+import com.mysite.jira.entity.Account;
+import com.mysite.jira.entity.Jira;
+import com.mysite.jira.service.AccountService;
+import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.RecentService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +31,18 @@ public class HeaderAPIController {
 
     private final RecentService recentService;
     
-    private final HttpSession session;
+    private final AccountService accountService;
     
+    private final JiraService jiraService;
+    
+    private final HttpSession session;
+   
     @PostMapping("/setJiraIdx")
-    public void setSessionJiraIdx(@RequestBody Integer jiraIdx) {
+    public void setSessionJiraIdx(@RequestBody Integer jiraIdx, Principal principal) {
     	session.setAttribute("jiraIdx", jiraIdx);
+    	Jira jira = jiraService.getByIdx(jiraIdx);
+		Account account = accountService.getAccountByEmail(principal.getName());
+		jiraService.addJiraRecentClicked(jira, account);
     }
     
     // List<Issue> 일경우 엔티티는 json으로 변환시 문제가 발생함

@@ -20,6 +20,7 @@ document.querySelectorAll(".more_sub_item.star").forEach(function(btn){
 		let idx = img.getAttribute("idx-data");
 		let isLike = img.getAttribute("src") === "/images/star_icon_empty.svg" ? true : false ;
 		likeFetch(type, idx, isLike);
+		location.reload();
 	});
 })
 

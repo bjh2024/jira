@@ -53,7 +53,7 @@ public class FilterController {
 	
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
-			Principal principal, HttpServletRequest request){
+			Principal principal){
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Integer accountIdx = accountService.getAccountByEmail(principal.getName()).getIdx();
 		try {

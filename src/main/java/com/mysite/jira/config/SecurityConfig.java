@@ -30,9 +30,6 @@ public class SecurityConfig {
 	@Autowired
 	private KakaoLogoutHandler kakaoLogoutHandler;
 	
-	@Autowired
-	private CustomAuthenticationProvider customAuthenticationProvider;
-	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests

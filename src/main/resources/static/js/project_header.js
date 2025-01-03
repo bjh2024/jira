@@ -4,6 +4,10 @@ const currentMenu = document.querySelector(`.menu-icon-box.${urlArr[3]}`);
 
 currentMenu.style.borderBottom = "2px solid #44546f";
 
+if(document.querySelector(".insert-user-selectwindow").children.length < 1){
+	document.querySelector(".insert-user-selectwindow").remove();
+}
+
 document.querySelectorAll(".menu-icon-box").forEach(function(btn){
 	const icon = btn.querySelector(".menu-icon");
 	const text = btn.querySelector(".menu-text");
@@ -77,7 +81,6 @@ document.querySelector(".edit-prjtitlebtn.submit").addEventListener("click", fun
 	const inputItem = document.querySelector(".project-title-input");
 	updateProjectNameData.projectIdx = inputItem.dataset.projectidx;
 	updateProjectNameData.name = inputItem.value;
-	console.log(updateProjectNameData);
 	updateProjectNameFetch(document.querySelector(".header-title"), inputItem);
 	submitItem.parentElement.classList.remove("show");
 	submitItem.parentElement.nextElementSibling.children[0].classList.remove("none");
@@ -107,17 +110,17 @@ document.querySelector(".header-setbgimg")?.addEventListener("click", function(e
 	}
 });
 
-document.querySelector(".header-setbtn")?.addEventListener("click", function(e){
-	
-	const btnItem = document.querySelector(".header-setbtn");
-	const windowItem = document.querySelector(".header-menuwindow");
-	
-	if(btnItem !== null && e.target.closest(".header-menuwindow") == null){
-		
-		btnItem.classList.toggle("active");
-		document.querySelector(".header-setbtn-icon").classList.toggle("color");
-		// btnItem.children[1].style.filter = "invert(94%) sepia(93%) saturate(0%) hue-rotate(238deg) brightness(107%) contrast(105%)";
-		windowItem.classList.toggle("show");
+document.querySelector("body").addEventListener("click", function(e) {
+
+	document.querySelector(".header-setbtn.active")?.classList.remove("active");
+	document.querySelector(".header-menuwindow.show")?.classList.remove("show");
+	document.querySelector(".header-setbtn-icon.color")?.classList.remove("color");
+
+	const btnItem = e.target.closest(".header-setbtn");
+	if(btnItem !== null){
+		btnItem.classList.add("active");
+		document.querySelector(".header-menuwindow").classList.add("show");
+		document.querySelector(".header-setbtn-icon").classList.add("color");
 	}
 });
 
@@ -135,3 +138,76 @@ document.querySelector(".menuwindow-optionbtn-bg")?.addEventListener("click", fu
 	}
 });
 
+document.querySelector(".menuwindow-optionbtn.insert").addEventListener("click", function(e){
+	document.querySelector(".insert-member-container").classList.add("show");
+});
+
+document.querySelector(".insert-member-container").addEventListener("mousedown", function(e) {
+	document.querySelector(".insert-member-container")?.classList.remove("show");
+	
+	const bgItem = e.target.closest(".insert-user-btn.cancel");
+	const detailItem = e.target.closest(".insert-member-box");
+	
+	const submitItem = e.target.closest(".insert-user-btn.submit");
+	if(submitItem !== null){
+		if(document.querySelector(".user-select-alert").style.display != "none"){
+			console.log("hihi");
+		}else{
+			const dataItem = document.querySelector(".insert-user-selectbtn");
+			createProjectMemberData.userIdx = dataItem.dataset.useridx;
+			createProjectMemberData.projectIdx = dataItem.dataset.projectidx;
+			console.log(createProjectMemberData);
+			createProjectMemberFetch();
+		}
+	}
+	
+	if(bgItem == null && detailItem !== null){
+		document.querySelector(".insert-member-container").classList.add("show");
+	}else{
+		document.querySelector(".insert-member-container").classList.remove("show");
+	}
+});
+
+let createProjectMemberData = {
+	"userIdx": "",
+	"projectIdx": ""
+}
+
+function createProjectMemberFetch(){
+	let url = "/api/project/create_project_member";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(createProjectMemberData)
+	}).then(response => {
+        if (response.ok) {
+			location.reload();
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelector(".insert-user-selectbtn").addEventListener("click", function(e){
+	const btnItem = e.target.closest(".insert-user-selectbtn");
+	if(btnItem !== null && btnItem.children.length > 1){
+		btnItem.children[0].classList.toggle("show");
+	}
+});
+
+document.querySelectorAll(".user-select-option")?.forEach(function(btn){
+	btn.addEventListener("click", function(e){
+		document.querySelector(".user-select-alert").style.display = "none";
+		const icon = btn.children[0].cloneNode(true);
+		const name = btn.children[1].cloneNode(true);
+		document.querySelector(".insert-user-selectbtn").appendChild(icon);
+		document.querySelector(".insert-user-selectbtn").appendChild(name);
+		document.querySelector(".insert-user-selectbtn").dataset.useridx = btn.dataset.useridx;
+		document.querySelector(".insert-user-btn.submit").classList.add("active");
+	});
+});

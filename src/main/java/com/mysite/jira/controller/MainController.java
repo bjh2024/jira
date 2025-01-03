@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.service.AccountService;
@@ -34,12 +33,6 @@ public class MainController {
 	private final LikeService likeService;
 
 	private final HttpSession session;
-	
-	@GetMapping("/setJiraIdx")
-	public String setAttributeJiraIdx(@RequestParam("jiraIdx") Integer jiraIdx) {
-		session.setAttribute("jiraIdx", jiraIdx);
-		return "redirect:/";
-	}
 	
 	@GetMapping("/")
 	public String filter(Model model, Principal principal) {

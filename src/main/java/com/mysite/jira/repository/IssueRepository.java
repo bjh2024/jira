@@ -12,6 +12,8 @@ import com.mysite.jira.entity.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	
+	Optional<Issue> findById(Integer idx);
+	
 	List<Issue> findByKey(String key);
 	
 	List<Issue> findIssuesByProjectIdx(Integer idx);
@@ -19,8 +21,12 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	List<Issue> findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(Integer idx, Integer grade);
 
 	// kdw
-	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
-	// kdw
+	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxAndCreateDateBetweenOrderByIssueClickedList_ClickedDateDesc(
+																											Integer accountIdx, 
+																											Integer jiraIdx, 
+																											LocalDateTime startDate, 
+																											LocalDateTime endDate);
+											// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 
 	@Query("""

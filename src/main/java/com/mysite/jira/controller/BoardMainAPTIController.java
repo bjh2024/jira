@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.board.AIQuestionDTO;
+import com.mysite.jira.dto.board.ClickedIssueDTO;
 import com.mysite.jira.dto.board.CreateIssueDTO;
 import com.mysite.jira.dto.board.CreateReplyDTO;
 import com.mysite.jira.dto.board.CreateStatusDTO;
@@ -50,6 +52,7 @@ import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueLikeMembers;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueRecentClicked;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
@@ -61,6 +64,7 @@ import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
+import com.mysite.jira.service.JiraService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +72,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
+	private final JiraService jiraService;
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
 	
@@ -304,17 +309,18 @@ public class BoardMainAPTIController {
 	
 	// 해당 프로젝트에 이슈 생성
 	@PostMapping("/create_issue")
-	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
+	public void createIssue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();
 		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
 		Integer projectIdx = createIssueDTO.getProjectIdx();
 		Integer reporterIdx = createIssueDTO.getReporterIdx();
 		Integer StatusIdx = createIssueDTO.getStatusIdx();
-		Integer idx = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
-		CreateIssueDTO dto = CreateIssueDTO.builder()
-										.issueIdx(idx)
-										.build();
-		return dto;
+		Issue issue = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+	
+		//  이슈 생성 로그 생성
+		ProjectLogStatus status = boardMainService.getLogStatusByIdx(11);
+		Account creator = boardMainService.getAccountById(reporterIdx);
+		boardMainService.createProjectLogData(issue, creator, status);
 	}
 	
 	// 프로젝트 - 보드 탭의 이슈 상태 정렬 순서를 업데이트
@@ -676,5 +682,20 @@ public class BoardMainAPTIController {
 			dtoList.add(dto);
 		}
 		return dtoList;
+	}
+	
+	// 이슈 클릭 기록 데이터 생성
+	@PostMapping("/create_issue_recent_clicked")
+	public void createIssueRecentClicked(@RequestBody ClickedIssueDTO clickedIssueDTO) {
+		Jira jira = jiraService.getByIdx(clickedIssueDTO.getJiraIdx());
+		Account user = boardMainService.getAccountById(clickedIssueDTO.getUserIdx());
+		Issue issue = boardMainService.getIssueByIdx(clickedIssueDTO.getIssueIdx());
+		Optional<IssueRecentClicked> clicked = boardMainService.verificationIssueRecentClicked(clickedIssueDTO.getJiraIdx(), 
+				clickedIssueDTO.getUserIdx(), clickedIssueDTO.getIssueIdx());
+		if(clicked.isPresent()) {
+			boardMainService.updateIssueRecentClicked(clicked.get());
+		}else {
+			boardMainService.createIssueRecentClicked(jira, user, issue);
+		}
 	}
 }

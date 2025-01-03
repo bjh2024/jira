@@ -271,11 +271,11 @@
 											<div class="distribution_box">
 												<div class="total_distribution_bar">
 													<div class="item_distribution_bar"
-														th:style="'width:'+${(item.count * 1.0) / sumTaskTypeData * 100}+'%'">
+														th:style="'width:'+${sumTaskTypeData != 0 ? ((item.count * 1.0) / sumTaskTypeData * 100) : 0}+'%'">
 													</div>
 												</div>
 												<span
-													th:text="${#numbers.formatDecimal((item.count*1.0) / sumTaskTypeData * 100, 1, 0) + '%'}"></span>
+													th:text="${sumTaskTypeData != 0 ? #numbers.formatDecimal((item.count*1.0) / sumTaskTypeData * 100, 1, 0)+'%' : 0+'%'}"></span>
 											</div>
 										</td>
 										<td>

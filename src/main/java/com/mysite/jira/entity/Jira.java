@@ -28,13 +28,18 @@ public class Jira {
 	@Column(columnDefinition = "VARCHAR2(100)")
 	@NotNull
 	private String name;
+
+	@Column(columnDefinition = "VARCHAR2(50)")
+	@NotNull
+	private String color;
 	
 	@ManyToOne
 	private Account account;
 	
 	@Builder
-	public Jira(String name, Account account) {
+	public Jira(String name, String color, Account account) {
 		this.name = name;
+		this.color = color;
 		this.account = account;
 	}
 	

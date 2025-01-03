@@ -1,16 +1,21 @@
 .toast_message {
 	position: fixed;
-	 bottom: 20px;
-	 left: 250px;
-	 transform: translateX(-50%);
-	 background-color: rgba(0, 0, 0, 0.8);
-	 color: white;
-	 padding: 10px 20px;
-	 border-radius: 8px;
-	 opacity: 0;
-	 visibility: hidden;
-	 transition: opacity 0.5s ease, visibility 0.5s;
+	z-index: 999;
+	bottom: 20px;
+	left: 250px;
+	transform: translateX(-50%);
+	background-color: white;
+	padding: 10px 20px;
+	border-radius: 3px;
+	opacity: 0;
+	font-size: 14px;
+	visibility: hidden;
+	transition: opacity 0.5s ease, visibility 0.5s;
+	border: 1px solid var(--ds-border, rgba(9, 30, 66, 0.13));
+	box-shadow: var(--ds-shadow-overlay, 0px 8px 12px #091e423f, 0px 0px 1px #091e424f);
+	cursor: pointer;
 }
+
 .toast_message.show {
 	opacity: 1;
 	visibility: visible;

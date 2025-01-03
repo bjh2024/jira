@@ -19,37 +19,52 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 
 	// kdw jira로그인정보와 지라이름이 같은 지라의 개수
 	Integer countByNameAndJiraMembersList_AccountIdx(String name, Integer accountIdx);
-
+	
+	// kdw 최근 방문 jira
+	List<Jira> findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(Integer accountIdx);
+	
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
-			SELECT iconFilename as iconFilename,
+			SELECT type as type,
+				   idx as idx,
+				   iconFilename as iconFilename,
 				   name as name,
 				   projectName as projectName,
 				   key as key,
 				   clickedDate as clickedDate
 			FROM(
-				SELECT  i.issueType.iconFilename as iconFilename, i.name as name, i.project.name as projectName, i.key as key, irc.clickedDate as clickedDate
-				FROM    IssueRecentClicked irc
-				JOIN    Issue i
-				ON  i.idx = irc.issue.idx
-				WHERE   irc.account.idx = :accountIdx
-				AND i.jira.idx = :jiraIdx
-				UNION
-				SELECT  p.iconFilename as iconFilename, p.name as name, '' as projectName, '' as key, prc.clickedDate as clickedDate
+				SELECT  'project' as type, 
+				 		p.idx as idx, 
+				 		p.iconFilename as iconFilename, 
+				 		p.name as name, '' as projectName, 
+				 		p.key as key, 
+				 		prc.clickedDate as clickedDate
 				FROM    ProjectRecentClicked prc
 				JOIN    Project p
 				ON  p.idx = prc.project.idx
 				WHERE   prc.account.idx = :accountIdx
 				AND p.jira.idx = :jiraIdx
 				UNION
-				SELECT  'dashboard_icon.svg' as iconFilename, d.name as name, '' as projectName, '' as key, drc.clickedDate as clickedDate
+				SELECT  'dashboard' as type, 
+						d.idx as idx, 
+						'dashboard_icon.svg' as iconFilename, 
+						d.name as name, 
+						'' as projectName, 
+						'' as key, 
+						drc.clickedDate as clickedDate
 				FROM    DashboardRecentClicked drc
 				JOIN    Dashboard d
 				ON  d.idx = drc.dashboard.idx
 				WHERE   drc.account.idx = :accountIdx
 				AND d.jira.idx = :jiraIdx
 				UNION
-				SELECT  'filter_icon.svg' as iconFilename, f.name as name, '' as projectName, '' as key, frc.clickedDate as clickedDate
+				SELECT  'filter' as type, 
+						f.idx as idx, 
+						'filter_icon.svg' as iconFilename, 
+						f.name as name, 
+						'' as projectName, 
+						'' as key, 
+						frc.clickedDate as clickedDate
 				FROM    FilterRecentClicked frc
 				JOIN    Filter f
 				ON  f.idx = frc.filter.idx
@@ -63,20 +78,6 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 			@Param("jiraIdx") Integer jiraIdx, @Param("startDate") LocalDateTime startDate,
 			@Param("endDate") LocalDateTime endDate);
 
-	// 가장 최근에 방문했던 지라
-	// rownum as rownum하면 오류가 남
-	@Query("""
-			SELECT  al.jira as jira
-			FROM
-			(SELECT  jrc.jira as jira,
-				     rownum as rnum
-			 FROM    JiraRecentClicked jrc
-			 WHERE   jrc.account.idx = :accountIdx
-			 ORDER BY jrc.clickedDate DESC
-			) al
-				WHERE al.rnum = 1
-			""")
-	Jira findByRecentClickedJira(@Param("accountIdx") Integer accountIdx);
 	
 	Optional<Jira> findByIdx(Integer idx);
 }

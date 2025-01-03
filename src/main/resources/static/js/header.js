@@ -1,4 +1,14 @@
-
+document.querySelectorAll(".account_jira_list a").forEach(function(jiraBtn){
+	jiraBtn.addEventListener("click", function(){
+		const jiraIdx = this.getAttribute("idx-data");
+		const uri = `/api/header/setJiraIdx`
+		fetch(uri, {method:"post", headers:{"Content-Type" : "application/json"}, body:JSON.stringify(jiraIdx)})
+		.catch(err => {
+			console.error(err);
+		})
+		location.href="/";
+	});
+});
 let prevBtn = "";
 document.querySelector("body").addEventListener("mousedown", function(e) {
 	if (e.target.closest(".my_app_btn") === null) {
@@ -47,9 +57,17 @@ document.querySelector(".rable_filtering input").addEventListener("click", funct
 	document.querySelector(".rable_content_box").classList.toggle("show");
 })
 
+function setLocalTime(time){
+	time = new Date(time.getTime() - time.getTimezoneOffset() * 60 * 1000);
+	time = time.toISOString();
+	return time;
+}
+
+let initStartDate = new Date();
+initStartDate.setDate(initStartDate.getDate() - 365 * 5);
 let headerInputDatas = {
-	"startDate": null,
-	"endDate": null,
+	"startDate": setLocalTime(initStartDate),
+	"endDate": setLocalTime(new Date),
 	"projectIdxArr": [],
 	"managerIdxArr": [],
 	"isReporter": false,
@@ -106,8 +124,6 @@ function fetchInput() {
 		});
 }
 
-
-
 // input 마지막 업데이트 click 이벤트
 document.querySelectorAll(".last_update_box>ul>li").forEach(function(li) {
 	li.addEventListener("click", function() {
@@ -123,33 +139,39 @@ document.querySelectorAll(".last_update_box>ul>li").forEach(function(li) {
 		let endDate = new Date();
 
 		switch (this.innerText) {
-			case "Today":
+			case "오늘":
 				break;
-			case "Yesterday":
+			case "어제":
 				startDate.setDate(today.getDate() - 1);
 				endDate.setDate(today.getDate() - 1);
 				endDate.setHours(23, 59, 59, 999);
 				break;
-			case "Past 7 days":
+			case "지난 7일":
 				startDate.setDate(today.getDate() - 7);
 				break;
-			case "Past 30 days":
+			case "지난 30일":
 				startDate.setDate(today.getDate() - 30);
 				break;
-			case "Past Year":
+			case "지난해":
 				startDate.setDate(today.getDate() - 365);
 				break;
-			case "Any Time":
-				document.querySelector(".input_recent_dynamic").classList.remove("show");
-				document.querySelector(".input_recent_box1").classList.add("show");
+			case "모든 기간":
+				if(headerInputDatas.projectIdxArr.length === 0 &&
+				   headerInputDatas.managerIdxArr.length === 0 &&
+				   !headerInputDatas.isReporter &&
+				   headerInputDatas.statusArr.length === 0
+				){  
+					document.querySelector(".input_recent_dynamic").classList.remove("show");
+					document.querySelector(".input_recent_box1").classList.add("show");
+					return;
+				}
+				startDate.setDate(today.getDate() - 365 * 5);
 				break;
 		}
 		startDate.setHours(0, 0, 0, 0);
 		// 로컬 시간대 변경
-		startDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60 * 1000)
-		endDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
-		startDate = startDate.toISOString();
-		endDate = endDate.toISOString();
+		startDate = setLocalTime(startDate);
+		endDate = setLocalTime(endDate);
 
 		headerInputDatas.startDate = startDate;
 		headerInputDatas.endDate = endDate;
@@ -216,15 +238,3 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 });
 
 document.getElementById("profileLink").href = "/project/profile";
-
-document.querySelectorAll(".account_jira_list a").forEach(function(jiraBtn){
-	jiraBtn.addEventListener("click", function(){
-		const jiraIdx = this.getAttribute("idx-data");
-		const uri = `/api/header/setJiraIdx`
-		fetch(uri, {method:"post", headers:{"Content-Type" : "application/json"}, body:JSON.stringify(jiraIdx)})
-		.catch(err => {
-			console.error(err);
-		})
-		location.href="/";
-	});
-});

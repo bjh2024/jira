@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mysite.jira.service.JiraMembersService;
 import com.mysite.jira.service.TeamService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +25,7 @@ public class TeamController {
 	private final HttpSession session;
 	
 	@GetMapping("list")
-	public String listPage(Model model, Principal principal, HttpServletRequest request) {
+	public String listPage(Model model, Principal principal) {
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		model.addAttribute("memberList", jiraMembersService.getMembersByJiraIdx(jiraIdx));
 		model.addAttribute("teamList", teamService.getTeamListByJiraIdx(jiraIdx));

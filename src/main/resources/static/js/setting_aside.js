@@ -148,7 +148,6 @@ document.querySelector(".create_issuetype_btn.submit").addEventListener("click",
 		createIssueTypeData.content = document.querySelector(".set_issuetype_content_area").value;
 		createIssueTypeData.projectIdx = document.querySelector(".issuetype_icon_selected").dataset.projectidx;
 		createIssueTypeData.iconFilename = document.querySelector(".issuetype_icon_selected").dataset.iconfilename;
-		console.log(createIssueTypeData);
 		verificationIssueType();
 	}
 });

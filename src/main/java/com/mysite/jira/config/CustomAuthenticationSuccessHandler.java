@@ -1,6 +1,7 @@
 package com.mysite.jira.config;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -42,11 +43,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		Integer accountIdx = account.getIdx();
 		
 		// 현재 계정이 가장 최근 방문한 jira
-		Jira jira = jiraService.getRecentTop1Jira(accountIdx);
-		session.setAttribute("jiraIdx", jira.getIdx());
+		List<Jira> jiraList = jiraService.getRecentTop1Jira(accountIdx);
+		Integer jiraIdx = jiraList.get(0).getIdx();
+		session.setAttribute("jiraIdx", jiraIdx);
 		
 		// 현재 계정이 가장 최근 방문한 project
-		Project project = projectService.getRecentTop1Project(accountIdx, jira.getIdx());
+		Project project = projectService.getRecentTop1Project(accountIdx, jiraIdx);
 		String defaultUri = project == null ? "/" : "/project/"+ project.getKey() +"/summation";
 		
 		response.sendRedirect(defaultUri);

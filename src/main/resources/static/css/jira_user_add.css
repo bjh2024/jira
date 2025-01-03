@@ -90,47 +90,6 @@
 	filter: invert(23%) sepia(32%) saturate(4753%) hue-rotate(344deg) brightness(90%) contrast(93%);
 }
 
-.jira_user_add_box fieldset {
-	border: none;
-}
-
-.jira_user_add_box legend {
-	margin-bottom: 12px;
-	
-	color: #626f86;
-	font-size: 12px;
-	font-weight: bold;
-}
-
-.jira_user_add_box fieldset .btn_box{
-	height: 48px;
-	margin-bottom: 12px;
-	
-	display: flex;
-	justify-content: space-between;
-}
-
-.jira_user_add_box fieldset .btn_box button{
-	width: calc(354px / 3 - 4px);
-	height: 40px;
-	
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
-.jira_user_add_box fieldset .btn_box button > div{
-	font-weight: bold;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	
-}
-
-.jira_user_add_box fieldset .btn_box button > div img{
-	margin: 8px;
-	margin-left: 0;
-}
-
 .jira_user_add_box p{
 	margin-bottom: 16px;
 	

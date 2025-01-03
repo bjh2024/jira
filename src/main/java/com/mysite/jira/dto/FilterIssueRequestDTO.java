@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class FilterIssueRequestDTO {
 
+	// 필터 생성을 위한 값들
+	
 	private Integer[] projectIdx;
 	private String[] issueTypes;
 	private String[] issueStatus;

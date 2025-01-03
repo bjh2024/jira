@@ -1,6 +1,7 @@
 package com.mysite.jira.config;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,15 @@ import org.springframework.stereotype.Component;
 
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class SocialAuthenticationHandler implements AuthenticationSuccessHandler {
@@ -24,6 +28,10 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	private AccountService accountService;
 	@Autowired
     private JiraService jiraService;
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private ProjectService projectService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -34,18 +42,14 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
     	Account account = accKakao != null ? accKakao : accNaver;
 	    Integer accountIdx = account.getIdx();
 	    
-	    Jira jira = jiraService.getRecentTop1Jira(accountIdx);
-	    String jiraName = "";
-	    String defaultUri = "";
-	    if (jira == null) {
-	    	jiraService.addJira(accountIdx);
-	    	jiraName = jiraService.getRecentTop1Jira(accountIdx).getName();
-	    	defaultUri = "/" + jiraName;
-	    }else {
-	    	jiraName = jira.getName();
-	    }
+	    List<Jira> jiraList = jiraService.getRecentTop1Jira(accountIdx);
+	    Jira jira = jiraList.get(0);
+	    session.setAttribute("jiraIdx", jira.getIdx());
 	    
-	    defaultUri = "/" + jiraName;
-	    response.sendRedirect(defaultUri); // 리디렉션
+	    // 현재 계정이 가장 최근 방문한 project
+		Project project = projectService.getRecentTop1Project(accountIdx, jira.getIdx());
+		String defaultUri = project == null ? "/" : "/project/"+ project.getKey() +"/summation";
+		
+		response.sendRedirect(defaultUri);
 	}
 }

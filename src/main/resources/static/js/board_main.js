@@ -15,7 +15,6 @@ function createProjectLog(){
 	})
 	.then(response => {
         if (response.ok) {
-            console.log("로그 업데이트 성공");
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -610,22 +609,30 @@ function issueNameCheck(){
 			console.error("Fetch error:", error);
 	});
 }
-let ifCreate = null;
+
 function createissuefetch(){
 	let url = "/api/project/create_issue";
+	toastInfo.isCreate = 1;
+	toastInfo.issueName = issueDatas.issueName;
+	toastInfo.projectIdx = issueDatas.projectIdx;
+	toastInfo.reporterIdx = issueDatas.reporterIdx;
 	fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify(issueDatas)
-	}).then(response => response.json())
-	.then(idx => {
-		location.reload();
-		localStorage.setItem('newIssue', JSON.stringify(issueDatas));
-		sendToastMessage(issueDatas); // 리로드 후 1초 뒤에 토스트 메시지 전송
-		return idx.issueIdx;
-	}).catch(error => {
+	}).then(response => {
+        if (response.ok) {
+			location.reload();
+			localStorage.setItem('newIssue', JSON.stringify(issueDatas));
+			sendToastMessage(toastInfo); // 리로드 후 1초 뒤에 토스트 메시지 전송
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	})
+	.catch(error => {
 			console.error("Fetch error:", error);
 	});
 }
@@ -645,14 +652,6 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 				return;
 			}
 			issueNameCheck();
-			
-			// createissuefetch();
-			
-			/*createLogData.userIdx = btnBoxItem.dataset.useridx;
-			createLogData.issueIdx = issueIdx;
-			createLogData.type = issueIdx;
-			createProjectLog();
-			location.reload();*/
 		}
 	});
 });
@@ -676,7 +675,6 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 		}
 		
 		issueNameCheck();
-		// createissuefetch();
 	});
 });
 
@@ -820,8 +818,40 @@ function getStatusSubmit(){
 	statusNameCheck();
 }
 
-document.querySelectorAll(".issues").forEach(function(btn, index){
+let recentClickedData = {
+	"jiraIdx": "",
+	"userIdx": "",
+	"issueIdx": ""
+}
+
+function createRecentClickedData(){
+	let url = "/api/project/create_issue_recent_clicked";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(recentClickedData)
+	}).then(response => {
+        if (response.ok) {
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
+
+document.querySelectorAll(".issues").forEach(function(btn){
 	btn.addEventListener("click", function(e){
+		if(e.target.closest(".issuedetail-container") == null){
+			recentClickedData.jiraIdx = btn.dataset.jiraidx;
+			recentClickedData.userIdx = btn.dataset.useridx;
+			recentClickedData.issueIdx = btn.dataset.idx;
+			createRecentClickedData();
+		}
+		
 		if(e.target.closest(".subissuebtn") !== null || e.target.closest(".issue-menubtn") !== null
 			|| e.target.closest(".subissuebox") !== null || e.target.closest(".issue-menuwindow") !== null
 			|| e.target.closest(".menuwindow-option") !== null || e.target.closest(".insertwindow-btn") !== null
@@ -904,7 +934,7 @@ function getFileListFetch(box){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : file.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : file.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${file.name}</div>
@@ -940,9 +970,19 @@ document.querySelectorAll(".issue-menubtnbox").forEach(function(btn){
 let deleteIssueData = {
 	"issueIdx": ""
 }
+let toastInfo = {
+	"issueName" : "",
+	"isCreate": false,
+	"projectIdx": "",
+	"reporterIdx": ""
+}
 
 function deleteIssue(){
 	let url = "/api/project/delete_issue_data";
+	toastInfo.isCreate = 0;
+	document.querySelectorAll
+	toastInfo.projectIdx = document.querySelector(".myprofileimgbox").dataset.projectidx;
+	
 	fetch(url, {
 		method: 'POST',
 		headers: {
@@ -952,7 +992,7 @@ function deleteIssue(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
+			sendToastMessage(toastInfo);
 			location.reload();
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
@@ -969,6 +1009,7 @@ document.querySelectorAll(".menuwindow-option.main").forEach(function(btn){
 		const container = document.querySelector(".issue-delete-alert-container");
 		container.classList.add("show");
 		container.children[0].children[0].children[1].innerText = `${btn.dataset.issuekey}을(를) 삭제하시겠습니까?`;
+		toastInfo.issueName = btn.dataset.issuename;
 		deleteIssueData.issueIdx = btn.dataset.issueidx;
 	});
 });
@@ -1730,7 +1771,6 @@ function deleteIssueReply(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -1986,7 +2026,7 @@ document.querySelectorAll(".file-input-direct").forEach(function(input){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${fileData.name}</div>
@@ -2029,7 +2069,7 @@ document.querySelectorAll(".file-input").forEach(function(input){
 			const myFile = document.createElement("div");
 			myFile.classList.add("attached-file");
 			myFile.innerHTML = `<div class="file-image-box">
-									<img src="/attached_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
+									<img src="/jira_files/${path[1] == "txt" ? path[0] + "_converted.png" : fileData.name}" class="attached-file-preview">
 								</div>
 								<div class="attached-file-titlebar">
 									<div class="attached-file-name">${fileData.name}</div>
@@ -2199,7 +2239,6 @@ function deleteLabelData(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -2604,7 +2643,7 @@ new Sortable(containers, {
 	// 드래그 시작 시 요소의 초기 인덱스를 저장
     onStart: function (evt) {
         originalIndex = evt.oldIndex; // 드래그 시작 시의 인덱스
-    },
+    }, 
 
     // 드래그 종료 후 새로운 위치를 확인
     onEnd: function (evt) {

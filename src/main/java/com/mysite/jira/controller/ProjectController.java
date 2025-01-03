@@ -65,30 +65,6 @@ public class ProjectController {
 	private final TeamService teamService;
 	private final HttpSession session;
 	
-	@GetMapping("/{projectKey}/summation")
-	public String summationPage(Model model, HttpServletRequest request, Principal principal) {
-		
-		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
-		
-		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
-		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
-		model.addAttribute("updateIssueCount", issueService.getSevenDayUpdateIssueCount(projectIdx));
-		// 상태 개요
-		model.addAttribute("deadlineIssueCount", issueService.getSevenDayDeadlineIssueCount(projectIdx));
-		// 최근 활동
-		model.addAttribute("projectLogData", logDataService.getProjectLogData(projectIdx));
-		// 우선순위 분석
-		model.addAttribute("taskTypeData", issueService.getTaskTypeDTO(projectIdx));
-		// 작업 유형
-		model.addAttribute("sumTaskTypeData", issueService.getSumTaskTypeDTO(projectIdx));
-		// 팀 워크로드
-		model.addAttribute("managerCountData", issueService.getManagerIssueCount(projectIdx));
-		// 관련 프로젝트
-		model.addAttribute("relevantProjectList", projectService.getProjectByJiraIdx(jiraIdx));
-		return "project/summation";
-	}
-	
 	@GetMapping("/list")
 	public String listPage(Model model, 
 						   Principal principal,
@@ -131,6 +107,30 @@ public class ProjectController {
 		}
 		model.addAttribute("account", currentUser);
 		return "project/project_create";
+	}
+	
+	@GetMapping("/{projectKey}/summation")
+	public String summationPage(Model model, Principal principal) {
+		
+		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
+		
+		model.addAttribute("createIssueCount", issueService.getSevenDayCreateIssueCount(projectIdx));
+		model.addAttribute("complementIssueCount", issueService.getSevenDayComplementIssueCount(projectIdx));
+		model.addAttribute("updateIssueCount", issueService.getSevenDayUpdateIssueCount(projectIdx));
+		model.addAttribute("deadlineIssueCount", issueService.getSevenDayDeadlineIssueCount(projectIdx));
+		
+		// 최근 활동
+		model.addAttribute("projectLogData", logDataService.getProjectLogData(projectIdx));
+		// 작업 유형
+		model.addAttribute("taskTypeData", issueService.getTaskTypeDTO(projectIdx));
+		// 작업 유형
+		model.addAttribute("sumTaskTypeData", issueService.getSumTaskTypeDTO(projectIdx));
+		// 팀 워크로드
+		model.addAttribute("managerCountData", issueService.getManagerIssueCount(projectIdx));
+		// 관련 프로젝트
+		model.addAttribute("relevantProjectList", projectService.getProjectByJiraIdx(jiraIdx));
+		return "project/summation";
 	}
 	
 	@GetMapping("/{projectKey}/board_main")
@@ -214,7 +214,7 @@ public class ProjectController {
 	public String attachedFiles(HttpServletRequest request, Model model) {
 		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
 		
-		// 모든 첨부파일 리스트
+		// 프로젝트 별 첨부파일 리스트
 		List<IssueFile> fileList = boardMainService.getFilesbyProjectIdx(projectIdx);
 		model.addAttribute("fileList", fileList);
 		

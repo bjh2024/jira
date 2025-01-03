@@ -131,7 +131,6 @@ public class ChatService {
 		ChatRoom chatRoom = ChatRoom.builder().name(chatRoomName).build();
 
 		chatRoomRepository.save(chatRoom);
-
 		Integer[] chatAccountIdxList = requestChatRoomCreateDTO.getChatAccountIdxList();
 		List<ChatMembers> chatMembersList = new ArrayList<>();
 		for (int i = 0; i < chatAccountIdxList.length; i++) {
@@ -148,6 +147,7 @@ public class ChatService {
 			Account account = chatRoomIdxChatMemberList.get(i).getAccount();
 			ChatRoomListAccountDTO dto = ChatRoomListAccountDTO.builder()
 															   .idx(account.getIdx())
+															   .email(account.getEmail())
 															   .name(account.getName())
 															   .iconFilename(account.getIconFilename())
 															   .build();

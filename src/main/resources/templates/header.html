@@ -12,8 +12,9 @@
 			</div>
 			<div class="my_app_content item_lnb">
 				<div class="account_jira_list">
-					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " th:each="jiraMember : ${accountByjiraMemberList}">
-						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}"></span>
+					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " 
+					   th:each="jiraMember : ${accountByjiraMemberList}">
+						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}" th:style="|background-color: ${jiraMember.jira.color};|"></span>
 					</a>
 				</div>
 				<div class="my_app_content_detail">
@@ -157,10 +158,15 @@
 						<div class="input_recent_box2">
 							<h5>최근 보드, 프로젝트 및 계획</h5>
 							<div class="input_recent_box2_item">
-								<a th:href="@{#}" class="input_recent_content" th:each="item : ${allRecentList}">
+								<a class="input_recent_content" 
+								   th:each="item : ${allRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+							                    item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+										        item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+										        '#'}}">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="24" height="24">
-									<div class="name" th:text="|${item.name} |"></div>
+									<div class="name" th:text="${item.name}"></div>
 									<span></span>
 								</a>
 							</div>
@@ -168,10 +174,15 @@
 						<div class="input_lnb_footer1">
 							<span>모든 항목으로 이동: </span>
 							<ul>
-								<li>보드</li>
-								<li>프로젝트</li>
-								<li>필터</li>
-								<li>사용자</li>
+								<li>
+									<a href="/project/list">프로젝트</a>
+								</li>
+								<li>
+									<a href="/filter/filter_issue">필터</a>
+								</li>
+								<li>
+									<a href="/team/list">사용자</a>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -180,12 +191,12 @@
 							<div class="last_update_box">
 								<h5>마지막 업데이트</h5>
 								<ul>
-									<li class="active">Any Time</li>
-									<li>Today</li>
-									<li>Yesterday</li>
-									<li>Past 7 days</li>
-									<li>Past 30 days</li>
-									<li>Past Year</li>
+									<li class="active">모든 기간</li>
+									<li>오늘</li>
+									<li>어제</li>
+									<li>지난 7일</li>
+									<li>지난 30일</li>
+									<li>지난해</li>
 								</ul>
 							</div>
 							<div class="filtering_box project">
@@ -347,11 +358,6 @@
 											 • 
 											<span th:text="${logData.issueStatusName}"></span>
 										 </div>
-										<div class="item1_box_sub">
-											<img src="https://secure.gravatar.com/avatar/6a71e3b6aec95e030f8df2bb649390d0?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-2.png"
-												alt="" style="border-radius: 50%;" width="26" height="26">
-											<span>+다현 님의 업데이트 2\</span>
-										</div>
 									</div>
 								</div>
 								<img th:src="@{/images/check_unread_icon.svg}" width="24" height="24" />

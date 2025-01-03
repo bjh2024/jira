@@ -59,7 +59,6 @@ public class UploadService {
 	        }
 	        
 	        if(originalFilename.equals("error")) {
-	        	System.out.println("텍스트 파일 변환 중 에러 발생");
 	        	return null;
 	        }
 	        
@@ -109,7 +108,6 @@ public class UploadService {
     		try {
         		if (Files.exists(imgPath)) {
         			Files.delete(imgPath);
-        			System.out.println("이미지 파일 삭제됨: " + imgPath.toAbsolutePath());
         		} else {
         			throw new FileNotFoundException("파일을 찾을 수 없습니다: " + imgPath.toAbsolutePath());
         		}
@@ -120,7 +118,6 @@ public class UploadService {
     	try {
     		if (Files.exists(filePath)) {
     			Files.delete(filePath);
-    			System.out.println("파일 삭제됨: " + filePath.toAbsolutePath());
     			this.issueFileRepository.delete(file);
     		} else {
     			throw new FileNotFoundException("파일을 찾을 수 없습니다: " + filePath.toAbsolutePath());

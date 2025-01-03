@@ -90,6 +90,20 @@ public class ProjectService {
 		return result;
 	}
 	
+	public void addProjectRecentClicked(Account account, Jira jira, Project project) {
+		ProjectRecentClicked projectRecentClicked = projectRecentClickedRepository.findByProject_idxAndAccount_idx(project.getIdx(), account.getIdx());
+		if(projectRecentClicked != null) {
+			projectRecentClicked.updateDate();
+		}else {
+			projectRecentClicked = ProjectRecentClicked.builder()
+													   .account(account)
+													   .jira(jira)
+													   .project(project)
+													   .build();
+		}
+		projectRecentClickedRepository.save(projectRecentClicked);
+	}
+	
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
 	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
@@ -102,9 +116,7 @@ public class ProjectService {
 				.jira(jira).account(account).sequence(sequence).build();
 		projectRepository.save(project);
 		// 프로젝트 클릭 로그
-		ProjectRecentClicked projectRecentClicked = ProjectRecentClicked.builder().account(account).jira(jira)
-				.project(project).build();
-		projectRecentClickedRepository.save(projectRecentClicked);
+		this.addProjectRecentClicked(account, jira, project);
 
 		// 프로젝트 멤버,권한 추가
 		ProjectMembers projectMembers = ProjectMembers.builder().project(project).account(account).auth_type(3).build();
@@ -125,12 +137,6 @@ public class ProjectService {
 				IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
 				IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build());
 		issueStatusRepository.saveAll(issueStatuses);
-		// 기본 필터
-//		List<Filter> issueStatuses = Arrays.asList(
-//			    IssueStatus.builder().status(1).name("해야 할 일").divOrder(1).project(project).build(),
-//			    IssueStatus.builder().status(2).name("진행중").divOrder(2).project(project).build(),
-//			    IssueStatus.builder().status(3).name("완료").divOrder(3).project(project).build()
-//		);
 	}
 
 	public void updateProject(Integer projectIdx, String name, String key, Account account) {
@@ -283,5 +289,23 @@ public class ProjectService {
 									.grade(2)
 									.build();
 		this.issueTypeRepository.save(issueType);
+	}
+	
+	public List<Account> getProjectMemberListByProjectIdx(Integer projectIdx){
+		List<ProjectMembers> prjMemberList = this.projectMembersRepository.findAllByProjectIdx(projectIdx);
+		List<Account> userList = new ArrayList<>();
+		for(int i = 0; i < prjMemberList.size(); i++) {
+			userList.add(prjMemberList.get(i).getAccount());
+		}
+		return userList;
+	}
+	
+	public void createProjectMember(Account user, Project project) {
+		ProjectMembers member = ProjectMembers.builder()
+											.auth_type(2)
+											.account(user)
+											.project(project)
+											.build();
+		this.projectMembersRepository.save(member);
 	}
 }

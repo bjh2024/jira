@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 
 public interface JiraMembersRepository extends JpaRepository<JiraMembers, Integer>{
