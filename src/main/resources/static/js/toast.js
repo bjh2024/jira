@@ -6,7 +6,7 @@ function showToast(message) {
   toast.innerHTML = 
   `<a href="/project/${notice[1]}/board_main">
   <div style="margin: 10px;" >
-  		<img src="/images/alram_icon2.svg" style="width: 16px; height: 16px;"> 알림 </br>
+  		<img src="/images/alram_icon2.svg" style="width: 16px; height: 16px;"> <b>알림</b> </br>
   	</div>
   	<div>
 	   ${notice[0]}
