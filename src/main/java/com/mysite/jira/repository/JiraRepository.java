@@ -25,34 +25,46 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 	
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
-			SELECT iconFilename as iconFilename,
+			SELECT type as type,
+				   idx as idx,
+				   iconFilename as iconFilename,
 				   name as name,
 				   projectName as projectName,
 				   key as key,
 				   clickedDate as clickedDate
 			FROM(
-				SELECT  i.issueType.iconFilename as iconFilename, i.name as name, i.project.name as projectName, i.key as key, irc.clickedDate as clickedDate
-				FROM    IssueRecentClicked irc
-				JOIN    Issue i
-				ON  i.idx = irc.issue.idx
-				WHERE   irc.account.idx = :accountIdx
-				AND i.jira.idx = :jiraIdx
-				UNION
-				SELECT  p.iconFilename as iconFilename, p.name as name, '' as projectName, '' as key, prc.clickedDate as clickedDate
+				SELECT  'project' as type, 
+				 		p.idx as idx, 
+				 		p.iconFilename as iconFilename, 
+				 		p.name as name, '' as projectName, 
+				 		p.key as key, 
+				 		prc.clickedDate as clickedDate
 				FROM    ProjectRecentClicked prc
 				JOIN    Project p
 				ON  p.idx = prc.project.idx
 				WHERE   prc.account.idx = :accountIdx
 				AND p.jira.idx = :jiraIdx
 				UNION
-				SELECT  'dashboard_icon.svg' as iconFilename, d.name as name, '' as projectName, '' as key, drc.clickedDate as clickedDate
+				SELECT  'dashboard' as type, 
+						d.idx as idx, 
+						'dashboard_icon.svg' as iconFilename, 
+						d.name as name, 
+						'' as projectName, 
+						'' as key, 
+						drc.clickedDate as clickedDate
 				FROM    DashboardRecentClicked drc
 				JOIN    Dashboard d
 				ON  d.idx = drc.dashboard.idx
 				WHERE   drc.account.idx = :accountIdx
 				AND d.jira.idx = :jiraIdx
 				UNION
-				SELECT  'filter_icon.svg' as iconFilename, f.name as name, '' as projectName, '' as key, frc.clickedDate as clickedDate
+				SELECT  'filter' as type, 
+						f.idx as idx, 
+						'filter_icon.svg' as iconFilename, 
+						f.name as name, 
+						'' as projectName, 
+						'' as key, 
+						frc.clickedDate as clickedDate
 				FROM    FilterRecentClicked frc
 				JOIN    Filter f
 				ON  f.idx = frc.filter.idx

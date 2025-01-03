@@ -158,10 +158,15 @@
 						<div class="input_recent_box2">
 							<h5>최근 보드, 프로젝트 및 계획</h5>
 							<div class="input_recent_box2_item">
-								<a th:href="@{#}" class="input_recent_content" th:each="item : ${allRecentList}">
+								<a class="input_recent_content" 
+								   th:each="item : ${allRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+							                    item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+										        item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+										        '#'}}">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="24" height="24">
-									<div class="name" th:text="|${item.name} |"></div>
+									<div class="name" th:text="${item.name}"></div>
 									<span></span>
 								</a>
 							</div>
@@ -169,10 +174,15 @@
 						<div class="input_lnb_footer1">
 							<span>모든 항목으로 이동: </span>
 							<ul>
-								<li>보드</li>
-								<li>프로젝트</li>
-								<li>필터</li>
-								<li>사용자</li>
+								<li>
+									<a href="/project/list">프로젝트</a>
+								</li>
+								<li>
+									<a href="/filter/filter_issue">필터</a>
+								</li>
+								<li>
+									<a href="/team/list">사용자</a>
+								</li>
 							</ul>
 						</div>
 					</div>

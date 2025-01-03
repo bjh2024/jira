@@ -99,10 +99,6 @@ public class Account {
 	@OneToMany(mappedBy = "reporter", cascade = CascadeType.REMOVE)
 	private List<Issue> issueReporterList;
 
-	// 이슈 업데이트 멤버 FK
-	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-	private List<IssueRecord> issueRecordList;
-
 	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private List<IssueReply> issueReplyList;
 

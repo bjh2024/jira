@@ -58,12 +58,16 @@ document.querySelector(".rable_filtering input").addEventListener("click", funct
 })
 
 function setLocalTime(time){
-	
+	time = new Date(time.getTime() - time.getTimezoneOffset() * 60 * 1000);
+	time = time.toISOString();
+	return time;
 }
 
+let initStartDate = new Date();
+initStartDate.setDate(initStartDate.getDate() - 365 * 5);
 let headerInputDatas = {
-	"startDate": new Date(),
-	"endDate": new Date(),
+	"startDate": setLocalTime(initStartDate),
+	"endDate": setLocalTime(new Date),
 	"projectIdxArr": [],
 	"managerIdxArr": [],
 	"isReporter": false,
@@ -166,10 +170,8 @@ document.querySelectorAll(".last_update_box>ul>li").forEach(function(li) {
 		}
 		startDate.setHours(0, 0, 0, 0);
 		// 로컬 시간대 변경
-		startDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60 * 1000)
-		endDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
-		startDate = startDate.toISOString();
-		endDate = endDate.toISOString();
+		startDate = setLocalTime(startDate);
+		endDate = setLocalTime(endDate);
 
 		headerInputDatas.startDate = startDate;
 		headerInputDatas.endDate = endDate;

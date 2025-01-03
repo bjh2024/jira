@@ -158,6 +158,8 @@ public class RecentService {
 		List<Map<String, Object>> allRecentList = jiraRepository.findClickedDataOrderByDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		List<AllRecentDTO> result = new ArrayList<>();
 		for(int i = 0; i < allRecentList.size(); i++) {
+			String type = allRecentList.get(i).get("type").toString();
+			Integer idx = (Integer)allRecentList.get(i).get("idx");
 			String name = allRecentList.get(i).get("name").toString();
 			String iconFilename = allRecentList.get(i).get("iconFilename").toString();
 			String key ="";
@@ -167,6 +169,8 @@ public class RecentService {
 			LocalDateTime clickedDate = utilityService.localDateTimeChange(allRecentList.get(i).get("clickedDate"));
 			String elapsedTime = utilityService.getElapsedComment(clickedDate);
 			AllRecentDTO dto = AllRecentDTO.builder()
+										   .type(type)
+										   .idx(idx)
 										   .name(name)
 										   .iconFilename(iconFilename)
 										   .key(key)

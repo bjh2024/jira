@@ -321,8 +321,9 @@ public class BoardMainService {
 							.reporter(user)
 							.divOrder(max + 1)
 							.build();
-		
 		this.issueRepository.save(issue);
+		
+		this.createIssueRecentClicked(jira, user, issue);
 		return issue;
 	}
 	
