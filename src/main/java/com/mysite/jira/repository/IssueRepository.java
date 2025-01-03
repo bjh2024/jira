@@ -21,8 +21,12 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	List<Issue> findIssuesByProjectIdxAndIssueTypeGradeGreaterThanOrderByDivOrder(Integer idx, Integer grade);
 
 	// kdw
-	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
-	// kdw
+	List<Issue> findByIssueClickedList_AccountIdxAndJiraIdxAndCreateDateBetweenOrderByIssueClickedList_ClickedDateDesc(
+																											Integer accountIdx, 
+																											Integer jiraIdx, 
+																											LocalDateTime startDate, 
+																											LocalDateTime endDate);
+											// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 
 	@Query("""

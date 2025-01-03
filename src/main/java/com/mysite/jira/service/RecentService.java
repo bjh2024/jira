@@ -234,8 +234,11 @@ public class RecentService {
 	
 	// jiraIdx와 accountIdx 에 대한 최근 issue list
 	public List<Issue> getRecentIssueList(Integer accountIdx, Integer jiraIdx) {
+		// 생성일 5년
+		LocalDateTime endDate = LocalDateTime.now();
+		LocalDateTime startDate = endDate.minusYears(5);
 			return issueRepository
-					.findByIssueClickedList_AccountIdxAndJiraIdxOrderByIssueClickedList_ClickedDateDesc(accountIdx, jiraIdx);
+					.findByIssueClickedList_AccountIdxAndJiraIdxAndCreateDateBetweenOrderByIssueClickedList_ClickedDateDesc(accountIdx, jiraIdx, startDate, endDate);
 		}
 	
 	// 오늘 최근 프로젝트, 대시보드, 이슈, 필터

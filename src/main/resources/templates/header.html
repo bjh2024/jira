@@ -14,7 +14,7 @@
 				<div class="account_jira_list">
 					<a th:idx-data="${jiraMember.jira.idx}" th:classappend="${currentJira.idx == jiraMember.jira.idx} ? active : '' " 
 					   th:each="jiraMember : ${accountByjiraMemberList}">
-						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}"></span>
+						<span th:text="${#strings.substring(jiraMember.jira.name, 0, 2)}" th:style="|background-color: ${jiraMember.jira.color};|"></span>
 					</a>
 				</div>
 				<div class="my_app_content_detail">
@@ -181,12 +181,12 @@
 							<div class="last_update_box">
 								<h5>마지막 업데이트</h5>
 								<ul>
-									<li class="active">Any Time</li>
-									<li>Today</li>
-									<li>Yesterday</li>
-									<li>Past 7 days</li>
-									<li>Past 30 days</li>
-									<li>Past Year</li>
+									<li class="active">모든 기간</li>
+									<li>오늘</li>
+									<li>어제</li>
+									<li>지난 7일</li>
+									<li>지난 30일</li>
+									<li>지난해</li>
 								</ul>
 							</div>
 							<div class="filtering_box project">
