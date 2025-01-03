@@ -37,6 +37,14 @@ function chatMessageAdd(chatRoomDTO, msg){
 	document.querySelector(".chat-room-content").scrollTop = chatDetailContainer.scrollHeight;
 }
 
+function subscribeChatRoom(chatRoomDTO){
+	console.log(chatRoomDTO);
+	const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
+	stompClient.subscribe(topic, function(msg) {
+		chatMessageAdd(chatRoomDTO, msg);
+	});
+}
+
 let stompClient = null;
 function connection(chatRoomDTOList) {
 	let socket = new SockJS("/websocket-endpoint");
@@ -45,16 +53,17 @@ function connection(chatRoomDTOList) {
 	stompClient.connect({}, function(frame) {
 		console.log("연결 성공" + frame);
 		chatRoomDTOList.forEach(function(chatRoomDTO) {
-			const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
-			stompClient.subscribe(topic, function(msg) {
-				chatMessageAdd(chatRoomDTO, msg);
-			});
+			subscribeChatRoom(chatRoomDTO);
 		});
 		const jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx");
-		const topic = `/topic/chat/room/${jiraIdx}`;
-		stompClient.subscribe(topic, function(msg) {
-			 const chatRoomIdx = JSON.parse(msg.body);
-			 console.log(chatRoomIdx);
+		const chatRoomtopic = `/user/topic/chat/room/${jiraIdx}`;
+		stompClient.subscribe(chatRoomtopic, function(msg) {
+			const chatRoomDTO = JSON.parse(msg.body)
+			subscribeChatRoom(chatRoomDTO);
+			const chatRoomIdx = chatRoomDTO.chatRoom.idx;
+			const uri = `/api/chat/room/detail?chatRoomIdx=${chatRoomIdx}`;
+			chatMessageFetch(uri, chatRoomIdx);
+			document.querySelector(".chat-room-content .chat_room_add_box").classList.remove("show");
 		});
 	});
 }
@@ -527,7 +536,6 @@ document.querySelector(".chat_room_add_box .btn_box").addEventListener("click", 
 
 	if(isCreate){
 		sendCreateChatRoom(requestChatRoomCreateDTO);
-		document.querySelector(".chat-room-gnb .img_box.chat_room_btn").click();
 	}
 });
 

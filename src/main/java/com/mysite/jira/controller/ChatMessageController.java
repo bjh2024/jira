@@ -1,5 +1,7 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,7 +17,6 @@ import com.mysite.jira.dto.chatroom.ResponseChatMessageDTO;
 import com.mysite.jira.entity.ChatMessage;
 import com.mysite.jira.service.ChatService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -27,11 +28,11 @@ public class ChatMessageController {
 	private final SimpMessagingTemplate messagingTemplate;
 	
 	@MessageMapping("/chat/room/create")
-	public void createChatRoom(@Payload RequestChatRoomCreateDTO requestChatRoomCreateDTO, SimpMessageHeaderAccessor headerAccessor) {
+	public void createChatRoom(Principal principal, @Payload RequestChatRoomCreateDTO requestChatRoomCreateDTO, SimpMessageHeaderAccessor headerAccessor) {
 		Integer jiraIdx = (Integer) headerAccessor.getSessionAttributes().get("jiraIdx");
 		ChatRoomListDTO chatRoomListDTO = chatService.createChatRoom(requestChatRoomCreateDTO);
 		for (ChatRoomListAccountDTO account : chatRoomListDTO.getAccountList()) {
-	        messagingTemplate.convertAndSendToUser(account.getName(), "/topic/chat/room/" + jiraIdx, chatRoomListDTO.getChatRoom().getIdx());
+	        messagingTemplate.convertAndSendToUser(account.getEmail(),"/topic/chat/room/" + jiraIdx, chatRoomListDTO);
 	    }
 	}
 	

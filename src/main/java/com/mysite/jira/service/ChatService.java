@@ -147,6 +147,7 @@ public class ChatService {
 			Account account = chatRoomIdxChatMemberList.get(i).getAccount();
 			ChatRoomListAccountDTO dto = ChatRoomListAccountDTO.builder()
 															   .idx(account.getIdx())
+															   .email(account.getEmail())
 															   .name(account.getName())
 															   .iconFilename(account.getIconFilename())
 															   .build();
