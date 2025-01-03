@@ -218,8 +218,7 @@ public class FilterIssueTableAPIController {
 		String filterName = filterDto.getFilterName(); // 필터 제목
 		String explain = filterDto.getExplain(); // 필터 설명내용
 		String username = principal.getName(); // 현재 인증된 사용자 이름 가져오기
-		Optional<Account> optAccount = accountService.getByEmail(username); // 예시: 사용자 이름으로 Account 객체를 조회
-		Account account = optAccount.get();
+		Account account = accountService.getAccountByEmail(username); // 예시: 사용자 이름으로 Account 객체를 조회
 
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Jira jira = jiraService.getByIdx(jiraIdx);

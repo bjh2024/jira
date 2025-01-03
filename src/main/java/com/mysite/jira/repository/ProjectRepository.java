@@ -118,7 +118,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			    WHERE rn = 1
 			) prc 
 			ON p.idx = prc.project_idx
-			LEFT JOIN issue i ON p.idx = i.project_idx
+			LEFT JOIN issue i ON (p.idx = i.project_idx AND i.manager_idx = :accountIdx)
 			LEFT JOIN issue_status ist ON ist.idx = i.issue_status_idx
 			WHERE prc.account_idx = :accountIdx
 			AND p.jira_idx = :jiraIdx

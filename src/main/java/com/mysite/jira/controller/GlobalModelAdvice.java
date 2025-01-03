@@ -225,7 +225,7 @@ public class GlobalModelAdvice {
 			Principal principal) {
 		String uri = request.getRequestURI();
 		if(uri.contains("/account"))return;
-		Account accountIdx = accountService.getByEmail(principal.getName()).get();
+		Account accountIdx = accountService.getAccountByEmail(principal.getName());
 		if(uri.contains("/filter")) {
 			if(filterIdx != null) {
 				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());

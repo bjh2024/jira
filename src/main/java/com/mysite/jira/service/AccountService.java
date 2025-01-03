@@ -44,8 +44,13 @@ public class AccountService {
 	
 	private final FilterService filterService;
 	
-	public Optional<Account> getByEmail(String email) {
-		return accountRepository.findByEmail(email);
+	public Account getAccountByEmail(String email) {
+		Optional<Account> optAccount = this.accountRepository.findByEmail(email);
+		Account account = null;
+		if(optAccount.isPresent()) {
+			account = optAccount.get();
+		}
+		return account;
 	}
 	
 	public Account getByName(String name){
@@ -116,15 +121,6 @@ public class AccountService {
 								.build();
 		this.accountRepository.save(newUser);
 		return newUser;
-	}
-	
-	public Account getAccountByEmail(String email) {
-		Optional<Account> optAccount = this.accountRepository.findByEmail(email);
-		Account account = null;
-		if(optAccount.isPresent()) {
-			account = optAccount.get();
-		}
-		return account;
 	}
 	
 	public void updateAccount(String email) {
@@ -223,8 +219,7 @@ public class AccountService {
 	
 	// 비밀번호 변경 메서드
 	  public boolean changePassword(@RequestBody NewPwDTO newPw) {
-		  System.out.println(newPw.getEmail());
-	        Account account = getByEmail(newPw.getEmail()).get();
+	        Account account = this.getAccountByEmail(newPw.getEmail());
 
 	        if (account == null || !passwordEncoder.matches(newPw.getOldPw(), account.getPw())) {
 	            return false; // 계정을 찾을 수 없거나 기존 비밀번호가 틀린 경우

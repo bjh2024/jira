@@ -49,6 +49,4 @@ public class DashboardRecentClicked {
 	public void updateDate() {
 		this.clickedDate = LocalDateTime.now();
 	}
-	
-	
 }

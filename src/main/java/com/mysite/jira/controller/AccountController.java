@@ -85,7 +85,6 @@ public class AccountController {
 		String receivedCode = authCodeForm.getFirst() + authCodeForm.getSecond() + authCodeForm.getThird()
 				+ authCodeForm.getFourth();
 		String usersCode = account.getAuthCode();
-		System.out.println(receivedCode + "   " + usersCode);
 		LocalDateTime currentTime = LocalDateTime.now();
 		if (!receivedCode.equals(usersCode)) {
 			bindingResult.rejectValue("email", "error.authCodeForm", "입력한 코드가 전송된 코드와 다릅니다.");
