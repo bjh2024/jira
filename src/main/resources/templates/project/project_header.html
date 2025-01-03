@@ -31,6 +31,28 @@
 				<div>
 					<div class="header-setting">
 						<div class="header-setbtn">
+							<div class="header-menuwindow">
+								<div class="menuwindow-optionbox">
+									<button class="menuwindow-optionbtn">
+										<span style="height: 16px;"><img th:src="@{/images/star_icon_yellow.svg}" style="width: 16px; height: 16px;"></span>
+										<span style="margin-bottom: 2px;">별표 표시 목록에서 제거</span>
+									</button>
+									<button class="menuwindow-optionbtn insert">
+										<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}" style="width: 16px; height: 16px;"></span>
+										<span style="margin-bottom: 2px;">사용자 추가</span>
+									</button>
+									<button th:onclick="|location.href='@{|/project/${project.key}/setting/info|}'|" class="menuwindow-optionbtn">
+										<span style="height: 16px;"><img th:src="@{/images/setting_icon.svg}" style="width: 16px; height: 16px;"></span>
+										<span style="margin-bottom: 2px;">프로젝트 설정</span>
+									</button>
+								</div>
+								<div class="menuwindow-deletebox">
+									<button class="menuwindow-optionbtn" style="gap: 12px;">
+										<span style="height: 24px; margin-left: -4px;"><img th:src="@{/images/trash_icon.svg}" style="width: 24px; height: 24px; filter: invert(24%) sepia(62%) saturate(3539%) hue-rotate(350deg) brightness(71%) contrast(86%);"></span>
+										<span style="margin-bottom: 2px; color: #AE2E24;">프로젝트 삭제</span>
+									</button>
+								</div>
+							</div>
 							<img th:src="@{/images/three_dots_icon_small.svg}" class="header-setbtn-icon">
 						</div>
 					</div>
@@ -84,25 +106,37 @@
 				</a>
 			</div>
 		</nav>
-		<div class="header-menuwindow">
-			<div class="menuwindow-optionbox">
-				<button class="menuwindow-optionbtn">
-					<span style="height: 16px;"><img th:src="@{/images/star_icon_yellow.svg}" style="width: 16px; height: 16px;"></span>
-					<span style="margin-bottom: 2px;">별표 표시 목록에서 제거</span>
-				</button>
-				<button class="menuwindow-optionbtn">
-					<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}" style="width: 16px; height: 16px;"></span>
-					<span style="margin-bottom: 2px;">사용자 추가</span>
-				</button>
-				<button th:onclick="|location.href='@{|/project/${project.key}/setting/info|}'|" class="menuwindow-optionbtn">
-					<span style="height: 16px;"><img th:src="@{/images/setting_icon.svg}" style="width: 16px; height: 16px;"></span>
-					<span style="margin-bottom: 2px;">프로젝트 설정</span>
-				</button>
+	</div>
+	<div class="insert-member-container">
+		<div class="insert-member-box">
+			<div class="insert-user-title">
+				사용자 추가
 			</div>
-			<div class="menuwindow-deletebox">
-				<button class="menuwindow-optionbtn" style="gap: 12px;">
-					<span style="height: 24px; margin-left: -4px;"><img th:src="@{/images/trash_icon.svg}" style="width: 24px; height: 24px; filter: invert(24%) sepia(62%) saturate(3539%) hue-rotate(350deg) brightness(71%) contrast(86%);"></span>
-					<span style="margin-bottom: 2px; color: #AE2E24;">프로젝트 삭제</span>
+			<div class="insert-user-body">
+				<div class="insert-user-optiontitle">Jira 사용자 목록</div>
+				<div class="insert-user-selectbtn" th:attr="data-useridx='', data-projectidx=${project.idx}">
+					<div class="insert-user-selectwindow" th:if="${#lists.size(jiraMemberList) > 0}">
+						<div class="user-select-option" th:each="jiraMember : ${jiraMemberList}" 
+						th:if="${jiraMember.account.idx != currentUser.idx}" th:unless="${#lists.contains(memberAccList, jiraMember.account)}"
+						th:attr="data-useridx=${jiraMember.account.idx}">
+							<img th:src="@{|/images/${jiraMember.account.iconFilename}|}" width="24" height="24">
+							<span th:text="${jiraMember.account.name}"></span>
+						</div>
+					</div>
+					<span th:text="${#lists.size(jiraMemberList) > 0} ? '사용자 선택' : '이 Jira에 다른 사용자가 존재하지 않습니다. 먼저 Jira 사용자를 추가해 주세요.'" class="user-select-alert"></span>
+				</div>
+				<div class="insert-user-optiontitle">역할</div>
+				<div class="insert-user-rolebtn">
+					<span>구성원</span>
+					<img src="/images/arrow_under_icon.svg" width="12" height="12" style="filter: invert(57%) sepia(4%) saturate(577%) hue-rotate(186deg) brightness(99%) contrast(88%);">
+				</div>
+			</div>
+			<div class="insert-user-btnbar">
+				<button class="insert-user-btn submit">
+					<span>추가</span>
+				</button>
+				<button class="insert-user-btn cancel">
+					<span>취소</span>
 				</button>
 			</div>
 		</div>

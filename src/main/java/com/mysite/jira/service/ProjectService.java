@@ -290,4 +290,22 @@ public class ProjectService {
 									.build();
 		this.issueTypeRepository.save(issueType);
 	}
+	
+	public List<Account> getProjectMemberListByProjectIdx(Integer projectIdx){
+		List<ProjectMembers> prjMemberList = this.projectMembersRepository.findAllByProjectIdx(projectIdx);
+		List<Account> userList = new ArrayList<>();
+		for(int i = 0; i < prjMemberList.size(); i++) {
+			userList.add(prjMemberList.get(i).getAccount());
+		}
+		return userList;
+	}
+	
+	public void createProjectMember(Account user, Project project) {
+		ProjectMembers member = ProjectMembers.builder()
+											.auth_type(2)
+											.account(user)
+											.project(project)
+											.build();
+		this.projectMembersRepository.save(member);
+	}
 }

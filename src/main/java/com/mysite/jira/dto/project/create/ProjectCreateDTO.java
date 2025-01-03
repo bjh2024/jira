@@ -1,6 +1,5 @@
 package com.mysite.jira.dto.project.create;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
