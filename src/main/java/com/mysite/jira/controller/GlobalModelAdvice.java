@@ -168,14 +168,18 @@ public class GlobalModelAdvice {
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			Jira jira = jiraService.getByIdx(jiraIdx);
+			List<JiraMembers> jiraMemberList = jiraService.getJiraMemberListByJiraIdx(jiraIdx);
 			
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
 			session.setAttribute("projectIdx", project.getIdx());
+			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
 			
 			Account account = accountService.getAccountByEmail(principal.getName());
 			projectService.addProjectRecentClicked(account, jira, project);
 			
 			model.addAttribute("project", project);
+			model.addAttribute("jiraMemberList", jiraMemberList);
+			model.addAttribute("memberAccList", memberAccList);
 		}
 	}
 	

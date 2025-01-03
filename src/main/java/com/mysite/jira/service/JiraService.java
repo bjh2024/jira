@@ -108,4 +108,8 @@ public class JiraService {
 		}
 		return null;
 	}
+	
+	public List<JiraMembers> getJiraMemberListByJiraIdx(Integer jiraIdx){
+		return this.jiraMembersRepository.findByJiraIdx(jiraIdx);
+	}
 }

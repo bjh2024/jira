@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
+import com.mysite.jira.dto.project.create.ProjectMemberCreateDTO;
 import com.mysite.jira.dto.project.setting.DeleteIssueTypeDTO;
 import com.mysite.jira.dto.project.update.RequestUpdateDTO;
 import com.mysite.jira.dto.project.update.UpdateProjectNameDTO;
@@ -169,5 +170,14 @@ public class ProjectAPIController {
 			content = "이 이슈 유형을 사용하는 경우를 사용자들에게 알리기";
 		}
 		projectService.createIssueType(project, name, content, iconFilename);
+	}
+	
+	@PostMapping("/create_project_member")
+	public void createProjectMember(@RequestBody ProjectMemberCreateDTO memberDTO) {
+		System.out.println("여기 오나?");
+		System.out.println(memberDTO.getUserIdx() + "ddddddd" + memberDTO.getProjectIdx());
+		Account user = boardMainService.getAccountById(memberDTO.getUserIdx());
+		Project project = projectService.getProjectByIdx(memberDTO.getProjectIdx());
+		projectService.createProjectMember(user, project);
 	}
 }
