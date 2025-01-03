@@ -33,7 +33,6 @@ function resetCode(){
 	})
 	.then(response => {
         if (response.ok) {
-            console.log("가져옴");
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -42,14 +41,3 @@ function resetCode(){
 		console.error("Fetch error:", error);
 	});
 }
-
-/*document.querySelector(".resetcodebtn").addEventListener("click", function(e){
-	const btn = e.target.closest(".resetcodebtn");
-	if(btn !== null){
-		resetData.email = btn.dataset.email;
-		if(resetData.email != null){
-			console.log(resetData);
-			resetCode();
-		}else{console.log("안드감");}
-	}
-});*/

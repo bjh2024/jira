@@ -12,12 +12,15 @@ import org.springframework.stereotype.Component;
 
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Jira;
+import com.mysite.jira.entity.Project;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class SocialAuthenticationHandler implements AuthenticationSuccessHandler {
@@ -25,6 +28,10 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	private AccountService accountService;
 	@Autowired
     private JiraService jiraService;
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private ProjectService projectService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,17 +44,12 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
 	    
 	    List<Jira> jiraList = jiraService.getRecentTop1Jira(accountIdx);
 	    Jira jira = jiraList.get(0);
-	    String jiraName = "";
-	    String defaultUri = "";
-	    if (jira == null) {
-	    	jiraService.addJira(accountIdx);
-	    	jiraName = jiraList.get(0).getName();
-	    	defaultUri = "/" + jiraName;
-	    }else {
-	    	jiraName = jira.getName();
-	    }
+	    session.setAttribute("jiraIdx", jira.getIdx());
 	    
-	    defaultUri = "/" + jiraName;
-	    response.sendRedirect(defaultUri); // 리디렉션
+	    // 현재 계정이 가장 최근 방문한 project
+		Project project = projectService.getRecentTop1Project(accountIdx, jira.getIdx());
+		String defaultUri = project == null ? "/" : "/project/"+ project.getKey() +"/summation";
+		
+		response.sendRedirect(defaultUri);
 	}
 }

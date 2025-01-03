@@ -15,7 +15,6 @@ function createProjectLog(){
 	})
 	.then(response => {
         if (response.ok) {
-            console.log("로그 업데이트 성공");
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -628,7 +627,6 @@ function createissuefetch(){
 			location.reload();
 			localStorage.setItem('newIssue', JSON.stringify(issueDatas));
 			sendToastMessage(toastInfo); // 리로드 후 1초 뒤에 토스트 메시지 전송
-			console.log("최근 클릭 데이터 생성 완료");
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -836,7 +834,6 @@ function createRecentClickedData(){
 		body: JSON.stringify(recentClickedData)
 	}).then(response => {
         if (response.ok) {
-			console.log("최근 클릭 데이터 생성 완료");
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -852,7 +849,6 @@ document.querySelectorAll(".issues").forEach(function(btn){
 			recentClickedData.jiraIdx = btn.dataset.jiraidx;
 			recentClickedData.userIdx = btn.dataset.useridx;
 			recentClickedData.issueIdx = btn.dataset.idx;
-			console.log(recentClickedData);
 			createRecentClickedData();
 		}
 		
@@ -997,7 +993,6 @@ function deleteIssue(){
 	.then(response => {
         if (response.ok) {
 			sendToastMessage(toastInfo);
-			console.log("삭제 성공");
 			location.reload();
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
@@ -1776,7 +1771,6 @@ function deleteIssueReply(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -2245,7 +2239,6 @@ function deleteLabelData(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우

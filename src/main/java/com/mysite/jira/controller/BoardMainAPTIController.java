@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +52,7 @@ import com.mysite.jira.entity.IssueLabel;
 import com.mysite.jira.entity.IssueLabelData;
 import com.mysite.jira.entity.IssueLikeMembers;
 import com.mysite.jira.entity.IssuePriority;
+import com.mysite.jira.entity.IssueRecentClicked;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
@@ -63,7 +65,6 @@ import com.mysite.jira.entity.Team;
 import com.mysite.jira.service.AiService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.JiraService;
-import com.mysite.jira.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -72,7 +73,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/project")
 public class BoardMainAPTIController {
 	private final JiraService jiraService;
-	private final ProjectService projectService;
 	private final BoardMainService boardMainService;
 	private final AiService aiService;
 	
@@ -690,6 +690,12 @@ public class BoardMainAPTIController {
 		Jira jira = jiraService.getByIdx(clickedIssueDTO.getJiraIdx());
 		Account user = boardMainService.getAccountById(clickedIssueDTO.getUserIdx());
 		Issue issue = boardMainService.getIssueByIdx(clickedIssueDTO.getIssueIdx());
-		boardMainService.createIssueRecentClicked(jira, user, issue);
+		Optional<IssueRecentClicked> clicked = boardMainService.verificationIssueRecentClicked(clickedIssueDTO.getJiraIdx(), 
+				clickedIssueDTO.getUserIdx(), clickedIssueDTO.getIssueIdx());
+		if(clicked.isPresent()) {
+			boardMainService.updateIssueRecentClicked(clicked.get());
+		}else {
+			boardMainService.createIssueRecentClicked(jira, user, issue);
+		}
 	}
 }

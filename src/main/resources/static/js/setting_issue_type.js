@@ -132,7 +132,6 @@ document.querySelector(".edit-typetitlebtn.submit").addEventListener("click", fu
 	const input = document.querySelector(".edit-issuetype-title-input");
 	editTypeData.idx = input.dataset.idx;
 	editTypeData.name = input.value;
-	console.log(editTypeData);
 	editIssueTypeTitle();
 });
 
@@ -176,7 +175,6 @@ document.querySelector(".edit-typecontentbtn.submit").addEventListener("click", 
 	const input = document.querySelector(".edit-issuetype-content-input");
 	editTypeData.idx = input.dataset.idx;
 	editTypeData.content = input.value;
-	console.log(editTypeData);
 	editIssueTypeContent();
 });
 
@@ -264,14 +262,12 @@ document.querySelector(".delete-type-btn.submit").addEventListener("click", func
 			deleteIssueTypeData.projectIdx = btn.dataset.projectidx;
 			deleteIssueTypeData.issueTypeIdx = btn.dataset.oldidx;
 			deleteIssueTypeData.newTypeIdx = selectedType.dataset.idx;
-			console.log(deleteIssueTypeData);
 			deleteIssueType(btn.dataset.key);
 		}
 	}else{
 		const btn = document.querySelector(".delete-type-btn.submit");
 		deleteIssueTypeData.projectIdx = btn.dataset.projectidx;
 		deleteIssueTypeData.issueTypeIdx = btn.dataset.oldidx;
-		console.log(deleteIssueTypeData);
 		deleteIssueType(btn.dataset.key);
 	}
 });
