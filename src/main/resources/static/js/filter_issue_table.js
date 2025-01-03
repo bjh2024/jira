@@ -425,7 +425,7 @@ document.getElementById("search_box")?.addEventListener("input", function(item) 
     filterDatas.searchBox = item.target.value;
     fetchInputFilter();
     fetchInputFilterIssue();
-  }, 100); // 500ms 딜레이
+  }, 300); // 300ms 딜레이
 });
 // 이슈 이름으로 검색 기능 끝================================================================================
 // 전체리셋버튼 ========================================================================================
