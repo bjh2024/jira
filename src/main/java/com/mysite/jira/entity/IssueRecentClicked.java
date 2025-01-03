@@ -36,7 +36,7 @@ public class IssueRecentClicked {
 	@ColumnDefault("sysdate")
 	@Column
 	private LocalDateTime clickedDate;
-
+	
 	@Builder
 	public IssueRecentClicked(Integer idx, Account account, Issue issue, Jira jira) {
 		this.account = account;
@@ -45,5 +45,8 @@ public class IssueRecentClicked {
 		this.clickedDate = LocalDateTime.now();
 	}
 	
+	public void updateClickedDate() {
+		this.clickedDate = LocalDateTime.now();
+	}
 	
 }

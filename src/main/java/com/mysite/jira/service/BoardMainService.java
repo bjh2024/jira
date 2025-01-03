@@ -616,12 +616,22 @@ public class BoardMainService {
 		return fileList;
 	}
 	
+	public Optional<IssueRecentClicked> verificationIssueRecentClicked(Integer jiraIdx, Integer accountIdx, Integer issueIdx) {
+		Optional<IssueRecentClicked> recentClicked = this.issueRecentClickedRepository.findByJiraIdxAndAccountIdxAndIssueIdx(jiraIdx, accountIdx, issueIdx);
+		return recentClicked;
+	}
+	
 	public void createIssueRecentClicked(Jira jira, Account user, Issue issue) {
 		IssueRecentClicked clicked = IssueRecentClicked.builder()
 													.jira(jira)
 													.account(user)
 													.issue(issue)
 													.build();
+		this.issueRecentClickedRepository.save(clicked);
+	}
+	
+	public void updateIssueRecentClicked(IssueRecentClicked clicked) {
+		clicked.updateClickedDate();
 		this.issueRecentClickedRepository.save(clicked);
 	}
 }
