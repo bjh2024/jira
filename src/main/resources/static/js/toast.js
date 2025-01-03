@@ -2,13 +2,16 @@
 function showToast(message) {
   let toast = document.querySelector(".toast_message");
   toast.classList.add("show");
+  let notice = message.split("/");
   toast.innerHTML = 
-  `<div style="margin: 10px;">
+  `<a href="/project/${notice[1]}/board_main">
+  <div style="margin: 10px;" >
   		<img src="/images/alram_icon2.svg" style="width: 16px; height: 16px;"> 알림 </br>
   	</div>
   	<div>
-  		${message}
-  	</div>`; // 메시지 설정
+	   ${notice[0]}
+  	</div>
+	</a>`; // 메시지 설정
 	
 	setTimeout(() => {
 	   toast.classList.remove("show");
