@@ -77,7 +77,6 @@ document.querySelector(".edit-prjtitlebtn.submit").addEventListener("click", fun
 	const inputItem = document.querySelector(".project-title-input");
 	updateProjectNameData.projectIdx = inputItem.dataset.projectidx;
 	updateProjectNameData.name = inputItem.value;
-	console.log(updateProjectNameData);
 	updateProjectNameFetch(document.querySelector(".header-title"), inputItem);
 	submitItem.parentElement.classList.remove("show");
 	submitItem.parentElement.nextElementSibling.children[0].classList.remove("none");
