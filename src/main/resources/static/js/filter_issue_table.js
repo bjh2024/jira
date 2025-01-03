@@ -413,11 +413,21 @@ document.querySelectorAll(".filter_issue_box input[name='issuePriority']")?.forE
 		});
 })
 // 이슈 우선순위 끝 ========================================================================================
-document.getElementById("search_box")?.addEventListener("input",function(item){
-		filterDatas.searchBox = item.target.value;
-		fetchInputFilter();
-		fetchInputFilterIssue();
-})
+// 이슈 이름으로 검색 기능 ================================================================================
+let debounceTimeout;
+
+document.getElementById("search_box")?.addEventListener("input", function(item) {
+  // 이전 타이머를 취소하여 마지막 입력만 처리되도록 함
+  clearTimeout(debounceTimeout);
+
+  // 일정 시간 후에 작업을 실행
+  debounceTimeout = setTimeout(function() {
+    filterDatas.searchBox = item.target.value;
+    fetchInputFilter();
+    fetchInputFilterIssue();
+  }, 100); // 500ms 딜레이
+});
+// 이슈 이름으로 검색 기능 끝================================================================================
 // 전체리셋버튼 ========================================================================================
 document.querySelector("#all_reset")?.addEventListener("click",function(){
 	filterDatas = {
