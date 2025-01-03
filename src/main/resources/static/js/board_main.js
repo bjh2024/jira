@@ -590,8 +590,7 @@ let issueDatas = {
 	"issueTypeIdx": "",
 	"reporterIdx": "",
 	"statusIdx": "",
-	"issueName": "",
-	"issueIdx": ""
+	"issueName": ""
 }
 
 function issueNameCheck(){
@@ -624,13 +623,18 @@ function createissuefetch(){
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
 		body: JSON.stringify(issueDatas)
-	}).then(response => response.json())
-	.then(idx => {
-		location.reload();
-		localStorage.setItem('newIssue', JSON.stringify(issueDatas));
-		sendToastMessage(toastInfo); // 리로드 후 1초 뒤에 토스트 메시지 전송
-		return idx.issueIdx;
-	}).catch(error => {
+	}).then(response => {
+        if (response.ok) {
+			location.reload();
+			localStorage.setItem('newIssue', JSON.stringify(issueDatas));
+			sendToastMessage(toastInfo); // 리로드 후 1초 뒤에 토스트 메시지 전송
+			console.log("최근 클릭 데이터 생성 완료");
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	})
+	.catch(error => {
 			console.error("Fetch error:", error);
 	});
 }
@@ -650,14 +654,6 @@ document.querySelectorAll(".create-issuekey").forEach(function(input){
 				return;
 			}
 			issueNameCheck();
-			
-			// createissuefetch();
-			
-			/*createLogData.userIdx = btnBoxItem.dataset.useridx;
-			createLogData.issueIdx = issueIdx;
-			createLogData.type = issueIdx;
-			createProjectLog();
-			location.reload();*/
 		}
 	});
 });
@@ -681,7 +677,6 @@ document.querySelectorAll(".createissuebtn").forEach(function(btn){
 		}
 		
 		issueNameCheck();
-		// createissuefetch();
 	});
 });
 

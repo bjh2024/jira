@@ -309,17 +309,18 @@ public class BoardMainAPTIController {
 	
 	// 해당 프로젝트에 이슈 생성
 	@PostMapping("/create_issue")
-	public CreateIssueDTO createissue(@RequestBody CreateIssueDTO createIssueDTO) {
+	public void createIssue(@RequestBody CreateIssueDTO createIssueDTO) {
 		String issueName = createIssueDTO.getIssueName();
 		Integer issueTypeIdx = createIssueDTO.getIssueTypeIdx();
 		Integer projectIdx = createIssueDTO.getProjectIdx();
 		Integer reporterIdx = createIssueDTO.getReporterIdx();
 		Integer StatusIdx = createIssueDTO.getStatusIdx();
-		Integer idx = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
-		CreateIssueDTO dto = CreateIssueDTO.builder()
-										.issueIdx(idx)
-										.build();
-		return dto;
+		Issue issue = boardMainService.createIssue(issueName, projectIdx, issueTypeIdx, StatusIdx, reporterIdx);
+	
+		//  이슈 생성 로그 생성
+		ProjectLogStatus status = boardMainService.getLogStatusByIdx(11);
+		Account creator = boardMainService.getAccountById(reporterIdx);
+		boardMainService.createProjectLogData(issue, creator, status);
 	}
 	
 	// 프로젝트 - 보드 탭의 이슈 상태 정렬 순서를 업데이트
