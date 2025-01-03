@@ -276,7 +276,7 @@ public class BoardMainService {
 		return false;
 	}
 	
-	public Integer createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
+	public Issue createIssue(String issueName, Integer projectIdx, Integer issueTypeIdx, 
 			Integer statusIdx, Integer reporteridx) {
 		Optional<Project> optProject = this.projectRepository.findById(projectIdx);
 		Optional<IssueType> optIssueType = this.issueTypeRepository.findById(issueTypeIdx);
@@ -323,7 +323,7 @@ public class BoardMainService {
 							.build();
 		
 		this.issueRepository.save(issue);
-		return issue.getIdx();
+		return issue;
 	}
 	
 	public void updateIssueBoxOrder(Integer oldIdx, Integer newIdx, Integer projectIdx, boolean reverse) {
