@@ -53,7 +53,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 			"notDoneCheck" : null,
 			"filterIdx": null
 			}
-	loadUpdate();
 });
 
 // input에서 엔터키 이벤트가 발생해도 submit으로 넘어가지 않게 막기
@@ -93,9 +92,9 @@ let filterDatas = {
 	    // 클릭된 요소가 .issue_box_choice인 경우에만 처리
 	    if (event.target.closest(".issue_box_choice")) {
 		        let item = event.target.closest(".issue_box_choice");  // 클릭한 .issue_box_choice 요소
-	        issueKey = item.dataset.issueKey;  // 데이터 속성에서 issueKey 값을 가져옴/
+	     	   issueKey = item.dataset.issueKey;  // 데이터 속성에서 issueKey 값을 가져옴/
 		        // issueKey로 세부 정보를 가져오는 함수 호출
-		        fetchIssueDetail();
+	        fetchIssueDetail();
 		    }
 		});
 		
@@ -120,7 +119,6 @@ let filterDatas = {
 		 filterDatas.updateBeforeDate = null;
 		 fetchInputFilter();
 		 fetchInputFilterIssue();
-		 fetchIssueDetail();
 	   }
 	 });
 	 document.getElementById("update_date_save_button")?.addEventListener("click", function() {
@@ -159,7 +157,6 @@ let filterDatas = {
 		}
 		fetchInputFilter();
 		fetchInputFilterIssue();
-		fetchIssueDetail();
 	 })
 	 document.getElementById("update_date_reset")?.addEventListener("click",function(){
 		filterDatas.updateBeforeDate = null;
@@ -171,7 +168,6 @@ let filterDatas = {
 		document.getElementById("update_last_date").value = null;
 		fetchInputFilter();
 		fetchInputFilterIssue();
-		fetchIssueDetail();
 	 })
 // 업데이트 날짜 필터 끝 --------------------------------------------------------------------
 // 생성 날짜 필터 시작 ------------------------------------------------------------------------
@@ -225,7 +221,6 @@ let filterDatas = {
 	 			filterDatas.createLastDate = new Date(this.value);
 	 		}
 	 		fetchInputFilter();
-			fetchIssueDetail();
 			fetchInputFilterIssue();
 	 	 })
 	 	 document.getElementById("create_date_reset")?.addEventListener("click",function(){
@@ -235,7 +230,6 @@ let filterDatas = {
 	 		document.querySelector(".create_date_box_1").classList.remove("show");
 	 		document.querySelector(".create_date_box_2").classList.remove("show");
 			fetchInputFilter();
-			fetchIssueDetail();
 			fetchInputFilterIssue();
 	 	 })
 // 생성 날짜 필터 끝 =========================================================================================
@@ -602,10 +596,24 @@ function loadUpdate() {
 			})
 			fetchInputFilter();
 			fetchInputFilterIssue();
-			fetchIssueDetail();
 	}
+	// 모든 .issue_middle_right 요소를 가져와서 확인합니다.
+	let firstIssueKey;
+	function firstIssueDetail(firstIssueKey){
+			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
+			        // 각 div의 data-key 값을 가져옵니다.
+			        let itemKey = item.getAttribute("data-key");
+			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
+			        if (itemKey === firstIssueKey) {
+			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
+			        } else {
+			            item.style.display = "none";   // 나머지 div는 숨깁니다.
+			        }
+			    });
+		
+			}
 // 전체리셋버튼 끝 ========================================================================================
-window.addEventListener("load",loadUpdate);
+window.addEventListener("load",loadUpdate());
 // ajex 데이터 보내기 ========================================================================================
 function fetchInputFilter() {
 	// fetch()를 사용하여 AJAX 요청
@@ -759,12 +767,8 @@ function fetchInputFilterIssue() {
 		.then(issueList => {
 			if(document.querySelector(".issueListFilter") == null) return;
 			document.querySelector(".issueListFilter").innerHTML = ""
-			
-			issueList.forEach(function(item, index){
-				if(index === 0){
-				issueKey = item.issueKey;
-				fetchIssueDetail();
-				}
+			firstIssueKey = issueList[0].issueKey;
+			issueList.forEach(function(item){
 				document.querySelector(".issueListFilter").innerHTML += 
 				`<div class="issue_box_choice" data-issue-key="${item.issueKey}">
 						<div class="issue_title">
@@ -783,6 +787,7 @@ function fetchInputFilterIssue() {
 						</div>
 				</div>`
 			})
+			firstIssueDetail(firstIssueKey);
 		})
 		.catch(error => {
 			console.error("Fetch error:", error);
@@ -825,7 +830,7 @@ function fetchInputFilterIssue() {
 			.then(issueDetail => {
 				if(issueDetail[0] == null) return;
 			    // issueDetail의 첫 번째 항목에서 issueKey를 가져옵니다.
-			    let issueKey = issueDetail[0].issueKey;
+			    let issueKeys = issueDetail[0].issueKey;
 
 			    // 모든 .issue_middle_right 요소를 가져와서 확인합니다.
 			    document.querySelectorAll(".issue_middle_right").forEach(function(item) {
@@ -833,7 +838,7 @@ function fetchInputFilterIssue() {
 			        let itemKey = item.getAttribute("data-key");
 
 			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
-			        if (itemKey === issueKey) {
+			        if (itemKey === issueKeys) {
 			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
 			        } else {
 			            item.style.display = "none";   // 나머지 div는 숨깁니다.

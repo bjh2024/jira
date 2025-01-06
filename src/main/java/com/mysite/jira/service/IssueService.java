@@ -24,19 +24,10 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.ProjectLogData;
 import com.mysite.jira.repository.AccountRepository;
-import com.mysite.jira.repository.FilterDoneDateRepository;
-import com.mysite.jira.repository.FilterDoneRepository;
-import com.mysite.jira.repository.FilterIssueCreateDateRepository;
-import com.mysite.jira.repository.FilterIssuePriorityRepository;
-import com.mysite.jira.repository.FilterIssueStatusRepository;
 import com.mysite.jira.repository.FilterIssueTypeRepository;
-import com.mysite.jira.repository.FilterIssueUpdateRepository;
-import com.mysite.jira.repository.FilterManagerRepository;
 import com.mysite.jira.repository.FilterProjectRepository;
-import com.mysite.jira.repository.FilterReporterRepository;
 import com.mysite.jira.repository.IssuePriorityRepository;
 import com.mysite.jira.repository.IssueRepository;
-import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -54,15 +45,7 @@ public class IssueService {
 	private final AccountRepository accountRepository;
 	
 	private final FilterProjectRepository filterProjectRepository;
-	private final FilterIssueStatusRepository filterIssueStatusRepository;
 	private final FilterIssueTypeRepository filterIssueTypeRepository;
-	private final FilterManagerRepository filterManagerRepository;
-	private final FilterIssuePriorityRepository filterIssuePriorityRepository;
-	private final FilterDoneRepository filterDoneRepository;
-	private final FilterDoneDateRepository filterDoneDateRepository;
-	private final FilterIssueUpdateRepository filterIssueUpdateRepository;
-	private final FilterIssueCreateDateRepository filterIssueCreateDateRepository;
-	private final FilterReporterRepository filterReporterRepository;
 	
 	public Issue getByIdx(Integer idx) {
 		Optional<Issue> issue = issueRepository.findById(idx);

@@ -191,7 +191,7 @@ public class FilterIssueTableAPIController {
 		}
 		return filterIssue;
 	}
-
+ // 필터 이름 중복 체크
 	@PostMapping("/filter_duplicate")
 	public boolean filterDuplicate(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
@@ -202,6 +202,7 @@ public class FilterIssueTableAPIController {
 		return true;
 	}
 	
+// 필터 즐겨찾기 맴버데이터 
 	@PostMapping("/every_filter")
 	public Integer[] filterLikeMembers(@RequestBody FilterLikeDto filterDto) {
 		List<FilterLikeMembers> filterLikeArr = filterService.getByAccountIdx(filterDto.getAccountIdx());
@@ -212,6 +213,7 @@ public class FilterIssueTableAPIController {
 		return filterIdxArr;
 	}
 	
+// 필터 생성 기능
 	@PostMapping("/filter_create")
 	public boolean filterCreate(@RequestBody FilterIssueRequestDTO filterDto, Principal principal) {
 
