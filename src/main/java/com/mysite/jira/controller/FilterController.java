@@ -29,11 +29,9 @@ import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
-import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -51,6 +49,7 @@ public class FilterController {
 	private final TeamService teamService;
 	private final HttpSession session;
 	
+// controller에서 걸러준 이슈들을 model객체로 넘겨줌
 	@GetMapping("filter_issue")
 	public String filterIssue(@RequestParam(name="filter", required = false) Integer filterIdx ,Model model,
 			Principal principal){
