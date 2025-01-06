@@ -53,7 +53,6 @@
 		</div>
 		<!-- 작업 -->
 		<div class="my_work_content task show">
-			<div th:if="${#lists.size(issueLogDateTodayList) == 0}">작업중인 이슈가 없습니다.</div>
 			<div th:if="${#lists.size(issueLogDateTodayList) != 0}">
 				<h3>오늘</h3>
 				<div class="content_list">
@@ -214,14 +213,19 @@
 			<div th:if="${#lists.size(recentTodayList) != 0}">
 				<h3>오늘</h3>
 				<div class="content_list">
-					<a href="#" class="list_item" th:each=" item : ${recentTodayList}">
+					<a class="list_item" 
+					th:each=" item : ${recentTodayList}"
+					th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+		                         item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+					        	 item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+					        	 '#'}}">
 						<div class="item_header">
 							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
 							<div>
 								<h4 th:text="${item.name}"></h4>
 								<p>
 									<th:block
-										th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+										th:switch="${item.type}">
 										<span th:case="'project'">팀에서 관리하는 비즈니스</span>
 										<span th:case="'dashboard'">대시보드</span>
 										<span th:case="'filter'">필터</span>
@@ -241,7 +245,12 @@
 			<div th:if="${#lists.size(recentYesterdayList) != 0}">
 				<h3>어제</h3>
 				<div class="content_list">
-					<a href="#" class="list_item" th:each=" item : ${recentYesterdayList}">
+					<a class="list_item" 
+					th:each=" item : ${recentYesterdayList}"
+					th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+		                         item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+					        	 item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+					        	 '#'}}">
 						<div class="item_header">
 							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
 							<div>
@@ -268,7 +277,12 @@
 			<div th:if="${#lists.size(recentWeekList) != 0}">
 				<h3>지난주</h3>
 				<div class="content_list">
-					<a href="#" class="list_item" th:each=" item : ${recentWeekList}">
+					<a class="list_item" 
+					   th:each=" item : ${recentWeekList}"
+					   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+		                         item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+					        	 item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+					        	 '#'}}">
 						<div class="item_header">
 							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
 							<div>
@@ -295,7 +309,12 @@
 			<div th:if="${#lists.size(recentMonthList) != 0}">
 				<h3>지난달</h3>
 				<div class="content_list">
-					<a href="#" class="list_item" th:each=" item : ${recentMonthList}">
+					<a class="list_item" 
+					   th:each=" item : ${recentMonthList}"
+					   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+			                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+						        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+						        	'#'}}">
 						<div class="item_header">
 							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
 							<div>
@@ -322,7 +341,12 @@
 			<div th:if="${#lists.size(recentMonthGreaterList) != 0}">
 				<h3>1개월보다 오래됨</h3>
 				<div class="content_list">
-					<a href="#" class="list_item" th:each=" item : ${recentMonthGreaterList}">
+					<a class="list_item" 
+					   th:each=" item : ${recentMonthGreaterList}"
+					   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+		                            item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+					        	    item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+					        	    '#'}}">
 						<div class="item_header">
 							<img th:src="@{|/images/${item.iconFilename}|}" alt="projects" width="24" height="24">
 							<div>
@@ -382,7 +406,12 @@
 		<!-- 별표 표시됨 -->
 		<div class="my_work_content like">
 			<div th:if="${#lists.size(allLikeList) == 0}">별표 표시된 프로젝트, 대시보드, 필터가 없습니다</div>
-			<a href="#" class="list_item" th:each="item : ${allLikeList}">
+			<a class="list_item" 
+			   th:each="item : ${allLikeList}"
+			   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+	                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+			        	    item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+			        	    '#'}}">
 				<div class="item_header">
 					<div class="like_star_box">
 						<img src="images/switch_position_icon.svg" class="switch_draw_btn" width="24" height="24" />
@@ -396,7 +425,7 @@
 					<div class="like_header">
 						<h4 th:text="${item.key != '' ? item.name + ' (' + item.key + ')' : item.name}"></h4>
 						<th:block
-							th:switch="${#strings.substring(item.iconFilename, 0, #strings.indexOf(item.iconFilename, '_'))}">
+							th:switch="${item.type}">
 							<p th:case="'project'">팀에서 관리하는 비즈니스</p>
 							<p th:case="'dashboard'">대시보드</p>
 							<p th:case="'filter'">필터</p>

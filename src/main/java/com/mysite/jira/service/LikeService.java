@@ -46,23 +46,13 @@ public class LikeService {
 		List<Map<String, Object>> allLikeList = projectRepository.findLikeMembers(accountIdx, jiraIdx);
 		try {
 			for(int i = 0; i < allLikeList.size(); i++) {
-				Integer idx = 0;
-				String name = "";
-				String iconFilename = "";
-				String projectKey = "";
-				if(allLikeList.get(i).get("idx") instanceof Integer) {
-					idx = (Integer)allLikeList.get(i).get("idx");
-				}
-				if(allLikeList.get(i).get("name") != null) {
-					name = allLikeList.get(i).get("name").toString();
-				}
-				if(allLikeList.get(i).get("iconFilename") != null) {
-					iconFilename = allLikeList.get(i).get("iconFilename").toString();
-				}
-				if(allLikeList.get(i).get("projectKey") != null) {
-					projectKey = allLikeList.get(i).get("projectKey").toString();
-				}
+				String type = allLikeList.get(i).get("type").toString();
+				Integer idx = (Integer)allLikeList.get(i).get("idx");
+				String name = allLikeList.get(i).get("name").toString();
+				String iconFilename = allLikeList.get(i).get("iconFilename").toString();
+				String projectKey = allLikeList.get(i).get("key") != null ? allLikeList.get(i).get("key").toString() : "";
 				LikeContentDTO dto = LikeContentDTO.builder()
+												   .type(type)
 												   .idx(idx)
 												   .name(name)
 												   .iconFilename(iconFilename)

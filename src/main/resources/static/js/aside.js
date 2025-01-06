@@ -1,13 +1,32 @@
 // aside 어디 페이지인지 표시
 document.addEventListener("DOMContentLoaded", function(){
+	
 	document.querySelector(".my_work").classList.remove("active2");
 	let url = new URL(window.location.href);
 	if(url.pathname.split("/").length == 2){
-		document.querySelector(".my_work").classList.add("active2");
+		document.querySelector(".my_work.aside_item_box").classList.add("active2");
 		return;
 	};
 	if(url.pathname.includes("/team")){
-		document.querySelector(".team").classList.add("active2");
+		document.querySelector(".team.aside_item_box").classList.add("active2");
+		return;
+	}
+	if(url.pathname.includes("/project")){
+		const projectItemBox = document.querySelector(".project.aside_item_box")
+		projectItemBox.classList.add("active2");
+		projectItemBox.click();
+		return;
+	}
+	if(url.pathname.includes("/filter")){
+		const filterItemBox = document.querySelector(".filter.aside_item_box")
+		filterItemBox.classList.add("active2");
+		filterItemBox.click();
+		return;
+	}
+	if(url.pathname.includes("/dashboard")){
+		const dashboardItemBox = document.querySelector(".dashboard.aside_item_box")
+		dashboardItemBox.classList.add("active2");
+		dashboardItemBox.click();
 		return;
 	}
 });
@@ -65,7 +84,7 @@ document.querySelector("body").addEventListener("click", function (e) {
 
   const rightBoxBtn = e.target.closest(".view_right_box_btn");
 
-  if (e.target.closest(".aside_click_view_container.show")) return;
+  if (e.target.closest(".aside_click_view_container.show") || e.target.closest(".all_view_btn_box")) return;
   if (prevRightBtn === rightBoxBtn) {
     rightBoxBtn?.classList.toggle("active");
     rightBoxBtn
@@ -102,6 +121,64 @@ document.querySelectorAll(".like_content_list .img_box").forEach(function(btn){
 		likeFetch(type, idx, isLike);
 	});
 })
+
+function removeRigthMoreBox(element){
+	const asideViewBtn = element.closest(".view_right_box_btn");
+	asideViewBtn.classList.remove("active");
+	const asideClickView = element.closest(".aside_click_view_container");
+	asideClickView.classList.remove("show");
+}
+
+// 최근 항목 모두 보기
+document.querySelector(".recent.all_view_btn_box").addEventListener("click", function(){
+	const uri = new URL(window.location.href);
+	if(uri.pathname === "/"){
+		removeRigthMoreBox(this);
+		document.querySelectorAll(".my_work_content").forEach(function(content){
+			content.classList.remove("show");
+		});
+		document.querySelector(".my_work_content.check").classList.add("show");
+		
+		document.querySelectorAll(".my_work_gnb > div").forEach(function(gnbItem){
+			if(gnbItem.innerText === "확인"){
+				gnbItem.classList.add("active");
+			}else{
+				gnbItem.classList.remove("active");
+			}
+		});
+		
+		const newURL = '/?recentAll';
+		history.pushState({}, '', newURL);
+	}else{
+		location.href = "/?recentAll"
+	}
+	
+});
+
+// 별표 표시된 항목 모두 보기
+document.querySelector(".like.all_view_btn_box").addEventListener("click", function(){
+	const uri = new URL(window.location.href);
+	if(uri.pathname === "/"){
+		removeRigthMoreBox(this);
+		document.querySelectorAll(".my_work_content").forEach(function(content){
+			content.classList.remove("show");
+		});
+		document.querySelector(".my_work_content.like").classList.add("show");
+		
+		document.querySelectorAll(".my_work_gnb > div").forEach(function(gnbItem){
+			if(gnbItem.innerText === "별표 표시됨"){
+				gnbItem.classList.add("active");
+			}else{
+				gnbItem.classList.remove("active");
+			}
+		});
+		
+		const newURL = '/?starAll';
+		history.pushState({}, '', newURL);
+	}else{
+		location.href = "/?starAll"
+	}
+});
 
 // 별표 표시됨 필터박스
 document
@@ -149,6 +226,15 @@ document
 				}
 				res.forEach(function(item){
 					const aElement = document.createElement("a");
+					let href = "";
+					if(item.iconFilename === "dashboard_icon.svg"){
+						href = `/dashboard/detail/${item.idx}`;
+					}else if(item.iconFilename === "filter_icon.svg"){
+						href = `/filter/filter_issue?filter=${item.idx}`;
+					}else{
+						href = `/project/${item.key}/summation`;
+					}
+					aElement.setAttribute("href", href);
 					aElement.classList.add("like_item_box", "accent_btn");
 					aElement.innerHTML = `
 									<div class="accent_border"></div>
@@ -253,11 +339,13 @@ document.querySelector("body").addEventListener("click", function (e) {
   prevMoreSubBox = e.target.closest(".img_box");
 });
 
+// aside more box 보여주기 위해 클릭시 paddingRight 늘림 이벤트
 document.querySelector("body").addEventListener("click", function(){
 	const asideContianer = document.querySelector(".aside_container");
 	const asideItemBox = document.querySelector(".aside_item_box.view_right_box_btn.active");
 	const moreSubItem = document.querySelector(".more_sub_box.aside_more.show");
-	if(asideItemBox !== null || moreSubItem !== null){
+	const moreSubPlusItem = document.querySelector(".more_sub_box.aside_plus.show");
+	if(asideItemBox !== null || moreSubItem !== null || moreSubPlusItem !== null){
 		asideContianer.style.paddingRight = "600px";
 	}else{
 		asideContianer.style.paddingRight = "0";

@@ -466,14 +466,6 @@ document.addEventListener("DOMContentLoaded", function() {
 				drawIssueStatistics(item);			
 		});
 	}
-
-	// 결과 필터
-	const issueFilterChart = document.querySelectorAll(".dashboard_issue_filter");
-	if (issueFilterChart !== null) {
-		issueFilterChart.forEach(function(item) {
-			// if(item.getAttribute("is-save-data") === "1");
-		});
-	}
 });
 
 // 나에게 할당됨 => 페이징 처리
@@ -494,4 +486,79 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		pageNum = btn.innerText - 1;
 	}
 	drawAllot(allot, pageNum);
-})
+});
+
+const box1 = document.querySelector(".dashboard_content_container .box1");
+const box2 = document.querySelector(".dashboard_content_container .box2");
+new Sortable(box1, {
+	group: 'shared',
+	filter: '.empty_box',
+	animation: 150,
+	forceFallback: true,
+	onStart: function(evt){
+		const origin = evt.item;
+		const originHeight = window.getComputedStyle(origin).height;
+		
+		evt.item.style.height = originHeight;
+		evt.item.querySelector(".dashboard_item").classList.add("hide");
+		evt.item.classList.add("dragging");
+		
+		const dragItem = document.querySelector(".sortable-drag .dynamic_box");
+		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
+		
+		document.querySelector(".sortable-drag").style.height = "200px";
+	},
+	onEnd: function(evt){
+		evt.item.classList.remove("dragging");
+		evt.item.querySelector(".dashboard_item").classList.remove("hide");
+		
+		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
+		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
+		if(box1DashboardItems.length === 0){
+			box1.querySelector(".empty_box").classList.add("show");
+		}else{
+			box1.querySelector(".empty_box").classList.remove("show");
+		}
+		if(box2DashboardItems.length === 0){
+			box2.querySelector(".empty_box").classList.add("show");
+		}else{
+			box2.querySelector(".empty_box").classList.remove("show");
+		}
+	}
+});
+new Sortable(box2, {
+	group: 'shared',
+	filter: '.empty_box',
+	animation: 150,
+	forceFallback: true,
+	onStart: function(evt){
+		const origin = evt.item;
+		const originHeight = window.getComputedStyle(origin).height;
+		
+		evt.item.style.height = originHeight;
+		evt.item.querySelector(".dashboard_item").classList.add("hide");
+		evt.item.classList.add("dragging");
+		
+		const dragItem = document.querySelector(".sortable-drag .dynamic_box");
+		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
+		
+		document.querySelector(".sortable-drag").style.height = "200px";
+	},
+	onEnd: function(evt){
+		evt.item.classList.remove("dragging");
+		evt.item.querySelector(".dashboard_item").classList.remove("hide");
+		
+		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
+		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
+		if(box1DashboardItems.length === 0){
+			box1.querySelector(".empty_box").classList.add("show");
+		}else{
+			box1.querySelector(".empty_box").classList.remove("show");
+		}
+		if(box2DashboardItems.length === 0){
+			box2.querySelector(".empty_box").classList.add("show");
+		}else{
+			box2.querySelector(".empty_box").classList.remove("show");
+		}
+	}
+});

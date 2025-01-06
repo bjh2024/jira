@@ -15,7 +15,7 @@
 			</div>
 			<div class="dashboard_content_container">
 				<div class="box1">
-					<div th:if="${#lists.size(dashboardItemList[0]) == 0}" class="empty_box show">
+					<div class="empty_box" th:classappend="${#lists.size(dashboardItemList[0]) == 0} ? 'show' : ''">
 						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
 							alt="" width="112" height="100">
 						<p>가젯을 추가해보세요 <span>새 가젯 추가</span></p>
@@ -28,6 +28,7 @@
 								th:projectIdx-data="${item.project.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|파이 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -93,7 +94,7 @@
 								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>파이 차트</span>
 									</h2>
 									<div>
@@ -157,6 +158,7 @@
 								th:issue-total="${allotIssueCount}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|나에게 할당됨: ${currentUser.name}|"></span>
 									</h2>
 									<div>
@@ -226,7 +228,7 @@
 								th:if="${item.isSave == 0}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|나에게 할당됨: ${currentUser.name}"></span>
 									</h2>
 									<div>
@@ -337,6 +339,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|만듦 대비 해결됨 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -401,7 +404,7 @@
 								 th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>만듦 대비 해결됨 차트</span>
 									</h2>
 									<div>
@@ -472,6 +475,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|최근에 만듦 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -534,7 +538,7 @@
 								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>최근에 만듦 차트</span>
 									</h2>
 									<div>
@@ -604,6 +608,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn"draggable="false"/>
 										<span th:text="|이슈 통계: ${item.project.name} (${item.dashboardCol.content})|"></span>
 									</h2>
 									<div>
@@ -672,7 +677,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>이슈 통계</span>
 									</h2>
 									<div>
@@ -735,84 +740,15 @@
 								</div>
 							</div>
 						</th:block>
-						<div class="dashboard_issue_filter dashboard_item"
-							th:if="${item.isSave == 1 && #strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}"
-							th:idx-data="${item.idx}" th:filterIdx-data="${item.filter.idx}">
-							<div class="add_dashboard_content_header">
-								<h2>
-									<span th:text="|결과 필터: ${item.filter.name}|"></span>
-								</h2>
-								<div>
-									<div class="img_box">
-										<img src="/images/minimize_icon.svg">
-									</div>
-									<div class="img_box">
-										<img src="/images/maximize_icon.svg">
-									</div>
-									<div class="img_box">
-										<img src="/images/refresh_icon.svg">
-									</div>
-									<div class="img_box dashboard_more">
-										<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
-										<div class="more_gadget_option">
-											<div class="color_box">
-												<p>강조 색상</p>
-												<div class="color_content">
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-												</div>
-											</div>
-											<div class="btn_box">
-												<button>
-													<span>구성</span>
-												</button>
-												<button>
-													<span>복제</span>
-												</button>
-												<button>
-													<span>삭제</span>
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="dynamic_box">
-								<table style="table-layout: fixed;">
-									<colgroup>
-										<col style="width: 32px;">
-										<col style="width: 62px;">
-										<col style="width: 65%;">
-										<col style="width: 20%;">
-									</colgroup>
-									<thead>
-										<tr>
-											<th>화</th>
-											<th>키</th>
-											<th>요약</th>
-											<th>p</th>
-										</tr>
-									</thead>
-									<tbody></tbody>
-								</table>
-								<div class="paging_box"></div>
-							</div>
-						</div>
 					</div>
 				</div>
 				<div class="box2">
-					<div th:if="${#lists.size(dashboardItemList[1]) == 0}" class="empty_box show">
+					<div class="empty_box" th:classappend="${#lists.size(dashboardItemList[1]) == 0} ? 'show' : ''">
 						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
 							alt="" width="112" height="100">
 						<p>가젯을 추가해보세요 <span>새 가젯 추가</span></p>
 					</div>
-					<div class="add_dashboard_content" th:each="item : ${dashboardItemList[1]}">
+					<div class="add_dashboard_content drag_style" th:each="item : ${dashboardItemList[1]}">
 						<th:block
 							th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
 							<div class="dashboard_pie_chart dashboard_item" th:if="${item.isSave == 1}"
@@ -820,6 +756,7 @@
 								th:projectIdx-data="${item.project.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|파이 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -885,7 +822,7 @@
 								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>파이 차트</span>
 									</h2>
 									<div>
@@ -949,6 +886,7 @@
 								th:issue-total="${allotIssueCount}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|나에게 할당됨: ${currentUser.name}|"></span>
 									</h2>
 									<div>
@@ -1018,7 +956,7 @@
 								th:if="${item.isSave == 0}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|나에게 할당됨: ${currentUser.name}"></span>
 									</h2>
 									<div>
@@ -1129,6 +1067,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|만듦 대비 해결됨 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -1193,7 +1132,7 @@
 								 th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>만듦 대비 해결됨 차트</span>
 									</h2>
 									<div>
@@ -1264,6 +1203,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|최근에 만듦 차트: ${item.project.name}|"></span>
 									</h2>
 									<div>
@@ -1326,7 +1266,7 @@
 								th:idx-data="${item.idx}" th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>최근에 만듦 차트</span>
 									</h2>
 									<div>
@@ -1396,6 +1336,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span th:text="|이슈 통계: ${item.project.name} (${item.dashboardCol.content})|"></span>
 									</h2>
 									<div>
@@ -1464,7 +1405,7 @@
 								th:is-save-data="${item.isSave}">
 								<div class="add_dashboard_content_header">
 									<h2>
-										<img src="/images/switch_position_icon.svg" />
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false"/>
 										<span>이슈 통계</span>
 									</h2>
 									<div>
@@ -1527,75 +1468,6 @@
 								</div>
 							</div>
 						</th:block>
-						<div class="dashboard_issue_filter dashboard_item"
-							th:if="${item.isSave == 1 && #strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardIssueFilter))}"
-							th:idx-data="${item.idx}" th:filterIdx-data="${item.filter.idx}">
-							<div class="add_dashboard_content_header">
-								<h2>
-									<span th:text="|결과 필터: ${item.filter.name}|"></span>
-								</h2>
-								<div>
-									<div class="img_box">
-										<img src="/images/minimize_icon.svg">
-									</div>
-									<div class="img_box">
-										<img src="/images/maximize_icon.svg">
-									</div>
-									<div class="img_box">
-										<img src="/images/refresh_icon.svg">
-									</div>
-									<div class="img_box dashboard_more">
-										<img src="/images/three_dots_row_icon.svg" width="16" height="16" />
-										<div class="more_gadget_option">
-											<div class="color_box">
-												<p>강조 색상</p>
-												<div class="color_content">
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-													<div></div>
-												</div>
-											</div>
-											<div class="btn_box">
-												<button>
-													<span>구성</span>
-												</button>
-												<button>
-													<span>복제</span>
-												</button>
-												<button>
-													<span>삭제</span>
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="dynamic_box">
-								<table style="table-layout: fixed;">
-									<colgroup>
-										<col style="width: 32px;">
-										<col style="width: 62px;">
-										<col style="width: 65%;">
-										<col style="width: 20%;">
-									</colgroup>
-									<thead>
-										<tr>
-											<th>화</th>
-											<th>키</th>
-											<th>요약</th>
-											<th>p</th>
-										</tr>
-									</thead>
-									<tbody></tbody>
-								</table>
-								<div class="paging_box"></div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -1617,19 +1489,15 @@
 				<div class="dashboard_filter_btn_box">
 					<button>
 						전체
-						<span>6</span>
-					</button>
-					<button>
-						Jira
-						<span>6</span>
-					</button>
-					<button>
-						Charts
 						<span>5</span>
 					</button>
 					<button>
-						Wallboard
-						<span>0</span>
+						Jira
+						<span>5</span>
+					</button>
+					<button>
+						Charts
+						<span>4</span>
 					</button>
 				</div>
 			</div>
@@ -1713,25 +1581,10 @@
 						</ul>
 					</div>
 				</div>
-				<div class="gadget_item">
-					<div class="gadget_item_header">
-						<img src="https://dahyun0521.atlassian.net/s/g2slup/b/9/1663ce719d626dc000a9df0af52cdab3043da5c9/_/download/resources/com.atlassian.jira.gadgets:filter-results-gadget/filterResults-thumb.png"
-							width="77" height="40" />
-						<button>추가</button>
-					</div>
-					<div class="gadget_item_main">
-						<h3>결과 필터</h3>
-						<span>작성자: Atlassian</span>
-						<p>저장된 필터의 이슈나 결과를 나타냅니다.</p>
-						<ul>
-							<li>Jira</li>
-							<li>Charts</li>
-						</ul>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script th:src="@{/js/dashboard_detail_all.js}"></script>
 	<script th:src="@{/js/dashboard_edit.js}"></script>

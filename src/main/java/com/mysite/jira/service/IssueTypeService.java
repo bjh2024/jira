@@ -17,6 +17,10 @@ public class IssueTypeService {
 	
 	private final IssueTypeRepository issueTypeRepository;
 	
+	public List<IssueType> getByProjectIdxEpilk(Integer projectIdx){
+		return issueTypeRepository.findByProjectIdxAndGrade(projectIdx, 3);
+	}
+	
 	public List<IssueType> getByProjectIdxIssueTypeList(Integer projectIdx){
 		return issueTypeRepository.findByProjectIdx(projectIdx);
 	}

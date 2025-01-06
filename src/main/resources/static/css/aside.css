@@ -284,6 +284,8 @@ aside {
 	display: flex;
 	gap: 4px;
 	align-items: center;
+	
+	cursor: pointer;
 }
 
 .all_view_btn_box:hover {

@@ -42,8 +42,7 @@ public class SocialAuthenticationHandler implements AuthenticationSuccessHandler
     	Account account = accKakao != null ? accKakao : accNaver;
 	    Integer accountIdx = account.getIdx();
 	    
-	    List<Jira> jiraList = jiraService.getRecentTop1Jira(accountIdx);
-	    Jira jira = jiraList.get(0);
+	    Jira jira = jiraService.getRecentTop1Jira(accountIdx);
 	    session.setAttribute("jiraIdx", jira.getIdx());
 	    
 	    // 현재 계정이 가장 최근 방문한 project

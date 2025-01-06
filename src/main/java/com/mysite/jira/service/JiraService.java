@@ -95,9 +95,8 @@ public class JiraService {
 		}
 	}
 	 
-	public List<Jira> getRecentTop1Jira(Integer accountIdx) {
-		return jiraRepository.findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx);
-		
+	public Jira getRecentTop1Jira(Integer accountIdx) {
+		return jiraRepository.findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx).get(0);
 	}
 	
 	public Optional<Jira> getJiraByName(String name) {

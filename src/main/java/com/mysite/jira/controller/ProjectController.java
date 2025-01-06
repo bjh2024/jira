@@ -186,6 +186,14 @@ public class ProjectController {
 		return "project/board_main";
 	}
 	
+	@GetMapping("/{projectKey}/setting/issue_type")
+	public String settingIssueType(@PathVariable("projectKey") String projectKey) {
+		Integer projectIdx = (Integer)session.getAttribute("projectIdx");
+		IssueType issueType = issueTypeService.getByProjectIdxEpilk(projectIdx).get(0);
+		
+		return "redirect:/project/"+projectKey+"/setting/issue_type/" + issueType.getIdx();
+	}
+	
 	@GetMapping("/{projectKey}/setting/issue_type/{issueTypeIdx}")
 	public String settingIssueType(@PathVariable("issueTypeIdx") Integer issueTypeIdx, Model model) {
 		IssueType currentType = boardMainService.getIssueTypeByIdx(issueTypeIdx);

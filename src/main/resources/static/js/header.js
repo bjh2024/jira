@@ -236,5 +236,3 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 		});
 	});
 });
-
-document.getElementById("profileLink").href = "/project/profile";

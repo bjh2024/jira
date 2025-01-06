@@ -212,7 +212,7 @@ public class ProjectService {
 	}
 
 	public Project getRecentTop1Project(Integer accountIdx, Integer jiraIdx) {
-		return projectRepository.findByRecentClickedProject(accountIdx, jiraIdx);
+		return projectRepository.findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(jiraIdx,accountIdx).get(0);
 	}
 
 	public Project getByJiraIdxAndKeyProject(Integer jiraIdx, String key) {

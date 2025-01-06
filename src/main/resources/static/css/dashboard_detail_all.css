@@ -186,10 +186,6 @@
 	color: #2684ff;
 }
 
-.dashboard_pie_chart_container {
-	padding: 20px;
-}
-
 .dashboard_pie_chart_box {
 	display: flex;
 	flex-direction: column;
