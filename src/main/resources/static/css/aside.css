@@ -520,6 +520,9 @@ aside {
 .more_item_box:hover {
 	background-color: #e9edf3a6;
 }
+.more_item_box.show {
+	background-color: #E9F2FF;
+}
 
 .more_item_box {
 	width: 100%;
@@ -548,6 +551,9 @@ aside {
 	display: flex;
 	gap: 6px;
 	align-items: center;
+}
+.more_item.show {
+	color :#0c66e4;
 }
 
 .more_sub_box.show {
