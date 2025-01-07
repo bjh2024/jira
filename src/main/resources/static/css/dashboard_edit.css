@@ -508,14 +508,3 @@
 
 	border-radius: 2px;
 }
-
-.add_dashboard_content_footer {
-	padding-top: 16px;
-
-	filter: invert(32%) sepia(4%) saturate(3065%) hue-rotate(179deg) brightness(97%) contrast(96%);
-	font-size: 12px;
-
-	display: flex;
-	gap: 4px;
-	align-items: center;
-}

@@ -175,7 +175,7 @@ function setPieChartContent(isChange = false, projectName = '', colName = '') {
 	const pieChartContent = `
 						<div class="add_dashboard_content_header">
 							<h2>
-								<img src="/images/switch_position_icon.svg" />
+								<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 								<span>파이 차트: ${projectName}</span>
 							</h2>
 							<div>
@@ -190,7 +190,7 @@ function setPieChartContent(isChange = false, projectName = '', colName = '') {
 								</div>
 							</div>
 						</div>
-						<div class="add_dashboard_content_main piechart_content_main">
+						<div class="add_dashboard_content_main piechart_content_main dashboard_item_content">
 							<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 							<div class="main_group box1">
 								<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -216,20 +216,9 @@ function setPieChartContent(isChange = false, projectName = '', colName = '') {
 								</select>
 								<p>이 필터를 표시할 통계의 유형을 선택.</p>
 							</div>
-							<div class="main_group box3">
-								<label for="update">자동 새로 고침</label>
-								<div class="update_check_box">
-									<input type="checkbox" id="update" />
-									<label for="update">매 15분마다 업데이트</label>
-								</div>
-							</div>
 							<div class="save_btn">
 								<button>저장</button>
 							</div>
-						</div>
-						<div class="add_dashboard_content_footer">
-							<img src="/images/refresh_icon.svg" width="16" height="16"/>
-							<span>14분 전</span>
 						</div>`;
 	return pieChartContent;
 }
@@ -244,6 +233,7 @@ async function pieChartSave(pieChart) {
 	pieChart.setAttribute("projectIdx-data", projectIdx);
 	pieChart.innerHTML = `<div class="add_dashboard_content_header">
 								<h2>
+									<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 									<span>파이 차트: ${projectName}</span>
 								</h2>
 								<div>
@@ -287,7 +277,7 @@ async function pieChartSave(pieChart) {
 									</div>
 								</div>
 							</div>
-							<div class="dynamic_box dashboard_pie_chart_container">
+							<div class="dynamic_box dashboard_pie_chart_container dashboard_item_content">
 								<div class="doughnut_chart_ratio"></div>
 								<div class="dashboard_pie_chart_box">
 									<div>
@@ -311,7 +301,7 @@ async function pieChartSave(pieChart) {
 function setAllotContent(name = '', colNum = '10') {
 	const allotContent = `<div class="add_dashboard_content_header">
 								<h2>
-									<img src="/images/switch_position_icon.svg" />
+									<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 									<span>나에게 할당됨: ${name}</span>
 								</h2>
 								<div>
@@ -326,7 +316,7 @@ function setAllotContent(name = '', colNum = '10') {
 									</div>
 								</div>
 							</div>
-							<div class="add_dashboard_content_main my_responsibility_issue_main">
+							<div class="add_dashboard_content_main my_responsibility_issue_main dashboard_item_content">
 								<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 								<div class="main_group box1">
 									<label>결과의 수<span class="not_null_check">*</span></label>
@@ -397,20 +387,9 @@ function setAllotContent(name = '', colNum = '10') {
 									</select>
 									<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 								</div>
-								<div class="main_group box4">
-									<label for="update">자동 새로 고침</label>
-									<div class="update_check_box">
-										<input type="checkbox" id="update" />
-										<label for="update">매 15분마다 업데이트</label>
-									</div>
-								</div>
 								<div class="save_btn">
 									<button>저장</button>
 								</div>
-							</div>
-							<div class="add_dashboard_content_footer">
-								<img src="/images/refresh_icon.svg" width="16" height="16" />
-								<span>14분 전</span>
 							</div>`
 	return allotContent;
 }
@@ -423,6 +402,7 @@ async function allotSave(allot) {
 	allot.setAttribute("issue-total", await isseuTotalFetch());
 	allot.innerHTML = `<div class="add_dashboard_content_header">
 								<h2>
+									<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 									<span>나에게 할당됨: ${name}</span>
 								</h2>
 								<div>
@@ -466,7 +446,7 @@ async function allotSave(allot) {
 									</div>
 								</div>
 							</div>
-							<div class="dynamic_box">
+							<div class="dynamic_box dashboard_item_content">
 								<table style="table-layout: fixed;">
 									<colgroup>
 										<col style="width: 32px;">
@@ -492,7 +472,7 @@ async function allotSave(allot) {
 function setIssueComplete(isChange = false, projectName = '', unitPeriod = '매일', viewDate = '30') {
 	const issueComplete = `<div class="add_dashboard_content_header">
 							<h2>
-								<img src="/images/switch_position_icon.svg" />
+								<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 								<span>만듦 대비 해결됨 차트: ${projectName}</span>
 							</h2>
 							<div>
@@ -507,7 +487,7 @@ function setIssueComplete(isChange = false, projectName = '', unitPeriod = '매�
 								</div>
 							</div>
 						</div>
-						<div class="add_dashboard_content_main">
+						<div class="add_dashboard_content_main dashboard_item_content">
 							<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 							<div class="main_group box1">
 								<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -537,20 +517,9 @@ function setIssueComplete(isChange = false, projectName = '', unitPeriod = '매�
 								<input type="text" id="prev_date" value="${viewDate}" />
 								<p>선택한 기간내에서 자료를 수집할 과거 일 수</p>
 							</div>
-							<div class="main_group box4">
-								<label for="update">자동 새로 고침</label>
-								<div class="update_check_box">
-									<input type="checkbox" id="update" />
-									<label for="update">매 15분마다 업데이트</label>
-								</div>
-							</div>
 							<div class="save_btn">
 								<button>저장</button>
 							</div>
-						</div>
-						<div class="add_dashboard_content_footer">
-							<img src="/images/refresh_icon.svg" width="16" height="16" />
-							<span>14분 전</span>
 						</div>`
 	return issueComplete;
 }
@@ -566,6 +535,7 @@ async function issueCompleteSave(issueComplete) {
 	issueComplete.setAttribute("projectIdx-data", projectIdx);
 	issueComplete.innerHTML = `	<div class="add_dashboard_content_header">
 									<h2>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 										<span>만듦 대비 해결됨 차트: ${projectName}</span>
 									</h2>
 									<div>
@@ -609,7 +579,7 @@ async function issueCompleteSave(issueComplete) {
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box dashboard_issue_complete_container">
+								<div class="dynamic_box dashboard_issue_complete_container dashboard_item_content">
 									<div>
 										<canvas id="issueCompleteChart-${idx}"
 											style="width: 400px; height: 400px;"></canvas>
@@ -629,7 +599,7 @@ async function issueCompleteSave(issueComplete) {
 function setIssueRecent(isChange = false, projectName = '', unitPeriod = '매일', viewDate = 30) {
 	const issueRecent = `<div class="add_dashboard_content_header">
 							<h2>
-								<img src="/images/switch_position_icon.svg" />
+								<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 								<span>최근에 만듦 차트: ${projectName}</span>
 							</h2>
 							<div>
@@ -644,7 +614,7 @@ function setIssueRecent(isChange = false, projectName = '', unitPeriod = '매일
 								</div>
 							</div>
 						</div>
-						<div class="add_dashboard_content_main">
+						<div class="add_dashboard_content_main dashboard_item_content dashboard_item_content">
 							<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 							<div class="main_group box1">
 								<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -674,20 +644,9 @@ function setIssueRecent(isChange = false, projectName = '', unitPeriod = '매일
 								<input type="text" id="prev_date" value="${viewDate}" />
 								<p>그래프에 표시할 일수(오늘 포함)</p>
 							</div>
-							<div class="main_group box4">
-								<label for="update">자동 새로 고침</label>
-								<div class="update_check_box">
-									<input type="checkbox" id="update" />
-									<label for="update">매 15분마다 업데이트</label>
-								</div>
-							</div>
 							<div class="save_btn">
 								<button>저장</button>
 							</div>
-						</div>
-						<div class="add_dashboard_content_footer">
-							<img src="/images/refresh_icon.svg" width="16" height="16" />
-							<span>14분 전</span>
 						</div>`
 	return issueRecent;
 }
@@ -703,6 +662,7 @@ async function issueRecentSave(issueRecent) {
 	issueRecent.setAttribute("projectIdx-data", projectIdx);
 	issueRecent.innerHTML = `<div class="add_dashboard_content_header">
 								<h2>
+									<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 									<span>최근에 만듦 차트 : ${projectName}</span>
 								</h2>
 								<div>
@@ -746,7 +706,7 @@ async function issueRecentSave(issueRecent) {
 									</div>
 								</div>
 							</div>
-							<div class="dynamic dashboard_issue_recent_container">
+							<div class="dynamic_box dashboard_issue_recent_container dashboard_item_content">
 								<div>
 									<canvas id="issueRecentChart-${idx}" style="width: 400px; height: 400px;">
 									</canvas>
@@ -765,7 +725,7 @@ async function issueRecentSave(issueRecent) {
 function setIssueStatistics(isChange = false, projectName = '', type = '담당자', viewNum = '10') {
 	const issueStatistics = `<div class="add_dashboard_content_header">
 								<h2>
-									<img src="/images/switch_position_icon.svg" />
+									<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 									<span>이슈 통계 :${projectName}</span>
 								</h2>
 								<div>
@@ -780,7 +740,7 @@ function setIssueStatistics(isChange = false, projectName = '', type = '담당�
 									</div>
 								</div>
 							</div>
-							<div class="add_dashboard_content_main">
+							<div class="add_dashboard_content_main dashboard_item_content">
 								<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 								<div class="main_group box1">
 									<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -811,20 +771,9 @@ function setIssueStatistics(isChange = false, projectName = '', type = '담당�
 									<input type="text" id="view_num" value="${viewNum}" />
 									<p>표시할 결과의 수(최대 50개)</p>
 								</div>
-								<div class="main_group box4">
-									<label for="update">자동 새로 고침</label>
-									<div class="update_check_box">
-										<input type="checkbox" id="update" />
-										<label for="update">매 15분마다 업데이트</label>
-									</div>
-								</div>
 								<div class="save_btn">
 									<button>저장</button>
 								</div>
-							</div>
-							<div class="add_dashboard_content_footer">
-								<img src="/images/refresh_icon.svg" width="16" height="16" />
-								<span>14분 전</span>
 							</div>`
 	return issueStatistics;
 }
@@ -840,7 +789,8 @@ async function issueStatisticsSave(issueStatistics) {
 	issueStatistics.innerHTML = `
 								<div class="add_dashboard_content_header">
 									<h2>
-										<span>이슈 통계: ${projectName} (${type})</span>
+										<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
+										<span>이슈 통계: ${projectName} (${dashboardColChange(type)})</span>
 									</h2>
 									<div>
 										<div class="img_box">
@@ -880,7 +830,7 @@ async function issueStatisticsSave(issueStatistics) {
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box">
+								<div class="dynamic_box dashboard_item_content">
 									<table style="table-layout: fixed;">
 										<colgroup>
 											<col style="width: 100px;">
@@ -918,7 +868,6 @@ function projectListFetch(searchText) {
 	fetch(uri, { method: "get" })
 		.then(res => res.json())
 		.then(projectList => {
-			console.log(projectList);
 			const box = searchText.nextElementSibling;
 			box.innerHTML = ``;
 			projectList.forEach(function(project) {
@@ -1067,7 +1016,7 @@ document.querySelector(".dashboard_content_container").addEventListener("mousedo
 
 const issueFilter = `<div class="add_dashboard_content_header">
 						<h2>
-							<img src="/images/switch_position_icon.svg" />
+							<img src="/images/switch_position_icon.svg" width="32" height="32" class="item_switch_btn" draggable="false">
 							<span>결과 필터</span>
 						</h2>
 						<div>
@@ -1426,20 +1375,9 @@ const issueFilter = `<div class="add_dashboard_content_header">
 							</select>
 							<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 						</div>
-						<div class="main_group box5">
-							<label for="update">자동 새로 고침</label>
-							<div class="update_check_box">
-								<input type="checkbox" id="update" />
-								<label for="update">매 15분마다 업데이트</label>
-							</div>
-						</div>
 						<div class="save_btn">
 							<button>저장</button>
 						</div>
-					</div>
-					<div class="add_dashboard_content_footer">
-						<img src="/images/refresh_icon.svg" width="16" height="16" />
-						<span>14분 전</span>
 					</div>`
 
 async function addDashboardGarget(tagStr, order) {
@@ -1483,20 +1421,17 @@ async function addDashboardGarget(tagStr, order) {
 		// idx값 가져오기
 		if(data){
 			idx = data;
-			console.log("데이터 추가!");
-		}else{
-			console.error("데이터 추가 실패....");
 		}
 	}
 	await dashboardItemAddFetch(uri);
 	
-	const gadgetContentBox1 = document.querySelector(".dashboard_content_container .box1");
+	const gadgetContentContainer1 = document.querySelector(".dashboard_content_container .container1");
 	const gadgetContentEmptyBox = document.querySelector(".dashboard_content_container .empty_box");
 	const newDiv = document.createElement("div");
 	newDiv.classList.add("add_dashboard_content");
 	newDiv.innerHTML = `<div class="${className} dashboard_item" idx-data="${idx}">${tagStr}</div>`;
 	//gadgetContentEmptyBox.classList.remove("show");
-	gadgetContentBox1.prepend(newDiv);
+	gadgetContentContainer1.prepend(newDiv);
 	gadgetContentEmptyBox.classList.remove("show");
 }
 
@@ -1522,4 +1457,79 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	// 가젯 input 포커스
 	const gadgetInput = document.querySelector(".gadget_header .input_box input");
 	gadgetInput.focus();
+});
+
+const box1 = document.querySelector(".dashboard_content_container .container1");
+const box2 = document.querySelector(".dashboard_content_container .container2");
+new Sortable(box1, {
+	group: 'shared',
+	filter: '.empty_box',
+	animation: 150,
+	forceFallback: true,
+	onStart: function(evt){
+		const origin = evt.item;
+		const originHeight = window.getComputedStyle(origin).height;
+		
+		evt.item.style.height = originHeight;
+		evt.item.querySelector(".dashboard_item").classList.add("hide");
+		evt.item.classList.add("dragging");
+		
+		const dragItem = document.querySelector(".sortable-drag .dashboard_item_content");
+		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
+		
+		document.querySelector(".sortable-drag").style.height = "200px";
+	},
+	onEnd: function(evt){
+		evt.item.classList.remove("dragging");
+		evt.item.querySelector(".dashboard_item").classList.remove("hide");
+		
+		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
+		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
+		if(box1DashboardItems.length === 0){
+			box1.querySelector(".empty_box").classList.add("show");
+		}else{
+			box1.querySelector(".empty_box").classList.remove("show");
+		}
+		if(box2DashboardItems.length === 0){
+			box2.querySelector(".empty_box").classList.add("show");
+		}else{
+			box2.querySelector(".empty_box").classList.remove("show");
+		}
+	}
+});
+new Sortable(box2, {
+	group: 'shared',
+	filter: '.empty_box',
+	animation: 150,
+	forceFallback: true,
+	onStart: function(evt){
+		const origin = evt.item;
+		const originHeight = window.getComputedStyle(origin).height;
+		
+		evt.item.style.height = originHeight;
+		evt.item.querySelector(".dashboard_item").classList.add("hide");
+		evt.item.classList.add("dragging");
+		
+		const dragItem = document.querySelector(".sortable-drag .dashboard_item_content");
+		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
+		
+		document.querySelector(".sortable-drag").style.height = "200px";
+	},
+	onEnd: function(evt){
+		evt.item.classList.remove("dragging");
+		evt.item.querySelector(".dashboard_item").classList.remove("hide");
+		
+		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
+		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
+		if(box1DashboardItems.length === 0){
+			box1.querySelector(".empty_box").classList.add("show");
+		}else{
+			box1.querySelector(".empty_box").classList.remove("show");
+		}
+		if(box2DashboardItems.length === 0){
+			box2.querySelector(".empty_box").classList.add("show");
+		}else{
+			box2.querySelector(".empty_box").classList.remove("show");
+		}
+	}
 });
