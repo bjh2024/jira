@@ -64,6 +64,65 @@ public class GlobalModelAdvice {
 	private final HttpSession session;
 	
 	@ModelAttribute
+	public void addProjectHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
+		String uri = request.getRequestURI();
+		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list") || uri.contains("/project/profile"))
+			return;
+		if (uri.contains("/project")) {
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			List<JiraMembers> jiraMemberList = jiraService.getJiraMemberListByJiraIdx(jiraIdx);
+			
+			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
+			session.setAttribute("projectIdx", project.getIdx());
+			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			projectService.addProjectRecentClicked(account, jira, project);
+			
+			model.addAttribute("project", project);
+			model.addAttribute("jiraMemberList", jiraMemberList);
+			model.addAttribute("memberAccList", memberAccList);
+		}
+	}
+	
+	@ModelAttribute
+	public void addDashboardHeaderAttributes(HttpServletRequest request, 
+											 Model model, 
+											 Principal principal,
+											 @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
+		String uri = request.getRequestURI();
+		if (uri.contains("/api") || uri.contains("/dashboard/list")) return;
+		if(uri.contains("/dashboard")) {
+			boolean isDetail = uri.contains("/detail") ? true : false;
+			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
+			
+			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
+			Jira jira = jiraService.getByIdx(jiraIdx);
+			
+			Account account = accountService.getAccountByEmail(principal.getName());
+			 
+			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
+			model.addAttribute("isDetail", isDetail);
+			model.addAttribute("currentDashboard", dashboard);
+		}
+	}
+	
+	@ModelAttribute
+	public void updateOrAddFilterRecent(HttpServletRequest request, @RequestParam(value= "filter", required = false) Integer filterIdx,
+			Principal principal) {
+		String uri = request.getRequestURI();
+		if(uri.contains("/account"))return;
+		Account accountIdx = accountService.getAccountByEmail(principal.getName());
+		if(uri.contains("/filter")) {
+			if(filterIdx != null) {
+				System.out.println("Global filter");
+				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
+			}
+		}
+	}
+	
+	@ModelAttribute
 	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
 		String uri = request.getRequestURI();
 		if(principal == null ||
@@ -112,6 +171,7 @@ public class GlobalModelAdvice {
 			
 			List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
 			
+			System.out.println("Global aside recent");
 			List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
 			List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
 			List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);
@@ -160,50 +220,7 @@ public class GlobalModelAdvice {
 		}
 	}
 
-	@ModelAttribute
-	public void addProjectHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
-		String uri = request.getRequestURI();
-		if (uri.contains("/api") || uri.contains("/project/create") || uri.contains("/project/list") || uri.contains("/project/profile"))
-			return;
-		if (uri.contains("/project")) {
-			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-			Jira jira = jiraService.getByIdx(jiraIdx);
-			List<JiraMembers> jiraMemberList = jiraService.getJiraMemberListByJiraIdx(jiraIdx);
-			
-			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
-			session.setAttribute("projectIdx", project.getIdx());
-			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
-			
-			Account account = accountService.getAccountByEmail(principal.getName());
-			projectService.addProjectRecentClicked(account, jira, project);
-			
-			model.addAttribute("project", project);
-			model.addAttribute("jiraMemberList", jiraMemberList);
-			model.addAttribute("memberAccList", memberAccList);
-		}
-	}
 	
-	@ModelAttribute
-	public void addDashboardHeaderAttributes(HttpServletRequest request, 
-											 Model model, 
-											 Principal principal,
-											 @PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx) {
-		String uri = request.getRequestURI();
-		if (uri.contains("/api") || uri.contains("/dashboard/list")) return;
-		if(uri.contains("/dashboard")) {
-			boolean isDetail = uri.contains("/detail") ? true : false;
-			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
-			
-			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-			Jira jira = jiraService.getByIdx(jiraIdx);
-			
-			Account account = accountService.getAccountByEmail(principal.getName());
-			 
-			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
-			model.addAttribute("isDetail", isDetail);
-			model.addAttribute("currentDashboard", dashboard);
-		}
-	}
 	
 	@ModelAttribute
 	public void settingAsideAttributes(HttpServletRequest request, 
@@ -224,16 +241,4 @@ public class GlobalModelAdvice {
 		}
 	}
 	
-	@ModelAttribute
-	public void updateOrAddFilterRecent(HttpServletRequest request,@RequestParam(value= "filter", required = false) Integer filterIdx,
-			Principal principal) {
-		String uri = request.getRequestURI();
-		if(uri.contains("/account"))return;
-		Account accountIdx = accountService.getAccountByEmail(principal.getName());
-		if(uri.contains("/filter")) {
-			if(filterIdx != null) {
-				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
-			}
-		}
-	}
 }

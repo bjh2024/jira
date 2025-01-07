@@ -408,10 +408,10 @@ public class FilterService {
 		Jira jira = jiraRepository.findById(jiraIdx).get();
 		FilterRecentClicked filterRecentUpdate = filterRecentClickedRepository.findByFilterIdxAndAccountIdx(filterIdx, accountIdx);
 		FilterRecentClicked filterRecentClicked = FilterRecentClicked.builder()
-				.filter(filter)
-				.account(account)
-				.jira(jira)
-				.build();
+																	 .filter(filter)
+																	 .account(account)
+																	 .jira(jira)
+																	 .build();
 		if(filterRecentUpdate != null) {
 			filterRecentUpdate.updateDate();
 			this.filterRecentClickedRepository.save(filterRecentUpdate);

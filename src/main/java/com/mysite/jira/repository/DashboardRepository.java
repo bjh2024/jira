@@ -18,21 +18,13 @@ public interface DashboardRepository extends JpaRepository<Dashboard,Integer>{
 	
 	// kdw
 	@Query(value="""
-			SELECT  d.*
-			FROM    dashboard_recent_clicked drc
-			JOIN    dashboard d
-			ON  d.idx = drc.dashboard_idx
-			WHERE   drc.account_idx = :accountIdx
+			SELECT d.*
+			FROM   dashboard d, dashboard_recent_clicked drc, dashboard_like_members dlm
+			WHERE d.idx = drc.filter_idx
+			AND d.idx != dlm.filter_idx
+			AND d.account_idx = :accountIdx
 			AND d.jira_idx = :jiraIdx
-			    
-			minus
-			
-			SELECT  d.*
-			FROM    dashboard_like_members dlm
-			JOIN    dashboard d
-			ON  d.idx = dlm.dashboard_idx
-			WHERE   dlm.account_idx = :accountIdx
-			AND d.jira_idx = :jiraIdx
+			ORDER BY drc.clicked_date desc
 			""", nativeQuery=true)
 	List<Dashboard> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx,
 															   @Param("jiraIdx") Integer jiraIdx);
