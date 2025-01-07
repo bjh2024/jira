@@ -596,6 +596,13 @@ function loadUpdate() {
 			})
 			fetchInputFilter();
 			fetchInputFilterIssue();
+			const urlParams = new URLSearchParams(window.location.search);
+			document.querySelectorAll(".more_item_box.view_more_box.accent_btn").forEach(function(item){
+				if(urlParams.get('filter') == item.dataset.filterIdx){
+					item.classList.add("show");
+					item.querySelector(".more_item").classList.add("show");
+				}
+			})
 	}
 	// 모든 .issue_middle_right 요소를 가져와서 확인합니다.
 	let firstIssueKey;
@@ -606,6 +613,13 @@ function loadUpdate() {
 			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
 			        if (itemKey === firstIssueKey) {
 			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
+						document.querySelectorAll(".issue_box_choice").forEach(function(item){
+							if(itemKey == item.dataset.issueKey){
+								item.classList.add("active");
+							}else{
+								item.classList.remove("active");
+							}
+						})
 			        } else {
 			            item.style.display = "none";   // 나머지 div는 숨깁니다.
 			        }
@@ -840,6 +854,13 @@ function fetchInputFilterIssue() {
 			        // itemKey가 issueKey와 일치하면 해당 div를 표시하고, 그렇지 않으면 숨깁니다.
 			        if (itemKey === issueKeys) {
 			            item.style.display = "block";  // 조건에 맞는 div만 보이도록 설정
+						document.querySelectorAll(".issue_box_choice").forEach(function(item){
+							if(itemKey == item.dataset.issueKey){
+								item.classList.add("active");
+							}else{
+								item.classList.remove("active");
+							}
+						})
 			        } else {
 			            item.style.display = "none";   // 나머지 div는 숨깁니다.
 			        }
@@ -1018,3 +1039,4 @@ function fetchFitlerCreate() {
 	        console.error("Fetch error:", error);  // 에러 처리
 	    });
 	}
+
