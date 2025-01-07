@@ -2,6 +2,7 @@ package com.mysite.jira.controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -179,7 +180,17 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
 			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
-			
+			Integer[] filterLikeInteger = new Integer[filterLikeMembers.size()];
+			for (int i = 0; i < filterLikeInteger.length; i++) {
+				filterLikeInteger[i] = filterLikeMembers.get(i).getIdx();
+			}
+			List<Filter> filterLikes = filterService.getByIdxIn(filterLikeInteger);
+			List<Filter> defaultFilterList = new ArrayList<>();
+			for (int i = 0; i < 8; i++) {
+				defaultFilterList.add(filterList.get(i));
+			}
+			defaultFilterList.removeAll(filterRecentList);
+			defaultFilterList.removeAll(filterLikes);
 			// chat
 			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
 			
@@ -209,6 +220,7 @@ public class GlobalModelAdvice {
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
 			model.addAttribute("filterList", filterList);
+			model.addAttribute("defaultFilter", defaultFilterList);
 			
 			// chat
 			model.addAttribute("allJiraMemberList", allJiraMembersList);
