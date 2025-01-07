@@ -116,7 +116,6 @@ public class GlobalModelAdvice {
 		Account accountIdx = accountService.getAccountByEmail(principal.getName());
 		if(uri.contains("/filter")) {
 			if(filterIdx != null) {
-				System.out.println("Global filter");
 				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
 			}
 		}
@@ -171,7 +170,6 @@ public class GlobalModelAdvice {
 			
 			List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
 			
-			System.out.println("Global aside recent");
 			List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
 			List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
 			List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);

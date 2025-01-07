@@ -41,12 +41,15 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	// kdw
 	@Query(value="""
 			SELECT p.*
-			FROM   project p, project_recent_clicked prc, project_like_members plm
-			WHERE p.idx = prc.filter_idx
-			AND p.idx != plm.filter_idx
-			AND p.account_idx = :accountIdx
-			AND p.jira_idx = :jiraIdx
-			ORDER BY prc.clicked_date desc
+			FROM project p
+			JOIN project_recent_clicked prc
+			  ON p.idx = prc.project_idx
+			LEFT JOIN project_like_members plm
+			  ON p.idx = plm.project_idx
+			WHERE prc.account_idx = :accountIdx
+			  AND prc.jira_idx = :jiraIdx
+			  AND plm.project_idx IS NULL
+			ORDER BY prc.clicked_date DESC
 			""", nativeQuery=true)
 	List<Project> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															 @Param("jiraIdx") Integer jiraIdx);

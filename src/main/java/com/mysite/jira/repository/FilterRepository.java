@@ -16,12 +16,15 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	List<Filter> findByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx);
 	@Query(value="""
 			SELECT f.*
-			FROM   filter f, filter_recent_clicked frc, filter_like_members flm
-			WHERE f.idx = frc.filter_idx
-			AND f.idx != flm.filter_idx
-			AND f.account_idx = :accountIdx
-			AND f.jira_idx = :jiraIdx
-			ORDER BY frc.clicked_date desc
+			FROM filter f
+			JOIN filter_recent_clicked frc
+			  ON f.idx = frc.filter_idx
+			LEFT JOIN filter_like_members flm
+			  ON f.idx = flm.filter_idx
+			WHERE frc.account_idx = :accountIdx
+			  AND frc.jira_idx = :jiraIdx
+			  AND flm.filter_idx IS NULL
+			ORDER BY frc.clicked_date DESC
 			""", nativeQuery=true)
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);
