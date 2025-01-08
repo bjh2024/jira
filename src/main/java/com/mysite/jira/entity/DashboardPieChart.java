@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class DashboardPieChart {
+public class DashboardPieChart implements DashboardItem{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pie_chart_seq")
 	@SequenceGenerator(name = "pie_chart_seq", sequenceName = "pie_chart_seq", allocationSize = 1)

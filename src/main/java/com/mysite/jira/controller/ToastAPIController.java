@@ -20,6 +20,7 @@ public class ToastAPIController {
 	private final AccountService accountService;
 	private final ProjectService projectService;
 	
+// 소켓에 보낼 데이터를 생성인지 삭제인지 검토 후 String값으로 변환 후 전달
 	@MessageMapping("/toast/{jiraIdx}")
 	@SendTo("/topic/{jiraIdx}")
 	public String issueToastMessage(@RequestBody ToastInfoDTO toastInfoDTO) {

@@ -26,6 +26,33 @@
 
 }
 
+.sortable-drag{
+	opacity: 1 !important;
+	background-color: #fff;
+}
+
+.sortable-drag .dashboard_item_content .drag_item {
+	background-color: #eee;
+	border-radius: 14px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.sortable-drag .dashboard_item_content .drag_item img{
+	filter: invert(92%) sepia(0%) saturate(23%) hue-rotate(172deg) brightness(88%) contrast(95%);
+}
+
+.add_dashboard_content.dragging{
+	background-color: #f5f5f5;
+	border: none !important;
+}
+
+.add_dashboard_content .dashboard_item.hide{
+	display: none;
+}
+
 .add_dashboard_content .not_null_check {
 	color: red;
 }
@@ -57,6 +84,7 @@
 .dashboard_add_gadget {
 	width: 400px;
 	height: calc(100vh - 48px);
+	background-color: #fff;
 	border-left: 3px solid #ddd;
 
 	transition: 0.3s;
@@ -64,7 +92,6 @@
 	position: fixed;
     top: 52px;
     right: 0;
-	z-index: 998;
 	overflow-y: auto;
 }
 
@@ -154,6 +181,10 @@
 .gadget_list_content {
 	height: calc(100% - 56px - 154px);
 	margin-bottom: 200px;
+}
+
+.gadget_item.hide{
+	display: none;
 }
 
 .gadget_item {
@@ -480,15 +511,4 @@
 	background-color: #091E420F;
 
 	border-radius: 2px;
-}
-
-.add_dashboard_content_footer {
-	padding-top: 16px;
-
-	filter: invert(32%) sepia(4%) saturate(3065%) hue-rotate(179deg) brightness(97%) contrast(96%);
-	font-size: 12px;
-
-	display: flex;
-	gap: 4px;
-	align-items: center;
 }

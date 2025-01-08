@@ -158,7 +158,7 @@ document.querySelectorAll(".role_project_input").forEach(function(projectInput){
 												</div>`
 				});
 			}catch(err){
-				console.log(err);
+				console.error(err);
 			}
 		}
 		projectListFetch(lnbContainer);
@@ -190,7 +190,7 @@ document.querySelectorAll(".role_group_input").forEach(function(groupInput){
 												</div>`
 				});
 			}catch(err){
-				console.log(err);
+				console.error(err);
 			}
 		}
 		teamListFetch(lnbContainer);
@@ -222,7 +222,7 @@ document.querySelectorAll(".role_user_input").forEach(function(groupInput){
 												</div>`
 				});
 			}catch(err){
-				console.log(err);
+				console.error(err);
 			}
 		}
 		userListFetch(lnbContainer);
@@ -333,7 +333,7 @@ document.querySelectorAll(".add_dashboard_auth_type_btn button").forEach(functio
 								<img src="${iconFilename}" alt="" width="24" height="24" style="border-radius: 4px;">
 								<span>${name}</span>
 							</div>
-							${type !== "비공개" ? '<img class="cancle_btn" src="/images/cancle_icon.svg" width="16" height="16">' : ""}`
+							${type !== "비공개" ? '<img class="cancle_btn" src="/images/cancel_icon.svg" width="16" height="16">' : ""}`
 				  
 		if(isPrivateItem(idx))
 			createAuthType.innerHTML = "";
@@ -492,7 +492,6 @@ document.querySelector(".dashboard_create_btn_box .create_btn").addEventListener
 	const dashboardExplain = document.querySelector("#dashboard_explain").value;
 	let name = dashboardName;	
 	let explain = dashboardExplain;
-	console.log(authItems);
 	dashboardCreate(name, explain, authItems);
 });
 

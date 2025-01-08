@@ -12,4 +12,5 @@ public class HeaderRequestFilterDTO {
 	private Integer[] managerIdxArr;
 	private Boolean isReporter;
 	private Integer[] statusArr;
+	private String searchText;
 }

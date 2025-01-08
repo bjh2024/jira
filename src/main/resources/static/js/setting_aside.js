@@ -5,11 +5,15 @@ window.onload = function(){
 	}else if(uri.includes("/access")){
 		document.querySelector(".setting_lnb .access").classList.add("active");
 	}else if(uri.includes("/issue_type")){
+		const settingAsidebtn = document.querySelector(".setting_aside_btn.issue_type");
+		const img = settingAsidebtn.querySelector(".img_box img");
+		img.setAttribute("src", "/images/arrow_under_icon.svg");
+		
 		const moreBox = document.querySelector(".issue_type_box");
 		moreBox.classList.toggle("show");
 		const issueTypeBtns = moreBox.querySelectorAll("a");
 		issueTypeBtns.forEach(function(btn){
-			if(btn.getAttribute("href") === uri.split("/")[5]){
+			if(btn.getAttribute("href").split("/")[5] === uri.split("/")[5]){
 				btn.classList.add("active");
 			}
 		});

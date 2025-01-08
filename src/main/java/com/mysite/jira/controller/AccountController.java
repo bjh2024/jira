@@ -1,5 +1,6 @@
 package com.mysite.jira.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,7 +32,10 @@ public class AccountController {
 	private final EmailClient emailClient;
 
 	@GetMapping("/login")
-	public String login(Model model) {
+	public String login(Model model, Principal principal) {
+		if(principal != null) {
+			return "redirect:/";
+		}
 		return "account/login";
 	}
 

@@ -1,5 +1,4 @@
 <div th:fragment="asideFragment">
-
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/aside.css}">
 	</head>
@@ -42,8 +41,12 @@
 						<div class="recent_list_box" th:if="${#lists.size(todayRecentList) > 0}">
 							<h2>오늘</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn"
-								   th:each="item : ${todayRecentList}">
+								<a class="recent_item accent_btn"
+								   th:each="item : ${todayRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+   						                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+   									        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+   									        	'#'}}">
 									<div class="accent_border"></div>
 									<img th:src="@{|/images/${item.iconFilename}|}"
 										alt="" style="border-radius: 2px" width="24" height="24" />
@@ -58,8 +61,12 @@
 						<div class="recent_list_box" th:if="${#lists.size(yesterdayRecentList) > 0}">
 							<h2>어제</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn"
-								   th:each="item : ${yesterdayRecentList}">
+								<a class="recent_item accent_btn"
+								   th:each="item : ${yesterdayRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+ 						                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+ 									        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+ 									        	'#'}}">
 									<div class="accent_border"></div>
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
@@ -73,8 +80,12 @@
 						<div class="recent_list_box" th:if="${#lists.size(thisWeekRecentList) > 0}">
 							<h2>이번주</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn"
-							       th:each="item : ${thisWeekRecentList}">
+								<a class="recent_item accent_btn"
+							       th:each="item : ${thisWeekRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+						                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+									        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+									        	'#'}}">
 									<div class="accent_border"></div>
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
@@ -88,8 +99,12 @@
 						<div class="recent_list_box" th:if="${#lists.size(monthRecentList) > 0}">
 							<h2>이번 달</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn"
-								   th:each="item : ${monthRecentList}">
+								<a class="recent_item accent_btn"
+								   th:each="item : ${monthRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+						                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+									        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+									        	'#'}}">
 									<div class="accent_border"></div>
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
@@ -103,8 +118,12 @@
 						<div class="recent_list_box" th:if="${#lists.size(monthGreaterRecentList) > 0}">
 							<h2>한 달 이상</h2>
 							<div>
-								<a href="#" class="recent_item accent_btn"
-								   th:each="item : ${monthGreaterRecentList}">
+								<a class="recent_item accent_btn"
+								   th:each="item : ${monthGreaterRecentList}"
+								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
+						                        item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
+									        	item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
+									        	'#'}}">
 									<div class="accent_border"></div>
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
 									<div class="recent_item_comment">
@@ -116,10 +135,10 @@
 							</div>
 						</div>
 					</div>
-					<a href="#" class="all_view_btn_box">
+					<div class="recent all_view_btn_box">
 						<img src="/images/all_view_btn_icon.svg" alt="" width="24" height="24" />
 						<span>최근 항목 모두 보기</span>
-					</a>
+					</div>
 				</div>
 			</div>
 			<div class="aside_item_box view_right_box_btn">
@@ -175,8 +194,11 @@
 							</div>
 						</div>
 						<div class="like_content_list">
-							<a href="#" class="like_item_box accent_btn"
-							   th:each="item : ${allLikeMembers}">
+							<a class="like_item_box accent_btn"
+							   th:each="item : ${allLikeMembers}"
+							   th:href="@{${item.iconFilename == 'dashboard_icon.svg' ? '/dashboard/detail/' + item.idx :
+					                        item.iconFilename == 'filter_icon.svg' ? '/filter/filter_issue?filter=' + item.idx :
+								        	'/project/' + item.key + '/summation'}}">
 								<div class="accent_border"></div>
 								<div class="like_item">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt="" width="24" height="24" />
@@ -197,15 +219,15 @@
 							</div>
 						</div>
 						<div class="like_content_dynamic"></div>
-						<a href="#" class="all_view_btn_box">
+						<div class="like all_view_btn_box">
 							<img src="/images/all_view_btn_icon.svg" alt="" width="24" height="24" />
 							<span>별표 표시된 항목 모두 보기</span>
-						</a>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="more_item_container">
-				<div class="aside_item_box view_under_box_btn view_more_box">
+				<div class="project aside_item_box view_under_box_btn view_more_box">
 					<button class="aside_item_btn">
 						<div class="aside_item_view">
 							<div class="img_box mouseout">
@@ -234,7 +256,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="aside_more_box">
+			<div class="aside_more_box project">
 				<div th:if="${#lists.size(projectLikeMembers) != 0}">
 					<h2>별표 표시됨</h2>
 					<div class="more_item_list"
@@ -322,7 +344,7 @@
 				</div>
 			</div>
 			<div class="more_item_container">
-				<div class="aside_item_box view_under_box_btn view_more_box">
+				<div class="filter aside_item_box view_under_box_btn view_more_box">
 					<button class="aside_item_btn">
 						<div class="aside_item_view">
 							<div class="img_box mouseout">
@@ -356,12 +378,14 @@
 						<span>이슈 검색</span>
 					</div>
 				</a>
+<!-- 필터 즐겨찾기 시작 ------------------------------------------------------->
 				<div th:if="${#lists.size(filterLikeMembers) != 0}">
 					<h2>별표 표시됨</h2>
 					<div class="more_item_list" 
 						 th:each="item : ${filterLikeMembers}">
 						<div class="more_item_container">
-							<a th:href="@{|/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn"
+							th:data-filter-idx="${item.idx}">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -403,7 +427,8 @@
 					<div class="more_item_list" 
 					     th:each="item : ${filterRecentList}">
 						<div class="more_item_container">
-							<a th:href="@{|/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn">
+							<a th:href="@{|/filter/filter_issue?filter=${item.idx}|}" class="more_item_box view_more_box accent_btn"
+							th:data-filter-idx="${item.idx}">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -447,8 +472,9 @@
 						</div>
 					</button>
 					<div class="more_item_list default_filter_box">
-						<div class="more_item_container" th:each="filter, loop : ${filterList}" th:if="${loop.index} < 8">
-							<a th:href="@{|/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn">
+						<div class="more_item_container" th:each="filter, loop : ${defaultFilter}" th:if="${loop.index} < 8">
+							<a th:href="@{|/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn"
+							th:data-filter-idx="${filter.idx}">
 								<div class="accent_border"></div>
 								<div class="more_item">
 									<img src="/images/filter_icon.svg" alt="" width="24" height="24" />
@@ -482,7 +508,7 @@
 				</a>
 			</div>
 			<div class="more_item_container">
-				<div class="aside_item_box view_under_box_btn view_more_box">
+				<div class="dashboard aside_item_box view_under_box_btn view_more_box">
 					<button class="aside_item_btn">
 						<div class="aside_item_view">
 							<div class="img_box mouseout">
@@ -582,7 +608,7 @@
 				</div>
 			</div>
 			<div class="more_item_container">
-				<a th:href="@{|/team/list|}" class="team aside_item_box accent_btn view_more_box">
+				<a href="/team/list" class="team aside_item_box accent_btn view_more_box">
 					<div class="accent_border"></div>
 					<button class="aside_item_btn">
 						<div class="aside_item_view">

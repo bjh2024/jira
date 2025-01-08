@@ -2,7 +2,6 @@ package com.mysite.jira.repository;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +11,8 @@ import com.mysite.jira.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	
+	// 최근 방문 프로젝트 리스트
+	List<Project> findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(Integer jiraIdx, Integer accountIdx);
 	
 	List<Project> findByJira_idx(Integer jiraIdx);
 	
@@ -39,21 +40,16 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 		
 	// kdw
 	@Query(value="""
-			SELECT  p.*
-			FROM    project_recent_clicked prc
-			JOIN    project p
-			ON  p.idx = prc.project_idx
-			WHERE   prc.account_idx = :accountIdx
-			AND p.jira_idx = :jiraIdx
-			    
-			minus
-			
-			SELECT  p.*
-			FROM    project_like_members plm
-			JOIN    project p
-			ON  p.idx = plm.project_idx
-			WHERE   plm.account_idx = :accountIdx
-			AND p.jira_idx = :jiraIdx
+			SELECT p.*
+			FROM project p
+			JOIN project_recent_clicked prc
+			  ON p.idx = prc.project_idx
+			LEFT JOIN project_like_members plm
+			  ON p.idx = plm.project_idx
+			WHERE prc.account_idx = :accountIdx
+			  AND prc.jira_idx = :jiraIdx
+			  AND plm.project_idx IS NULL
+			ORDER BY prc.clicked_date DESC
 			""", nativeQuery=true)
 	List<Project> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															 @Param("jiraIdx") Integer jiraIdx);
@@ -62,36 +58,40 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
 	// kdw
 	@Query(value = """
-			SELECT  idx,
+			SELECT  type,
+					idx,
 					name,
 			        icon_filename,
-			        project_key
+			        key
 			FROM(SELECT  p.jira_idx,
+						 'project' as type,
 						 p.idx,
 				         p.name,
 				         plm.account_idx,
-				         p.icon_filename,
-				         p.key as project_key
+				         p.icon_filename as icon_filename,
+				         p.key as key
 				 FROM    project p
 				 JOIN    project_like_members plm
 				 ON  p.idx = plm.project_idx
 				 UNION
 				 SELECT  d.jira_idx,
+				 		 'dashboard' as type,
 				 		 d.idx,
 				         d.name,
 				         dlm.account_idx,
 				         'dashboard_icon.svg' as icon_filename,
-				         '' as project_key
+				         '' as key
 				 FROM    dashboard d
 				 JOIN    dashboard_like_members dlm
 				 ON  d.idx = dlm.dashboard_idx
 				 UNION
 				 SELECT  f.jira_idx,
+				 		 'filter' as type,
 				 		 f.idx,
 				         f.name,
 				         flm.account_idx,
 				         'filter_icon.svg' as icon_filename,
-				         '' as project_key
+				         '' as key
 				 FROM    filter f
 				 JOIN    filter_like_members flm
 				 ON  f.idx = flm.filter_idx)
@@ -159,18 +159,4 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 													  @Param("jiraIdx") Integer jiraIdx, 
 													  @Param("startRow") int startRow, 
 													  @Param("endRow") int endRow);
-	// kdw 가장 최근 방문한 프로젝트
-	@Query("""
-			SELECT  al.project
-			FROM
-			(SELECT  prc.project as project,
-			         rownum as rnum
-			FROM     ProjectRecentClicked as prc
-			WHERE   prc.account.idx = :accountIdx
-			AND prc.jira.idx = :jiraIdx
-			ORDER BY prc.clickedDate DESC) al
-			WHERE   al.rnum = 1
-			""")
-	Project findByRecentClickedProject(@Param("accountIdx") Integer accountIdx, @Param("jiraIdx") Integer jiraIdx);
-
 }

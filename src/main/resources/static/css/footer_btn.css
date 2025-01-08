@@ -25,6 +25,9 @@
 	box-shadow: 0 1px 1px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
 
 	transition: ease-in-out 0.1s;
+	
+	position: relative;
+	z-index: 999;
 }
 
 .footer-btn-item.chat-bot {
@@ -254,6 +257,7 @@
 	padding: 6px 0;
 	border-bottom: 1px solid #ddd;
 	font-size: 12px;
+	font-weight: bold;
 	color: #A5ADBA;
 }
 

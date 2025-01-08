@@ -12,8 +12,8 @@
 	justify-content: space-between
 }
 
-.dashboard_content_container>.box1, 
-.dashboard_content_container>.box2 {
+.dashboard_content_container>.container1, 
+.dashboard_content_container>.container2 {
 	width: calc(50% - 16px);
 }
 
@@ -184,10 +184,6 @@
 
 .dashboard_allot .paging_box .number_box button.active{
 	color: #2684ff;
-}
-
-.dashboard_pie_chart_container {
-	padding: 20px;
 }
 
 .dashboard_pie_chart_box {

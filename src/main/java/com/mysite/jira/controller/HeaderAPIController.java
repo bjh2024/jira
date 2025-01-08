@@ -5,11 +5,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysite.jira.dto.header.HeaderRecentIssueDTO;
@@ -67,7 +65,8 @@ public class HeaderAPIController {
         Integer[] managerIdxArr = IssueInputFilterDTO.getManagerIdxArr();
         Boolean isReporter = IssueInputFilterDTO.getIsReporter();
         Integer[] statusArr = IssueInputFilterDTO.getStatusArr();
-        List<HeaderRecentIssueDTO> issueList = recentService.getRecentIssueList(jiraIdx, startDate, endDate, projectIdxArr, managerIdxArr, isReporter, statusArr, principal);
+        String searchText = IssueInputFilterDTO.getSearchText();
+        List<HeaderRecentIssueDTO> issueList = recentService.getRecentIssueList(jiraIdx, startDate, endDate, projectIdxArr, managerIdxArr, isReporter, statusArr, searchText, principal);
         return issueList;
     }
 

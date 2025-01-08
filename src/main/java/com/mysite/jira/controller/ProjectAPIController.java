@@ -172,11 +172,9 @@ public class ProjectAPIController {
 	}
 	
 	@PostMapping("/create_project_member")
-	public void createProjectMember(@RequestBody ProjectMemberCreateDTO memberDTO) {
-		System.out.println("여기 오나?");
-		System.out.println(memberDTO.getUserIdx() + "ddddddd" + memberDTO.getProjectIdx());
-		Account user = boardMainService.getAccountById(memberDTO.getUserIdx());
-		Project project = projectService.getProjectByIdx(memberDTO.getProjectIdx());
+	public void createProjectMember(@RequestBody ProjectMemberCreateDTO projectDTO) {
+		Account user = boardMainService.getAccountById(projectDTO.getUserIdx());
+		Project project = projectService.getProjectByIdx(projectDTO.getProjectIdx());
 		projectService.createProjectMember(user, project);
 	}
 }

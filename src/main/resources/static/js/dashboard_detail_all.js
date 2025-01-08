@@ -1,3 +1,29 @@
+
+document.querySelector("body").addEventListener("click", function(e){
+	const moreBtn = e.target.closest(".dashboard_detail_header .gnb_btn1.more");
+	const moreBox = document.querySelector(".dashboard_detail_header .gnb_btn1.more .more_box");
+	if(moreBtn === null) {
+		moreBox.classList.remove("show");	
+		return;
+	}
+	const clickMoreBox = e.target.closest(".dashboard_detail_header .gnb_btn1.more .more_box")
+	if(clickMoreBox === null){
+		moreBtn.querySelector(".more_box").classList.toggle("show");
+		return;
+	}
+	const idx = clickMoreBox.getAttribute("idx-data");
+	const dashboardName = clickMoreBox.getAttribute("dashboard-name-data");
+	
+	const deleteModal = document.querySelector(".dashboard_delete_modal.list");
+	const deleteHeader = deleteModal.querySelector("h2");
+	deleteModal.setAttribute("idx-data", idx);
+	deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
+							  <span>${dashboardName}을(를) 삭제하겠습니까?</span>`
+	deleteModal.classList.add("show");
+});
+
+
+
 // 나에게 할당된 이슈 목록 그리기
 function drawAllot(allot, pageNum = 0) {
 	allot.setAttribute("page-num-data", pageNum);
@@ -466,14 +492,6 @@ document.addEventListener("DOMContentLoaded", function() {
 				drawIssueStatistics(item);			
 		});
 	}
-
-	// 결과 필터
-	const issueFilterChart = document.querySelectorAll(".dashboard_issue_filter");
-	if (issueFilterChart !== null) {
-		issueFilterChart.forEach(function(item) {
-			// if(item.getAttribute("is-save-data") === "1");
-		});
-	}
 });
 
 // 나에게 할당됨 => 페이징 처리
@@ -494,4 +512,4 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		pageNum = btn.innerText - 1;
 	}
 	drawAllot(allot, pageNum);
-})
+});

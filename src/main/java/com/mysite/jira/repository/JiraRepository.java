@@ -21,7 +21,7 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 	Integer countByNameAndJiraMembersList_AccountIdx(String name, Integer accountIdx);
 	
 	// kdw 최근 방문 jira
-	List<Jira> findByAccountIdxOrderByJiraClickedList_ClickedDateDesc(Integer accountIdx);
+	List<Jira> findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(Integer accountIdx);
 	
 	// 모든 최근 클릭 테이블 unio kdw
 	@Query("""
@@ -29,14 +29,28 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 				   idx as idx,
 				   iconFilename as iconFilename,
 				   name as name,
-				   projectName as projectName,
+				   accountName as accountName,
 				   key as key,
 				   clickedDate as clickedDate
 			FROM(
+				SELECT  'issue' as type, 
+				 		i.idx as idx, 
+				 		i.issueType.iconFilename as iconFilename, 
+				 		i.name as name,
+				 		i.manager.name as accountName,
+				 		i.key as key, 
+				 		irc.clickedDate as clickedDate
+				FROM    IssueRecentClicked irc
+				JOIN    Issue i
+				ON  i.idx = irc.issue.idx
+				WHERE   irc.account.idx = :accountIdx
+				AND i.jira.idx = :jiraIdx
+				UNION
 				SELECT  'project' as type, 
 				 		p.idx as idx, 
 				 		p.iconFilename as iconFilename, 
-				 		p.name as name, '' as projectName, 
+				 		p.name as name,
+				 		p.account.name as accountName,
 				 		p.key as key, 
 				 		prc.clickedDate as clickedDate
 				FROM    ProjectRecentClicked prc
@@ -48,8 +62,8 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 				SELECT  'dashboard' as type, 
 						d.idx as idx, 
 						'dashboard_icon.svg' as iconFilename, 
-						d.name as name, 
-						'' as projectName, 
+						d.name as name,
+						d.account.name as accountName,
 						'' as key, 
 						drc.clickedDate as clickedDate
 				FROM    DashboardRecentClicked drc
@@ -61,9 +75,9 @@ public interface JiraRepository extends JpaRepository<Jira, Integer> {
 				SELECT  'filter' as type, 
 						f.idx as idx, 
 						'filter_icon.svg' as iconFilename, 
-						f.name as name, 
-						'' as projectName, 
-						'' as key, 
+						f.name as name,
+						f.account.name as accountName,
+						'' as key,
 						frc.clickedDate as clickedDate
 				FROM    FilterRecentClicked frc
 				JOIN    Filter f

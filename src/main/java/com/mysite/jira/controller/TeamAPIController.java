@@ -43,10 +43,9 @@ public class TeamAPIController {
 	
 	@PostMapping("create")
 	public boolean createTeam(@RequestBody String teamName, Principal principal){
-		
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-		Jira jira = jiraService.getByIdx(jiraIdx);
-		return teamService.createTeam(account, jira, teamName);
+		Jira jira = jiraService.getByIdx(jiraIdx);	
+		return teamService.createTeam(account, jira, teamName.substring(1, teamName.length()-1));
 	}
 }

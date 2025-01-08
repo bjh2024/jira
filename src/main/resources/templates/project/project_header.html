@@ -47,7 +47,8 @@
 									</button>
 								</div>
 								<div class="menuwindow-deletebox">
-									<button class="menuwindow-optionbtn" style="gap: 12px;">
+									<button class="menuwindow-optionbtn delete" style="gap: 12px;"
+									th:attr="disabled=${currentUser.idx} != ${project.account.idx} ? 'disabled' : null">
 										<span style="height: 24px; margin-left: -4px;"><img th:src="@{/images/trash_icon.svg}" style="width: 24px; height: 24px; filter: invert(24%) sepia(62%) saturate(3539%) hue-rotate(350deg) brightness(71%) contrast(86%);"></span>
 										<span style="margin-bottom: 2px; color: #AE2E24;">프로젝트 삭제</span>
 									</button>
@@ -137,6 +138,27 @@
 				</button>
 				<button class="insert-user-btn cancel">
 					<span>취소</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="project-delete-alert-container" th:if="${currentUser.idx} == ${project.account.idx}">
+		<div class="delete-alert-box">
+			<div class="delete-alert-title">
+				<img src="/images/alaret_icon.svg" width="16" height="16" style="filter: invert(32%) sepia(62%) saturate(3573%) hue-rotate(345deg) brightness(82%) contrast(91%);">
+				<span class="delete-alert-titletext">이 프로젝트를 삭제하시겠습니까?</span>
+			</div>
+			<div class="delete-alert-body">
+				<span>
+					프로젝트가 이슈, Jira 컴포넌트, 첨부 파일 및 버전을 포함하여 영구적으로 삭제됩니다.
+				</span>
+			</div>
+			<div class="delete-alert-btnbar">
+				<button class="delete-alert-cancelbtn">
+					<span>취소</span>
+				</button>
+				<button class="delete-alert-submitbtn" th:attr="data-projectidx=${project.idx}, data-useridx=${currentUser.idx}">
+					<span>삭제</span>
 				</button>
 			</div>
 		</div>

@@ -6,12 +6,19 @@ document.querySelector(".dashboard_list_title button").addEventListener("click",
 
 // 대시보드 리스트 필터 이벤트 
 document.querySelectorAll(".dashboard_list_filter input").forEach(function(input) {
+	input.addEventListener("focus", function() {
+		this.nextElementSibling.classList.add("show");
+	});
+});
+
+// 대시보드 리스트 필터 이벤트 
+document.querySelectorAll(".dashboard_list_filter input").forEach(function(input) {
 	input.addEventListener("blur", function() {
 		this.nextElementSibling.classList.remove("show");
 	});
 });
 
-document.querySelector("body").addEventListener("mousedown", function(e) {
+/*document.querySelector("body").addEventListener("mousedown", function(e) {
 	if (e.target.closest(".dashboard_list_filter_item") !== null) {
 		if (e.target.closest(".dashboard_list_filter_item").children[3].className.includes("show")) {
 			e.target.closest(".dashboard_list_filter_item").children[3].classList.remove("show");
@@ -21,12 +28,11 @@ document.querySelector("body").addEventListener("mousedown", function(e) {
 	} else {
 		document.querySelector(".select_top_menue.show")?.classList.remove("show");
 	}
-});
+});*/
 
 document.querySelectorAll(".dashboard_list_filter_item .select_top_menue_list .item").forEach(function(item){
 	item.addEventListener("mousedown", function(){
 		const input = this.closest(".dashboard_list_filter_item").children[2]
-		console.log(input);
 		input.placeholder = this.innerText;
 	});
 });
@@ -48,8 +54,6 @@ document.querySelectorAll(".dashboard_list_item_box > .star_box").forEach(functi
 		likeFetch("dashboard", idx, isLike);
 	});
 });
-
-
 
 function dashboardListRemoveActiveShow() {
 	const moreBtnActive = document.querySelectorAll(".dashboard_list_table td:last-of-type>.img_box.active");
@@ -81,32 +85,6 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const moreBox = e.target.closest(".dashboard_list_table td:last-of-type>.more_box")
 	if (moreBtn === null && moreBox === null) {
 		dashboardListRemoveActiveShow();
-	}
-});
-
-// 대시보드 삭제 모달창 이벤트
-document.querySelector("body").addEventListener("mousedown", function(e){
-	const deleteModal = document.querySelector(".dashboard_delete_modal.list");
-	const deleteBox = e.target.closest(".dashboard_delete_modal.list .dashboard_delete_box");
-	const cancleBtn = e.target.closest(".dashboard_delete_modal.list .cancle_btn");
-	const deleteBtn = e.target.closest(".dashboard_delete_modal.list .delete_btn");
-	
-	if(deleteBox === null || cancleBtn !== null){
-		deleteModal.classList.remove("show");
-		return;
-	}
-	
-	if(deleteBtn !== null){
-		const uri = "/api/dashboard/delete";
-		const idx = deleteModal.getAttribute("idx-data");
-		fetch(uri, {method:"post", 
-					headers:{"Content-Type":"application/json"}, 
-					body:JSON.stringify(idx)}
-		)
-		.catch(err => {
-			console.error(err);
-		});
-		location.reload();
 	}
 });
 

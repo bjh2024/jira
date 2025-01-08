@@ -65,6 +65,7 @@ public class TeamService {
 	
 	@Transactional
 	public boolean createTeam(Account account, Jira jira, String teamName) {
+		System.out.println(teamName);
 		Team team = Team.builder()
 						.name(teamName)
 						.jira(jira)

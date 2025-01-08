@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysite.jira.entity.Account;
-import com.mysite.jira.entity.Dashboard;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.JiraService;
+import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +23,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/dashboard")
 public class DashboardController {
 	
-	private final JiraService jiraService;
-	
 	private final AccountService accountService;
 	
 	private final DashboardService dashboardService;
 	
+	private final ProjectService projectService;
+	
 	private final IssueService issueService;
+	
+	private final TeamService teamService;
 	
 	private final HttpSession session;
 	
@@ -41,6 +42,9 @@ public class DashboardController {
 		Integer accountIdx = account.getIdx();
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		
+		model.addAttribute("jiraByAccountList", accountService.getAccountList(jiraIdx));
+		model.addAttribute("jiraByProjectList", projectService.getByJiraIdxProject(jiraIdx));
+		model.addAttribute("jiraByGroupList", teamService.getByJiraIdx(jiraIdx));
 		model.addAttribute("dashboardList", dashboardService.getDashboardList(accountIdx, jiraIdx));
 		return "dashboard/dashboard_list";
 	}

@@ -13,23 +13,18 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	List<Filter> findByFilterClickedList_AccountIdxAndJiraIdxOrderByFilterClickedList_ClickedDateDesc(
 																							@Param("accountIdx") Integer accountIdx, 
 																							@Param("jiraIdx") Integer jiraIdx);
-	List<Filter> findByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx);
+	List<Filter> findByAccountIdxAndJiraIdxOrderByIdxAsc(Integer accountIdx, Integer jiraIdx);
 	@Query(value="""
-			SELECT  f.*
-			FROM    filter_recent_clicked frc
-			JOIN    filter f
-			ON  f.idx = frc.filter_idx
-			WHERE   frc.account_idx = :accountIdx
-			AND f.jira_idx = :jiraIdx
-			    
-			minus
-			
-			SELECT  f.*
-			FROM    filter_like_members flm
-			JOIN    filter f
-			ON  f.idx = flm.filter_idx
-			WHERE   flm.account_idx = :accountIdx
-			AND f.jira_idx = :jiraIdx
+			SELECT f.*
+			FROM filter f
+			JOIN filter_recent_clicked frc
+			  ON f.idx = frc.filter_idx
+			LEFT JOIN filter_like_members flm
+			  ON f.idx = flm.filter_idx
+			WHERE frc.account_idx = :accountIdx
+			  AND frc.jira_idx = :jiraIdx
+			  AND flm.filter_idx IS NULL
+			ORDER BY frc.clicked_date DESC
 			""", nativeQuery=true)
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);

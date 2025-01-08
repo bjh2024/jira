@@ -1098,7 +1098,7 @@
 											</div>
 										</div>
 										<div class="issuetype-set">
-											<a th:href="@{|/project/${project.key}/setting/issue_type|}" class="issuetype-setbtn">유형 관리</a>
+											<a th:href="@{|/project/${project.key}/setting/issue_type/${recentIssueType.idx}|}" class="issuetype-setbtn">유형 관리</a>
 										</div>
 									</div>
 									<span style="height: 16px;">이슈 유형 선택</span>
@@ -1277,7 +1277,6 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:src="@{/js/board_main.js}"></script>
 <script th:inline="javascript"></script>
-<script src="/js/toast.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>

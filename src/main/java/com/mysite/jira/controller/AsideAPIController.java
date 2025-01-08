@@ -49,7 +49,7 @@ public class AsideAPIController {
 	}
 	
 	@GetMapping("/like/project")
-	public List<LikeContentDTO> getLikeProject(HttpServletRequest request, Principal principal, @RequestParam("uri") String uri){
+	public List<LikeContentDTO> getLikeProject(HttpServletRequest request, Principal principal){
 		// 현재 로그인 계정
 		Account account = accountService.getAccountByEmail(principal.getName());
 		Integer accountIdx = account.getIdx();

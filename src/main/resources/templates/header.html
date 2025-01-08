@@ -122,11 +122,10 @@
 		<div class="search_box">
 			<img th:src="@{/images/search_icon.svg}" />
 			<img th:src="@{/images/search_cancle_icon.svg}" />
-			<input placeholder="검색" />
+			<input class="search_all_input" placeholder="검색" />
 			<div class="search_lnb_box">
 				<div class="search_lnb_box_header">
 					<div class="active">Jira</div>
-					<div>Compass</div>
 				</div>
 				<div class="search_lnb_content_container">
 					<div class="search_lnb_content1">
@@ -156,18 +155,22 @@
 
 						</div>
 						<div class="input_recent_box2">
-							<h5>최근 보드, 프로젝트 및 계획</h5>
+							<h5>최근 프로젝트, 대시보드 및 필터</h5>
 							<div class="input_recent_box2_item">
 								<a class="input_recent_content" 
 								   th:each="item : ${allRecentList}"
+								   th:if="${item.type != 'issue'}"
 								   th:href="@{${item.type == 'project' ? '/project/' + item.key + '/summation' :
 							                    item.type == 'dashboard' ? '/dashboard/detail/' + item.idx :
 										        item.type == 'filter' ? '/filter/filter_issue?filter=' + item.idx :
 										        '#'}}">
 									<img th:src="@{|/images/${item.iconFilename}|}" alt=""
 										style="border-radius: 50%;" width="24" height="24">
-									<div class="name" th:text="${item.name}"></div>
-									<span></span>
+									<div>
+										<span class="name" th:text="${item.name}"></span>
+										<span class="key" th:if="${item.key != ''}" th:text="|(${item.key})|"></span>
+									</div>
+									<span th:text="${item.accountName}"></span>
 								</a>
 							</div>
 						</div>
@@ -300,10 +303,10 @@
 			</div>
 		</div>
 		<div class="project_issue_create_btn">
-			<button>
+			<a href="/project/create">
 				<img src="/images/plus_icon_white.svg" alt="" width="16" height="16">
 				<span>만들기</span>
-			</button>
+			</a>
 		</div>
 	</div>
 	<div class="header_gnb_container">
@@ -332,7 +335,6 @@
 					</div>
 					<div class="alarm_gnb_box">
 						<div class="active">직접</div>
-						<div>관찰 중</div>
 					</div>
 					<div class="alarm_content_box">
 						<h6>최신</h6>
@@ -412,20 +414,10 @@
 								<p th:text="${currentUser.email}"></p>
 							</div>
 						</div>
-						<div class="item2">
+						<a href="/project/profile" class="item2">
 							<div>계정관리</div>
 							<img th:src="@{/images/new_tab_icon.svg}" width="16" height="16" />
-						</div>
-					</div>
-					<div class="user_lnb_box_content2">
-						<h6>Jira</h6>
-						<div><a id="profileLink" href="#">
-							프로필
-						</div></a>
-						<div>나의 보드</div>
-						<div>개인 설정</div>
-						<div>알림</div>
-						<div>테마<img th:src="@{/images/arrow_right_icon.svg}" width="12" height="12" /></div>
+						</a>
 					</div>
 					<div class="logout_btn_box">
 						<a th:href="@{/account/logout}">로그아웃</a>

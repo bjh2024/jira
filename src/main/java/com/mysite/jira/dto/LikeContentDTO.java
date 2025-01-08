@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class LikeContentDTO {
 	
+	private String type;
 	private Integer idx;
 	private String jiraName;
 	private String name;
@@ -13,7 +14,8 @@ public class LikeContentDTO {
 	private String key;
 	
 	@Builder
-	public LikeContentDTO(Integer idx, String jiraName, String name, String iconFilename, String key) {
+	public LikeContentDTO(String type, Integer idx, String jiraName, String name, String iconFilename, String key) {
+		this.type = type;
 		this.idx = idx;
 		this.jiraName = jiraName;
 		this.name = name;

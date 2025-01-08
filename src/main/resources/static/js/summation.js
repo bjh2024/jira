@@ -222,3 +222,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	});
 });
 
+document.querySelector(".invite_team_member_btn").addEventListener("click", function(){
+	document.querySelector(".insert-member-container").classList.add("show");
+})
