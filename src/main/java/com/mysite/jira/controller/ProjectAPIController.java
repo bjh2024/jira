@@ -178,10 +178,4 @@ public class ProjectAPIController {
 		Project project = projectService.getProjectByIdx(projectDTO.getProjectIdx());
 		projectService.createProjectMember(user, project);
 	}
-	
-	@PostMapping("/delete_project")
-	public void deleteProject(@RequestBody ProjectMemberCreateDTO projectDTO) {
-		System.out.println(projectDTO.getProjectIdx());
-		projectService.deleteProject(projectDTO.getProjectIdx());
-	}
 }
