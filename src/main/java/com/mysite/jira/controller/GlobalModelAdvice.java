@@ -18,6 +18,7 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Dashboard;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.Issue;
+import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.JiraMembers;
 import com.mysite.jira.entity.Project;
@@ -40,27 +41,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Component
 public class GlobalModelAdvice {
-
 	private final AccountService accountService;
-
 	private final JiraService jiraService;
-	
 	private final JiraMembersService jiraMembersService;
-
 	private final ProjectService projectService;
-
 	private final LogDataService logDataService;
-
 	private final RecentService recentService;
-
 	private final LikeService likeService;
-	
 	private final IssueTypeService issueTypeService;
-	
 	private final FilterService filterService;
-
 	private final DashboardService dashboardService;
-
 	private final HttpSession session;
 	
 	@ModelAttribute
@@ -79,6 +69,9 @@ public class GlobalModelAdvice {
 			
 			Account account = accountService.getAccountByEmail(principal.getName());
 			projectService.addProjectRecentClicked(account, jira, project);
+			
+			List<IssueType> issueTypeList = issueTypeService.getByProjectIdxIssueTypeList(project.getIdx());
+			model.addAttribute("recentIssueType", issueTypeList.get(0));
 			
 			model.addAttribute("project", project);
 			model.addAttribute("jiraMemberList", jiraMemberList);
@@ -218,8 +211,6 @@ public class GlobalModelAdvice {
 		}
 	}
 
-	
-	
 	@ModelAttribute
 	public void settingAsideAttributes(HttpServletRequest request, 
 									   Model model,
