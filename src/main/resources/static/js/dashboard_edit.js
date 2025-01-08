@@ -14,7 +14,26 @@ document.querySelector(".gnb_btn2.gadget_add_btn").addEventListener("click", fun
 
 	const gadgetInput = document.querySelector(".gadget_header .input_box input");
 	gadgetInput.focus();
-})
+});
+
+// 가젯 검색
+document.querySelector(".gadget_header input").addEventListener("keyup", function(){
+	const searchText = this.value.trim();
+	const dashboardGadgetList = document.querySelectorAll(".gadget_list_content .gadget_item");
+	if(searchText === ""){
+		dashboardGadgetList.forEach(function(gadget){
+			gadget.classList.remove("hide");
+		});
+		return;
+	}
+	dashboardGadgetList.forEach(function(gadget){
+		if(!gadget.querySelector(".gadget_item_main h3").innerText.includes(searchText)){
+			gadget.classList.add("hide");
+		}else{
+			gadget.classList.remove("hide");	
+		}
+	});
+});
 
 // 프로젝트 idx 가져오기
 async function projectIdxFetch(name) {
@@ -858,10 +877,10 @@ async function issueStatisticsSave(issueStatistics) {
 function debounce(func, timeout = 300) {
 	let timer;
 	return (...args) => {
-		clearTimeout(timer);  // 기존 타이머를 취소
+		clearTimeout(timer);
 		timer = setTimeout(() => {
-			func.apply(this, args);  // 최종 실행할 함수
-		}, timeout);  // 설정된 timeout 후에만 실행
+			func.apply(this, args);
+		}, timeout);
 	};
 }
 function projectListFetch(searchText) {
@@ -1001,7 +1020,7 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		body: JSON.stringify(requestData)
 	})
 		.catch(err => {
-			console.log(err);
+			console.error(err);
 		})
 });
 

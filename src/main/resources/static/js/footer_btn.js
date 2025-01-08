@@ -50,7 +50,6 @@ function connection(chatRoomDTOList) {
 	stompClient = Stomp.over(socket);
 
 	stompClient.connect({}, function(frame) {
-		console.log("연결 성공" + frame);
 		chatRoomDTOList.forEach(function(chatRoomDTO) {
 			subscribeChatRoom(chatRoomDTO);
 		});

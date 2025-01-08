@@ -18,8 +18,8 @@ function showToast(message) {
 	 }, 5000);
 }
 	
-let toastStompClient = null; 
 // 윈도우 로드 후 웹 소켓 연결
+let toastStompClient = null;
 window.addEventListener("load",function(){
 	let jiraIdx = document.querySelector(".toast_message").getAttribute("jira-idx");
 	toastConnect();
@@ -27,7 +27,6 @@ window.addEventListener("load",function(){
 		let socket = new SockJS("/websocket-endpoint");
 		toastStompClient = Stomp.over(socket);
 		toastStompClient.connect({}, function(frame){
-			console.log("연결 성공" + frame);
 			const topic = `/topic/${jiraIdx}`
 			toastStompClient.subscribe(topic, function(issueDatas){
 				showToast(issueDatas.body);

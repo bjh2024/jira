@@ -26,7 +26,10 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 																											Integer jiraIdx, 
 																											LocalDateTime startDate, 
 																											LocalDateTime endDate);
-											// kdw
+	// kdw
+	List<Issue> findByJiraIdxAndNameLike(Integer jiraIdx, String searchText);
+	
+	// kdw
 	List<Issue> findByJiraIdx(Integer jiraIdx);
 
 	@Query("""

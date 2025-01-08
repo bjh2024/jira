@@ -45,9 +45,21 @@ public class RecentService {
 	private final FilterRepository filterRepository;
 	
 	// 업데이트, 프로젝트, 담당자, 보고자, 이슈상태로 필터링된 issue List(Name, key, iconName) 고쳐야됨
-	public List<HeaderRecentIssueDTO> getRecentIssueList(Integer jiraIdx, LocalDateTime startDate, LocalDateTime endDate,
-		Integer[] projectIdxArr, Integer[] managerIdxArr, Boolean isReporter, Integer[] statusArr, Principal principal) {
+	public List<HeaderRecentIssueDTO> getRecentIssueList(Integer jiraIdx, 
+														 LocalDateTime startDate, 
+														 LocalDateTime endDate,
+														 Integer[] projectIdxArr, 
+														 Integer[] managerIdxArr, 
+														 Boolean isReporter, 
+														 Integer[] statusArr, 
+														 String searchText,
+														 Principal principal) {
 		List<Issue> issues = issueRepository.findByJiraIdx(jiraIdx);
+		if(!searchText.equals("")) {
+			searchText = searchText+"%";
+			issues = issueRepository.findByJiraIdxAndNameLike(jiraIdx, searchText);
+		}
+		
 		if (statusArr != null && statusArr.length > 0) {
 			issues = filterByIssueStatus(issues, statusArr);
 		}

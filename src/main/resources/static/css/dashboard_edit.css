@@ -183,6 +183,10 @@
 	margin-bottom: 200px;
 }
 
+.gadget_item.hide{
+	display: none;
+}
+
 .gadget_item {
 	margin: 8px;
 	padding: 8px;

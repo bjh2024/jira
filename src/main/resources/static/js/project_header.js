@@ -151,12 +151,10 @@ document.querySelector(".insert-member-container").addEventListener("mousedown",
 	const submitItem = e.target.closest(".insert-user-btn.submit");
 	if(submitItem !== null){
 		if(document.querySelector(".user-select-alert").style.display != "none"){
-			console.log("hihi");
 		}else{
 			const dataItem = document.querySelector(".insert-user-selectbtn");
 			createProjectMemberData.userIdx = dataItem.dataset.useridx;
 			createProjectMemberData.projectIdx = dataItem.dataset.projectidx;
-			console.log(createProjectMemberData);
 			createProjectMemberFetch();
 		}
 	}

@@ -12,6 +12,8 @@ import com.mysite.jira.entity.Account;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.DashboardService;
 import com.mysite.jira.service.IssueService;
+import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,11 @@ public class DashboardController {
 	
 	private final DashboardService dashboardService;
 	
+	private final ProjectService projectService;
+	
 	private final IssueService issueService;
+	
+	private final TeamService teamService;
 	
 	private final HttpSession session;
 	
@@ -36,6 +42,9 @@ public class DashboardController {
 		Integer accountIdx = account.getIdx();
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		
+		model.addAttribute("jiraByAccountList", accountService.getAccountList(jiraIdx));
+		model.addAttribute("jiraByProjectList", projectService.getByJiraIdxProject(jiraIdx));
+		model.addAttribute("jiraByGroupList", teamService.getByJiraIdx(jiraIdx));
 		model.addAttribute("dashboardList", dashboardService.getDashboardList(accountIdx, jiraIdx));
 		return "dashboard/dashboard_list";
 	}

@@ -45,7 +45,6 @@ myWorkStarBoxs.forEach(function(box) {
 		let type = starImg.getAttribute("type-data");
 		let idx = starImg.getAttribute("idx-data");
 		let isLike = starImg.getAttribute("src") === "/images/star_icon_empty.svg" ? false : true;
-		console.log(isLike);
 		likeFetch(type, idx, isLike);
 	});
 });

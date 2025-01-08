@@ -122,11 +122,10 @@
 		<div class="search_box">
 			<img th:src="@{/images/search_icon.svg}" />
 			<img th:src="@{/images/search_cancle_icon.svg}" />
-			<input placeholder="검색" />
+			<input class="search_all_input" placeholder="검색" />
 			<div class="search_lnb_box">
 				<div class="search_lnb_box_header">
 					<div class="active">Jira</div>
-					<div>Compass</div>
 				</div>
 				<div class="search_lnb_content_container">
 					<div class="search_lnb_content1">
@@ -304,10 +303,10 @@
 			</div>
 		</div>
 		<div class="project_issue_create_btn">
-			<button>
+			<a href="/project/create">
 				<img src="/images/plus_icon_white.svg" alt="" width="16" height="16">
 				<span>만들기</span>
-			</button>
+			</a>
 		</div>
 	</div>
 	<div class="header_gnb_container">
@@ -336,7 +335,6 @@
 					</div>
 					<div class="alarm_gnb_box">
 						<div class="active">직접</div>
-						<div>관찰 중</div>
 					</div>
 					<div class="alarm_content_box">
 						<h6>최신</h6>

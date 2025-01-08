@@ -6,8 +6,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	const itemList = document.querySelectorAll(".aside_more_box .more_item_box");
 	itemList.forEach(function(item) {
 		if (item.getAttribute("href") === null) return;
-
-		if (item.getAttribute("href") !== "/project/list" &&
+		
+		if (item.getAttribute("href") !== "/dashboard/list" &&
+			item.getAttribute("href").includes("/dashboard")) {
+			if (item.getAttribute("href").split("/")[3] === url.pathname.split("/")[3]) {
+				item.classList.add("active2");
+				item.querySelector(".more_item").classList.add("active3");
+			}
+		}else if (item.getAttribute("href") !== "/project/list" &&
 			item.getAttribute("href").includes("/project")) {
 			if (item.getAttribute("href").split("/")[2] === url.pathname.split("/")[2]) {
 				item.classList.add("active2");

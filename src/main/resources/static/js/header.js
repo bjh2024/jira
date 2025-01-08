@@ -71,10 +71,13 @@ let headerInputDatas = {
 	"projectIdxArr": [],
 	"managerIdxArr": [],
 	"isReporter": false,
-	"statusArr": []
+	"statusArr": [],
+	"searchText": ""
 }
 
 function fetchInput() {
+	document.querySelector(".input_recent_dynamic").classList.add("show");
+	document.querySelector(".input_recent_box1").classList.remove("show");
 	// fetch()를 사용하여 AJAX 요청
 	let url = "/api/header/filter";
 	fetch(url, {
@@ -186,9 +189,6 @@ let statusArr = [];
 document.querySelectorAll(".filtering_box").forEach(function(box) {
 	box.querySelectorAll("input").forEach(function(input) {
 		input.addEventListener("change", function(e) {
-			// div 교체
-			document.querySelector(".input_recent_dynamic").classList.add("show");
-			document.querySelector(".input_recent_box1").classList.remove("show");
 
 			let filter = "";
 			if (box.className.includes("project")) {
@@ -209,7 +209,6 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 				}
 			} else if (box.className.includes("reporter")) {
 				isReporter = e.target.checked
-				console.log(isReporter);
 			} else if (box.className.includes("status")) {
 				filter = e.target.getAttribute("id");
 				if (filter == "OPEN") {
@@ -235,4 +234,22 @@ document.querySelectorAll(".filtering_box").forEach(function(box) {
 			fetchInput();
 		});
 	});
+});
+
+function debounce(func, timeout = 300){
+	let timer;
+	return (...args)=>{
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			func.apply(this,args);
+		}, timeout);
+	}
+}
+
+const debounceFetch =  debounce(fetchInput);
+
+// input에 값을 입력했을때 => 검색
+document.querySelector(".main_header .search_box .search_all_input").addEventListener("keyup", function(){
+	headerInputDatas.searchText = this.value.trim();
+	debounceFetch();
 });

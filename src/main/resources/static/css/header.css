@@ -754,7 +754,7 @@ font-size: 14px;
     background-color: #0C66E4;
 }
 
-.project_issue_create_btn button{
+.project_issue_create_btn a{
     background-color: #0C66E4;
     color: white;
     font-size: 14px;

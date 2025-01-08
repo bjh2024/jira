@@ -45,7 +45,6 @@ document.querySelector("#teamName").addEventListener("focus", function(){
 document.querySelector("#teamName").addEventListener("blur", function(){
 	this.classList.remove("active");
 	const alertBox = document.querySelector(".team_alert_box");
-	console.log(alertBox.className.includes("show"));
 	if(alertBox.className.includes("show")){
 		this.classList.add("alert");
 	}else{
@@ -54,7 +53,6 @@ document.querySelector("#teamName").addEventListener("blur", function(){
 });
 
 document.querySelector(".team_create_container .create_team_btn").addEventListener("click",async function(){
-	console.log("click");
 	const teamNameInput = document.querySelector("#teamName");
 	const teamName = teamNameInput.value.trim();
 	const alertBox = document.querySelector(".team_alert_box");
@@ -111,7 +109,7 @@ document.querySelector(".team_create_container .create_team_btn").addEventListen
 			}
 		})
 		.catch(err => {
-			console.log(err);
+			console.error(err);
 		});
 	}
 	teamCreateFetch(teamName);
