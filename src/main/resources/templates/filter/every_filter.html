@@ -127,7 +127,8 @@
 							<div style="height: 26px;" th:text="${filterAuth.project != null? filterAuth.project.name+','+
 							(filterAuth.projectRole == 1? 'Administrator':
 							filterAuth.projectRole == 2? 'Member':
-							filterAuth.projectRole == 3? 'Viewer' : ''):'비공개'}"></div>
+							filterAuth.projectRole == 3? 'Viewer' :
+							filterAuth.projectRole == null : '모든 역할'):'비공개'}"></div>
 							<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
 							<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
 						</div>

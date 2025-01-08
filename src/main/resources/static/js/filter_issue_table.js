@@ -950,6 +950,14 @@ let doneDateBefore = null;
 let updateBefore = null;
 let createDateBefore = null;
 let jiraIdx = null;
+let viewAuth;
+let viewProject = [];
+let viewUser = [];
+let viewTeam = [];
+let editAuth;
+let editProject = [];
+let editUser = [];
+let editTeam = [];
 
 document.querySelector(".save_button")?.addEventListener("click",async function(){
 	filterName = document.querySelector(".hover_input")?.value;
@@ -957,6 +965,9 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 	updateBefore = document.getElementById("update_before_date")?.value;
 	doneDateBefore = document.getElementById("done_before_date")?.value;
 	createDateBefore = document.getElementById("create_before_date")?.value;
+	document.querySelector("viewer_list_box").querySelectorAll("choice_list_filter_auth").forEach(function(item){
+		
+	})
 	if(document.querySelector(".done_input_list").checked){
 		isCompleted.push(1);
 	}
@@ -994,7 +1005,7 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
-    let url = "/api/filter_issue_table/filter_create"; 
+    let url = "/api/filter_issue_table/ "; 
     fetch(url, {
 	        method: 'POST',
 	        headers: {
