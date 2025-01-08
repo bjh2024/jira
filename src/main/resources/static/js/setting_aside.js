@@ -9,7 +9,7 @@ window.onload = function(){
 		moreBox.classList.toggle("show");
 		const issueTypeBtns = moreBox.querySelectorAll("a");
 		issueTypeBtns.forEach(function(btn){
-			if(btn.getAttribute("href") === uri.split("/")[5]){
+			if(btn.getAttribute("href").split("/")[5] === uri.split("/")[5]){
 				btn.classList.add("active");
 			}
 		});

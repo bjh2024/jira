@@ -677,6 +677,7 @@ body{
 	width: 352px;
 	height: 40px;
 	border: 1px solid #8C8F97;
+	border-radius: 3px;
 }
 
 .status-title-input{
@@ -696,6 +697,7 @@ body{
 	width: 352px;
 	height: 40px;
 	border: 1px solid #8C8F97;
+	border-radius: 3px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -737,6 +739,7 @@ body{
 	top: 48px;
 	width: 352px;
 	padding: 8px 0px;
+	border-radius: 3px;
 	background-color: white;
 	box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.13), 0 4px 11px rgba(9, 30, 66, 0.13);
 	display: none;
@@ -775,6 +778,7 @@ body{
 	width: 52px;
 	height: 32px;
 	padding: 0px 10px;
+	border-radius: 3px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
