@@ -2538,8 +2538,6 @@ document.querySelectorAll(".issuedetail-graphval.manager").forEach(function(btn)
 	});
 });
 
-const columns = document.querySelectorAll(".issuebox-issues");
-
 draggedIssueDatas = {
 	"issueIdx": "",
 	"statusIdx": "",
@@ -2583,6 +2581,8 @@ function updateDraggedIssue(){
 		console.error("Fetch error:", error);
 	});
 }
+
+const columns = document.querySelectorAll(".issuebox-issues");
 
 columns.forEach((column) => {
     new Sortable(column, {

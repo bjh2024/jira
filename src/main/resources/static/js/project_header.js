@@ -110,9 +110,23 @@ document.querySelector(".header-setbgimg")?.addEventListener("click", function(e
 	}
 });
 
-document.querySelector("body").addEventListener("click", function(e) {
+document.querySelector(".header-setbtn").addEventListener("mouseover", function(e){
+	const btnItem = e.target.closest(".header-setbtn");
+	if(btnItem !== null && !btnItem.className.includes("active")){
+		btnItem.classList.add("hovered");
+	}
+});
 
+document.querySelector(".header-setbtn").addEventListener("mouseout", function(e){
+	const btnItem = e.target.closest(".header-setbtn");
+	if(btnItem !== null && !btnItem.className.includes("active")){
+		btnItem.classList.remove("hovered");
+	}
+});
+
+document.querySelector("body").addEventListener("click", function(e) {
 	document.querySelector(".header-setbtn.active")?.classList.remove("active");
+	document.querySelector(".header-setbtn.hovered")?.classList.remove("hovered");
 	document.querySelector(".header-menuwindow.show")?.classList.remove("show");
 	document.querySelector(".header-setbtn-icon.color")?.classList.remove("color");
 
@@ -121,6 +135,11 @@ document.querySelector("body").addEventListener("click", function(e) {
 		btnItem.classList.add("active");
 		document.querySelector(".header-menuwindow").classList.add("show");
 		document.querySelector(".header-setbtn-icon").classList.add("color");
+		if(e.target.closest(".menuwindow-optionbtn") !== null){
+			btnItem.classList.remove("active");
+			document.querySelector(".header-menuwindow").classList.remove("show");
+			document.querySelector(".header-setbtn-icon").classList.remove("color");
+		}
 	}
 });
 
@@ -133,7 +152,6 @@ document.querySelector(".menuwindow-optionbtn-bg")?.addEventListener("click", fu
 		
 		btnItem.classList.toggle("active");
 		btnItem.children[1].classList.toggle("color");
-		// btnItem.children[1].style.filter = "invert(94%) sepia(93%) saturate(0%) hue-rotate(238deg) brightness(107%) contrast(105%)";
 		windowItem.classList.toggle("show");
 	}
 });
@@ -150,8 +168,7 @@ document.querySelector(".insert-member-container").addEventListener("mousedown",
 	
 	const submitItem = e.target.closest(".insert-user-btn.submit");
 	if(submitItem !== null){
-		if(document.querySelector(".user-select-alert").style.display != "none"){
-		}else{
+		if(document.querySelector(".user-select-alert").style.display == "none"){
 			const dataItem = document.querySelector(".insert-user-selectbtn");
 			createProjectMemberData.userIdx = dataItem.dataset.useridx;
 			createProjectMemberData.projectIdx = dataItem.dataset.projectidx;
@@ -209,3 +226,51 @@ document.querySelectorAll(".user-select-option")?.forEach(function(btn){
 		document.querySelector(".insert-user-btn.submit").classList.add("active");
 	});
 });
+
+document.querySelector(".menuwindow-optionbtn.delete").addEventListener("click", function(e){
+	document.querySelector(".project-delete-alert-container")?.classList.add("show");
+});
+
+document.querySelector(".project-delete-alert-container")?.addEventListener("mousedown", function(e) {
+	document.querySelector(".project-delete-alert-container")?.classList.remove("show");
+	
+	const bgItem = e.target.closest(".delete-alert-cancelbtn");
+	const detailItem = e.target.closest(".delete-alert-box");
+	
+	const submitItem = e.target.closest(".delete-alert-submitbtn");
+	if(submitItem !== null){
+		deleteProjectData.projectIdx = submitItem.dataset.projectidx;
+		console.log(deleteProjectData);
+		deleteProjectFetch();
+	}
+	
+	if(bgItem == null && detailItem !== null){
+		document.querySelector(".project-delete-alert-container").classList.add("show");
+	}else{
+		document.querySelector(".project-delete-alert-container").classList.remove("show");
+	}
+});
+
+let deleteProjectData = {
+	"projectIdx": ""
+}
+
+function deleteProjectFetch(){
+	let url = "/api/project/delete_project";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(deleteProjectData)
+	}).then(response => {
+        if (response.ok) {
+			location.href = "/";
+        } else {
+            // 응답 상태가 성공 범위를 벗어나는 경우
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+}
