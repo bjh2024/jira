@@ -600,7 +600,9 @@ function loadUpdate() {
 			document.querySelectorAll(".more_item_box.view_more_box.accent_btn").forEach(function(item){
 				if(urlParams.get('filter') == item.dataset.filterIdx){
 					item.classList.add("show");
-					item.querySelector(".more_item").classList.add("show");
+				}
+				if(!urlParams.has('filter')){
+					item.classList.remove("show");
 				}
 			})
 	}

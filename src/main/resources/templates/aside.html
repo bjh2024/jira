@@ -378,6 +378,7 @@
 						<span>이슈 검색</span>
 					</div>
 				</a>
+<!-- 필터 즐겨찾기 시작 ------------------------------------------------------->
 				<div th:if="${#lists.size(filterLikeMembers) != 0}">
 					<h2>별표 표시됨</h2>
 					<div class="more_item_list" 
@@ -471,7 +472,7 @@
 						</div>
 					</button>
 					<div class="more_item_list default_filter_box">
-						<div class="more_item_container" th:each="filter, loop : ${filterList}" th:if="${loop.index} < 8">
+						<div class="more_item_container" th:each="filter, loop : ${defaultFilter}" th:if="${loop.index} < 8">
 							<a th:href="@{|/filter/filter_issue?filter=${filter.idx}|}" class="more_item_box view_more_box accent_btn"
 							th:data-filter-idx="${filter.idx}">
 								<div class="accent_border"></div>
