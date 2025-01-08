@@ -68,6 +68,7 @@ public class GlobalModelAdvice {
 			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
 			
 			Account account = accountService.getAccountByEmail(principal.getName());
+			System.out.println("global project");
 			projectService.addProjectRecentClicked(account, jira, project);
 			
 			List<IssueType> issueTypeList = issueTypeService.getByProjectIdxIssueTypeList(project.getIdx());
@@ -94,7 +95,7 @@ public class GlobalModelAdvice {
 			Jira jira = jiraService.getByIdx(jiraIdx);
 			
 			Account account = accountService.getAccountByEmail(principal.getName());
-			 
+			System.out.println("global dashboard");
 			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
@@ -109,6 +110,7 @@ public class GlobalModelAdvice {
 		Account accountIdx = accountService.getAccountByEmail(principal.getName());
 		if(uri.contains("/filter")) {
 			if(filterIdx != null) {
+				System.out.println("global filter");
 				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
 			}
 		}
@@ -162,7 +164,7 @@ public class GlobalModelAdvice {
 			List<AllRecentDTO> monthRecentList = recentService.getMonthAllRecentList(accountIdx, jiraIdx);
 			
 			List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
-			
+			System.out.println("global recent");
 			List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
 			List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
 			List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);

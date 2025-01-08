@@ -18,7 +18,7 @@
 		<div class="attached-files-body-container">
 			<div class="attached-file-box" th:each="file : ${fileList}">
 				<div class="attached-file-preview">
-					<img class="file-previewimg" th:src="@{|/attached_files/${file.name.endsWith('.txt') ? (file.name.substring(0, file.name.lastIndexOf('.')) + '_converted.png') : file.name}|}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
+					<img class="file-previewimg" th:src="@{|/jira_files/${file.name.endsWith('.txt') ? (file.name.substring(0, file.name.lastIndexOf('.')) + '_converted.png') : file.name}|}" style="object-fit: contain; image-orientation: none; max-width: 100%;">
 				</div>
 				<div class="attached-file-options" th:attr="data-fileidx=${file.idx}">
 					<a th:href="@{|/jira_files/${file.name}|}" download>

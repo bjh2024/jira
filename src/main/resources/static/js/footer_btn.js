@@ -38,7 +38,6 @@ function chatMessageAdd(chatRoomDTO, msg){
 }
 
 function subscribeChatRoom(chatRoomDTO){
-	console.log(chatRoomDTO);
 	const topic = `/topic/chat/${chatRoomDTO.chatRoom.idx}`;
 	stompClient.subscribe(topic, function(msg) {
 		chatMessageAdd(chatRoomDTO, msg);
