@@ -13,7 +13,7 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	List<Filter> findByFilterClickedList_AccountIdxAndJiraIdxOrderByFilterClickedList_ClickedDateDesc(
 																							@Param("accountIdx") Integer accountIdx, 
 																							@Param("jiraIdx") Integer jiraIdx);
-	List<Filter> findByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx);
+	List<Filter> findByAccountIdxAndJiraIdxOrderByIdxAsc(Integer accountIdx, Integer jiraIdx);
 	@Query(value="""
 			SELECT f.*
 			FROM filter f

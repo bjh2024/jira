@@ -126,7 +126,7 @@ public class DashboardService {
 		return null;
 	}
 	
-	public void addDashboardRecentClicked(Dashboard dashboard, Jira jira, Account account) {
+	public void addDashboardRecentClicked(Jira jira, Account account, Dashboard dashboard) {
 		DashboardRecentClicked dashboardRecentClicked = dashboardRecentClickedRepository.findByDashboard_IdxAndAccount_Idx(dashboard.getIdx(), account.getIdx());
 		if(dashboardRecentClicked != null) {
 			dashboardRecentClicked.updateDate();
@@ -152,7 +152,7 @@ public class DashboardService {
 		dashboardRepository.save(dashboard);
 		
 		// 대시보드 최근 방문 추가
-		this.addDashboardRecentClicked(dashboard, jira, account);
+		this.addDashboardRecentClicked(jira, account, dashboard);
 		
 		// 대시보드 보기, 편집 권한 추가
 		List<DashboardAuth> authList = new ArrayList<>();

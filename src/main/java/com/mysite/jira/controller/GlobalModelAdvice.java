@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -61,16 +62,11 @@ public class GlobalModelAdvice {
 			return;
 		if (uri.contains("/project")) {
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-			Jira jira = jiraService.getByIdx(jiraIdx);
 			List<JiraMembers> jiraMemberList = jiraService.getJiraMemberListByJiraIdx(jiraIdx);
 			
 			Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
 			session.setAttribute("projectIdx", project.getIdx());
 			List<Account> memberAccList = projectService.getProjectMemberListByProjectIdx(project.getIdx());
-			
-			Account account = accountService.getAccountByEmail(principal.getName());
-			System.out.println("global project");
-			projectService.addProjectRecentClicked(account, jira, project);
 			
 			List<IssueType> issueTypeList = issueTypeService.getByProjectIdxIssueTypeList(project.getIdx());
 			model.addAttribute("recentIssueType", issueTypeList.get(0));
@@ -92,33 +88,15 @@ public class GlobalModelAdvice {
 			boolean isDetail = uri.contains("/detail") ? true : false;
 			Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
 			
-			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
-			Jira jira = jiraService.getByIdx(jiraIdx);
-			
-			Account account = accountService.getAccountByEmail(principal.getName());
-			System.out.println("global dashboard");
-			dashboardService.addDashboardRecentClicked(dashboard, jira, account);
 			model.addAttribute("isDetail", isDetail);
 			model.addAttribute("currentDashboard", dashboard);
 		}
 	}
 	
 	@ModelAttribute
-	public void updateOrAddFilterRecent(HttpServletRequest request, @RequestParam(value= "filter", required = false) Integer filterIdx,
-			Principal principal) {
-		String uri = request.getRequestURI();
-		if(uri.contains("/account"))return;
-		Account accountIdx = accountService.getAccountByEmail(principal.getName());
-		if(uri.contains("/filter")) {
-			if(filterIdx != null) {
-				System.out.println("global filter");
-				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx.getIdx());
-			}
-		}
-	}
-	
-	@ModelAttribute
-	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal) {
+	public void addHeaderAttributes(HttpServletRequest request, Model model, Principal principal, 
+									@PathVariable(value = "dashboardIdx", required = false) Integer dashboardIdx,
+									@RequestParam(value= "filter", required = false) Integer filterIdx) {
 		String uri = request.getRequestURI();
 		if(principal == null ||
 		   uri.length() == 0 ||
@@ -130,22 +108,42 @@ public class GlobalModelAdvice {
 		if (uri.contains("/project/create")) return;
 		try {
 			// 현재 로그인한 계정 정보
-			Account currentUser = new Account();
+			Account account = new Account();
 			if(principal.getName().split("@").length < 2) {
 				Account accKakao = this.accountService.getAccountByKakaoKey(principal.getName());
 				Account accNaver = this.accountService.getAccountByNaverKey(principal.getName());
-				currentUser = accKakao != null ? accKakao : accNaver;
+				account = accKakao != null ? accKakao : accNaver;
 			}else {
-				currentUser = this.accountService.getAccountByEmail(principal.getName());
+				account = this.accountService.getAccountByEmail(principal.getName());
 			}
 		    
 			// 가져올 값들
-			Integer accountIdx = currentUser.getIdx();
+			Integer accountIdx = account.getIdx();
 			Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 			
 			// 현재 jira
 			Jira jira = jiraService.getByIdx(jiraIdx);
 			model.addAttribute("currentJira", jira);
+			
+			// 프로젝트, 대시보드, 필터 방문 시간 최신화
+			if(!uri.contains("/project/create") && 
+			   !uri.contains("/project/list") && 
+			   !uri.contains("/project/profile") && 
+			   uri.contains("/project")) {
+				Project project = projectService.getByJiraIdxAndKeyProject(jiraIdx, uri.split("/")[2]);
+				projectService.addProjectRecentClicked(account, jira, project);
+				
+			}else if(!uri.contains("/dashboard/list") && 
+					 uri.contains("/dashboard")) {
+				Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
+				dashboardService.addDashboardRecentClicked(jira, account, dashboard);
+				
+			}else if(!uri.contains("/project/create") && 
+			   !uri.contains("/project/list") && 
+			   !uri.contains("/project/profile") && 
+			   uri.contains("/project")) {
+				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx);
+			}
 			
 			// header
 			List<JiraMembers> accountByjiraMemberList = jiraService.getJiraByAccountIdxList(accountIdx);
@@ -165,7 +163,9 @@ public class GlobalModelAdvice {
 			List<AllRecentDTO> monthRecentList = recentService.getMonthAllRecentList(accountIdx, jiraIdx);
 			
 			List<AllRecentDTO> monthGreaterRecentList = recentService.getMonthGreaterAllRecentList(accountIdx, jiraIdx);
-			System.out.println("global recent");
+			
+			// 프로젝트, 대시보드, 필터 최신화
+			
 			List<Project> projectRecentList = recentService.getRecentProjectList(accountIdx, jiraIdx, 3);
 			List<Filter> filterRecentList = recentService.getRecentFilterList(accountIdx, jiraIdx, 3);
 			List<Dashboard> dashboardRecentList = recentService.getRecentDashboardList(accountIdx, jiraIdx, 3);
@@ -174,18 +174,8 @@ public class GlobalModelAdvice {
 			List<LikeContentDTO> filterLikeMembers = likeService.getFilterLikeList(accountIdx, jiraIdx);
 			List<LikeContentDTO> dashboardLikeMembers = likeService.getDashboardLikeList(accountIdx, jiraIdx);
 			
-			List<Filter> filterList = filterService.getByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
-			Integer[] filterLikeInteger = new Integer[filterLikeMembers.size()];
-			for (int i = 0; i < filterLikeInteger.length; i++) {
-				filterLikeInteger[i] = filterLikeMembers.get(i).getIdx();
-			}
-			List<Filter> filterLikes = filterService.getByIdxIn(filterLikeInteger);
-			List<Filter> defaultFilterList = new ArrayList<>();
-			for (int i = 0; i < 8; i++) {
-				defaultFilterList.add(filterList.get(i));
-			}
-			defaultFilterList.removeAll(filterRecentList);
-			defaultFilterList.removeAll(filterLikes);
+			List<Filter> defaultFilterList = filterService.getByAccountIdxAndJiraIdxMinusLikeAndRecent(accountIdx, jiraIdx, filterRecentList, filterLikeMembers);
+			
 			// chat
 			List<JiraMembers> allJiraMembersList = jiraMembersService.getMembersByJiraIdx(jiraIdx);
 			
@@ -196,7 +186,7 @@ public class GlobalModelAdvice {
 			model.addAttribute("allAccountList", allAccountList);
 			model.addAttribute("alarmLogData", alarmLogData);
 			model.addAttribute("allRecentList", allRecentList);
-			model.addAttribute("currentUser", currentUser);
+			model.addAttribute("currentUser", account);
 
 			// aside
 			model.addAttribute("todayRecentList", todayRecentList);
@@ -214,7 +204,6 @@ public class GlobalModelAdvice {
 
 			model.addAttribute("dashboardLikeMembers", dashboardLikeMembers);
 			model.addAttribute("dashboardRecentList", dashboardRecentList);
-			model.addAttribute("filterList", filterList);
 			model.addAttribute("defaultFilter", defaultFilterList);
 			
 			// chat

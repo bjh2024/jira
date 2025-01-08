@@ -86,23 +86,25 @@ aside {
 	background-color: #e9edf3a6;
 }
 
-.aside_item_box.active2 {
+.aside_container .active2 {
 	background-color: #e9f2fe;
 }
 
-.aside_item_box.active2:hover {
+.aside_container .active2:hover {
 	background-color: #cfe1fd;
 }
 
-.aside_item_box.active2 .aside_item_view {
+.aside_container .active2 .aside_item_view,
+.aside_container .active2 .more_item {
 	color: #1868db;
 }
 
-.aside_item_box.active2 .aside_item_view img {
+.aside_container .active2 .aside_item_view img,
+.aside_container .active2 .more_item.active3 img {
 	filter: invert(31%) sepia(47%) saturate(4701%) hue-rotate(210deg) brightness(90%) contrast(92%);
 }
 
-.aside_item_box.accent_btn.active2 .accent_border {
+.aside_container .accent_btn.active2 .accent_border {
 	display: block;
 	background-color: #1868db;
 }
