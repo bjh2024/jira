@@ -239,8 +239,8 @@ document.querySelector(".project-delete-alert-container")?.addEventListener("mou
 	
 	const submitItem = e.target.closest(".delete-alert-submitbtn");
 	if(submitItem !== null){
-		deleteProjectData.projectIdx = submitItem.dataset.projectidx;
-		console.log(deleteProjectData);
+		projectIdx = submitItem.dataset.projectidx;
+		console.log(projectIdx);
 		deleteProjectFetch();
 	}
 	
@@ -251,18 +251,16 @@ document.querySelector(".project-delete-alert-container")?.addEventListener("mou
 	}
 });
 
-let deleteProjectData = {
-	"projectIdx": ""
-}
+let projectIdx = "";
 
 function deleteProjectFetch(){
-	let url = "/api/project/delete_project";
+	let url = "/api/project/delete";
 	fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json' // JSON 데이터를 전송
 		},
-		body: JSON.stringify(deleteProjectData)
+		body: JSON.stringify(projectIdx)
 	}).then(response => {
         if (response.ok) {
 			location.href = "/";
