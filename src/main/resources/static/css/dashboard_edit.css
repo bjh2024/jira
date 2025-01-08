@@ -31,7 +31,7 @@
 	background-color: #fff;
 }
 
-.sortable-drag .dynamic_box .drag_item {
+.sortable-drag .dashboard_item_content .drag_item {
 	background-color: #eee;
 	border-radius: 14px;
 	
@@ -40,7 +40,7 @@
 	align-items: center;
 }
 
-.sortable-drag .dynamic_box .drag_item img{
+.sortable-drag .dashboard_item_content .drag_item img{
 	filter: invert(92%) sepia(0%) saturate(23%) hue-rotate(172deg) brightness(88%) contrast(95%);
 }
 
@@ -84,6 +84,7 @@
 .dashboard_add_gadget {
 	width: 400px;
 	height: calc(100vh - 48px);
+	background-color: #fff;
 	border-left: 3px solid #ddd;
 
 	transition: 0.3s;
@@ -91,7 +92,6 @@
 	position: fixed;
     top: 52px;
     right: 0;
-	z-index: 998;
 	overflow-y: auto;
 }
 

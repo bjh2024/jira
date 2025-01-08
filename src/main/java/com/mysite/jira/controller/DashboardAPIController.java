@@ -18,6 +18,7 @@ import com.mysite.jira.dto.dashboard.IssueCompleteChartDTO;
 import com.mysite.jira.dto.dashboard.RequestAllotDTO;
 import com.mysite.jira.dto.dashboard.RequestCompleteRecentDTO;
 import com.mysite.jira.dto.dashboard.RequestDashboardCreateDTO;
+import com.mysite.jira.dto.dashboard.RequestDashboardItemOrderDTO;
 import com.mysite.jira.dto.dashboard.RequestPieChartDTO;
 import com.mysite.jira.dto.dashboard.RequestStatisticsDTO;
 import com.mysite.jira.dto.dashboard.create.AccountListDTO;
@@ -242,6 +243,16 @@ public class DashboardAPIController {
 		Integer dashboardColIdx = requestStatisticsDTO.getDashboardColIdx();
 		Integer rowNum = requestStatisticsDTO.getRowNum();
 		dashboardService.updateIssueStatistics(idx, projectIdx, dashboardColIdx, rowNum);
+	}
+	
+	@PostMapping("update/order")
+	public void updateDashboardItemOrder(@RequestBody RequestDashboardItemOrderDTO requestDashboardItemOrderDTO) {
+		String type = requestDashboardItemOrderDTO.getType();
+		Integer orderX = requestDashboardItemOrderDTO.getOrderX();
+		Integer orderY = requestDashboardItemOrderDTO.getOrderY();
+		Integer dashboardItemIdx = requestDashboardItemOrderDTO.getDashboardItemIdx();
+		
+		dashboardService.updateDashboardItemOrder(type, orderX, orderY, dashboardItemIdx);
 	}
 	
 	@PostMapping("update/issue_filter")

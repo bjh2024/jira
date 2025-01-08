@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class DashboardIssueFilter {
+public class DashboardIssueFilter implements DashboardItem{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dashboard_filter_seq")
 	@SequenceGenerator(name = "dashboard_filter_seq", sequenceName = "dashboard_filter_seq", allocationSize = 1)

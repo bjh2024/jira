@@ -19,6 +19,7 @@ import com.mysite.jira.entity.DashboardIssueComplete;
 import com.mysite.jira.entity.DashboardIssueFilter;
 import com.mysite.jira.entity.DashboardIssueRecent;
 import com.mysite.jira.entity.DashboardIssueStatistics;
+import com.mysite.jira.entity.DashboardItem;
 import com.mysite.jira.entity.DashboardPieChart;
 import com.mysite.jira.entity.DashboardRecentClicked;
 import com.mysite.jira.entity.Jira;
@@ -82,6 +83,46 @@ public class DashboardService {
 		Optional<DashboardCol> dashboardCol = dashboardColRepository.findById(idx);
 		if(!dashboardCol.isEmpty())
 			return dashboardCol.get();
+		return null;
+	}
+	
+	public DashboardPieChart getDashboardPieChart(Integer idx) {
+		Optional<DashboardPieChart> dashboardPieChart = dashboardPieChartRepository.findById(idx);
+		if(!dashboardPieChart.isEmpty()) {
+			return dashboardPieChart.get();
+		}
+		return null;
+	}
+	
+	public DashboardAllot getDashboardAllot(Integer idx) {
+		Optional<DashboardAllot> dashboardAllot = dashboardAllotRepository.findById(idx);
+		if(!dashboardAllot.isEmpty()) {
+			return dashboardAllot.get();
+		}
+		return null;
+	}
+	
+	public DashboardIssueComplete getDashboardIssueComplete(Integer idx) {
+		Optional<DashboardIssueComplete> dashboardIssueComplete = dashboardIssueCompleteRepository.findById(idx);
+		if(!dashboardIssueComplete.isEmpty()) {
+			return dashboardIssueComplete.get();
+		}
+		return null;
+	}
+	
+	public DashboardIssueRecent getDashboardIssueRecent(Integer idx) {
+		Optional<DashboardIssueRecent> dashboardIssueRecent = dashboardIssueRecentRepository.findById(idx);
+		if(!dashboardIssueRecent.isEmpty()) {
+			return dashboardIssueRecent.get();
+		}
+		return null;
+	}
+	
+	public DashboardIssueStatistics getDashboardIssueStatistics(Integer idx) {
+		Optional<DashboardIssueStatistics> dashboardIssueStatistics = dashboardIssueStatisticsRepository.findById(idx);
+		if(!dashboardIssueStatistics.isEmpty()) {
+			return dashboardIssueStatistics.get();
+		}
 		return null;
 	}
 	
@@ -235,49 +276,91 @@ public class DashboardService {
 	}
 	
 	// 대시보드 item 순서 바꾸기
-	public void editOrder(Integer dashboardIdx, Integer divOrderX, Integer divOrderY) {
+	public void editOrder(Integer dashboardIdx, Integer divOrderX, Integer divOrderY, int step) {
+		
 		List<DashboardPieChart> pieChartList = dashboardPieChartRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
 		List<DashboardAllot> allotList = dashboardAllotRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
 		List<DashboardIssueComplete> issueCompleteList = dashboardIssueCompleteRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
 		List<DashboardIssueRecent> issueRecentList = dashboardIssueRecentRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
 		List<DashboardIssueStatistics> issueStatisticsList = dashboardIssueStatisticsRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
-		List<DashboardIssueFilter> issueFilterList = dashboardIssueFilterRepository.findByDashboardIdxAndDivOrderXAndDivOrderYGreaterThanEqual(dashboardIdx, divOrderX, divOrderY);
 		
 		for(int i = 0; i < pieChartList.size(); i++) {
 			DashboardPieChart pieChart = pieChartList.get(i);
-			pieChart.updateOrder(divOrderX, pieChart.getDivOrderY()+1);
+			pieChart.updateOrder(divOrderX, pieChart.getDivOrderY()+step);
 			
 			dashboardPieChartRepository.save(pieChart);
 		}
 		for(int i = 0; i < allotList.size(); i++) {
 			DashboardAllot allot = allotList.get(i);
-			allot.updateOrder(divOrderX, allot.getDivOrderY()+1);
+			allot.updateOrder(divOrderX, allot.getDivOrderY()+step);
 			
 			dashboardAllotRepository.save(allot);
 		}
 		for(int i = 0; i < issueCompleteList.size(); i++) {
 			DashboardIssueComplete issueComplete = issueCompleteList.get(i);
-			issueComplete.updateOrder(divOrderX, issueComplete.getDivOrderY()+1);
+			issueComplete.updateOrder(divOrderX, issueComplete.getDivOrderY()+step);
 			
 			dashboardIssueCompleteRepository.save(issueComplete);
 		}
 		for(int i = 0; i < issueRecentList.size(); i++) {
 			DashboardIssueRecent issueRecent = issueRecentList.get(i);
-			issueRecent.updateOrder(divOrderX, issueRecent.getDivOrderY()+1);
+			issueRecent.updateOrder(divOrderX, issueRecent.getDivOrderY()+step);
 			
 			dashboardIssueRecentRepository.save(issueRecent);
 		}
 		for(int i = 0; i < issueStatisticsList.size(); i++) {
 			DashboardIssueStatistics issueStatistics = issueStatisticsList.get(i);
-			issueStatistics.updateOrder(divOrderX, issueStatistics.getDivOrderY()+1);
+			issueStatistics.updateOrder(divOrderX, issueStatistics.getDivOrderY()+step);
 			
 			dashboardIssueStatisticsRepository.save(issueStatistics);
 		}
-		for(int i = 0; i < issueFilterList.size(); i++) {
-			DashboardIssueFilter issueFilter = issueFilterList.get(i);
-			issueFilter.updateOrder(divOrderX, issueFilter.getDivOrderY()+1);
+	}
+	
+	// 대시보드 요소 추상화
+	public void updateDashboardItemOtherOrder(DashboardItem item, int orderX, int orderY) {
+		int dashboardIdx = 0;
+		int prevOrderX = 0;
+		int prevOrderY = 0;
+		
+		dashboardIdx = item.getDashboard().getIdx();
+		this.editOrder(dashboardIdx, orderX, orderY, 1);
+		
+		prevOrderX = item.getDivOrderX();
+		prevOrderY = item.getDivOrderY();
+		this.editOrder(dashboardIdx, prevOrderX, prevOrderY, -1);
+	}
+	
+	public void updateDashboardItemOrder(String type, Integer orderX, Integer orderY, Integer dashboardItemIdx) {
+		if(type.equals("pieChart")) {
+			DashboardPieChart pieChart =  this.getDashboardPieChart(dashboardItemIdx);
+			this.updateDashboardItemOtherOrder(pieChart, orderX, orderY);
 			
-			dashboardIssueFilterRepository.save(issueFilter);
+			pieChart.updateOrder(orderX, orderY);
+			dashboardPieChartRepository.save(pieChart);
+		}else if(type.equals("allot")) {
+			DashboardAllot allot =  this.getDashboardAllot(dashboardItemIdx);
+			this.updateDashboardItemOtherOrder(allot, orderX, orderY);
+			
+			allot.updateOrder(orderX, orderY);
+			dashboardAllotRepository.save(allot);
+		}else if(type.equals("issueComplete")) {
+			DashboardIssueComplete issueComplete =  this.getDashboardIssueComplete(dashboardItemIdx);
+			this.updateDashboardItemOtherOrder(issueComplete, orderX, orderY);
+			
+			issueComplete.updateOrder(orderX, orderY);
+			dashboardIssueCompleteRepository.save(issueComplete);
+		}else if(type.equals("issueRecent")) {
+			DashboardIssueRecent issueRecent =  this.getDashboardIssueRecent(dashboardItemIdx);
+			this.updateDashboardItemOtherOrder(issueRecent, orderX, orderY);
+			
+			issueRecent.updateOrder(orderX, orderY);
+			dashboardIssueRecentRepository.save(issueRecent);
+		}else if(type.equals("issueStatistics")) {
+			DashboardIssueStatistics issueStatistics =  this.getDashboardIssueStatistics(dashboardItemIdx);
+			this.updateDashboardItemOtherOrder(issueStatistics, orderX, orderY);
+			
+			issueStatistics.updateOrder(orderX, orderY);
+			dashboardIssueStatisticsRepository.save(issueStatistics);
 		}
 	}
 	
@@ -290,7 +373,7 @@ public class DashboardService {
 													  .divOrderY(1)
 													  .isSave(0)
 													  .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardPieChartRepository.save(pieChart);
 		return pieChart.getIdx();
 	}
@@ -304,7 +387,7 @@ public class DashboardService {
 											 .divOrderY(1)
 											 .isSave(0)
 											 .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardAllotRepository.save(allot);
 		return allot.getIdx();
 	}
@@ -318,7 +401,7 @@ public class DashboardService {
 																	 .divOrderY(1)
 																	 .isSave(0)
 																	 .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardIssueCompleteRepository.save(issueComplete);
 		return issueComplete.getIdx();
 	}
@@ -332,7 +415,7 @@ public class DashboardService {
 															   .divOrderY(1)
 															   .isSave(0)
 															   .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardIssueRecentRepository.save(issueRecent);
 		return issueRecent.getIdx();
 	}
@@ -346,7 +429,7 @@ public class DashboardService {
 																		   .divOrderY(1)
 																		   .isSave(0)
 																		   .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardIssueStatisticsRepository.save(issueStatistics);
 		return issueStatistics.getIdx();
 	}
@@ -360,7 +443,7 @@ public class DashboardService {
 															   .divOrderY(1)
 															   .isSave(0)
 															   .build();
-		this.editOrder(dashboardIdx, 1, 1);
+		this.editOrder(dashboardIdx, 1, 1, 1);
 		dashboardIssueFilterRepository.save(issueFilter);
 		return issueFilter.getIdx();
 	}
@@ -369,22 +452,16 @@ public class DashboardService {
 	public void updatePieChart(Integer idx, Integer projectIdx, Integer dashboardColIdx) {
 		Project project = projectService.getProjectByIdx(projectIdx);
 		DashboardCol dashboardCol = this.getDashboardColByIdx(dashboardColIdx);
-		Optional<DashboardPieChart> opPieChart = dashboardPieChartRepository.findById(idx);
-		DashboardPieChart pieChart = null;
-		if(!opPieChart.isEmpty()) {
-			pieChart = opPieChart.get();
-		}
+		DashboardPieChart pieChart = this.getDashboardPieChart(idx);
+
 		pieChart.updatePieChart(project, dashboardCol);
 		dashboardPieChartRepository.save(pieChart);
 	}
 	
 	// 대시보드 나에게 할당됨 업데이트
 	public void updateAllot(Integer idx, Integer rowNum) {
-		Optional<DashboardAllot> opAllot = dashboardAllotRepository.findById(idx);
-		DashboardAllot allot = null;
-		if(!opAllot.isEmpty()) {
-			allot = opAllot.get();
-		}
+		DashboardAllot allot = this.getDashboardAllot(idx);
+		
 		allot.updateAllot(rowNum);
 		dashboardAllotRepository.save(allot);
 	}
@@ -392,12 +469,7 @@ public class DashboardService {
 	// 대시보드 만듦 대비 완료된 이슈 차트 업데이트
 	public void updateIssueComplete(Integer idx, Integer projectIdx, Integer viewDate, String unitPeriod) {
 		Project project = projectService.getProjectByIdx(projectIdx);
-		Optional<DashboardIssueComplete> opIssueComplete = dashboardIssueCompleteRepository.findById(idx);
-		DashboardIssueComplete issueComplete = null;
-		
-		if(!opIssueComplete.isEmpty()) {
-			issueComplete = opIssueComplete.get();
-		}
+		DashboardIssueComplete issueComplete = this.getDashboardIssueComplete(idx);
 		
 		issueComplete.updateIssueComplete(project, viewDate, unitPeriod);
 		dashboardIssueCompleteRepository.save(issueComplete);
@@ -406,12 +478,7 @@ public class DashboardService {
 	// 대시보드 최근의 생성된 이슈 차트 업데이트
 	public void updateIssueRecent(Integer idx, Integer projectIdx, Integer viewDate, String unitPeriod) {
 		Project project = projectService.getProjectByIdx(projectIdx);
-		Optional<DashboardIssueRecent> opIssueRecent = dashboardIssueRecentRepository.findById(idx);
-		DashboardIssueRecent issueRecent = null;
-		
-		if(!opIssueRecent.isEmpty()) {
-			issueRecent = opIssueRecent.get();
-		}
+		DashboardIssueRecent issueRecent = this.getDashboardIssueRecent(idx);
 		
 		issueRecent.updateIssueRecent(project, viewDate, unitPeriod);
 		dashboardIssueRecentRepository.save(issueRecent);
@@ -421,12 +488,7 @@ public class DashboardService {
 	public void updateIssueStatistics(Integer idx, Integer projectIdx, Integer dashboardColIdx, Integer rowNum) {
 		Project project = projectService.getProjectByIdx(projectIdx);
 		DashboardCol dashboardCol = this.getDashboardColByIdx(dashboardColIdx);
-		Optional<DashboardIssueStatistics> opIssueStatistics = dashboardIssueStatisticsRepository.findById(idx);
-		DashboardIssueStatistics issueStatistics = null;
-		
-		if(!opIssueStatistics.isEmpty()) {
-			issueStatistics = opIssueStatistics.get();
-		}
+		DashboardIssueStatistics issueStatistics = this.getDashboardIssueStatistics(idx);
 		
 		issueStatistics.updateIssueStatistics(project, dashboardCol, rowNum);
 		dashboardIssueStatisticsRepository.save(issueStatistics);
@@ -434,26 +496,61 @@ public class DashboardService {
 	
 	// 대시보드 파이 차트 삭제
 	public void deletePieChart(Integer idx) {
+		DashboardPieChart pieChart = this.getDashboardPieChart(idx);
+		int dashboardIdx = pieChart.getDashboard().getIdx();
+		int orderX = pieChart.getDivOrderX();
+		int ordery = pieChart.getDivOrderY();
+		
+		this.editOrder(dashboardIdx, orderX, ordery, -1);
+		
 		dashboardPieChartRepository.deleteById(idx);
 	}
 	
 	// 대시보드 나에게 할당됨 삭제
 	public void deleteAllot(Integer idx) {
+		DashboardAllot allot = this.getDashboardAllot(idx);
+		int dashboardIdx = allot.getDashboard().getIdx();
+		int orderX = allot.getDivOrderX();
+		int ordery = allot.getDivOrderY();
+		
+		this.editOrder(dashboardIdx, orderX, ordery, -1);
+		
 		dashboardAllotRepository.deleteById(idx);
 	}
 	
 	// 대시보드 만듦 대비 최근 생성 차트 삭제
 	public void deleteIssueComplete(Integer idx) {
+		DashboardIssueComplete issueComplete = this.getDashboardIssueComplete(idx);
+		int dashboardIdx = issueComplete.getDashboard().getIdx();
+		int orderX = issueComplete.getDivOrderX();
+		int ordery = issueComplete.getDivOrderY();
+		
+		this.editOrder(dashboardIdx, orderX, ordery, -1);
+		
 		dashboardIssueCompleteRepository.deleteById(idx);
 	}
 	
 	// 대시보드 최근에 생성된 이슈 차트 삭제
 	public void deleteIssueRecent(Integer idx) {
+		DashboardIssueRecent issueRecent = this.getDashboardIssueRecent(idx);
+		int dashboardIdx = issueRecent.getDashboard().getIdx();
+		int orderX = issueRecent.getDivOrderX();
+		int ordery = issueRecent.getDivOrderY();
+		
+		this.editOrder(dashboardIdx, orderX, ordery, -1);
+		
 		dashboardIssueRecentRepository.deleteById(idx);
 	}
 	
 	// 대시보드 이슈 통계 삭제
 	public void deleteIssueStatistics(Integer idx) {
+		DashboardIssueStatistics issueStatistics = this.getDashboardIssueStatistics(idx);
+		int dashboardIdx = issueStatistics.getDashboard().getIdx();
+		int orderX = issueStatistics.getDivOrderX();
+		int ordery = issueStatistics.getDivOrderY();
+		
+		this.editOrder(dashboardIdx, orderX, ordery, -1);
+		
 		dashboardIssueStatisticsRepository.deleteById(idx);
 	}
 	

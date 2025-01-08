@@ -24,15 +24,15 @@ async function projectIdxFetch(name) {
 }
 
 // 나에게 할당된 모든 이슈의 개수 가져오기
-async function isseuTotalFetch(){
+async function isseuTotalFetch() {
 	const res = await fetch(`/api/issue/allot/count`, { method: "get" });
 	const total = await res.json();
 	return total;
 }
 
 // dashboardCol 문자로 바꾸기
-function dashboardColChange(dashboardColIdx){
-	switch(dashboardColIdx){
+function dashboardColChange(dashboardColIdx) {
+	switch (dashboardColIdx) {
 		case "1":
 			return "담당자"
 		case "2":
@@ -86,19 +86,19 @@ document.querySelector("body").addEventListener("click", function(e) {
 	const deleteBox = e.target.closest(".dashboard_delete_box");
 	const cancleBtn = e.target.closest(".cancle_btn");
 	const deleteBtn = e.target.closest(".delete_btn");
-	
-	if(deleteBox === null || cancleBtn !== null){
+
+	if (deleteBox === null || cancleBtn !== null) {
 		document.querySelector(".dashboard_delete_modal.detail").classList.remove("show");
 		return;
 	}
-	
+
 	// 삭제 클릭시
-	if(deleteBtn !== null){
+	if (deleteBtn !== null) {
 		const idx = deleteBox.getAttribute("idx-data");
-		function dashboardItemDeleteFetch(){
+		function dashboardItemDeleteFetch() {
 			let uri = "/api/dashboard/delete/";
 			const type = deleteBox.getAttribute("type");
-			switch(type){
+			switch (type) {
 				case "dashboard_pie_chart":
 					uri += "pie_chart";
 					break;
@@ -118,17 +118,19 @@ document.querySelector("body").addEventListener("click", function(e) {
 					uri += "issue_filter";
 					break;
 			}
-			fetch(uri, {method: "post", 
-						headers: {"Content-Type" : "application/json"}, 
-						body:JSON.stringify(idx)})
-			.catch(err => {
-				console.error(err);
-			});
+			fetch(uri, {
+				method: "post",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(idx)
+			})
+				.catch(err => {
+					console.error(err);
+				});
 			location.reload(true);
 		}
 		dashboardItemDeleteFetch();
 	}
-	
+
 });
 
 // 대시보드 더보기 show
@@ -156,8 +158,8 @@ document.querySelector("body").addEventListener("click", function(e) {
 					const deleteHeader = deleteModal.querySelector("h2");
 					deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
 											 		   <span>${chartTitle} 가젯을 삭제하겠습니까?</span>`
-				    deleteModal.classList.add("show");
-					
+					deleteModal.classList.add("show");
+
 					const dashboardItem = e.target.closest(".dashboard_item");
 					const idx = dashboardItem.getAttribute("idx-data");
 					deleteBox.setAttribute("idx-data", idx);
@@ -854,13 +856,13 @@ async function issueStatisticsSave(issueStatistics) {
 }
 // 디바운스 함수
 function debounce(func, timeout = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);  // 기존 타이머를 취소
-    timer = setTimeout(() => {
-      func.apply(this, args);  // 최종 실행할 함수
-    }, timeout);  // 설정된 timeout 후에만 실행
-  };
+	let timer;
+	return (...args) => {
+		clearTimeout(timer);  // 기존 타이머를 취소
+		timer = setTimeout(() => {
+			func.apply(this, args);  // 최종 실행할 함수
+		}, timeout);  // 설정된 timeout 후에만 실행
+	};
 }
 function projectListFetch(searchText) {
 	let projectName = searchText.value;
@@ -890,10 +892,10 @@ document.querySelector(".dashboard_content_container").addEventListener("keyup",
 });
 
 // dashboardItem alert_box
-function dashboardItemAlertBox(dashboardItem){
+function dashboardItemAlertBox(dashboardItem) {
 	const projectNameInput = dashboardItem.querySelector("#project_name");
 	const projectName = dashboardItem.querySelector(".project_name_box").innerText;
-	if(projectName === "선택된 프로젝트 없음"){
+	if (projectName === "선택된 프로젝트 없음") {
 		dashboardItem.querySelector(".alert_box").classList.add("show");
 		projectNameInput.focus();
 		return false;
@@ -912,17 +914,17 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 	// 파이 차트
 	let pieChart = e.target?.closest(".dashboard_pie_chart");
 	if (pieChart !== null) {
-		if(!dashboardItemAlertBox(pieChart)) return;
-		
+		if (!dashboardItemAlertBox(pieChart)) return;
+
 		await pieChartSave(pieChart);
 		uri += "pie_chart";
 		const idx = pieChart.getAttribute("idx-data");
 		const projectIdx = pieChart.getAttribute("projectIdx-data");
 		const dashboardColIdx = pieChart.getAttribute("dashboardColIdx-data");
 		requestData = {
-			"idx" : idx,
-			"projectIdx" : projectIdx,
-			"dashboardColIdx" : dashboardColIdx
+			"idx": idx,
+			"projectIdx": projectIdx,
+			"dashboardColIdx": dashboardColIdx
 		}
 	}
 	// 나에게 할당됨
@@ -933,15 +935,15 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		const idx = allot.getAttribute("idx-data");
 		const rowNum = allot.getAttribute("row-num-data");
 		requestData = {
-			"idx" : idx,
-			"rowNum" : rowNum
+			"idx": idx,
+			"rowNum": rowNum
 		}
 	}
 	// 만듦 대비 해결됨 차트
 	let issueComplete = e.target?.closest(".dashboard_issue_complete");
 	if (issueComplete !== null) {
-		if(!dashboardItemAlertBox(issueComplete)) return;
-		
+		if (!dashboardItemAlertBox(issueComplete)) return;
+
 		await issueCompleteSave(issueComplete);
 		uri += "issue_complete";
 		const idx = issueComplete.getAttribute("idx-data");
@@ -949,18 +951,18 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		const viewDate = issueComplete.getAttribute("viewDate-data");
 		const unitPeriod = issueComplete.getAttribute("unitPeriod-data");
 		requestData = {
-			"idx" : idx,
-			"projectIdx" : projectIdx,
-			"viewDate" : viewDate,
-			"unitPeriod" : unitPeriod
+			"idx": idx,
+			"projectIdx": projectIdx,
+			"viewDate": viewDate,
+			"unitPeriod": unitPeriod
 		}
-		
+
 	}
 	// 최근에 만듦 차트
 	let issueRecent = e.target?.closest(".dashboard_issue_recent");
 	if (issueRecent !== null) {
-		if(!dashboardItemAlertBox(issueRecent)) return;
-		
+		if (!dashboardItemAlertBox(issueRecent)) return;
+
 		await issueRecentSave(issueRecent);
 		uri += "issue_recent";
 		const idx = issueRecent.getAttribute("idx-data");
@@ -968,17 +970,17 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		const viewDate = issueRecent.getAttribute("viewDate-data");
 		const unitPeriod = issueRecent.getAttribute("unitPeriod-data");
 		requestData = {
-			"idx" : idx,
-			"projectIdx" : projectIdx,
-			"viewDate" : viewDate,
-			"unitPeriod" : unitPeriod
+			"idx": idx,
+			"projectIdx": projectIdx,
+			"viewDate": viewDate,
+			"unitPeriod": unitPeriod
 		}
 	}
 	// 이슈 통계
 	let issueStatistics = e.target?.closest(".dashboard_issue_statistics");
 	if (issueStatistics !== null) {
-		if(!dashboardItemAlertBox(issueStatistics)) return;
-		
+		if (!dashboardItemAlertBox(issueStatistics)) return;
+
 		await issueStatisticsSave(issueStatistics);
 		uri += "issue_statistics";
 		const idx = issueStatistics.getAttribute("idx-data");
@@ -986,10 +988,10 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		const dashboardColIdx = issueStatistics.getAttribute("dashboardColIdx-data");
 		const rowNum = issueStatistics.getAttribute("row-num-data");
 		requestData = {
-			"idx" : idx,
-			"projectIdx" : projectIdx,
-			"dashboardColIdx" : dashboardColIdx,
-			"rowNum" : rowNum
+			"idx": idx,
+			"projectIdx": projectIdx,
+			"dashboardColIdx": dashboardColIdx,
+			"rowNum": rowNum
 		}
 	}
 
@@ -998,9 +1000,9 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(requestData)
 	})
-	.catch(err => {
-		console.log(err);
-	})
+		.catch(err => {
+			console.log(err);
+		})
 });
 
 document.querySelector(".dashboard_content_container").addEventListener("mousedown", function(e) {
@@ -1384,7 +1386,7 @@ async function addDashboardGarget(tagStr, order) {
 	let uri = "/api/dashboard/create/";
 	let className = "";
 	let idx = 0;
-	switch(order){
+	switch (order) {
 		case 0:
 			uri += "pie_chart"
 			className = "dashboard_pie_chart"
@@ -1410,21 +1412,22 @@ async function addDashboardGarget(tagStr, order) {
 			className = "dashboard_issue_filter"
 			break;
 	}
-	async function dashboardItemAddFetch(uri){
+	async function dashboardItemAddFetch(uri) {
 		const dashboardIdx = window.location.pathname.split("/")[3];
-		const res = await fetch(uri, {method:"post", 
-									  headers:{"Content-Type":"application/json"}, 
-									  body:JSON.stringify(dashboardIdx)
-								     }
-							   );
+		const res = await fetch(uri, {
+			method: "post",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(dashboardIdx)
+		}
+		);
 		const data = await res.json();
 		// idx값 가져오기
-		if(data){
+		if (data) {
 			idx = data;
 		}
 	}
 	await dashboardItemAddFetch(uri);
-	
+
 	const gadgetContentContainer1 = document.querySelector(".dashboard_content_container .container1");
 	const gadgetContentEmptyBox = document.querySelector(".dashboard_content_container .empty_box");
 	const newDiv = document.createElement("div");
@@ -1444,57 +1447,107 @@ gadgetAddBtn.forEach(function(btn, idx) {
 });
 
 // 새 가젯 추가 클릭
-document.querySelector(".dashboard_content_container").addEventListener("click", function(e){
+document.querySelector(".dashboard_content_container").addEventListener("click", function(e) {
 	const btn = e.target.closest(".empty_box span");
-	if(btn === null) return;
-	
+	if (btn === null) return;
+
 	// 가젯 추가창 open
 	const gadgetBox = document.querySelector(".dashboard_add_gadget");
 	gadgetBox.style.width = '400px';
 	gadgetBox.style.borderLeft = '3px solid #ddd';
 	document.querySelector(".dashboard_container").style.gridTemplateColumns = '1fr 400px';
-	
+
 	// 가젯 input 포커스
 	const gadgetInput = document.querySelector(".gadget_header .input_box input");
 	gadgetInput.focus();
 });
 
+function updateDashboardItemOrder(evt) {
+	const dashboardItem = evt.item.querySelector(".dashboard_item");
+	const dashboardItemIdx = dashboardItem.getAttribute("idx-data");
+	let type = "";
+	if (dashboardItem.className.includes("dashboard_pie_chart")) {
+		type = "pieChart";
+	} else if (dashboardItem.className.includes("dashboard_allot")) {
+		type = "allot";
+	} else if (dashboardItem.className.includes("dashboard_issue_complete")) {
+		type = "issueComplete";
+	} else if (dashboardItem.className.includes("dashboard_issue_recent")) {
+		type = "issueRecent";
+	} else if (dashboardItem.className.includes("dashboard_issue_statistics")) {
+		type = "issueStatistics";
+	}
+	
+	let orderX = 1;
+	let orderY = 1;
+	if(box2 === evt.to){
+		orderX = 2;
+	}
+	evt.to.querySelectorAll(".dashboard_item").forEach(function(item, index){
+		if(item === dashboardItem){
+			orderY = index + 1;
+		}
+	});
+	
+	const uri = `/api/dashboard/update/order`;
+	fetch(uri, {
+		method: "post",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			"type": type,
+			"orderX": orderX,
+			"orderY": orderY,
+			"dashboardItemIdx": dashboardItemIdx,
+		})
+	})
+	.catch(err => {
+		console.error(err);
+	})
+
+}
+
+
 const box1 = document.querySelector(".dashboard_content_container .container1");
 const box2 = document.querySelector(".dashboard_content_container .container2");
+const hideDiv = document.createElement("div");
 new Sortable(box1, {
 	group: 'shared',
 	filter: '.empty_box',
 	animation: 150,
 	forceFallback: true,
-	onStart: function(evt){
+	onStart: function(evt) {
 		const origin = evt.item;
 		const originHeight = window.getComputedStyle(origin).height;
-		
-		evt.item.style.height = originHeight;
+		hideDiv.style.height = originHeight;
+		evt.item.appendChild(hideDiv);
+
 		evt.item.querySelector(".dashboard_item").classList.add("hide");
 		evt.item.classList.add("dragging");
-		
+
 		const dragItem = document.querySelector(".sortable-drag .dashboard_item_content");
 		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
-		
+
 		document.querySelector(".sortable-drag").style.height = "200px";
 	},
-	onEnd: function(evt){
+	onEnd: function(evt) {
 		evt.item.classList.remove("dragging");
 		evt.item.querySelector(".dashboard_item").classList.remove("hide");
-		
+		evt.item.removeChild(hideDiv);
+
 		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
 		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
-		if(box1DashboardItems.length === 0){
+		if (box1DashboardItems.length === 0) {
 			box1.querySelector(".empty_box").classList.add("show");
-		}else{
+		} else {
 			box1.querySelector(".empty_box").classList.remove("show");
 		}
-		if(box2DashboardItems.length === 0){
+		if (box2DashboardItems.length === 0) {
 			box2.querySelector(".empty_box").classList.add("show");
-		}else{
+		} else {
 			box2.querySelector(".empty_box").classList.remove("show");
 		}
+
+		updateDashboardItemOrder(evt);
 	}
 });
 new Sortable(box2, {
@@ -1502,34 +1555,38 @@ new Sortable(box2, {
 	filter: '.empty_box',
 	animation: 150,
 	forceFallback: true,
-	onStart: function(evt){
+	onStart: function(evt) {
 		const origin = evt.item;
 		const originHeight = window.getComputedStyle(origin).height;
-		
-		evt.item.style.height = originHeight;
+		hideDiv.style.height = originHeight;
+		evt.item.appendChild(hideDiv);
+
 		evt.item.querySelector(".dashboard_item").classList.add("hide");
 		evt.item.classList.add("dragging");
-		
+
 		const dragItem = document.querySelector(".sortable-drag .dashboard_item_content");
 		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
-		
+
 		document.querySelector(".sortable-drag").style.height = "200px";
 	},
-	onEnd: function(evt){
+	onEnd: function(evt) {
 		evt.item.classList.remove("dragging");
 		evt.item.querySelector(".dashboard_item").classList.remove("hide");
-		
+		evt.item.removeChild(hideDiv);
+
 		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
 		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
-		if(box1DashboardItems.length === 0){
+		if (box1DashboardItems.length === 0) {
 			box1.querySelector(".empty_box").classList.add("show");
-		}else{
+		} else {
 			box1.querySelector(".empty_box").classList.remove("show");
 		}
-		if(box2DashboardItems.length === 0){
+		if (box2DashboardItems.length === 0) {
 			box2.querySelector(".empty_box").classList.add("show");
-		}else{
+		} else {
 			box2.querySelector(".empty_box").classList.remove("show");
 		}
+
+		updateDashboardItemOrder(evt);
 	}
 });
