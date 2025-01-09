@@ -117,38 +117,36 @@
 				</td>
 				<td>
 					<div style="height: 32px; overflow: auto;">
-					<div style="display: flex; height: 24px; margin-bottom: 4px;"  th:each="filterAuth :${filterAuth}" th:if="${filterList.idx == filterAuth.filter.idx}">
-						<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;">
-							<img style="width: 24px;" th:src="@{|/images/${filterAuth.project != null? filterAuth.project.iconFilename : 'lock.svg'}|}">
-							<img style="width: 24px;" th:src="@{|/images/${filterAuth.team != null? 'team.svg': ''}|}" th:if="${filterAuth.team != null}">
+						<div style="display: flex; height: 24px; margin-bottom: 4px;"  th:each="filterAuth :${filterAuth}" th:if="${filterList.idx == filterAuth.filter.idx && filterAuth.type == 1}">
+							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project != null? filterAuth.project.iconFilename : 'lock.svg'}|}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.team != null? 'team.svg': ''}|}" th:if="${filterAuth.team != null}">
+							</div>
+								<div style="margin-top: 4px;" >
+							<div>
+								<div th:text="${filterAuth.project != null? filterAuth.project.name:'비공개'}"></div>
+								<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
+								<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
+							</div>
+							</div>
 						</div>
-						<div style="margin-top: 4px;" >
-						<div>
-							<div style="height: 26px;" th:text="${filterAuth.project != null? filterAuth.project.name+','+
-							(filterAuth.projectRole == 1? 'Administrator':
-							filterAuth.projectRole == 2? 'Member':
-							filterAuth.projectRole == 3? 'Viewer' :
-							filterAuth.projectRole == null : '모든 역할'):'비공개'}"></div>
-							<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
-							<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
-						</div>
-						</div>
-					</div>
 					</div>
 				</td>
 				<td>
-					<div style="display: flex;">
-						<div style=" margin: 2px 12px 0px 2px;"><svg width="24" height="24" viewBox="0 0 24 24"
-								role="presentation">
-								<g fill="currentcolor">
-									<path
-										d="M16 11V9h-2V7.002A2 2 0 0 0 12 5c-1.102 0-2 .898-2 2.002V9H8v2H7v8h10v-8zm-2 0h-4V9h4zM8 9V7.002A4.004 4.004 0 0 1 12 3a4 4 0 0 1 4 4.002V9h.994A2.01 2.01 0 0 1 19 11.009v7.982c0 1.11-.897 2.009-2.006 2.009H7.006A2.01 2.01 0 0 1 5 18.991V11.01C5 9.899 5.897 9 7.006 9zm0 0h2v2H8zm6 0h2v2h-2z">
-									</path>
-									<circle cx="12" cy="15" r="2"></circle>
-								</g>
-							</svg>
+					<div style="height: 32px; overflow: auto;">
+						<div style="display: flex; height: 24px; margin-bottom: 4px;"  th:each="filterAuth :${filterAuth}" th:if="${filterList.idx == filterAuth.filter.idx && filterAuth.type == 2}">
+							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project != null? filterAuth.project.iconFilename : 'lock.svg'}|}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.team != null? 'team.svg': ''}|}" th:if="${filterAuth.team != null}">
+							</div>
+								<div style="margin-top: 4px;" >
+							<div>
+								<div th:text="${filterAuth.project != null? filterAuth.project.name:'비공개'}"></div>
+								<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
+								<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
+							</div>
+							</div>
 						</div>
-						<div style="margin-top: 4px;">비공개</div>
 					</div>
 				</td>
 				<td>

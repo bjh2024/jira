@@ -451,12 +451,15 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 		
 	if(viewerDiv.querySelector(".projectLabel")){
         let projectDiv = viewerDiv.querySelector(".projectLabel");
+        let projectDivIdx = viewerDiv.querySelector(".projectLabel").querySelector('img').dataset.projectIdx;
         let teamDiv = viewerDiv.querySelector(".teamLabel");
+        let teamDivIdx = viewerDiv.querySelector(".teamLabel").querySelector('img').dataset.teamIdx;
         let userDiv = viewerDiv.querySelector(".userLabel");
+        let userDivIdx = viewerDiv.querySelector(".userLabel").querySelector('img').dataset.accountIdx;
 			
 		let projectText = projectDiv.innerText.trim();
 		let teamText = teamDiv.innerText.trim();
-		let userText = userDiv.innerText.trim();
+		let userText = userDiv.innerText.trim();  
 		
 		let viewerListBox = document.querySelector('.viewer_list_box');
 		let viewerListBox2 = document.querySelector(".viewer_list_box2");
@@ -488,9 +491,9 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
       if (!isDuplicate) {
           viewerListBox.innerHTML += `
               <div class="choice_list_filter_auth" 
-			  data-project = "${projectDiv.innerText.trim() == "프로젝트 선택" ? '':projectDiv.innerText}"
-		      data-account = "${userDiv.innerText.trim() == "사용자 선택" ? '':userDiv.innerText}"
-			  data-team = "${teamDiv.innerText.trim() == "그룹 선택" ? '':teamDiv.innerText}">
+			  data-project = "${projectDiv.innerText.trim() == "프로젝트 선택" ? '':projectDivIdx}"
+		      data-account = "${userDiv.innerText.trim() == "사용자 선택" ? '':userDivIdx}"
+			  data-team = "${teamDiv.innerText.trim() == "그룹 선택" ? '':teamDivIdx}">
                   ${projectText === "프로젝트 선택" ? '' : projectDiv.innerHTML}
                   ${teamText === "그룹 선택" ? '' : teamDiv.innerHTML}
                   ${userText === "사용자 선택" ? '' : userDiv.innerHTML}
@@ -498,8 +501,11 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 		  }
       }else if(viewerDiv.querySelector(".projectLabel2")){
         let projectDiv2 = viewerDiv.querySelector(".projectLabel2");
+        let projectDiv2Idx = viewerDiv.querySelector(".projectLabel2").querySelector('img').dataset.projectIdx;
         let teamDiv2 = viewerDiv.querySelector(".teamLabel2");
+        let teamDiv2Idx = viewerDiv.querySelector(".teamLabel2").querySelector('img').dataset.teamIdx;
         let userDiv2 = viewerDiv.querySelector(".userLabel2");
+        let userDiv2Idx = viewerDiv.querySelector(".userLabel2").querySelector('img').dataset.accountIdx;
 		
 		let projectText2 = projectDiv2.innerText.trim();
 		let teamText2 = teamDiv2.innerText.trim();
@@ -534,7 +540,10 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 		
 		if (!isDuplicate2) {
 		viewerListBox2.innerHTML += `
-				   <div class="choice_list_filter_auth" >           
+			  <div class="choice_list_filter_auth" 
+						  data-project = "${projectDiv2.innerText.trim() == "프로젝트 선택" ? '':projectDiv2Idx}"
+					      data-account = "${userDiv2.innerText.trim() == "사용자 선택" ? '':userDiv2Idx}"
+						  data-team = "${teamDiv2.innerText.trim() == "그룹 선택" ? '':teamDiv2Idx}">      
 				        ${projectText2 === "프로젝트 선택"? '':projectDiv2.innerHTML}
 						${teamText2 === "그룹 선택" ? '':teamDiv2.innerHTML}
 						${userText2 === "사용자 선택"? '':userDiv2.innerHTML}
@@ -553,9 +562,6 @@ document.querySelector(".filter_save_reset2")?.addEventListener("click",function
 	viewerListBox.innerHTML = '';
 })
 
-document.querySelector(".save_button")?.addEventListener("click",function(){
-	let name = document.querySelector(".hover_input").value;
-})
 document.querySelector(".cancle_button")?.addEventListener("click",function(){
 	document.querySelector(".hover_input").value = '';
 	document.querySelector(".viewer_list_box2").innerHTML = '';

@@ -44,6 +44,9 @@ public class AccountService {
 	
 	private final FilterService filterService;
 	
+	public Account getByIdx(Integer idx) {
+		return accountRepository.findById(idx).get();
+	}
 	public Account getAccountByEmail(String email) {
 		Optional<Account> optAccount = this.accountRepository.findByEmail(email);
 		Account account = null;

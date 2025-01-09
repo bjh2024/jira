@@ -27,6 +27,7 @@ import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.Team;
 import com.mysite.jira.repository.AccountRepository;
 import com.mysite.jira.repository.FilterAuthRepository;
 import com.mysite.jira.repository.FilterDoneDateRepository;
@@ -386,6 +387,30 @@ public class FilterService {
 				.account(account)
 				.build();
 		this.filterReporterRepostiory.save(filterReporter);
+	}
+	public void filterAuthProjectCreate(Filter filter, Project project, Integer type) {
+		FilterAuth auth = FilterAuth.builder()
+				.filter(filter)
+				.project(project)
+				.type(type)
+				.build();
+		this.filterAuthRepository.save(auth);
+	}
+	public void filterAuthUserCreate(Filter filter, Account account, Integer type) {
+		FilterAuth auth = FilterAuth.builder()
+				.filter(filter)
+				.account(account)
+				.type(type)
+				.build();
+		this.filterAuthRepository.save(auth);
+	}
+	public void filterAuthTeamCreate(Filter filter, Team team, Integer type) {
+		FilterAuth auth = FilterAuth.builder()
+				.filter(filter)
+				.team(team)
+				.type(type)
+				.build();
+		this.filterAuthRepository.save(auth);
 	}
 	public void filterDelete(Integer idx) {
 		this.filterRepository.deleteById(idx);

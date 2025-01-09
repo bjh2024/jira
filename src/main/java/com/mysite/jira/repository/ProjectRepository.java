@@ -11,6 +11,7 @@ import com.mysite.jira.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	
+	
 	// 최근 방문 프로젝트 리스트
 	List<Project> findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(Integer jiraIdx, Integer accountIdx);
 	
