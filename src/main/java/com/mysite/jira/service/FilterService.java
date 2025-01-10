@@ -388,6 +388,12 @@ public class FilterService {
 				.build();
 		this.filterReporterRepostiory.save(filterReporter);
 	}
+	public void filterAuthCreate(Filter filter) {
+		FilterAuth auth = FilterAuth.builder()
+				.filter(filter)
+				.build();
+		this.filterAuthRepository.save(auth);
+	}
 	public void filterAuthProjectCreate(Filter filter, Project project, Integer type) {
 		FilterAuth auth = FilterAuth.builder()
 				.filter(filter)

@@ -288,12 +288,13 @@ public class FilterIssueTableAPIController {
 				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getEditProject()[i]),filterDto.getEditAuth());
 			}
 			for (int i = 0; i < filterDto.getEditUser().length; i++) {
-				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getEditUser()[i]),filterDto.getEditAuth());
+				filterService.filterAuthUserCreate(filter, accountService.getByIdx(filterDto.getEditUser()[i]),filterDto.getEditAuth());
 			}
 			for (int i = 0; i < filterDto.getEditTeam().length; i++) {
-				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getEditTeam()[i]),filterDto.getEditAuth());
+				filterService.filterAuthTeamCreate(filter, teamService.getByIdx(filterDto.getEditTeam()[i]),filterDto.getEditAuth());
 			}
 		}
+		
 		// 여기 까지 복수 행 데이터
 		if (filterDto.getDoneBeforeDate() != null || filterDto.getDoneStartDate() != null) {
 			filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(),

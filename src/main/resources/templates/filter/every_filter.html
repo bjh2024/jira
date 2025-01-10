@@ -116,41 +116,53 @@
 					</div>
 				</td>
 				<td>
-					<div style="height: 32px; overflow: auto;">
-						<div style="display: flex; height: 24px; margin-bottom: 4px;"  th:each="filterAuth :${filterAuth}" th:if="${filterList.idx == filterAuth.filter.idx && filterAuth.type == 1}">
-							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;">
-								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project != null? filterAuth.project.iconFilename : 'lock.svg'}|}">
-								<img style="width: 24px;" th:src="@{|/images/${filterAuth.team != null? 'team.svg': ''}|}" th:if="${filterAuth.team != null}">
+					<div>
+						<div style="display:flex;"  th:each="filterAuth :${filterList.filterAuthList}">
+							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;"  th:if="${filterAuth.type == 1}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project.iconFilename}|}" th:if="${filterAuth.project != null}">
+								<img style="width: 24px;" src="/images/team.svg" th:if="${filterAuth.team != null}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.account.iconFilename}|}" th:if="${filterAuth.account != null}">
 							</div>
-								<div style="margin-top: 4px;" >
 							<div>
-								<div th:text="${filterAuth.project != null? filterAuth.project.name:'비공개'}"></div>
+								<div  th:if="${filterAuth.type == 1}">
+								<div th:text="${filterAuth.project != null? filterAuth.project.name:''}"></div>
 								<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
 								<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
+								</div>
 							</div>
-							</div>
+						</div>
+						<div style="display: flex; align-items: center;" th:if="${#lists.isEmpty(filterList.filterAuthList.?[type == 1])}">
+							<img style="width: 24px;" src="/images/lock.svg">
+							비공개
 						</div>
 					</div>
 				</td>
 				<td>
-					<div style="height: 32px; overflow: auto;">
-						<div style="display: flex; height: 24px; margin-bottom: 4px;"  th:each="filterAuth :${filterAuth}" th:if="${filterList.idx == filterAuth.filter.idx && filterAuth.type == 2}">
-							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;">
-								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project != null? filterAuth.project.iconFilename : 'lock.svg'}|}">
-								<img style="width: 24px;" th:src="@{|/images/${filterAuth.team != null? 'team.svg': ''}|}" th:if="${filterAuth.team != null}">
+					<div>
+						<div style="display: flex;"  th:each="filterAuth :${filterList.filterAuthList}">
+							<div style="height: 36; width: 28px; margin: 2px 8px 0px 2px;" th:if="${filterAuth.type == 2}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.project.iconFilename}|}" th:if="${filterAuth.project != null}">
+								<img style="width: 24px;" src="/images/team.svg" th:if="${filterAuth.team != null}">
+								<img style="width: 24px;" th:src="@{|/images/${filterAuth.account.iconFilename}|}" th:if="${filterAuth.account != null}">
 							</div>
-								<div style="margin-top: 4px;" >
+								<img style="width: 24px;" src="/images/lock.svg" th:if="${filterAuth.type == null}">
 							<div>
-								<div th:text="${filterAuth.project != null? filterAuth.project.name:'비공개'}"></div>
+								<div th:if="${filterAuth.type == 2}">
+								<div th:text="${filterAuth.project != null? filterAuth.project.name:''}"></div>
 								<div th:text="${filterAuth.team != null? filterAuth.team.name:''}"></div>
 								<div th:text="${filterAuth.account != null? filterAuth.account.name:''}"></div>
+								</div>
 							</div>
-							</div>
+						</div>
+						<div style="display: flex; align-items: center;" th:if="${#lists.isEmpty(filterList.filterAuthList.?[type == 2])}">
+							<img style="width: 24px;" src="/images/lock.svg">
+							비공개
 						</div>
 					</div>
 				</td>
 				<td>
-					<div style="font-size: 14px;">1명</div>
+					<div style="font-size: 14px;" 
+					th:text="${#lists.size(filterList.FilterLikeMembersList)}+'명'">1명</div>
 				</td>
 				<td>
 					<div class="delete_button" style="padding: 8px 0px 0px 4px;">
