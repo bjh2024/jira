@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysite.jira.dto.ProjectLikeDTO;
 import com.mysite.jira.dto.board.IssueTypeDTO;
 import com.mysite.jira.dto.project.SearchDTO;
 import com.mysite.jira.dto.project.create.ProjectCreateDTO;
@@ -22,6 +23,7 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.ProjectLikeMembers;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.JiraService;
@@ -177,5 +179,27 @@ public class ProjectAPIController {
 		Account user = boardMainService.getAccountById(projectDTO.getUserIdx());
 		Project project = projectService.getProjectByIdx(projectDTO.getProjectIdx());
 		projectService.createProjectMember(user, project);
+	}
+	
+	@PostMapping("/is_project_liked")
+	public Integer isProjectLiked(@RequestBody ProjectLikeDTO projectLikeDTO) {
+		Integer projectIdx = projectLikeDTO.getProjectIdx();
+		Integer userIdx = projectLikeDTO.getUserIdx();
+		return projectService.isProjectLiked(userIdx, projectIdx);
+	}
+	
+	@PostMapping("/project_like_control")
+	public boolean projectLikeControl(@RequestBody ProjectLikeDTO projectLikeDTO) {
+		Project project = projectService.getProjectByIdx(projectLikeDTO.getProjectIdx());
+		Account user = accountService.getAccountByIdx(projectLikeDTO.getUserIdx());
+		Integer isLiked = projectLikeDTO.getIsLiked();
+		if(isLiked == 0) {
+			projectService.createProjectLikeData(project, user);
+			return true;
+		}
+		
+		Integer likeIdx = projectService.isProjectLiked(projectLikeDTO.getUserIdx(), projectLikeDTO.getProjectIdx());
+		projectService.deleteProjectLikeData(likeIdx);
+		return false;
 	}
 }
