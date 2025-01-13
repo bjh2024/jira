@@ -11,7 +11,7 @@
 		</div>
 		<div class="project_info_main">
 			<div class="project_icon_box">
-				<img src="/images/project_icon_file1.png" width="128" height="128" style="border-radius: 4px;"/>
+				<img th:src="@{|/images/${currentProject.iconFilename}|}" width="128" height="128" style="border-radius: 4px;"/>
 				<div class="btn_box">
 					<button>아이콘 변경</button>
 				</div>
