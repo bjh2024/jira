@@ -17,6 +17,7 @@ import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
 import com.mysite.jira.dto.FilterLikeDto;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
+import com.mysite.jira.entity.FilterAuth;
 import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
@@ -33,6 +34,7 @@ import com.mysite.jira.service.IssueStatusService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,7 @@ public class FilterIssueTableAPIController {
 	private final IssueTypeService issueTypeService;
 	private final ProjectService projectService;
 	private final HttpSession session;
+	private final TeamService teamService;
 	
 	@PostMapping("/project_filter")
 	public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
@@ -259,8 +262,8 @@ public class FilterIssueTableAPIController {
 		}
 		if (filterDto.getProjectIdx() != null && filterDto.getProjectIdx().length > 0 ) {
 			for (int i = 0; i < filterDto.getProjectIdx().length; i++) {
-				Optional<Project> project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
-				filterService.filterProjectCreate(filter, project.get());
+				Project project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
+				filterService.filterProjectCreate(filter, project);
 			}
 		}
 		if (filterDto.getIssueReporter() != null && filterDto.getIssueReporter().length > 0 ) {
@@ -269,7 +272,30 @@ public class FilterIssueTableAPIController {
 				filterService.filterReporterCreate(filter, reporterAccount);
 			}
 		}
-		// 여기 까지
+		if (filterDto.getViewAuth() != null) {
+			for (int i = 0; i < filterDto.getViewProject().length; i++) {
+				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getViewProject()[i]) ,filterDto.getViewAuth());
+			}
+			for (int i = 0; i < filterDto.getViewUser().length; i++) {
+				filterService.filterAuthUserCreate(filter, accountService.getByIdx(filterDto.getViewUser()[i]), filterDto.getViewAuth());
+			}
+			for (int i = 0; i < filterDto.getViewTeam().length; i++) {
+				filterService.filterAuthTeamCreate(filter, teamService.getByIdx(filterDto.getViewTeam()[i]),filterDto.getViewAuth());
+			}
+		}
+		if (filterDto.getEditAuth() != null) {
+			for (int i = 0; i < filterDto.getEditProject().length; i++) {
+				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getEditProject()[i]),filterDto.getEditAuth());
+			}
+			for (int i = 0; i < filterDto.getEditUser().length; i++) {
+				filterService.filterAuthUserCreate(filter, accountService.getByIdx(filterDto.getEditUser()[i]),filterDto.getEditAuth());
+			}
+			for (int i = 0; i < filterDto.getEditTeam().length; i++) {
+				filterService.filterAuthTeamCreate(filter, teamService.getByIdx(filterDto.getEditTeam()[i]),filterDto.getEditAuth());
+			}
+		}
+		
+		// 여기 까지 복수 행 데이터
 		if (filterDto.getDoneBeforeDate() != null || filterDto.getDoneStartDate() != null) {
 			filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(),
 					filterDto.getDoneDateBefore());

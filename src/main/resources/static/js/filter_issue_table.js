@@ -880,7 +880,6 @@ function fetchInputFilterIssue() {
 document.querySelector("body").addEventListener("click", function(e) {
 	const account = e.target.closest(".filter_save_button");
 	const modal = document.querySelector(".modal");
-	const active = document.querySelector(".modal.active")
 	const modalContent = document.querySelector(".modal_content")
 	const cancleButton = modalContent.querySelector(".cancle_button")
 	if (account) {
@@ -949,13 +948,46 @@ let doneDateBefore = null;
 let updateBefore = null;
 let createDateBefore = null;
 let jiraIdx = null;
+let viewAuth = null;
+let viewProject = [];
+let viewUser = [];
+let viewTeam = [];
+let editAuth = null;
+let editProject = [];
+let editUser = [];
+let editTeam = [];
 
+// 필터 생성 시 저장해야할 값들을 가져와서 넣어준다.
 document.querySelector(".save_button")?.addEventListener("click",async function(){
 	filterName = document.querySelector(".hover_input")?.value;
 	explain = document.querySelector(".textArea_1")?.value;
 	updateBefore = document.getElementById("update_before_date")?.value;
 	doneDateBefore = document.getElementById("done_before_date")?.value;
 	createDateBefore = document.getElementById("create_before_date")?.value;
+	document.querySelector(".viewer_list_box").querySelectorAll(".choice_list_filter_auth").forEach(function(item){
+		if(item){
+			viewAuth = 1;
+			if(item.querySelector('img').dataset.projectIdx != null){
+				viewProject.push(item.querySelector('img').dataset.projectIdx);
+			}else if(item.querySelector('img').dataset.accountIdx != null){
+				viewUser.push(item.querySelector('img').dataset.accountIdx);
+			}else if(item.querySelector('img').dataset.teamIdx != null){
+				viewTeam.push(item.querySelector('img').dataset.teamIdx);
+			}
+		}
+	})
+	document.querySelector(".viewer_list_box2").querySelectorAll(".choice_list_filter_auth").forEach(function(item){
+		if(item){
+			editAuth = 2;
+			if(item.querySelector('img').dataset.projectIdx != null){
+				editProject.push(item.querySelector('img').dataset.projectIdx);
+			}else if(item.querySelector('img').dataset.accountIdx != null){
+				editUser.push(item.querySelector('img').dataset.accountIdx);
+			}else if(item.querySelector('img').dataset.teamIdx != null){
+				editTeam.push(item.querySelector('img').dataset.teamIdx);
+			}
+		}
+	})
 	if(document.querySelector(".done_input_list").checked){
 		isCompleted.push(1);
 	}
@@ -963,7 +995,6 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 		isCompleted.push(0);
 	}
 	jiraIdx = this.dataset.jiraIdx;
-	
 	try{
 		const res = await fetch("/api/filter_issue_table/filter_duplicate",{
 			method: 'POST',
@@ -1026,7 +1057,15 @@ function fetchFitlerCreate() {
 				updateBefore : updateBefore,
 				createDateBefore : createDateBefore,
 				jiraIdx : jiraIdx,
-				issueKey: issueKey
+				issueKey: issueKey,				
+				viewAuth: viewAuth,
+				viewProject : viewProject,
+				viewUser : viewUser,
+				viewTeam : viewTeam,
+				editAuth : editAuth,
+				editProject : editProject,
+				editUser : editUser,
+				editTeam : editTeam
 	        })
 	    })
 		.then(response => {

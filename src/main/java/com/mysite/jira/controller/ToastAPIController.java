@@ -28,10 +28,10 @@ public class ToastAPIController {
 		try {
 		if(toastInfoDTO.getIsCreate() == 1) {
 			Account account = accountService.getAccountByIdx(toastInfoDTO.getReporterIdx());
-			Project project = projectService.getByIdx(toastInfoDTO.getProjectIdx()).get();
+			Project project = projectService.getByIdx(toastInfoDTO.getProjectIdx());
 			result = account.getName()+"님이 "+ project.getName() + "에 이슈("+toastInfoDTO.getIssueName()+")를 생성하셨습니다./"+project.getKey();
 		}else if(toastInfoDTO.getIsCreate() == 0) {
-			Project project = projectService.getByIdx(toastInfoDTO.getProjectIdx()).get();
+			Project project = projectService.getByIdx(toastInfoDTO.getProjectIdx());
 			result = project.getName()+"의 이슈("+toastInfoDTO.getIssueName()+")가 삭제되었습니다./"+project.getKey();
 		}
 		return result;

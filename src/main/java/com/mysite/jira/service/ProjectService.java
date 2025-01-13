@@ -52,8 +52,8 @@ public class ProjectService {
 		return projectRepository.findByKey(key);
 	}
 	
-	public Optional<Project> getByIdx(Integer idx){
-		return projectRepository.findById(idx);
+	public Project getByIdx(Integer idx){
+		return projectRepository.findById(idx).get();
 	}
 	
 	public Integer getProjectAllCount(Integer jiraIdx) {
