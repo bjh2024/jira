@@ -101,7 +101,7 @@
 							</div>
 							<div class="issue-label">
 								<div th:each="labelIssueList : ${labelDataList}">
-									<span th:if="${labelIssueList.issue.idx == issueList.idx}" th:text="${labelIssueList.issueLabel.name}">레입</span>
+									<span th:if="${labelIssueList.issue.idx == issueList.idx}" th:text="${labelIssueList.issueLabel.name}"></span>
 								</div>
 							</div>
 							<div class="issue-deadline" th:if="${issueList.deadlineDate != null}">
