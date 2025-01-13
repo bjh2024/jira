@@ -314,7 +314,7 @@ public class FilterIssueTableAPIController {
 	@PostMapping("/filter_delete")
 	public void filterDelete(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
-			if(filterService.getAll().get(i).getIdx() == filterDto.getFilterIdx()) {
+			if(filterService.getAll().get(i).getIdx().equals(filterDto.getFilterIdx())) {
 				filterService.filterDelete(filterDto.getFilterIdx());
 			}
 		}
