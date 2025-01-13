@@ -13,11 +13,7 @@ API 명세: https://regular-speedboat-e8c.notion.site/16c38ff71eb780f1a046c38a28
 
 사이트 주소: https://kritac-jira.site
 
-테스트용 계정
-
-아이디: jiratestuser1@gmail.com
-
-비밀번호: jira1234
+테스트용 계정: 아이디 jiratestuser1@gmail.com / 비밀번호 jira1234
 
 
 # 사용 기술
