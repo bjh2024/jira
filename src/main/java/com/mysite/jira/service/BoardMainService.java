@@ -376,7 +376,7 @@ public class BoardMainService {
 		}
 	}
 	
-	public void updatePrevIssueOrder(Integer currentIssueidx, Integer oldIdx, Integer oldStatusIdx) {
+	public void updatePrevIssueOrder(Integer oldIdx, Integer oldStatusIdx) {
 		List<Issue> issueList = this.issueRepository.findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(oldIdx, oldStatusIdx);
 		for(int i = 0; i < issueList.size(); i++) {
 			if(issueList.get(i).getIssueType().getGrade() != 1) {
@@ -386,6 +386,16 @@ public class BoardMainService {
 				this.issueRepository.save(issue);
 			}
 		}
+	}
+	
+	public void updateIssueFinishDateNow(Issue issue) {
+		issue.updateFinishDate(LocalDateTime.now());
+		this.issueRepository.save(issue);
+	}
+	
+	public void updateIssueFinishDateNull(Issue issue) {
+		issue.updateFinishDate(null);
+		this.issueRepository.save(issue);
 	}
 	
 	public IssueLabel getIssueLabelByIdx(Integer idx) {

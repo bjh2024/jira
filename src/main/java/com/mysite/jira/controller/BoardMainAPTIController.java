@@ -351,10 +351,22 @@ public class BoardMainAPTIController {
 		Integer currentIssueIdx = dragIssueDTO.getIssueIdx();
 		Integer oldStatusIdx = dragIssueDTO.getOldStatusIdx();
 		Integer issueStatusIdx = dragIssueDTO.getStatusIdx();
+		
 		if(oldStatusIdx != issueStatusIdx || (oldStatusIdx == issueStatusIdx && newIdx > oldIdx)) {
-			boardMainService.updatePrevIssueOrder(currentIssueIdx, oldIdx, oldStatusIdx);
+			boardMainService.updatePrevIssueOrder(oldIdx, oldStatusIdx);
 		}
 		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
+		
+		IssueStatus oldStatus = boardMainService.getOnceIssueStatus(oldStatusIdx);
+		IssueStatus newStatus = boardMainService.getOnceIssueStatus(issueStatusIdx);
+		Issue currentIssue = boardMainService.getIssueByIdx(currentIssueIdx);
+		
+		if(oldStatus.getStatus() != newStatus.getStatus() && newStatus.getStatus() == 3) {
+			boardMainService.updateIssueFinishDateNow(currentIssue);
+		}
+		if(oldStatus.getStatus() != newStatus.getStatus() && oldStatus.getStatus() == 3) {
+			boardMainService.updateIssueFinishDateNull(currentIssue);
+		}
 	}
 	
 	// 해당 이슈를 삭제
