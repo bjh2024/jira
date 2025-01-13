@@ -553,7 +553,6 @@ document.querySelectorAll(".createissue-typebtn").forEach(function(btn, index){
 			return;
 		}
 		
-		// document.querySelector(".issuetypeselectbox.show")[index].classList.remove("show");
 		e.target.closest(".issuetypeselectbox.show")?.classList.remove("show");
 		
 		const issueTypeBtn = btn;
@@ -1052,6 +1051,7 @@ document.querySelectorAll(".issuedetail-container").forEach(function(container, 
 		if(bgItem == null && issueDetailItem !== null){
 			container.classList.add("show");
 		}else{
+			location.reload();
 			container.classList.remove("show");
 			fileItem.classList.remove("loaded");
 		}
@@ -2150,6 +2150,7 @@ function createLabelData(graphval){
 	})
 	.then(response => response.json())
 	.then(labelData => {
+		graphval.querySelector(".graphval-label-def").classList.add("none");
 		const label = document.createElement("span");
 		label.classList.add("graphval-label");
 		label.innerHTML = `<a>${labelData.name}</a>
@@ -2162,7 +2163,7 @@ function createLabelData(graphval){
 	});
 }
 
-function fetchInput(){
+function getLabelList(){
 	let url = "/api/project/get_label_list";
 	fetch(url, {
 		method: 'POST',
@@ -2174,8 +2175,8 @@ function fetchInput(){
 	.then(response => response.json())
 	.then(alterLabelList => {
 		const uniqueLabels = alterLabelList.filter((value, index, self) =>
-           index === self.findIndex(item => item.name === value.name)
-       );
+			index === self.findIndex(item => item.name === value.name)
+		);
 		document.querySelectorAll(".graphval-selectwindow.label").forEach(function(label, index){
 			label.innerHTML = "";
 			const labelTitle = document.createElement("span");
@@ -2219,7 +2220,7 @@ document.querySelectorAll(".issuedetail-graphval.label-def").forEach(function(bt
 		labelDatas.idx = label;
 		labelDatas.issueIdx = btn.dataset.issueidx;
 		labelDatas.jiraIdx = btn.dataset.jiraidx;
-		fetchInput();
+		getLabelList();
 		
 	});
 });

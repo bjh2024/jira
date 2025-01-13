@@ -116,11 +116,15 @@ public class BoardMainService {
 	}
 	
 	public List<IssueType> getIssueTypesByProjectIdxAndGradeGreaterThan(Integer projectIdx, Integer grade){
-		return this.issueTypeRepository.findByProjectIdxAndGradeGreaterThan(projectIdx, grade);
+		return this.issueTypeRepository.findByProjectIdxAndGradeGreaterThanOrderByGradeDesc(projectIdx, grade);
 	}
 	
 	public List<IssueType> getIssueTypeByProjectIdxAndGrade(Integer projectIdx, Integer grade){
 		return this.issueTypeRepository.findByProjectIdxAndGrade(projectIdx, grade);
+	}
+	
+	public List<IssueLabel> getIssueLabel(Integer idx){
+		return this.issueLabelRepository.findByJiraIdx(idx);
 	}
 	
 	public List<IssueLabelData> getLabelData(Integer idx){
