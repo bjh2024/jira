@@ -110,7 +110,7 @@ public class FilterService {
 		return filterRepository.findByJiraIdx(jiraIdx);
 	}
 	public List<Filter> getByJiraIdx_AccountIdx(Integer jiraIdx,Integer accountIdx){
-		return filterRepository.findByJiraIdxAndAccountIdx(jiraIdx,accountIdx);
+		return filterRepository.findByJiraIdxAndAccountIdxOrderByIdxAsc(jiraIdx,accountIdx);
 	}
 	public List<Integer> getProjectIdxArrByFilterIdx(Integer idx){
 		List<FilterProject> filterProject = filterProjectRepository.findByFilterIdx(idx);
