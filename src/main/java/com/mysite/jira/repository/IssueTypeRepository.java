@@ -36,7 +36,7 @@ public interface IssueTypeRepository extends JpaRepository<IssueType, Integer> {
 			""")
 	List<Object[]> findDistinctNameAndIconFilenameByJiraIdx(@Param("jiraIdx") Integer jiraIdx);
 	
- 	List<IssueType> findByProjectIdxAndGradeGreaterThan(Integer projectIdx, Integer grade);
+ 	List<IssueType> findByProjectIdxAndGradeGreaterThanOrderByGradeDesc(Integer projectIdx, Integer grade);
  	
 	List<IssueType> findByProjectIdxAndGrade(Integer projectIdx, Integer grade);
 	
