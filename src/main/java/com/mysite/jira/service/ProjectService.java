@@ -111,9 +111,9 @@ public class ProjectService {
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
 	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
-		int idx = (int) (Math.random() * 3);
+		int idx = (int) (Math.random() * 6);
 		int sequence = 0;
-		String[] colorArr = { "#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC" };
+		String[] colorArr = {"#C6EDFB", "#FCE4A6", "#FFD5D2","#FFD5D2", "#EED7FC", "#EED7FC"};
 		String[] iconArr = { "project_icon_file1.svg", "project_icon_file2.svg", "project_icon_file3.svg",
 				"project_icon_file4.svg", "project_icon_file5.svg", "project_icon_file6.svg"};
 		Project project = Project.builder().key(key).name(name).color(colorArr[idx]).iconFilename(iconArr[idx])
