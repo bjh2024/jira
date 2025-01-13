@@ -372,14 +372,22 @@ public class BoardMainService {
 				issue.updateDivOrder(newOrder);
 				this.issueRepository.save(issue);
 			}
+			if(issue.getIdx() == currentIssueIdx && issue.getIssueStatus().getStatus() == 3) {
+				issue.updateFinishDate();
+				this.issueRepository.save(issue);
+			}
 		}
 	}
 	
-	public void updatePrevIssueOrder(Integer currentIssueidx, Integer oldIdx, Integer oldStatusIdx) {
+	public void updatePrevIssueOrder(Integer currentIssueIdx, Integer oldIdx, Integer oldStatusIdx) {
 		List<Issue> issueList = this.issueRepository.findByDivOrderGreaterThanEqualAndIssueStatusIdxOrderByDivOrder(oldIdx, oldStatusIdx);
 		for(int i = 0; i < issueList.size(); i++) {
 			if(issueList.get(i).getIssueType().getGrade() != 1) {
 				Issue issue = issueList.get(i);
+				if(issue.getIdx() == currentIssueIdx && issue.getIssueStatus().getStatus() == 3) {
+					issue.updateFinishDate();
+					this.issueRepository.save(issue);
+				}
 				Integer newOrder = issue.getDivOrder() - 1;
 				issue.updateDivOrder(newOrder);
 				this.issueRepository.save(issue);
