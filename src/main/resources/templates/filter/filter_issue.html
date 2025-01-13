@@ -1309,7 +1309,7 @@
 			<div class="viewer_div">
 				<div style="display: flex;"> 
 					<div class="viewer_div_1">
-						<div class="label">
+						<div class="label1">
 							<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
 									비공개
 						</div>
@@ -1356,7 +1356,7 @@
 								<div class="project_div_category" >
 									<div class="projectItem" th:each="project :${project}">
 										<div>
-											<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+											<img th:data-project-idx=${project.idx} th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
 										</div>
 										<div>
 											<span th:text="${project.name}"></span>
@@ -1380,7 +1380,7 @@
 									<div class="team_div_category" >
 										<div class="teamItem" th:each="team :${teamList}">
 											<div style="display: flex; align-items: center;">
-												<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+												<img th:data-team-idx=${team.idx} src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
 												<span th:text="${team.name}"></span>
 											</div>
 									</div>
@@ -1402,7 +1402,7 @@
 									<div class="user_div_category" >
 										<div class="userItem" th:each="jiraMembers :${jiraMembers}">
 											<div>
-												<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+												<img th:data-account-idx="${jiraMembers.idx}" th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
 											</div>
 											<div>
 												<span th:text="${jiraMembers.name}"></span>
@@ -1476,7 +1476,7 @@
 							<div class="project_div_category" >
 								<div class="projectItem2" th:each="project :${project}">
 									<div>
-										<img th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
+										<img th:data-project-idx=${project.idx} th:src="@{|/images/${project.iconFilename}|}" style="width: 24px; margin:0px 4px;">
 									</div>
 									<div>
 										<span th:text="${project.name}"></span>
@@ -1500,6 +1500,7 @@
 								<div class="team_div_category" >
 									<div class="teamItem2" th:each="team :${teamList}">
 										<div>
+											<img th:data-team-idx=${team.idx} src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
 											<span th:text="${team.name}"></span>
 										</div>
 								</div>
@@ -1521,7 +1522,7 @@
 								<div class="user_div_category" >
 									<div class="userItem2" th:each="jiraMembers :${jiraMembers}">
 										<div>
-											<img th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
+											<img th:data-account-idx="${jiraMembers.idx}" th:src="@{|/images/${jiraMembers.iconFilename}|}" style="height: 24px; margin:0 4px; border-radius: 50%;">
 										</div>
 										<div>
 											<span th:text="${jiraMembers.name}"></span>

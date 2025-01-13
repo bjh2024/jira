@@ -21,6 +21,7 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 			  ON f.idx = frc.filter_idx
 			LEFT JOIN filter_like_members flm
 			  ON f.idx = flm.filter_idx
+			  AND flm.account_idx = :accountIdx
 			WHERE frc.account_idx = :accountIdx
 			  AND frc.jira_idx = :jiraIdx
 			  AND flm.filter_idx IS NULL
@@ -29,7 +30,7 @@ public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	List<Filter> findByAccountIdxAndJiraIdxMinusLikeMembers(@Param("accountIdx") Integer accountIdx, 
 															@Param("jiraIdx") Integer jiraIdx);
 	
-	List<Filter> findByJiraIdxAndAccountIdx(Integer jiraIdx,Integer AccountIdx); 
+	List<Filter> findByJiraIdxAndAccountIdxOrderByIdxAsc(Integer jiraIdx,Integer AccountIdx); 
 	
 	List<Filter> findByJiraIdx(Integer idx);
 	

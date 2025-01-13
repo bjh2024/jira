@@ -36,4 +36,12 @@ public class FilterIssueRequestDTO {
 	private String jiraName;
 	private Integer[] isCompleted;
 	private String issueKey;
+	private Integer viewAuth;
+	private Integer[] viewProject;
+	private Integer[] viewUser; 
+	private Integer[] viewTeam;
+	private Integer editAuth;
+	private Integer[] editProject;
+	private Integer[] editUser;
+	private Integer[] editTeam;
 }

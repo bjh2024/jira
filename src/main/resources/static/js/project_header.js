@@ -124,6 +124,37 @@ document.querySelector(".header-setbtn").addEventListener("mouseout", function(e
 	}
 });
 
+let projectLikeData = {
+	"userIdx": "",
+	"projectIdx": "",
+	"isLiked": ""
+}
+
+function isProjectLiked(){
+	let url = "/api/project/is_project_liked";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(projectLikeData)
+	}).then(response => response.json())
+	.then(isLiked => {
+		const btnItem = document.querySelector(".menuwindow-optionbtn.like");
+		if(isLiked != 0){
+			btnItem.innerHTML = `<span style="height: 16px;"><img src="/images/star_icon_yellow.svg" width="16" height="16"></span>
+								<span style="margin-bottom: 2px;">별표 표시 목록에서 제거</span>`;
+			btnItem.dataset.liked = "1";
+		}else{
+			btnItem.innerHTML = `<span style="height: 16px;"><img src="/images/star_icon_empty.svg" width="16" height="16"></span>
+								<span style="margin-bottom: 2px;">별표 표시 목록에 추가</span>`;
+			btnItem.dataset.liked = "0";
+		}
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+
 document.querySelector("body").addEventListener("click", function(e) {
 	document.querySelector(".header-setbtn.active")?.classList.remove("active");
 	document.querySelector(".header-setbtn.hovered")?.classList.remove("hovered");
@@ -132,6 +163,10 @@ document.querySelector("body").addEventListener("click", function(e) {
 
 	const btnItem = e.target.closest(".header-setbtn");
 	if(btnItem !== null){
+		projectLikeData.userIdx = btnItem.dataset.useridx;
+		projectLikeData.projectIdx = btnItem.dataset.projectidx;
+		isProjectLiked();
+		
 		btnItem.classList.add("active");
 		document.querySelector(".header-menuwindow").classList.add("show");
 		document.querySelector(".header-setbtn-icon").classList.add("color");
@@ -154,6 +189,41 @@ document.querySelector(".menuwindow-optionbtn-bg")?.addEventListener("click", fu
 		btnItem.children[1].classList.toggle("color");
 		windowItem.classList.toggle("show");
 	}
+});
+
+function projectLikeControl(){
+	let url = "/api/project/project_like_control";
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json' // JSON 데이터를 전송
+		},
+		body: JSON.stringify(projectLikeData)
+	}).then(response => response.json())
+	.then(isLiked => {
+		const btnItem = document.querySelector(".menuwindow-optionbtn.like");
+		if(isLiked){
+			btnItem.innerHTML = `<span style="height: 16px;"><img src="/images/star_icon_yellow.svg" width="16" height="16"></span>
+								<span style="margin-bottom: 2px;">별표 표시 목록에서 제거</span>`;
+			btnItem.dataset.liked = "1";
+		}else{
+			btnItem.innerHTML = `<span style="height: 16px;"><img src="/images/star_icon_empty.svg" width="16" height="16"></span>
+								<span style="margin-bottom: 2px;">별표 표시 목록에 추가</span>`;
+			btnItem.dataset.liked = "0";
+		}
+	}).catch(error => {
+			console.error("Fetch error:", error);
+	});
+}
+document.querySelector(".menuwindow-optionbtn.like").addEventListener("click", function(e){
+	const btnItem = document.querySelector(".header-setbtn");
+	const likeBtnItem = document.querySelector(".menuwindow-optionbtn.like");
+	
+	projectLikeData.projectIdx = btnItem.dataset.projectidx;
+	projectLikeData.userIdx = btnItem.dataset.useridx;
+	projectLikeData.isLiked = likeBtnItem.dataset.liked;
+	
+	projectLikeControl();
 });
 
 document.querySelector(".menuwindow-optionbtn.insert").addEventListener("click", function(e){

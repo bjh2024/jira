@@ -19,11 +19,13 @@ import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
+import com.mysite.jira.entity.ProjectLikeMembers;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.ProjectRecentClicked;
 import com.mysite.jira.repository.IssueRepository;
 import com.mysite.jira.repository.IssueStatusRepository;
 import com.mysite.jira.repository.IssueTypeRepository;
+import com.mysite.jira.repository.ProjectLikeMembersRepository;
 import com.mysite.jira.repository.ProjectMembersRepository;
 import com.mysite.jira.repository.ProjectRecentClickedRepository;
 import com.mysite.jira.repository.ProjectRepository;
@@ -47,13 +49,15 @@ public class ProjectService {
 	private final IssueRepository issueRepository;
 
 	private final UtilityService utilityService;
+	
+	private final ProjectLikeMembersRepository projectLikeMembersRepository;
 
 	public List<Project> getByKey(String key){
 		return projectRepository.findByKey(key);
 	}
 	
-	public Optional<Project> getByIdx(Integer idx){
-		return projectRepository.findById(idx);
+	public Project getByIdx(Integer idx){
+		return projectRepository.findById(idx).get();
 	}
 	
 	public Integer getProjectAllCount(Integer jiraIdx) {
@@ -107,11 +111,11 @@ public class ProjectService {
 	// kdw 프로젝트 추가(기본 필터, 기본 이슈유형, 기본 이슈상태, 프로젝트 클릭 로그 추가)
 	@Transactional
 	public void createProject(String name, String key, Jira jira, Account account) {
-		int idx = (int) (Math.random() * 3);
+		int idx = (int) (Math.random() * 6);
 		int sequence = 0;
-		String[] colorArr = { "#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC" };
-		String[] iconArr = { "project_icon_file1.png", "project_icon_file2.png", "project_icon_file3.png",
-				"project_icon_file4.png" };
+		String[] colorArr = {"#C6EDFB", "#FCE4A6", "#FFD5D2","#FFD5D2", "#EED7FC", "#EED7FC"};
+		String[] iconArr = { "project_icon_file1.svg", "project_icon_file2.svg", "project_icon_file3.svg",
+				"project_icon_file4.svg", "project_icon_file5.svg", "project_icon_file6.svg"};
 		Project project = Project.builder().key(key).name(name).color(colorArr[idx]).iconFilename(iconArr[idx])
 				.jira(jira).account(account).sequence(sequence).build();
 		projectRepository.save(project);
@@ -312,5 +316,25 @@ public class ProjectService {
 											.project(project)
 											.build();
 		this.projectMembersRepository.save(member);
+	}
+	
+	public Integer isProjectLiked(Integer userIdx, Integer projectIdx) {
+		ProjectLikeMembers liked = this.projectLikeMembersRepository.findByAccountIdxAndProjectIdx(userIdx, projectIdx);
+		if(liked == null) {
+			return 0;
+		}
+		return liked.getIdx();
+	}
+	
+	public void createProjectLikeData(Project project, Account user) {
+		ProjectLikeMembers liked = ProjectLikeMembers.builder()
+													.project(project)
+													.account(user)
+													.build();
+		this.projectLikeMembersRepository.save(liked);
+	}
+	
+	public void deleteProjectLikeData(Integer likeIdx) {
+		this.projectLikeMembersRepository.deleteById(likeIdx);
 	}
 }

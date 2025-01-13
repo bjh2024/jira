@@ -183,7 +183,7 @@ document.querySelectorAll(".viewer_div_1")?.forEach(function(item){
     }
   });
 });
-const label = document.querySelector('.label');
+const label1 = document.querySelector('.label1');
 const options = document.querySelectorAll('.optionItem');
 const label2 = document.querySelector('.label2');
 const options2 = document.querySelectorAll('.optionItem2');
@@ -202,18 +202,15 @@ const userItem2 = document.querySelectorAll('.userItem2');
 
 // 클릭한 옵션의 텍스트를 라벨 안에 넣음
 const handleSelect = (item) => {
-  label.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)
-  
+  label1.innerHTML = ''; // 기존 내용 제거 (이미지 및 텍스트)
   // 클릭한 옵션에서 이미지와 텍스트 가져오기
   const img = item.querySelector('img');
   const text = item.textContent.trim(); // 텍스트 가져오기
-
   if (img) {
     const imgClone = img.cloneNode(true); // 이미지를 복제
-    label.appendChild(imgClone); // 라벨에 복제한 이미지 추가
+    label1.appendChild(imgClone); // 라벨에 복제한 이미지 추가
   }
-  
-  label.innerHTML += text; // 라벨에 텍스트 추가
+  label1.innerHTML += text; // 라벨에 텍스트 추가
 }
 
 const handleSelect2 = (item) => {
@@ -221,7 +218,6 @@ const handleSelect2 = (item) => {
   // 클릭한 옵션에서 이미지와 텍스트 가져오기
   const img = item.querySelector('img');
   const text = item.textContent.trim(); // 텍스트 가져오기
-
   if (img) {
     const imgClone = img.cloneNode(true); // 이미지를 복제
     label2.appendChild(imgClone); // 라벨에 복제한 이미지 추가
@@ -389,28 +385,46 @@ document.querySelectorAll(".viewer_div_1_category").forEach(function(item) {
 		if(e.target.innerText === "프로젝트"){
 				document.querySelector(".project_div_2").style.display = "flex";
 				document.querySelector(".team_div_2").style.display = "none";
-				document.querySelector(".teamLabel2").innerText = "그룹 선택";
+				document.querySelector(".teamLabel2").innerHTML = 
+				`<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+							그룹 선택`;
 				document.querySelector(".user_div_2").style.display = "none";
-				document.querySelector(".userLabel2").innerText = "사용자 선택";
+				document.querySelector(".userLabel2").innerHTML = 
+				`<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+						사용자 선택`;
 			}else if(e.target.innerText === "그룹"){
 				document.querySelector(".team_div_2").style.display = "flex";
 				document.querySelector(".project_div_2").style.display = "none";
-				document.querySelector(".projectLabel2").innerText = "프로젝트 선택";
+				document.querySelector(".projectLabel2").innerHTML = 
+				`<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+					    프로젝트 선택`;
 				document.querySelector(".user_div_2").style.display = "none";
-				document.querySelector(".userLabel2").innerText = "사용자 선택";
+				document.querySelector(".userLabel2").innerHTML = 
+				`<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+						사용자 선택`;
 			}else if(e.target.innerText === "사용자"){
 				document.querySelector(".user_div_2").style.display = "flex";
 				document.querySelector(".team_div_2").style.display = "none";
-				document.querySelector(".teamLabel2").innerText = "그룹 선택";
+				document.querySelector(".teamLabel2").innerHTML = 
+				`<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+							그룹 선택`;
 				document.querySelector(".project_div_2").style.display = "none";
-				document.querySelector(".projectLabel2").innerText = "프로젝트 선택";
+				document.querySelector(".projectLabel2").innerHTML = 
+				`<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+					    프로젝트 선택`;
 			}else if(e.target.innerText === "비공개"){
 				document.querySelector(".user_div_2").style.display = "none";
 				document.querySelector(".team_div_2").style.display = "none";
 				document.querySelector(".project_div_2").style.display = "none";
-				document.querySelector(".projectLabel2").innerText = "프로젝트 선택";
-				document.querySelector(".teamLabel2").innerText = "그룹 선택";
-				document.querySelector(".userLabel2").innerText = "사용자 선택";
+				document.querySelector(".projectLabel2").innerHTML = 
+				`<img src="/images/default_project_icon_file.svg" style="width: 24px; margin:0px 4px;">
+					    프로젝트 선택`;
+				document.querySelector(".teamLabel2").innerHTML = 
+				`<img src="/images/default_team_icon_file.svg" style="width: 24px; margin:0px 4px;">
+							그룹 선택`;
+				document.querySelector(".userLabel2").innerHTML = 
+				`<img src="/images/default_user_icon_file.svg" style="width: 24px; margin:0px 4px;">
+						사용자 선택`;
 			}
 		  let parentDiv = e.target.closest(".viewer_div_1"); // optionItem2의 부모 요소를 찾음
 		  let parentCategory = e.target.closest(".viewer_div_1_category"); // optionItem2의 부모 요소를 찾음
@@ -435,16 +449,20 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
         // 클릭된 item의 부모 요소인 .viewer_div를 찾기
         let viewerDiv = item.closest(".viewer_div");
 		
-		if(viewerDiv.querySelector(".projectLabel")){
+	if(viewerDiv.querySelector(".projectLabel")){
         let projectDiv = viewerDiv.querySelector(".projectLabel");
+        let projectDivIdx = viewerDiv.querySelector(".projectLabel").querySelector('img').dataset.projectIdx;
         let teamDiv = viewerDiv.querySelector(".teamLabel");
+        let teamDivIdx = viewerDiv.querySelector(".teamLabel").querySelector('img').dataset.teamIdx;
         let userDiv = viewerDiv.querySelector(".userLabel");
+        let userDivIdx = viewerDiv.querySelector(".userLabel").querySelector('img').dataset.accountIdx;
 			
 		let projectText = projectDiv.innerText.trim();
 		let teamText = teamDiv.innerText.trim();
-		let userText = userDiv.innerText.trim();
+		let userText = userDiv.innerText.trim();  
 		
 		let viewerListBox = document.querySelector('.viewer_list_box');
+		let viewerListBox2 = document.querySelector(".viewer_list_box2");
       const isDuplicate = Array.from(viewerListBox.querySelectorAll('.choice_list_filter_auth'))
 	  .some(item => {
           let existingText = item.innerText.trim();
@@ -453,26 +471,65 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
                  existingText === teamText || 
                  existingText === userText;
       });
+	  const isDuplicate2 = Array.from(viewerListBox2.querySelectorAll('.choice_list_filter_auth'))
+	  	  .some(item => {
+	            let existingText = item.innerText.trim();
+	            // 하나라도 일치하면 중복
+	            return existingText === projectText || 
+	                   existingText === teamText || 
+	                   existingText === userText;
+        });
+		if(isDuplicate2){
+			viewerListBox2.querySelectorAll('.choice_list_filter_auth').forEach(function(item){
+				let dup = item.innerText;
+				if(dup === projectText || dup === teamText || dup === userText){
+					item.remove();	
+				}
+			})
+		}
       // 중복이 없다면 추가
       if (!isDuplicate) {
           viewerListBox.innerHTML += `
-              <div class="choice_list_filter_auth">
+              <div class="choice_list_filter_auth" 
+			  data-project = "${projectDiv.innerText.trim() == "프로젝트 선택" ? '':projectDivIdx}"
+		      data-account = "${userDiv.innerText.trim() == "사용자 선택" ? '':userDivIdx}"
+			  data-team = "${teamDiv.innerText.trim() == "그룹 선택" ? '':teamDivIdx}">
                   ${projectText === "프로젝트 선택" ? '' : projectDiv.innerHTML}
                   ${teamText === "그룹 선택" ? '' : teamDiv.innerHTML}
                   ${userText === "사용자 선택" ? '' : userDiv.innerHTML}
               </div>`;
-			  }
+		  }
       }else if(viewerDiv.querySelector(".projectLabel2")){
         let projectDiv2 = viewerDiv.querySelector(".projectLabel2");
+        let projectDiv2Idx = viewerDiv.querySelector(".projectLabel2").querySelector('img').dataset.projectIdx;
         let teamDiv2 = viewerDiv.querySelector(".teamLabel2");
+        let teamDiv2Idx = viewerDiv.querySelector(".teamLabel2").querySelector('img').dataset.teamIdx;
         let userDiv2 = viewerDiv.querySelector(".userLabel2");
+        let userDiv2Idx = viewerDiv.querySelector(".userLabel2").querySelector('img').dataset.accountIdx;
 		
 		let projectText2 = projectDiv2.innerText.trim();
 		let teamText2 = teamDiv2.innerText.trim();
 		let userText2 = userDiv2.innerText.trim();
 		
+		let viewerListBox = document.querySelector('.viewer_list_box');
 		let viewerListBox2 = document.querySelector('.viewer_list_box2');
-	      const isDuplicate = Array.from(viewerListBox2.querySelectorAll('.choice_list_filter_auth'))
+		const isDuplicate = Array.from(viewerListBox.querySelectorAll('.choice_list_filter_auth'))
+		  .some(item => {
+		         let existingText = item.innerText.trim();
+		         // 하나라도 일치하면 중복
+		         return existingText === projectText2 || 
+		                existingText === teamText2 || 
+		                existingText === userText2;
+	     });
+		 if(isDuplicate){
+ 			viewerListBox.querySelectorAll('.choice_list_filter_auth').forEach(function(item){
+ 				let dup = item.innerText;
+ 				if(dup === projectText2 || dup === teamText2 || dup === userText2){
+ 					item.remove();	
+ 				}
+ 			})
+ 		}
+	      const isDuplicate2 = Array.from(viewerListBox2.querySelectorAll('.choice_list_filter_auth'))
 		  .some(item => {
 	          let existingText = item.innerText.trim();
 	          // 하나라도 일치하면 중복
@@ -481,9 +538,12 @@ document.querySelectorAll(".viewer_div_2").forEach(function(item) {
 	                 existingText === userText2;
 	      });
 		
-		if (!isDuplicate) {
+		if (!isDuplicate2) {
 		viewerListBox2.innerHTML += `
-				   <div class="choice_list_filter_auth">           
+			  <div class="choice_list_filter_auth" 
+						  data-project = "${projectDiv2.innerText.trim() == "프로젝트 선택" ? '':projectDiv2Idx}"
+					      data-account = "${userDiv2.innerText.trim() == "사용자 선택" ? '':userDiv2Idx}"
+						  data-team = "${teamDiv2.innerText.trim() == "그룹 선택" ? '':teamDiv2Idx}">      
 				        ${projectText2 === "프로젝트 선택"? '':projectDiv2.innerHTML}
 						${teamText2 === "그룹 선택" ? '':teamDiv2.innerHTML}
 						${userText2 === "사용자 선택"? '':userDiv2.innerHTML}
@@ -502,9 +562,6 @@ document.querySelector(".filter_save_reset2")?.addEventListener("click",function
 	viewerListBox.innerHTML = '';
 })
 
-document.querySelector(".save_button")?.addEventListener("click",function(){
-	let name = document.querySelector(".hover_input").value;
-})
 document.querySelector(".cancle_button")?.addEventListener("click",function(){
 	document.querySelector(".hover_input").value = '';
 	document.querySelector(".viewer_list_box2").innerHTML = '';

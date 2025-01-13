@@ -30,13 +30,10 @@
 				</div>
 				<div>
 					<div class="header-setting">
-						<div class="header-setbtn">
+						<div class="header-setbtn" th:attr="data-useridx=${currentUser.idx}, data-projectidx=${project.idx}">
 							<div class="header-menuwindow">
 								<div class="menuwindow-optionbox">
-									<button class="menuwindow-optionbtn">
-										<span style="height: 16px;"><img th:src="@{/images/star_icon_yellow.svg}" style="width: 16px; height: 16px;"></span>
-										<span style="margin-bottom: 2px;">별표 표시 목록에서 제거</span>
-									</button>
+									<button class="menuwindow-optionbtn like" th:attr="data-liked=''"></button>
 									<button class="menuwindow-optionbtn insert">
 										<span style="height: 16px;"><img th:src="@{/images/user_icon.svg}" style="width: 16px; height: 16px;"></span>
 										<span style="margin-bottom: 2px;">사용자 추가</span>
@@ -95,15 +92,6 @@
 							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
 					</span>
 					<span class="menu-text">첨부 파일</span>
-				</a>
-			</div>
-			<div class="menu-icon-box project_issue">
-				<a th:href="@{|/project/${project.key}/project_issue|}">
-					<span class="menu-icon">
-						<img th:src="@{/images/project_issue_icon.svg}"
-							style="filter: invert(32%) sepia(37%) saturate(481%) hue-rotate(179deg) brightness(85%) contrast(85%);">
-					</span>
-					<span class="menu-text">이슈</span>
 				</a>
 			</div>
 		</nav>

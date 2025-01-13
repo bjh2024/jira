@@ -31,7 +31,6 @@ import com.mysite.jira.entity.IssuePriority;
 import com.mysite.jira.entity.IssueReply;
 import com.mysite.jira.entity.IssueStatus;
 import com.mysite.jira.entity.IssueType;
-import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
 import com.mysite.jira.entity.ProjectMembers;
 import com.mysite.jira.entity.Team;
@@ -40,7 +39,6 @@ import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.FilterService;
 import com.mysite.jira.service.IssueService;
 import com.mysite.jira.service.IssueTypeService;
-import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.LogDataService;
 import com.mysite.jira.service.ProjectService;
 import com.mysite.jira.service.TeamService;
@@ -59,7 +57,6 @@ public class ProjectController {
 	private final ProjectService projectService;
 	private final LogDataService logDataService;
 	private final AccountService accountService;
-	private final JiraService jiraService;
 	private final FilterService filterService;
 	private final IssueTypeService issueTypeService;
 	private final TeamService teamService;
@@ -159,7 +156,7 @@ public class ProjectController {
 		model.addAttribute("issueTypeList", issueTypeList);
 		
 		// 전체 레이블 리스트
-		List<IssueLabelData> labelDataList = boardMainService.getLabelData(projectIdx);
+		List<IssueLabelData> labelDataList = boardMainService.getLabelData(jiraIdx);
 		model.addAttribute("labelDataList", labelDataList);
 		
 		// 전체 댓글 리스트
@@ -301,8 +298,6 @@ public class ProjectController {
 			
 			
 // ====================== 필터용 ==================================================================================
-//			List<Project> project = projectService.getProjectByJiraIdx(jiraIdx);
-//			model.addAttribute("project", project);
 			
 			List<IssueTypeListDTO> issueType = issueTypeService.getDistinctIssueTypes(jiraIdx);
 			model.addAttribute("issueType", issueType);
@@ -330,8 +325,6 @@ public class ProjectController {
 			List<IssueReply> replyList = boardMainService.getFilterIssueReply();
 			model.addAttribute("replyList", replyList);
 // =====================================================================================================
-			String uri = request.getRequestURI(); 
-			Jira jira = jiraService.getByNameJira(uri.split("/")[1]);
 			
 			// 현재 시간용 변수
 			LocalDateTime now = LocalDateTime.now();
@@ -354,7 +347,7 @@ public class ProjectController {
 			model.addAttribute("issueTypeList", issueTypeList);
 			
 			// 전체 레이블 리스트
-			List<IssueLabelData> labelDataList = boardMainService.getLabelData(projectIdx);
+			List<IssueLabelData> labelDataList = boardMainService.getLabelData(jiraIdx);
 			model.addAttribute("labelDataList", labelDataList);
 			
 			// 프로젝트 별 상속 관계 리스트

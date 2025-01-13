@@ -146,9 +146,11 @@
 	width: 6px;
 	height: 6px;
 }
-
+.second_tr{
+	vertical-align: top;
+}
 .second_tr td{
-	padding : 0px 8px;
+	padding : 4px 8px;
 }
 .second_tr:hover{
 	background-color: #091E420F;
@@ -264,4 +266,7 @@ a:hover {
 }
 .delete_button:hover{
 	background-color: #091E420F;
+}
+.like_start_icon img{
+	margin-top: 8px;
 }

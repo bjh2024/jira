@@ -24,6 +24,7 @@ public interface DashboardRepository extends JpaRepository<Dashboard,Integer>{
 			  ON d.idx = drc.dashboard_idx
 			LEFT JOIN dashboard_like_members dlm
 			  ON d.idx = dlm.dashboard_idx
+			  AND dlm.account_idx = :accountIdx
 			WHERE drc.account_idx = :accountIdx
 			  AND drc.jira_idx = :jiraIdx
 			  AND dlm.dashboard_idx IS NULL

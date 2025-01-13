@@ -33,6 +33,7 @@ import com.mysite.jira.service.IssueStatusService;
 import com.mysite.jira.service.IssueTypeService;
 import com.mysite.jira.service.JiraService;
 import com.mysite.jira.service.ProjectService;
+import com.mysite.jira.service.TeamService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,7 @@ public class FilterIssueTableAPIController {
 	private final IssueTypeService issueTypeService;
 	private final ProjectService projectService;
 	private final HttpSession session;
+	private final TeamService teamService;
 	
 	@PostMapping("/project_filter")
 	public List<FilterIssueDTO> getInputDatas(@RequestBody FilterIssueRequestDTO filterRequest) {
@@ -224,7 +226,6 @@ public class FilterIssueTableAPIController {
 
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Jira jira = jiraService.getByIdx(jiraIdx);
-
 		// 필터 생성시 무조건 생성되는 필터 기본
 		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
 		if (filterDto.getIsCompleted() != null && filterDto.getIsCompleted().length > 0 ) {
@@ -232,13 +233,17 @@ public class FilterIssueTableAPIController {
 				filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);
 			}
 		}
+		for(int i = 0; i < filterDto.getIssuePriority().length; i++) {
+			System.out.println("이슈 priority2");
+			System.out.println(filterDto.getIssuePriority()[i].toString());
+		}
 		// 행이 여러개 생길 수 있는 데이터
 		if (filterDto.getIssuePriority() != null && filterDto.getIssuePriority().length > 0) {
 			for (int i = 0; i < filterDto.getIssuePriority().length; i++) {
 				Optional<IssuePriority> issuePriority = issuePriorityService.getByName(filterDto.getIssuePriority()[i]);
 				filterService.filterIssuePriorityCreate(filter, issuePriority.get());
 			}
-		}
+		}	
 		if (filterDto.getIssueStatus() != null && filterDto.getIssueStatus().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueStatus().length; i++) {
 				IssueStatus issueStatus = issueStatusService.getByName(filterDto.getIssueStatus()[i]);
@@ -259,8 +264,8 @@ public class FilterIssueTableAPIController {
 		}
 		if (filterDto.getProjectIdx() != null && filterDto.getProjectIdx().length > 0 ) {
 			for (int i = 0; i < filterDto.getProjectIdx().length; i++) {
-				Optional<Project> project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
-				filterService.filterProjectCreate(filter, project.get());
+				Project project = projectService.getByIdx(filterDto.getProjectIdx()[i]);
+				filterService.filterProjectCreate(filter, project);
 			}
 		}
 		if (filterDto.getIssueReporter() != null && filterDto.getIssueReporter().length > 0 ) {
@@ -269,7 +274,30 @@ public class FilterIssueTableAPIController {
 				filterService.filterReporterCreate(filter, reporterAccount);
 			}
 		}
-		// 여기 까지
+		if (filterDto.getViewAuth() != null) {
+			for (int i = 0; i < filterDto.getViewProject().length; i++) {
+				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getViewProject()[i]) ,filterDto.getViewAuth());
+			}
+			for (int i = 0; i < filterDto.getViewUser().length; i++) {
+				filterService.filterAuthUserCreate(filter, accountService.getByIdx(filterDto.getViewUser()[i]), filterDto.getViewAuth());
+			}
+			for (int i = 0; i < filterDto.getViewTeam().length; i++) {
+				filterService.filterAuthTeamCreate(filter, teamService.getByIdx(filterDto.getViewTeam()[i]),filterDto.getViewAuth());
+			}
+		}
+		if (filterDto.getEditAuth() != null) {
+			for (int i = 0; i < filterDto.getEditProject().length; i++) {
+				filterService.filterAuthProjectCreate(filter, projectService.getByIdx(filterDto.getEditProject()[i]),filterDto.getEditAuth());
+			}
+			for (int i = 0; i < filterDto.getEditUser().length; i++) {
+				filterService.filterAuthUserCreate(filter, accountService.getByIdx(filterDto.getEditUser()[i]),filterDto.getEditAuth());
+			}
+			for (int i = 0; i < filterDto.getEditTeam().length; i++) {
+				filterService.filterAuthTeamCreate(filter, teamService.getByIdx(filterDto.getEditTeam()[i]),filterDto.getEditAuth());
+			}
+		}
+		
+		// 여기 까지 복수 행 데이터
 		if (filterDto.getDoneBeforeDate() != null || filterDto.getDoneStartDate() != null) {
 			filterService.filterDoneDateCreate(filter, filterDto.getDoneStartDate(), filterDto.getDoneLastDate(),
 					filterDto.getDoneDateBefore());
@@ -288,7 +316,7 @@ public class FilterIssueTableAPIController {
 	@PostMapping("/filter_delete")
 	public void filterDelete(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
-			if(filterService.getAll().get(i).getIdx() == filterDto.getFilterIdx()) {
+			if(filterService.getAll().get(i).getIdx().equals(filterDto.getFilterIdx())) {
 				filterService.filterDelete(filterDto.getFilterIdx());
 			}
 		}

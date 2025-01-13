@@ -79,20 +79,27 @@ public class BoardMainAPTIController {
 	// 해당 Jira 에 존재하는 레이블 리스트를 반환
 	@PostMapping("/get_label_list")
 	public List<LabelListDTO> getLabelList(@RequestBody GetLabelDTO labelListDTO){
-		List<IssueLabelData> labelList = new ArrayList<>();
-		if(labelListDTO.getIdx()[0] == -1) {
-			labelList = boardMainService.getLabelData(labelListDTO.getJiraIdx());
-		}else {
-			labelList = boardMainService.getAlterLabelData(labelListDTO.getIdx());
-		}
+		List<IssueLabel> labelList = new ArrayList<>();
+		List<IssueLabelData> labelDataList = new ArrayList<>();
 		List<LabelListDTO> alterLabelList = new ArrayList<>();
-		for(int i = 0; i < labelList.size(); i++) {
-			LabelListDTO dto = LabelListDTO.builder()
-									.name(labelList.get(i).getIssueLabel().getName())
-									.issueIdx(labelList.get(i).getIssue().getIdx())
-									.labelIdx(labelList.get(i).getIssueLabel().getIdx())
-									.build();
-			alterLabelList.add(dto);
+		if(labelListDTO.getIdx()[0] == -1) {
+			labelList = boardMainService.getIssueLabel(labelListDTO.getJiraIdx());
+			for(int i = 0; i < labelList.size(); i++) {
+				LabelListDTO dto = LabelListDTO.builder()
+						.name(labelList.get(i).getName())
+						.labelIdx(labelList.get(i).getIdx())
+						.build();
+				alterLabelList.add(dto);
+			}
+		}else {
+			labelDataList = boardMainService.getAlterLabelData(labelListDTO.getIdx());
+			for(int i = 0; i < labelDataList.size(); i++) {
+				LabelListDTO dto = LabelListDTO.builder()
+						.name(labelDataList.get(i).getIssueLabel().getName())
+						.labelIdx(labelDataList.get(i).getIssueLabel().getIdx())
+						.build();
+				alterLabelList.add(dto);
+			}
 		}
 		return alterLabelList;
 	}
@@ -344,10 +351,22 @@ public class BoardMainAPTIController {
 		Integer currentIssueIdx = dragIssueDTO.getIssueIdx();
 		Integer oldStatusIdx = dragIssueDTO.getOldStatusIdx();
 		Integer issueStatusIdx = dragIssueDTO.getStatusIdx();
+		
 		if(oldStatusIdx != issueStatusIdx || (oldStatusIdx == issueStatusIdx && newIdx > oldIdx)) {
-			boardMainService.updatePrevIssueOrder(currentIssueIdx, oldIdx, oldStatusIdx);
+			boardMainService.updatePrevIssueOrder(oldIdx, oldStatusIdx);
 		}
 		boardMainService.updateIssueOrder(currentIssueIdx, newIdx, issueStatusIdx);
+		
+		IssueStatus oldStatus = boardMainService.getOnceIssueStatus(oldStatusIdx);
+		IssueStatus newStatus = boardMainService.getOnceIssueStatus(issueStatusIdx);
+		Issue currentIssue = boardMainService.getIssueByIdx(currentIssueIdx);
+		
+		if(oldStatus.getStatus() != newStatus.getStatus() && newStatus.getStatus() == 3) {
+			boardMainService.updateIssueFinishDateNow(currentIssue);
+		}
+		if(oldStatus.getStatus() != newStatus.getStatus() && oldStatus.getStatus() == 3) {
+			boardMainService.updateIssueFinishDateNull(currentIssue);
+		}
 	}
 	
 	// 해당 이슈를 삭제

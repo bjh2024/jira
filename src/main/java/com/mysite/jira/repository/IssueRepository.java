@@ -250,12 +250,14 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	// kdw 최근에 만듦 차트(미완료에 따른 이슈 개수)
 	@Query("""
 			SELECT  TO_CHAR(createDate, 'YYYY-MM-DD') as issueDate,
-			        count(idx) as count
-			FROM    Issue
-			WHERE createDate BETWEEN :startDate and sysdate
-			AND project.idx = :projectIdx
-			AND finishDate IS NULL
-			GROUP BY TO_CHAR(createDate, 'YYYY-MM-DD')
+			        count(i.idx) as count
+			FROM    Issue i
+			JOIN	IssueStatus ist
+			ON	 ist.idx = i.issueStatus.idx
+			WHERE i.createDate BETWEEN :startDate and sysdate
+			AND i.project.idx = :projectIdx
+			AND (ist.status BETWEEN 1 and 2)
+			GROUP BY TO_CHAR(i.createDate, 'YYYY-MM-DD')
 			""")
 	List<Map<String, Object>> findByIssueNotCompleteCountBetweenCreateDate(@Param("projectIdx") Integer projectIdx,
 																	       @Param("startDate") LocalDateTime startDate);
@@ -263,12 +265,14 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	// kdw 최근에 만듦 차트(완료에 따른 이슈 개수)
 	@Query("""
 			SELECT  TO_CHAR(createDate, 'YYYY-MM-DD') as issueDate,
-			        count(idx) as count
-			FROM    Issue
-			WHERE createDate BETWEEN :startDate and sysdate
-			AND project.idx = :projectIdx
-			AND finishDate IS NOT NULL
-			GROUP BY TO_CHAR(createDate, 'YYYY-MM-DD')
+			        count(i.idx) as count
+			FROM    Issue i
+			JOIN	IssueStatus ist
+			ON	 ist.idx = i.issueStatus.idx
+			WHERE i.createDate BETWEEN :startDate and sysdate
+			AND i.project.idx = :projectIdx
+			AND ist.status = 3
+			GROUP BY TO_CHAR(i.createDate, 'YYYY-MM-DD')
 			""")
 	List<Map<String, Object>> findByIssueCompleteCountBetweenCreateDate(@Param("projectIdx") Integer projectIdx,
 																	    @Param("startDate") LocalDateTime startDate);

@@ -25,6 +25,9 @@ public class TeamService {
 	
 	private final TeamMembersRepository teamMembersRepository;
 	
+	public Team getByIdx(Integer idx) {
+		return teamRepository.findById(idx).get();
+	}
 	public List<Team> getByJiraIdx(Integer jiraIdx){
 		return teamRepository.findByJiraIdx(jiraIdx);
 	}
