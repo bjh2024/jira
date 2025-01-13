@@ -114,8 +114,8 @@ public class ProjectService {
 		int idx = (int) (Math.random() * 3);
 		int sequence = 0;
 		String[] colorArr = { "#FFD5D2", "#FCE4A6", "#C6EDFB", "#EED7FC" };
-		String[] iconArr = { "project_icon_file1.png", "project_icon_file2.png", "project_icon_file3.png",
-				"project_icon_file4.png" };
+		String[] iconArr = { "project_icon_file1.svg", "project_icon_file2.svg", "project_icon_file3.svg",
+				"project_icon_file4.svg", "project_icon_file5.svg", "project_icon_file6.svg"};
 		Project project = Project.builder().key(key).name(name).color(colorArr[idx]).iconFilename(iconArr[idx])
 				.jira(jira).account(account).sequence(sequence).build();
 		projectRepository.save(project);
