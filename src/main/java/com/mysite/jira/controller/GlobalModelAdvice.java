@@ -136,10 +136,8 @@ public class GlobalModelAdvice {
 				Dashboard dashboard = dashboardService.getDashboardByIdx(dashboardIdx);
 				dashboardService.addDashboardRecentClicked(jira, account, dashboard);
 				
-			}else if(!uri.contains("/project/create") && 
-			   !uri.contains("/project/list") && 
-			   !uri.contains("/project/profile") && 
-			   uri.contains("/project")) {
+			}else if(!uri.contains("/filter/every_filter") &&
+					 uri.contains("/filter")) {
 				filterService.filterRecentClickedAddOrUpdate(filterIdx, accountIdx);
 			}
 			
