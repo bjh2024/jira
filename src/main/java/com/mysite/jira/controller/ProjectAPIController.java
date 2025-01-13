@@ -23,7 +23,6 @@ import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssueType;
 import com.mysite.jira.entity.Jira;
 import com.mysite.jira.entity.Project;
-import com.mysite.jira.entity.ProjectLikeMembers;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.BoardMainService;
 import com.mysite.jira.service.JiraService;
