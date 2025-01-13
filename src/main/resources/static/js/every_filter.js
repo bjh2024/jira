@@ -84,7 +84,9 @@ function fetchIssueDetail() {
 	        headers: {
 	            'Content-Type': 'application/json' // JSON 데이터를 전송
 	        },
-	        body: JSON.stringify(filterIdxNum)
+	        body: JSON.stringify({
+				filterIdx : filterIdxNum.filterIdx
+			})
 	    })
 		.then(response => {
 		        if (response.ok) {

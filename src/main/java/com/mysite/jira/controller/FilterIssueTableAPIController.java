@@ -17,7 +17,6 @@ import com.mysite.jira.dto.FilterIssueRequestDTO; // 추가된 DTO 임포트
 import com.mysite.jira.dto.FilterLikeDto;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
-import com.mysite.jira.entity.FilterAuth;
 import com.mysite.jira.entity.FilterLikeMembers;
 import com.mysite.jira.entity.Issue;
 import com.mysite.jira.entity.IssuePriority;
@@ -317,7 +316,7 @@ public class FilterIssueTableAPIController {
 	@PostMapping("/filter_delete")
 	public void filterDelete(@RequestBody FilterIssueRequestDTO filterDto) {
 		for (int i = 0; i < filterService.getAll().size(); i++) {
-			if(filterService.getAll().get(i).getIdx() == filterDto.getFilterIdx()) {
+			if(filterService.getAll().get(i).getIdx().equals(filterDto.getFilterIdx())) {
 				filterService.filterDelete(filterDto.getFilterIdx());
 			}
 		}
