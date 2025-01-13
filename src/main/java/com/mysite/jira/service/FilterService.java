@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mysite.jira.dto.LikeContentDTO;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.entity.Filter;
 import com.mysite.jira.entity.FilterAuth;
@@ -86,8 +87,25 @@ public class FilterService {
 		return filterRepository.findAll();
 	}
 	public List<Filter> getByAccountIdxAndJiraIdx(Integer accountIdx, Integer jiraIdx){
-		return filterRepository.findByAccountIdxAndJiraIdx(accountIdx, jiraIdx);
+		return filterRepository.findByAccountIdxAndJiraIdxOrderByIdxAsc(accountIdx, jiraIdx);
 	}
+	
+	public List<Filter> getByAccountIdxAndJiraIdxMinusLikeAndRecent(Integer accountIdx, Integer jiraIdx, List<Filter> filterRecentList, List<LikeContentDTO> filterLikeMembers){
+		List<Filter> filterList = filterRepository.findByAccountIdxAndJiraIdxOrderByIdxAsc(accountIdx, jiraIdx);
+		Integer[] filterLikeInteger = new Integer[filterLikeMembers.size()];
+		for (int i = 0; i < filterLikeInteger.length; i++) {
+			filterLikeInteger[i] = filterLikeMembers.get(i).getIdx();
+		}
+		List<Filter> filterLikes = this.getByIdxIn(filterLikeInteger);
+		List<Filter> defaultFilterList = new ArrayList<>();
+		for (int i = 0; i < 8; i++) {
+			defaultFilterList.add(filterList.get(i));
+		}
+		defaultFilterList.removeAll(filterRecentList);
+		defaultFilterList.removeAll(filterLikes);
+		return defaultFilterList;
+	}
+	
 	public List<Filter> getByJiraIdx(Integer jiraIdx){
 		return filterRepository.findByJiraIdx(jiraIdx);
 	}

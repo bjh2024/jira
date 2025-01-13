@@ -2,21 +2,28 @@
 <html lang="ko">
 
 <head>
-	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>err</title>
-	<style>
-		.err_img{
-			background: url(/images/error.png) no-repeat;
-		    display: block;
-		    margin: 50px auto;
-		    height: 230px;
-		    width: 300px;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/error404.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
 </head>
 <body>
-	<h1 class="err_img"></h1>
+	<section>
+		<h1 class="err_img"></h1>
+		<div class="error_box_content">
+			<h2>앗! 찾으시는 페이지가 존재하지 않습니다.</h2>
+			<ul>
+				<li>Go to the <a href="/account/login">Main Page</a></li>
+			</ul>
+		</div>
+	</section>
+	<footer>
+		<div class="err_footer_content">
+			<span>코리아 IT 아카데미 정처산기B 4조</span>
+			<span>김대완, 남다현, 방준혁</span>
+			<img src="/images/logo_error.svg" width="70" height="32"/>
+		</div>
+	</footer>
 </body>
 </html>

@@ -26,13 +26,12 @@
 				</label>
 				<input id="accountList" placeholder="소유자 선택" />
 				<div class="select_top_menue">
-					<div class="select_top_menue_list">
-						<div class="item active">
-							<div class="img_box"><img
-									src="https://secure.gravatar.com/avatar/b9cbfd8de5c356017cb37c217fc65409?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-6.png"
-									alt="" style="border-radius: 50%" width="16" height="16">
+					<div class="select_top_menue_list" th:each="account, loop : ${jiraByAccountList}">
+						<div class="item" th:classappend="${loop.count == 1} ? 'active'">
+							<div class="img_box">
+								<img th:src="@{|/images/${account.iconFilename}|}" width="24" height="24"/> 
 							</div>
-							김대완
+							<span th:text="${account.name}"></span>
 						</div>
 					</div>
 				</div>
@@ -44,13 +43,12 @@
 				</label>
 				<input id="projectList" placeholder="프로젝트 선택" />
 				<div class="select_top_menue">
-					<div class="select_top_menue_list">
-						<div class="item active">
-							<div class="img_box"><img
-									src="https://dahyun0521.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10424"
-									alt="" style="border-radius: 2px" width="16" height="16">
+					<div class="select_top_menue_list" th:each="project, loop : ${jiraByProjectList}">
+						<div class="item" th:classappend="${loop.count == 1} ? 'active'">
+							<div class="img_box">
+								<img th:src="@{|/images/${project.iconFilename}|}" alt="" style="border-radius: 2px" width="24" height="24" />
 							</div>
-							hihihihi
+							<span th:text="${project.name}"></span>
 						</div>
 					</div>
 				</div>
@@ -62,12 +60,12 @@
 				</label>
 				<input id="groupList" placeholder="그룹 선택" />
 				<div class="select_top_menue">
-					<div class="select_top_menue_list">
-						<div class="item active">
+					<div class="select_top_menue_list" th:each="group, loop : ${jiraByGroupList}">
+						<div class="item" th:classappend="${loop.count == 1} ? 'active'">
 							<div class="img_box">
-								<img th:src="@{/images/create_group_icon.svg}" width="16" height="16" />
+								<img th:src="@{/images/create_group_icon.svg}" width="24" height="24" />
 							</div>
-							정처산기 4조
+							<span th:text="${group.name}"></span>
 						</div>
 					</div>
 				</div>
@@ -192,9 +190,6 @@
 						<div class="more_box" 
 						     th:idx-data="${dashboardList.dashboard.idx}"
 							 th:dashboard-name-data="${dashboardList.dashboard.name}">
-							<button>대시보드 복사</button>
-							<button>대시보드 이름 변경 또는 공유</button>
-							<button>소유자 변경</button>
 							<button>대시보드 삭제</button>
 						</div>
 					</td>
@@ -204,5 +199,4 @@
 	</div>
 	<script th:src="@{/js/dashboard_list.js}"></script>
 </div>
-
 </html>

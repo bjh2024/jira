@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class DashboardIssueRecent {
+public class DashboardIssueRecent implements DashboardItem{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_recent_seq")
 	@SequenceGenerator(name = "issue_recent_seq", sequenceName = "issue_recent_seq", allocationSize = 1)

@@ -98,7 +98,6 @@ function createReply(replybox){
 	})
 	.then(response => response.json())
 	.then(reply => {
-		console.log(reply);
 		const newReply = document.createElement("div");
 		newReply.classList.add("issuedetail-reply");
 		newReply.innerHTML = `
@@ -310,7 +309,6 @@ document.querySelector("body").addEventListener("click", function(e){
 		
 		if(menubtn !== null && menubtn.className.includes("name")){
 			const issueStatus = btn.parentElement.previousElementSibling;
-			console.log(issueStatus);
 			issueStatus.classList.add("none");
 			issueStatus.previousElementSibling.classList.add("show");
 			btn.children[0].classList.remove("show");
@@ -607,7 +605,6 @@ function deleteIssue(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
 			location.reload();
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
@@ -788,7 +785,6 @@ function getNewEpikIssueList(box){
 				newEpikIssueData.childIdx = item.parentElement.parentElement.parentElement.nextElementSibling.dataset.issueidx;
 				newEpikIssueData.oldParentIdx = updateEpikIssueData.currentIssue;
 				newEpikIssueData.newParentIdx = item.dataset.issueidx;
-				console.log(newEpikIssueData);
 				updateEpikIssuePath(item.parentElement.parentElement.parentElement);
 				
 				const container = e.target.closest(".issuedetail-container");
@@ -863,7 +859,6 @@ function getIssueTypeList(box){
 			box.appendChild(item);
 			item.addEventListener("click", function(e){
 				updateIssueTypeData.issueTypeIdx = item.dataset.typeidx;
-				console.log(updateIssueTypeData);
 				updateIssueType(item.parentElement.parentElement.parentElement);
 				
 				const container = e.target.closest(".issuedetail-container");
@@ -1086,7 +1081,6 @@ function deleteVoteData(btn){
 		body: JSON.stringify(getVoterData)
 	}).then(response => {
         if (response.ok) {
-			console.log(btn);
 			btn.children[2].innerText = Number(btn.children[2].innerText) - 1;
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -1137,7 +1131,6 @@ function updateIssueNameFetch(title, input){
 		body: JSON.stringify(updateIssueNameData)
 	}).then(response => {
         if (response.ok) {
-			console.log("업데이트 성공");
             input.value = updateIssueNameData.name;
 			title.innerText = updateIssueNameData.name;
         } else {
@@ -1384,7 +1377,6 @@ function deleteIssueReply(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -1398,7 +1390,6 @@ function deleteIssueReply(){
 function getReplyDetail(box){
 	const submitItem = document.querySelector(".delete-alert-submitbtn.reply");
 	submitItem.addEventListener("click", function(e){
-		console.log(box);
 		if(deleteReplyData.replyIdx != ""){
 			deleteIssueReply();
 			box.remove();
@@ -1436,7 +1427,6 @@ function updateStatusfetch(btn){
 	})
 	.then(response => response.json())
 	.then(newStatus => {
-		console.log(btn);
 		if(btn.className.includes("issuedetail-statusbtn")){
 			btn.className = '';
 			btn.classList.add("issuedetail-statusbtn");
@@ -1570,7 +1560,6 @@ function getSubIssueTypeFetch(btn, box){
 				box.appendChild(typebox);
 			}
 		});
-		console.log(box);
 	}).catch(error => {
 			console.error("Fetch error:", error);
 	});
@@ -1587,7 +1576,6 @@ document.querySelectorAll(".insertwindow-btn.subissue").forEach(function(btn, in
 		
 		if(grade == 3){
 			getSubIssueTypeData.projectIdx = btn.dataset.projectidx;
-			console.log(getSubIssueTypeData);
 			getSubIssueTypeFetch(typebtn, typebtn.children[0]);
 			typebtn.classList.add("active");
 			typebtn.style.border = "1px solid #8C8F97";
@@ -1639,7 +1627,6 @@ document.querySelectorAll(".file-input-direct").forEach(function(input){
 	    }).then(response => response.json())
 		.then(fileData => {
 			const path = fileData.name.split(".");
-			console.log(path[1]);
 			
 			const listBox = input.parentElement.parentElement.parentElement.nextElementSibling;
 			const myFile = document.createElement("div");
@@ -1683,7 +1670,6 @@ document.querySelectorAll(".file-input").forEach(function(input){
 			const fileBox = input.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(".attached-files-box");
 			
 			const path = fileData.name.split(".");
-			console.log(path[1]);
 			
 			const listBox = fileBox.querySelector(".file-list-box");
 			const myFile = document.createElement("div");
@@ -1720,7 +1706,6 @@ document.querySelectorAll(".rightdetail-subissue-status").forEach(function(btn, 
 			return;
 		}
 		const windowItem = btn.children[0];
-		console.log("hi");
 		currentStatus.projectIdx = btn.dataset.projectidx;
 		currentStatus.statusIdx = btn.dataset.statusidx;
 		fetchStatusList(windowItem.children[0]);
@@ -1807,7 +1792,6 @@ function fetchInput(){
 				labelValue.setAttribute("data-issueidx", labelDatas.issueIdx);
 				labelValue.setAttribute("data-labelidx", value.labelIdx);
 				labelValue.addEventListener("click", function(e){
-					console.log(label.parentElement);
 					newLabelData.issueIdx = labelValue.dataset.issueidx;
 					newLabelData.labelIdx = labelValue.dataset.labelidx;
 					label.classList.remove("show");
@@ -1858,7 +1842,6 @@ function deleteLabelData(){
 	})
 	.then(response => {
         if (response.ok) {
-			console.log("삭제 성공");
             return response.text(); // 응답 내용을 처리하지 않으려면 여기서 끝냄
         } else {
             // 응답 상태가 성공 범위를 벗어나는 경우
@@ -1872,7 +1855,6 @@ function deleteLabelData(){
 document.querySelectorAll(".graphval-delete-labelbtn").forEach(function(btn){
 	btn.addEventListener("click", function(e){
 		removeLabelDataValue.labelDataIdx = btn.parentElement.dataset.labeldataidx;
-		console.log(removeLabelDataValue);
 		btn.parentElement.remove();
 		deleteLabelData();
 	});
@@ -2054,7 +2036,6 @@ function updateUserFetch(graphval){
 	})
 	.then(response => response.json())
 	.then(reporter => {
-		console.log(reporter);
 		graphval.dataset.reporteridx = reporter.reporterIdx;
 		graphval.dataset.projectidx = reporter.projectIdx;
 		graphval.dataset.issueidx = reporter.issueIdx;

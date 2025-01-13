@@ -309,7 +309,6 @@ document.querySelectorAll(".filter_issue_box input[name='projectIdx']")?.forEach
 	input.addEventListener("click", function(e) {
 		if(this.checked){
 		filterDatas.projectIdxArr.push(this.value);
-		console.log(this.value);
 		}else{
 		filterDatas.projectIdxArr.splice(filterDatas.projectIdxArr.indexOf(this.value), 1);
 		}

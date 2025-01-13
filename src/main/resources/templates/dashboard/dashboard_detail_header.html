@@ -2,19 +2,13 @@
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/dashboard_detail_header.css}">
 	</head>
+	<div th:replace="~{dashboard/dashboard_delete :: dashboardDelete}"></div>
 	<h2 th:text="${currentDashboard.name}"></h2>
 	<div class="gnb">
 		<button class="gnb_btn1">
 			<img th:src="@{/images/star_icon_empty.svg}" width="16" height="16" />
 		</button>
 		<th:block th:if="${isDetail}">
-			<button class="gnb_btn1">
-				<img th:src="@{/images/link_copy_icon.svg}" />
-			</button>
-			<button class="gnb_btn2">
-				<span class="bold">Refresh</span>
-				<img th:src="@{/images/refresh_icon.svg}" width="16" height="16" />
-			</button>
 			<a th:href="@{|/dashboard/edit/${currentDashboard.idx}|}" class="gnb_btn2">
 				<span>편집</span>
 				<img th:src="@{/images/pencil_icon.svg}" width="16" height="16" />
@@ -24,16 +18,19 @@
 			<button class="gnb_btn2 gadget_add_btn">
 				가젯 추가
 			</button>
-			<button class="gnb_btn2">
-				레이아웃 변경
-			</button>
 			<a th:href="@{|/dashboard/detail/${currentDashboard.idx}|}" class="gnb_btn2 complete">
 				<span>완료</span>
 			</a>
 		</th:block>
-		<button class="gnb_btn1 more">
-			<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
-		</button>
+		<div class="gnb_btn1 more">
+			<div class="img_box">
+				<img th:src="@{/images/three_dots_row_icon.svg}" width="16" height="16" />
+			</div>
+			<div class="more_box" 
+				 th:idx-data="${currentDashboard.idx}" 
+				 th:dashboard-name-data="${currentDashboard.name}">
+				<button>대시보드 삭제</button>
+			</div>
+		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.11/lib/sortable.js"></script>
 </div>

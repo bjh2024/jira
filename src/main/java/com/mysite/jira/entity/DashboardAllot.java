@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class DashboardAllot {
+public class DashboardAllot implements DashboardItem{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "allot_seq")
 	@SequenceGenerator(name = "allot_seq", sequenceName = "allot_seq", allocationSize = 1)

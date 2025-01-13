@@ -1,3 +1,29 @@
+
+document.querySelector("body").addEventListener("click", function(e){
+	const moreBtn = e.target.closest(".dashboard_detail_header .gnb_btn1.more");
+	const moreBox = document.querySelector(".dashboard_detail_header .gnb_btn1.more .more_box");
+	if(moreBtn === null) {
+		moreBox.classList.remove("show");	
+		return;
+	}
+	const clickMoreBox = e.target.closest(".dashboard_detail_header .gnb_btn1.more .more_box")
+	if(clickMoreBox === null){
+		moreBtn.querySelector(".more_box").classList.toggle("show");
+		return;
+	}
+	const idx = clickMoreBox.getAttribute("idx-data");
+	const dashboardName = clickMoreBox.getAttribute("dashboard-name-data");
+	
+	const deleteModal = document.querySelector(".dashboard_delete_modal.list");
+	const deleteHeader = deleteModal.querySelector("h2");
+	deleteModal.setAttribute("idx-data", idx);
+	deleteHeader.innerHTML = `<img src="/images/alaret_icon.svg" width="16" height="16"/>
+							  <span>${dashboardName}을(를) 삭제하겠습니까?</span>`
+	deleteModal.classList.add("show");
+});
+
+
+
 // 나에게 할당된 이슈 목록 그리기
 function drawAllot(allot, pageNum = 0) {
 	allot.setAttribute("page-num-data", pageNum);
@@ -486,79 +512,4 @@ document.querySelector(".dashboard_content_container").addEventListener("click",
 		pageNum = btn.innerText - 1;
 	}
 	drawAllot(allot, pageNum);
-});
-
-const box1 = document.querySelector(".dashboard_content_container .box1");
-const box2 = document.querySelector(".dashboard_content_container .box2");
-new Sortable(box1, {
-	group: 'shared',
-	filter: '.empty_box',
-	animation: 150,
-	forceFallback: true,
-	onStart: function(evt){
-		const origin = evt.item;
-		const originHeight = window.getComputedStyle(origin).height;
-		
-		evt.item.style.height = originHeight;
-		evt.item.querySelector(".dashboard_item").classList.add("hide");
-		evt.item.classList.add("dragging");
-		
-		const dragItem = document.querySelector(".sortable-drag .dynamic_box");
-		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
-		
-		document.querySelector(".sortable-drag").style.height = "200px";
-	},
-	onEnd: function(evt){
-		evt.item.classList.remove("dragging");
-		evt.item.querySelector(".dashboard_item").classList.remove("hide");
-		
-		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
-		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
-		if(box1DashboardItems.length === 0){
-			box1.querySelector(".empty_box").classList.add("show");
-		}else{
-			box1.querySelector(".empty_box").classList.remove("show");
-		}
-		if(box2DashboardItems.length === 0){
-			box2.querySelector(".empty_box").classList.add("show");
-		}else{
-			box2.querySelector(".empty_box").classList.remove("show");
-		}
-	}
-});
-new Sortable(box2, {
-	group: 'shared',
-	filter: '.empty_box',
-	animation: 150,
-	forceFallback: true,
-	onStart: function(evt){
-		const origin = evt.item;
-		const originHeight = window.getComputedStyle(origin).height;
-		
-		evt.item.style.height = originHeight;
-		evt.item.querySelector(".dashboard_item").classList.add("hide");
-		evt.item.classList.add("dragging");
-		
-		const dragItem = document.querySelector(".sortable-drag .dynamic_box");
-		dragItem.innerHTML = `<div class="drag_item" style="height:100px"><img src="/images/chart_preview_icon.svg" width="16" height="16"></div>`;
-		
-		document.querySelector(".sortable-drag").style.height = "200px";
-	},
-	onEnd: function(evt){
-		evt.item.classList.remove("dragging");
-		evt.item.querySelector(".dashboard_item").classList.remove("hide");
-		
-		const box1DashboardItems = box1.querySelectorAll(".dashboard_item");
-		const box2DashboardItems = box2.querySelectorAll(".dashboard_item");
-		if(box1DashboardItems.length === 0){
-			box1.querySelector(".empty_box").classList.add("show");
-		}else{
-			box1.querySelector(".empty_box").classList.remove("show");
-		}
-		if(box2DashboardItems.length === 0){
-			box2.querySelector(".empty_box").classList.add("show");
-		}else{
-			box2.querySelector(".empty_box").classList.remove("show");
-		}
-	}
 });

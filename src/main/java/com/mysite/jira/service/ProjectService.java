@@ -67,7 +67,7 @@ public class ProjectService {
 		}
 		return null;
 	}
-
+	
 	public List<Project> getByJiraIdxProject(Integer jiraIdx){
 		return projectRepository.findByJira_idx(jiraIdx);
 	}
@@ -212,7 +212,12 @@ public class ProjectService {
 	}
 
 	public Project getRecentTop1Project(Integer accountIdx, Integer jiraIdx) {
-		return projectRepository.findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(jiraIdx,accountIdx).get(0);
+		List<Project> projectList = projectRepository.findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(jiraIdx,accountIdx);
+		if(projectList.size() != 0) {
+			return projectRepository.findByJira_IdxAndProjectClickedList_AccountIdxOrderByProjectClickedList_ClickedDateDesc(jiraIdx,accountIdx).get(0);
+		}
+		return null;
+		
 	}
 
 	public Project getByJiraIdxAndKeyProject(Integer jiraIdx, String key) {

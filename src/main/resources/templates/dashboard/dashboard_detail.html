@@ -7,7 +7,7 @@
 	<div class="dashboard_container">
 		<div th:replace="~{dashboard/dashboard_detail_header :: dashboardDetailHeader}"></div>
 		<div class="dashboard_content_container">
-			<div class="box1"
+			<div class="container1"
 				 th:if="${#lists.size(dashboardItemList[0]) != 0}">
 				<div class="add_dashboard_content" th:each="item : ${dashboardItemList[0]}">
 					<th:block th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">
@@ -412,7 +412,7 @@
 					</th:block>
 				</div>
 			</div>
-			<div class="box2"
+			<div class="container2"
 			     th:if="${#lists.size(dashboardItemList[1]) != 0}">
 					<div class="add_dashboard_content" th:each="item : ${dashboardItemList[1]}">
 					<th:block th:if="${#strings.equals(item.getClass, T(com.mysite.jira.entity.DashboardPieChart))}">

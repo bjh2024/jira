@@ -14,7 +14,7 @@
 				<p>현재 대시보드를 편집하고 있습니다. 변경 사항은 자동으로 저장됩니다.</p>
 			</div>
 			<div class="dashboard_content_container">
-				<div class="box1">
+				<div class="container1">
 					<div class="empty_box" th:classappend="${#lists.size(dashboardItemList[0]) == 0} ? 'show' : ''">
 						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
 							alt="" width="112" height="100">
@@ -72,7 +72,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box dashboard_pie_chart_container">
+								<div class="dynamic_box dashboard_pie_chart_container dashboard_item_content">
 									<div class="doughnut_chart_ratio"></div>
 									<div class="dashboard_pie_chart_box">
 										<div>
@@ -109,7 +109,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main piechart_content_main">
+								<div class="add_dashboard_content_main piechart_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -135,20 +135,9 @@
 										</select>
 										<p>이 필터를 표시할 통계의 유형을 선택.</p>
 									</div>
-									<div class="main_group box3">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -202,7 +191,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box">
+								<div class="dynamic_box dashboard_item_content">
 									<table style="table-layout: fixed;">
 										<colgroup>
 											<col style="width: 32px;">
@@ -243,7 +232,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main my_responsibility_issue_main">
+								<div class="add_dashboard_content_main my_responsibility_issue_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label>결과의 수<span class="not_null_check">*</span></label>
@@ -314,20 +303,9 @@
 										</select>
 										<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -383,7 +361,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box dashboard_issue_complete_container">
+								<div class="dynamic_box dashboard_issue_complete_container dashboard_item_content">
 									<div>
 										<canvas th:id="|issueCompleteChart-${item.idx}|"
 											style="width: 400px; height: 400px;"></canvas>
@@ -419,7 +397,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -450,20 +428,9 @@
 										<input type="text" id="prev_date" value="30" />
 										<p>선택한 기간내에서 자료를 수집할 과거 일 수</p>
 									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -519,7 +486,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic dashboard_issue_recent_container">
+								<div class="dynamic_box dashboard_issue_recent_container dashboard_item_content">
 									<div>
 										<canvas th:id="|issueRecentChart-${item.idx}|"
 											style="width: 400px; height: 400px;">
@@ -553,7 +520,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -580,23 +547,12 @@
 									</div>
 									<div class="main_group box3">
 										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
-										<input type="text" id="prev_date" value="${viewDate}" />
+										<input type="text" id="prev_date" value="30" />
 										<p>그래프에 표시할 일수(오늘 포함)</p>
-									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
 									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -652,7 +608,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box">
+								<div class="dynamic_box dashboard_item_content">
 									<table style="table-layout: fixed;">
 										<colgroup>
 											<col style="width: 100px;">
@@ -692,7 +648,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -720,29 +676,18 @@
 									</div>
 									<div class="main_group box3">
 										<label for="view_num">결과의 수<span class="not_null_check">*</span></label>
-										<input type="text" id="view_num" value="${viewNum}" />
+										<input type="text" id="view_num" value="10" />
 										<p>표시할 결과의 수(최대 50개)</p>
-									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
 									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
 								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
-								</div>
 							</div>
 						</th:block>
 					</div>
 				</div>
-				<div class="box2">
+				<div class="container2">
 					<div class="empty_box" th:classappend="${#lists.size(dashboardItemList[1]) == 0} ? 'show' : ''">
 						<img src="https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/generic-empty-state.1b007192.svg"
 							alt="" width="112" height="100">
@@ -800,7 +745,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box dashboard_pie_chart_container">
+								<div class="dynamic_box dashboard_pie_chart_container dashboard_item_content">
 									<div class="doughnut_chart_ratio"></div>
 									<div class="dashboard_pie_chart_box">
 										<div>
@@ -837,7 +782,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main piechart_content_main">
+								<div class="add_dashboard_content_main piechart_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -863,20 +808,9 @@
 										</select>
 										<p>이 필터를 표시할 통계의 유형을 선택.</p>
 									</div>
-									<div class="main_group box3">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -930,7 +864,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box">
+								<div class="dynamic_box dashboard_item_content">
 									<table style="table-layout: fixed;">
 										<colgroup>
 											<col style="width: 32px;">
@@ -971,7 +905,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main my_responsibility_issue_main">
+								<div class="add_dashboard_content_main my_responsibility_issue_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label>결과의 수<span class="not_null_check">*</span></label>
@@ -1042,20 +976,9 @@
 										</select>
 										<p>필드를 선택하여 위의 목록에 해당 필드를 추가하십시오.</p>
 									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -1111,7 +1034,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box dashboard_issue_complete_container">
+								<div class="dynamic_box dashboard_issue_complete_container dashboard_item_content">
 									<div>
 										<canvas th:id="|issueCompleteChart-${item.idx}|"
 											style="width: 400px; height: 400px;"></canvas>
@@ -1147,7 +1070,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -1178,20 +1101,9 @@
 										<input type="text" id="prev_date" value="30" />
 										<p>선택한 기간내에서 자료를 수집할 과거 일 수</p>
 									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
-									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -1247,7 +1159,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic dashboard_issue_recent_container">
+								<div class="dynamic_box dashboard_issue_recent_container dashboard_item_content">
 									<div>
 										<canvas th:id="|issueRecentChart-${item.idx}|"
 											style="width: 400px; height: 400px;">
@@ -1281,7 +1193,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -1308,23 +1220,12 @@
 									</div>
 									<div class="main_group box3">
 										<label for="prev_date">이전 날짜<span class="not_null_check">*</span></label>
-										<input type="text" id="prev_date" value="${viewDate}" />
+										<input type="text" id="prev_date" value="30" />
 										<p>그래프에 표시할 일수(오늘 포함)</p>
-									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
 									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
@@ -1380,7 +1281,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="dynamic_box">
+								<div class="dynamic_box dashboard_item_content">
 									<table style="table-layout: fixed;">
 										<colgroup>
 											<col style="width: 100px;">
@@ -1420,7 +1321,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="add_dashboard_content_main">
+								<div class="add_dashboard_content_main dashboard_item_content">
 									<p>필수 필드는 별표로 표시되어 있습니다<span class="not_null_check">*</span></p>
 									<div class="main_group box1">
 										<label for="project_name">저장된 프로젝트<span class="not_null_check">*</span></label>
@@ -1448,23 +1349,12 @@
 									</div>
 									<div class="main_group box3">
 										<label for="view_num">결과의 수<span class="not_null_check">*</span></label>
-										<input type="text" id="view_num" value="${viewNum}" />
+										<input type="text" id="view_num" value="10" />
 										<p>표시할 결과의 수(최대 50개)</p>
-									</div>
-									<div class="main_group box4">
-										<label for="update">자동 새로 고침</label>
-										<div class="update_check_box">
-											<input type="checkbox" id="update" />
-											<label for="update">매 15분마다 업데이트</label>
-										</div>
 									</div>
 									<div class="save_btn">
 										<button>저장</button>
 									</div>
-								</div>
-								<div class="add_dashboard_content_footer">
-									<img src="/images/refresh_icon.svg" width="16" height="16" />
-									<span>14분 전</span>
 								</div>
 							</div>
 						</th:block>
