@@ -8,8 +8,8 @@
 			<div class="profile_center">
 				<div class="profile_left">
 					<div class="profile_image">
-						<img width="132" height="132" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true" class="css-1gr7gcv" style="border-radius: 50%; border : 2px solid white">
-						<div class="name_font">방준혁</div>
+						<img width="132" height="132" th:src="@{|/images/${currentUser.iconFilename}|}" style="border-radius: 50%; border : 2px solid white">
+						<div class="name_font" th:text="${currentUser.name}">방준혁</div>
 					</div>
 					<div class="account_modify">
 						계정 관리
@@ -21,7 +21,7 @@
 								<div class="profile_background"></div>
 								<div class="profile_box">
 									<div class="profile_circle">
-										<img width="132" height="132" src="https://secure.gravatar.com/avatar/01b7a4ea5f56a651a5e667c6b8b9d579?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-0.png" alt="" aria-hidden="true" data-vc="avatar-image" data-ssr-placeholder-ignored="true" class="css-1gr7gcv" style="border-radius: 50%; border : 2px solid white">
+										<img width="132" height="132" th:src="@{|/images/${currentUser.iconFilename}|}"style="border-radius: 50%; border : 2px solid white">
 									</div>
 								</div>
 							</div>
