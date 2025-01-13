@@ -96,7 +96,6 @@ public class JiraService {
 	}
 	 
 	public Jira getRecentTop1Jira(Integer accountIdx) {
-		System.out.println(jiraRepository.findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx).size());
 		return jiraRepository.findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx).get(0);
 	}
 	

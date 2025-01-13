@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysite.jira.entity.Account;
 import com.mysite.jira.service.AccountService;
 import com.mysite.jira.service.IssueService;
-import com.mysite.jira.service.JiraService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
