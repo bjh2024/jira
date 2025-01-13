@@ -156,8 +156,8 @@ public class Issue {
 		this.editDate = LocalDateTime.now();
 	}
 	
-	public void updateFinishDate() {
-		this.finishDate = LocalDateTime.now();
+	public void updateFinishDate(LocalDateTime date) {
+		this.finishDate = date;
 	}
 	
 	public void updateDeadlineDate(LocalDateTime date) {
