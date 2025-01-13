@@ -227,7 +227,6 @@ public class FilterIssueTableAPIController {
 
 		Integer jiraIdx = (Integer)session.getAttribute("jiraIdx");
 		Jira jira = jiraService.getByIdx(jiraIdx);
-
 		// 필터 생성시 무조건 생성되는 필터 기본
 		Filter filter = filterService.filterCreate(filterName, explain, account, jira);
 		if (filterDto.getIsCompleted() != null && filterDto.getIsCompleted().length > 0 ) {
@@ -235,13 +234,17 @@ public class FilterIssueTableAPIController {
 				filterService.filterDoneCreate(filter, filterDto.getIsCompleted()[i]);
 			}
 		}
+		for(int i = 0; i < filterDto.getIssuePriority().length; i++) {
+			System.out.println("이슈 priority2");
+			System.out.println(filterDto.getIssuePriority()[i].toString());
+		}
 		// 행이 여러개 생길 수 있는 데이터
 		if (filterDto.getIssuePriority() != null && filterDto.getIssuePriority().length > 0) {
 			for (int i = 0; i < filterDto.getIssuePriority().length; i++) {
 				Optional<IssuePriority> issuePriority = issuePriorityService.getByName(filterDto.getIssuePriority()[i]);
 				filterService.filterIssuePriorityCreate(filter, issuePriority.get());
 			}
-		}
+		}	
 		if (filterDto.getIssueStatus() != null && filterDto.getIssueStatus().length > 0 ) {
 			for (int i = 0; i < filterDto.getIssueStatus().length; i++) {
 				IssueStatus issueStatus = issueStatusService.getByName(filterDto.getIssueStatus()[i]);

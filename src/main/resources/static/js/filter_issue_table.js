@@ -53,6 +53,7 @@ document.querySelector("body").addEventListener("click", function(e) {
 			"notDoneCheck" : null,
 			"filterIdx": null
 			}
+		loadUpdate();
 });
 
 // input에서 엔터키 이벤트가 발생해도 submit으로 넘어가지 않게 막기
@@ -63,7 +64,6 @@ document.querySelectorAll("input").forEach(function(input){
 		}
 	})
 })
-
 // 필터링을 위한 데이터들
 let filterDatas = {
 			"projectIdxArr" : [],
@@ -595,6 +595,11 @@ function loadUpdate() {
 			})
 			fetchInputFilter();
 			fetchInputFilterIssue();
+			document.querySelectorAll(".issue_box_choice").forEach(function(item, idx){
+				if(idx == 0){
+					firstIssueDetail(item.dataset.issueKey);
+				}
+			})
 			const urlParams = new URLSearchParams(window.location.search);
 			document.querySelectorAll(".more_item_box.view_more_box.accent_btn").forEach(function(item){
 				if(urlParams.get('filter') == item.dataset.filterIdx){
@@ -782,7 +787,7 @@ function fetchInputFilterIssue() {
 		.then(issueList => {
 			if(document.querySelector(".issueListFilter") == null) return;
 			document.querySelector(".issueListFilter").innerHTML = ""
-			firstIssueKey = issueList[0].issueKey;
+			firstIssueKey = issueList[0]?.issueKey;
 			issueList.forEach(function(item){
 				document.querySelector(".issueListFilter").innerHTML += 
 				`<div class="issue_box_choice" data-issue-key="${item.issueKey}">
@@ -802,7 +807,7 @@ function fetchInputFilterIssue() {
 						</div>
 				</div>`
 			})
-			firstIssueDetail(firstIssueKey);
+		//	firstIssueDetail(firstIssueKey);
 		})
 		.catch(error => {
 			console.error("Fetch error:", error);
@@ -858,8 +863,6 @@ function fetchInputFilterIssue() {
 						document.querySelectorAll(".issue_box_choice").forEach(function(item){
 							if(itemKey == item.dataset.issueKey){
 								item.classList.add("active");
-							}else{
-								item.classList.remove("active");
 							}
 						})
 			        } else {
@@ -1025,6 +1028,7 @@ document.querySelector(".save_button")?.addEventListener("click",async function(
 function fetchFitlerCreate() {
 	    // fetch()를 사용하여 AJAX 요청
     let url = "/api/filter_issue_table/filter_create"; 
+	loadUpdate();
     fetch(url, {
 	        method: 'POST',
 	        headers: {
