@@ -65,8 +65,8 @@ public class JiraService {
 	// 사용자가 지라가 없을경우 지라 추가
 	public void addJira(Integer accountIdx) {
 		Optional<Account> account = accountRepository.findById(accountIdx);
-		String[] colorArr = {"#BAF3DB", "#CFE1FD", "#DDDEE1"};
-		int rn = (int)(Math.random() * 3);
+		String[] colorArr = {"#BAF3DB", "#CFE1FD", "#DDDEE1", "#EED7FC", "#57D9A3"};
+		int rn = (int)(Math.random() * 5);
 		if(!account.isEmpty()) {
 			String email = account.get().getEmail();
 			Jira jira = Jira.builder()
@@ -96,6 +96,7 @@ public class JiraService {
 	}
 	 
 	public Jira getRecentTop1Jira(Integer accountIdx) {
+		System.out.println(jiraRepository.findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx).size());
 		return jiraRepository.findByJiraClickedList_AccountIdxOrderByJiraClickedList_ClickedDateDesc(accountIdx).get(0);
 	}
 	

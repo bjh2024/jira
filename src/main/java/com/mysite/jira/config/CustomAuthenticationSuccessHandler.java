@@ -40,7 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		// 현재 로그인된 계정
 		Account account = accountService.getAccountByEmail(authentication.getName());
 		Integer accountIdx = account.getIdx();
-		
+
 		// 현재 계정이 가장 최근 방문한 jira
 		Jira jira = jiraService.getRecentTop1Jira(accountIdx);
 		session.setAttribute("jiraIdx", jira.getIdx());

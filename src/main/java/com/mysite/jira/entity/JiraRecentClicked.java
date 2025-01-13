@@ -36,8 +36,7 @@ public class JiraRecentClicked {
 	private LocalDateTime clickedDate;
 
 	@Builder
-	public JiraRecentClicked(Integer idx, Jira jira, Account account) {
-		this.idx = idx;
+	public JiraRecentClicked(Jira jira, Account account) {
 		this.jira = jira;
 		this.account = account;
 		this.clickedDate = LocalDateTime.now();
