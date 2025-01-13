@@ -47,6 +47,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			  ON p.idx = prc.project_idx
 			LEFT JOIN project_like_members plm
 			  ON p.idx = plm.project_idx
+			  AND plm.account_idx = :accountIdx
 			WHERE prc.account_idx = :accountIdx
 			  AND prc.jira_idx = :jiraIdx
 			  AND plm.project_idx IS NULL

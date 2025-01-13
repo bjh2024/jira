@@ -98,9 +98,6 @@ public class FilterService {
 		}
 		List<Filter> filterLikes = this.getByIdxIn(filterLikeInteger);
 		List<Filter> defaultFilterList = new ArrayList<>();
-		System.out.println("filterList size : " + filterList.size());
-		System.out.println("accountIdx : " + accountIdx);
-		System.out.println("jiraIdx : " + jiraIdx);
 		for (int i = 0; i < 8; i++) {
 			defaultFilterList.add(filterList.get(i));
 		}

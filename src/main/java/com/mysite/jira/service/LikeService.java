@@ -93,7 +93,7 @@ public class LikeService {
 	// 별표 표시한 대시보드 kdw
 	public List<LikeContentDTO> getDashboardLikeList(Integer accountIdx, Integer jiraIdx){
 		List<LikeContentDTO> result = new ArrayList<>();
-		List<DashboardLikeMembers> dashboardLikeList = dashboardLikeMembersRepository.findByDashboard_jiraIdxAndAccountIdx(accountIdx, jiraIdx);
+		List<DashboardLikeMembers> dashboardLikeList = dashboardLikeMembersRepository.findByDashboard_jiraIdxAndAccountIdx(jiraIdx, accountIdx);
 		
 		for(int i = 0; i < dashboardLikeList.size(); i++) {
 			Integer idx = dashboardLikeList.get(i).getDashboard().getIdx();

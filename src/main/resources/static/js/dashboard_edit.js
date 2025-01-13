@@ -1533,6 +1533,8 @@ new Sortable(box1, {
 	group: 'shared',
 	filter: '.empty_box',
 	animation: 150,
+	draggable: ".add_dashboard_content",
+	handle: ".add_dashboard_content_header h2",
 	forceFallback: true,
 	onStart: function(evt) {
 		const origin = evt.item;
@@ -1573,6 +1575,8 @@ new Sortable(box2, {
 	group: 'shared',
 	filter: '.empty_box',
 	animation: 150,
+	draggable: ".add_dashboard_content",
+	handle: ".add_dashboard_content_header h2",
 	forceFallback: true,
 	onStart: function(evt) {
 		const origin = evt.item;
