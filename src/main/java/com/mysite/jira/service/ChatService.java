@@ -120,8 +120,11 @@ public class ChatService {
 		Account account = accountService.getAccountByIdx(chatMessageDTO.getAccountIdx());
 		ChatRoom chatRoom = this.getChatRoomByIdx(chatMessageDTO.getChatRoomIdx());
 
-		ChatMessage chatMessage = ChatMessage.builder().content(chatMessageDTO.getContent()).account(account)
-				.chatRoom(chatRoom).build();
+		ChatMessage chatMessage = ChatMessage.builder()
+											 .content(chatMessageDTO.getContent())
+											 .account(account)
+											 .chatRoom(chatRoom)
+											 .build();
 		chatMessageRepository.save(chatMessage);
 		return chatMessage;
 	}

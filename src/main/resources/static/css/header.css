@@ -997,8 +997,14 @@ font-size: 14px;
 	font-size: 10px;
 }
 
+.alarm_content_item1 .item1_box_title .log_content{
+	font-weight: bold;
+}
+
 .alarm_content_item1 .item1_box_center {
 	padding-top: 4px;
+	color: #0c66e4;
+	
 	display: flex;
 	align-items: center;
 }

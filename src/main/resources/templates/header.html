@@ -345,11 +345,12 @@
 									<img th:src="@{|/images/${logData.accountFilename}|}"
 										alt="" style="border-radius: 50%;" width="40" height="40">
 									<div>
-										<div>
+										<div class="item1_box_title">
 											<span th:text="${logData.accountName}"></span>이(가)
-											<span th:text="${logData.logContent}"></span>
+											<span class="log_content" th:text="${logData.logContent}"></span>
 											<span class="alarm_date_comment"
-												  th:text="${logData.elapsedTime}"></span></div>
+												  th:text="${logData.elapsedTime}"></span>
+								  		</div>
 										<div class="item1_box_center">
 											<img th:src="@{|/images/${logData.issueTypeFilename}|}"
 												width="12" height="12">
