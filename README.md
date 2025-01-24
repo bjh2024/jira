@@ -28,3 +28,6 @@ API 명세: https://regular-speedboat-e8c.notion.site/16c38ff71eb780f1a046c38a28
 - Web Socket
 - API(NAVER, KAKAO, OPENAI)
 - AWS
+
+# ERD
+![jira_erd](https://github.com/user-attachments/assets/12fc7c2c-484e-454c-9ca0-5f546b20988a)
